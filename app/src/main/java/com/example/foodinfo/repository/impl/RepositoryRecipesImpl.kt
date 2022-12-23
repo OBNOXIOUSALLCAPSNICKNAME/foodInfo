@@ -1,5 +1,6 @@
 package com.example.foodinfo.repository.impl
 
+import android.content.Context
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
@@ -22,6 +23,7 @@ import javax.inject.Inject
 
 
 class RepositoryRecipesImpl @Inject constructor(
+    private val context: Context,
     private val recipesDAO: RecipesDAO
 ) : RepositoryRecipes {
 

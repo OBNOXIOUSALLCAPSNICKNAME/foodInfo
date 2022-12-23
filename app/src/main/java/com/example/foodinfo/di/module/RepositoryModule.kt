@@ -1,5 +1,6 @@
 package com.example.foodinfo.di.module
 
+import android.content.Context
 import com.example.foodinfo.local.dao.RecipeFieldsInfoDao
 import com.example.foodinfo.local.dao.RecipesDAO
 import com.example.foodinfo.local.dao.SearchFilterDAO
@@ -23,9 +24,10 @@ class RepositoryModule {
     @Provides
     @Singleton
     fun provideRepositoryRecipes(
-        recipesDAO: RecipesDAO
+        context: Context,
+        recipesDAO: RecipesDAO,
     ): RepositoryRecipes {
-        return RepositoryRecipesImpl(recipesDAO)
+        return RepositoryRecipesImpl(context, recipesDAO)
     }
 
     @Provides
