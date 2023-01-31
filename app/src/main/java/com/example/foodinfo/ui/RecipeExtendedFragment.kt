@@ -1,6 +1,6 @@
 package com.example.foodinfo.ui
 
-import androidx.core.view.get
+import androidx.core.view.forEachIndexed
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -13,9 +13,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.example.foodinfo.R
 import com.example.foodinfo.databinding.FragmentRecipeExtendedBinding
-import com.example.foodinfo.repository.model.NutrientRecipeModel
-import com.example.foodinfo.repository.model.RecipeIngredientModel
-import com.example.foodinfo.repository.model.RecipeModel
+import com.example.foodinfo.repository.model.RecipeExtendedModel
 import com.example.foodinfo.ui.adapter.RecipeCategoriesAdapter
 import com.example.foodinfo.ui.custom_view.NonScrollLinearLayoutManager
 import com.example.foodinfo.ui.decorator.ListItemDecoration
@@ -23,8 +21,10 @@ import com.example.foodinfo.utils.*
 import com.example.foodinfo.utils.glide.GlideApp
 import com.example.foodinfo.view_model.RecipeExtendedViewModel
 import com.google.android.material.imageview.ShapeableImageView
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 class RecipeExtendedFragment : BaseFragment<FragmentRecipeExtendedBinding>(
@@ -37,18 +37,7 @@ class RecipeExtendedFragment : BaseFragment<FragmentRecipeExtendedBinding>(
         requireActivity().appComponent.viewModelsFactory()
     }
 
-
     private lateinit var recyclerAdapter: RecipeCategoriesAdapter
-
-    // no SupervisorJob on purpose
-    private val initUiScope = CoroutineScope(Job() + Dispatchers.Default)
-
-    enum class UIElements {
-        RECIPE,
-        LABELS,
-        NUTRIENTS,
-        INGREDIENTS
-    }
 
 
     private val onBackClickListener: () -> Unit = {
@@ -56,14 +45,14 @@ class RecipeExtendedFragment : BaseFragment<FragmentRecipeExtendedBinding>(
     }
 
     private val onFavoriteClickListener: () -> Unit = {
-        viewModel.updateFavoriteMark()
+        viewModel.invertFavoriteStatus()
     }
 
     private val onShareClickListener: () -> Unit = { }
 
-    private val onLabelClickListener: (String, String) -> Unit = { category, label ->
+    private val onLabelClickListener: (Int) -> Unit = { infoID ->
         viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
-            val labelItem = viewModel.getLabel(category, label)
+            val labelItem = viewModel.getLabel(infoID)
             withContext(Dispatchers.Main) {
                 showDescriptionDialog(
                     labelItem.name,
@@ -91,18 +80,7 @@ class RecipeExtendedFragment : BaseFragment<FragmentRecipeExtendedBinding>(
     }
 
 
-    override fun onDestroy() {
-        initUiScope.cancel()
-        super.onDestroy()
-    }
-
-
     override fun initUI() {
-        registerUiChunk(UIElements.RECIPE)
-        registerUiChunk(UIElements.LABELS)
-        registerUiChunk(UIElements.NUTRIENTS)
-        registerUiChunk(UIElements.INGREDIENTS)
-
         recyclerAdapter = RecipeCategoriesAdapter(
             requireContext(),
             onLabelClickListener
@@ -130,7 +108,6 @@ class RecipeExtendedFragment : BaseFragment<FragmentRecipeExtendedBinding>(
     }
 
     override fun subscribeUI() {
-
         observeUiState { uiState ->
             when (uiState) {
                 is UiState.Error   -> {}
@@ -147,145 +124,73 @@ class RecipeExtendedFragment : BaseFragment<FragmentRecipeExtendedBinding>(
 
         }
 
-        initUiScope.launch {
-            repeatOn(Lifecycle.State.STARTED) {
-                viewModel.recipe.collectLatest { recipe ->
-                    val state: UiState = when (recipe) {
-                        is State.Success -> {
-                            initRecipe(recipe.data)
-                            UiState.Success()
-                        }
-                        is State.Error   -> {
-                            UiState.Error(recipe.message, recipe.error)
-                        }
-                        else             -> {
-                            UiState.Loading()
-                        }
+        repeatOn(Lifecycle.State.STARTED) {
+            viewModel.recipe.collectLatest { recipe ->
+                val state: UiState = when (recipe) {
+                    is State.Success -> {
+                        initRecipe(recipe.data)
+                        UiState.Success()
                     }
-                    updateUiState(UIElements.RECIPE, state)
-                }
-            }
-
-            repeatOn(Lifecycle.State.STARTED) {
-                viewModel.labels.collectLatest { labels ->
-                    val state: UiState = when (labels) {
-                        is State.Success -> {
-                            recyclerAdapter.submitList(labels.data)
-                            UiState.Success()
-                        }
-                        is State.Error   -> {
-                            UiState.Error(labels.message, labels.error)
-                        }
-                        else             -> {
-                            UiState.Loading()
-                        }
+                    is State.Error   -> {
+                        UiState.Error(recipe.message, recipe.error)
                     }
-                    updateUiState(UIElements.LABELS, state)
-                }
-            }
-
-            repeatOn(Lifecycle.State.STARTED) {
-                viewModel.nutrients.collectLatest { nutrients ->
-                    val state: UiState = when (nutrients) {
-                        is State.Success -> {
-                            initNutrients(nutrients.data)
-                            UiState.Success()
-                        }
-                        is State.Error   -> {
-                            UiState.Error(nutrients.message, nutrients.error)
-                        }
-                        else             -> {
-                            UiState.Loading()
-                        }
+                    else             -> {
+                        UiState.Loading()
                     }
-                    updateUiState(UIElements.NUTRIENTS, state)
                 }
-            }
-
-            repeatOn(Lifecycle.State.STARTED) {
-                viewModel.ingredients.collectLatest { ingredients ->
-                    val state: UiState = when (ingredients) {
-                        is State.Success -> {
-                            initIngredients(ingredients.data)
-                            UiState.Success()
-                        }
-                        is State.Error   -> {
-                            UiState.Error(ingredients.message, ingredients.error)
-                        }
-                        else             -> {
-                            UiState.Loading()
-                        }
-                    }
-                    updateUiState(UIElements.INGREDIENTS, state)
-                }
+                updateUiState(state)
             }
         }
     }
 
 
-    private fun initRecipe(recipe: RecipeModel) {
-        binding.tvRecipeName.text = recipe.name
-        Glide.with(binding.ivRecipePreview.context)
-            .load(recipe.previewURL)
-            .error(R.drawable.ic_no_image)
-            .placeholder(null)
-            .transition(DrawableTransitionOptions.withCrossFade())
-            .into(binding.ivRecipePreview)
+    private fun initRecipe(recipe: RecipeExtendedModel) {
+        with(binding) {
+            tvRecipeName.text = recipe.name
+            Glide.with(ivRecipePreview.context)
+                .load(recipe.previewURL)
+                .error(R.drawable.ic_no_image)
+                .placeholder(null)
+                .transition(DrawableTransitionOptions.withCrossFade())
+                .into(ivRecipePreview)
 
-        binding.tvServingsValue.text = getString(
-            R.string.serving_value,
-            recipe.servings
-        )
-        binding.tvWeightValue.text = getString(
-            R.string.gram_int_value,
-            recipe.totalWeight
-        )
-        binding.tvTimeValue.text = getString(
-            R.string.time_value,
-            recipe.totalTime
-        )
+            tvServingsValue.text = getString(R.string.serving_value, recipe.servings)
+            tvWeightValue.text = getString(R.string.gram_int_value, recipe.weight)
+            tvTimeValue.text = getString(R.string.time_value, recipe.cookingTime)
 
-        binding.iEnergy.tvTitle.text = resources.getString(R.string.calories_header)
-        binding.iEnergy.tvValue.text = recipe.calories
-        binding.iEnergy.progressBar.progress = recipe.caloriesDaily
+            btnFavorite.setFavorite(recipe.isFavorite, falseColor = R.attr.appMainFontColor)
 
-        binding.btnFavorite.setFavorite(
-            recipe.isFavorite,
-            falseColor = R.attr.appMainFontColor
-        )
-    }
+            recipe.energy.apply {
+                iEnergy.tvTitle.text = name
+                iEnergy.tvValue.text = totalWeight.toInt().toString()
+                iEnergy.progressBar.progress = dailyPercent
+            }
 
-    private fun initNutrients(nutrients: List<NutrientRecipeModel>) {
-        nutrients.findLast { nutrient ->
-            nutrient.label == resources.getString(R.string.protein_header)
-        }!!.apply {
-            binding.iProtein.tvTitle.text = label
-            binding.iProtein.tvValue.text = getString(R.string.float_value, totalWeight)
-            binding.iProtein.progressBar.progress = dailyPercent
-        }
+            recipe.protein.apply {
+                iProtein.tvTitle.text = name
+                iProtein.tvValue.text = getString(R.string.float_value, totalWeight)
+                iProtein.progressBar.progress = dailyPercent
+            }
 
-        nutrients.findLast { nutrient ->
-            nutrient.label == resources.getString(R.string.carbs_header)
-        }!!.apply {
-            binding.iCarbs.tvTitle.text = label
-            binding.iCarbs.tvValue.text = getString(R.string.float_value, totalWeight)
-            binding.iCarbs.progressBar.progress = dailyPercent
-        }
+            recipe.carb.apply {
+                iCarbs.tvTitle.text = name
+                iCarbs.tvValue.text = getString(R.string.float_value, totalWeight)
+                iCarbs.progressBar.progress = dailyPercent
+            }
 
-        nutrients.findLast { nutrient ->
-            nutrient.label == resources.getString(R.string.fat_header)
-        }!!.apply {
-            binding.iFat.tvTitle.text = label
-            binding.iFat.tvValue.text = getString(R.string.float_value, totalWeight)
-            binding.iFat.progressBar.progress = dailyPercent
-        }
-    }
+            recipe.fat.apply {
+                iFat.tvTitle.text = name
+                iFat.tvValue.text = getString(R.string.float_value, totalWeight)
+                iFat.progressBar.progress = dailyPercent
+            }
 
-    private fun initIngredients(ingredients: List<RecipeIngredientModel>) {
-        for (index in 0..3) {
-            GlideApp.with(requireContext())
-                .load(ingredients.getOrNull(index)?.previewURL)
-                .into(binding.clIngredients[index] as ShapeableImageView)
+            clIngredients.forEachIndexed { index, view ->
+                GlideApp.with(requireContext())
+                    .load(recipe.ingredients.getOrNull(index))
+                    .into(view as ShapeableImageView)
+            }
+
+            recyclerAdapter.submitList(recipe.categories)
         }
     }
 }

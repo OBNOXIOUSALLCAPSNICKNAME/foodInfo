@@ -84,11 +84,8 @@
             android:id = "@+id/action_f_search_label_to_f_search_input"
             app:destination = "@id/f_search_input" />
         <argument
-            android:name = "category"
-            app:argType = "string" />
-        <argument
-            android:name = "label"
-            app:argType = "string" />
+            android:name = "labelID"
+            app:argType = "integer" />
     </fragment>
     <fragment
         android:id = "@+id/f_recipe_extended"
@@ -151,8 +148,8 @@
         android:label = "fragment_search_category"
         tools:layout = "@layout/fragment_search_category">
         <argument
-            android:name = "category"
-            app:argType = "string" />
+            android:name = "categoryID"
+            app:argType = "integer" />
         <action
             android:id = "@+id/action_f_search_category_to_f_search_input"
             app:destination = "@id/f_search_input" />
@@ -166,10 +163,10 @@
         android:label = "SearchFilterCategoryFragment"
         tools:layout = "@layout/fragment_search_filter_category">
         <argument
-            android:name = "category"
-            app:argType = "string" />
+            android:name = "categoryID"
+            app:argType = "integer" />
         <argument
-            android:name = "searchFilterId"
+            android:name = "searchFilterName"
             app:argType = "string" />
     </fragment>
     <fragment
@@ -178,7 +175,7 @@
         android:label = "SearchFilterNutrientsFragment"
         tools:layout = "@layout/fragment_search_filter_nutrients">
         <argument
-            android:name = "searchFilterId"
+            android:name = "searchFilterName"
             app:argType = "string" />
     </fragment>
     <fragment
@@ -187,7 +184,7 @@
         android:label = "SearchFilterSelectFragment"
         tools:layout = "@layout/fragment_search_filter_select">
         <argument
-            android:name = "searchFilterId"
+            android:name = "searchFilterName"
             app:argType = "string" />
     </fragment>
 </navigation>

@@ -5,7 +5,7 @@ import androidx.recyclerview.widget.DiffUtil
 
 // choose best dateTime format and lib
 data class SearchInputModel(
-    val id: Long = 0,
+    val ID: Int = 0,
     val inputText: String,
     val date: String = System.currentTimeMillis().toString()
 ) {
@@ -15,7 +15,7 @@ data class SearchInputModel(
         override fun areItemsTheSame(
             oldItem: SearchInputModel, newItem: SearchInputModel
         ): Boolean {
-            return oldItem.id == newItem.id
+            return oldItem.ID == newItem.ID
         }
 
         override fun areContentsTheSame(

@@ -3,8 +3,8 @@ package com.example.foodinfo
 import android.app.Application
 import com.example.foodinfo.di.BaseViewModelFactory
 import com.example.foodinfo.di.module.BaseApplicationModule
-import com.example.foodinfo.local.DataBase
-import com.example.foodinfo.repository.RepositorySearchFilter
+import com.example.foodinfo.local.room.DataBase
+import com.example.foodinfo.repository.SearchFilterRepository
 import com.example.foodinfo.utils.AssetProvider
 import dagger.BindsInstance
 import dagger.Component
@@ -34,5 +34,5 @@ interface BaseApplicationComponent {
 
     val assetProvider: AssetProvider
 
-    val repositorySearchFilter: RepositorySearchFilter
+    val searchFilterRepository: SearchFilterRepository
 }

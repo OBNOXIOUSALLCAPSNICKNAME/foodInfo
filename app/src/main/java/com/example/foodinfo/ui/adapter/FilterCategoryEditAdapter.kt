@@ -6,16 +6,16 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.foodinfo.databinding.RvItemFilterInputCategoryEditBinding
-import com.example.foodinfo.repository.model.LabelFilterEditModel
+import com.example.foodinfo.repository.model.LabelOfSearchFilterEditModel
 import com.example.foodinfo.ui.view_holder.FilterCategoryEditViewHolder
 
 
 class FilterCategoryEditAdapter(
     context: Context,
-    private val onQuestionMarkClickListener: (String) -> Unit,
-    private val onItemClickListener: (Long, Boolean) -> Unit,
-) : ListAdapter<LabelFilterEditModel, ViewHolder>(
-    LabelFilterEditModel.ItemCallBack
+    private val onQuestionMarkClickListener: (Int) -> Unit,
+    private val onItemClickListener: (Int, Boolean) -> Unit,
+) : ListAdapter<LabelOfSearchFilterEditModel, ViewHolder>(
+    LabelOfSearchFilterEditModel.ItemCallBack
 ) {
 
     private val layoutInflater = LayoutInflater.from(context)

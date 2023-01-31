@@ -44,7 +44,7 @@ class SearchLabelFragment : BaseFragment<FragmentSearchLabelBinding>(
 
     private val onHeaderClickListener: () -> Unit = {
         viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
-            val labelItem = viewModel.getLabel(args.category, args.label)
+            val labelItem = viewModel.getLabel(args.labelID)
             withContext(Dispatchers.Main) {
                 showDescriptionDialog(
                     labelItem.name,
@@ -62,7 +62,7 @@ class SearchLabelFragment : BaseFragment<FragmentSearchLabelBinding>(
     }
 
     private val onFavoriteClickListener: (String) -> Unit = { id ->
-        viewModel.updateFavoriteMark(id)
+        viewModel.invertFavoriteStatus(id)
     }
 
     private val onGetTime: (Int) -> String = { time ->
@@ -71,10 +71,9 @@ class SearchLabelFragment : BaseFragment<FragmentSearchLabelBinding>(
 
 
     override fun initUI() {
-        viewModel.labelName = args.label
-        viewModel.categoryName = args.category
+        viewModel.labelID = args.labelID
 
-        binding.tvLabel.text = args.label
+        binding.tvLabel.text = viewModel.getLabel(args.labelID).name
         binding.tvLabel.setOnClickListener { onHeaderClickListener() }
         binding.btnBack.setOnClickListener { onBackClickListener() }
         binding.btnSearch.setOnClickListener { onSearchClickListener() }

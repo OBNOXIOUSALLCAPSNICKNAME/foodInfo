@@ -9,12 +9,12 @@ import com.example.foodinfo.utils.glide.GlideApp
 
 class SearchLabelsViewHolder(
     private val binding: RvItemLabelBinding,
-    onItemClickListener: (String) -> Unit,
+    onItemClickListener: (Int) -> Unit,
 ) : BaseViewHolder<RvItemLabelBinding, LabelSearchModel>(binding) {
 
     init {
         binding.clContent.setOnClickListener {
-            onItemClickListener(item.name)
+            onItemClickListener(item.ID)
         }
     }
 

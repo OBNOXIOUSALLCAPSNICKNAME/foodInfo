@@ -4,7 +4,7 @@ import androidx.recyclerview.widget.DiffUtil
 
 
 data class NutrientHintModel(
-    val id: Long,
+    val ID: Int,
     val label: String,
     val description: String,
     val preview: SVGModel
@@ -17,7 +17,7 @@ data class NutrientHintModel(
             oldItem: NutrientHintModel,
             newItem: NutrientHintModel
         ): Boolean {
-            return oldItem.id == newItem.id
+            return oldItem.ID == newItem.ID
         }
 
         override fun areContentsTheSame(

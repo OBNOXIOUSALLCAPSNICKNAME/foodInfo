@@ -37,9 +37,9 @@ class SearchFilterCategoryFragment : BaseFragment<FragmentSearchFilterCategoryBi
         viewModel.reset()
     }
 
-    private val onQuestionMarkClickListener: (String) -> Unit = { label ->
+    private val onQuestionMarkClickListener: (Int) -> Unit = { infoID ->
         viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
-            val labelItem = viewModel.getLabelHint(label)
+            val labelItem = viewModel.getLabelHint(infoID)
             withContext(Dispatchers.Main) {
                 showDescriptionDialog(
                     labelItem.name,
@@ -50,16 +50,16 @@ class SearchFilterCategoryFragment : BaseFragment<FragmentSearchFilterCategoryBi
         }
     }
 
-    private val onItemClickListener: (Long, Boolean) -> Unit = { id, isSelected ->
-        viewModel.updateLabel(id, isSelected)
+    private val onItemClickListener: (Int, Boolean) -> Unit = { ID, isSelected ->
+        viewModel.updateLabel(ID, isSelected)
     }
 
     override fun initUI() {
-        viewModel.categoryName = args.category
+        viewModel.categoryID = args.categoryID
 
         binding.btnBack.setOnClickListener { onBackClickListener() }
         binding.btnReset.setOnClickListener { onResetClickListener() }
-        binding.tvHeader.text = args.category
+        binding.tvHeader.text = viewModel.category.name
 
         recyclerAdapter = FilterCategoryEditAdapter(
             requireContext(),

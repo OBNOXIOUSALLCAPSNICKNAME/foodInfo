@@ -2,8 +2,8 @@ package com.example.foodinfo.view_model
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.foodinfo.repository.RepositoryRecipeFieldsInfo
-import com.example.foodinfo.repository.model.CategoryFieldModel
+import com.example.foodinfo.repository.RecipeAttrRepository
+import com.example.foodinfo.repository.model.CategorySearchModel
 import com.example.foodinfo.repository.model.LabelSearchModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.BufferOverflow
@@ -17,17 +17,17 @@ import javax.inject.Inject
 
 
 class SearchCategoryViewModel @Inject constructor(
-    private val repositoryRecipeFieldsInfo: RepositoryRecipeFieldsInfo
+    private val recipeAttrRepository: RecipeAttrRepository
 ) : ViewModel() {
 
-    var categoryName: String = ""
+    var categoryID: Int = 0
         set(initializer) {
             if (initializer == field) {
                 return
             }
             viewModelScope.launch {
                 withContext(Dispatchers.IO) {
-                    _labels.emit(repositoryRecipeFieldsInfo.getLabelsSearch(initializer))
+                    _labels.emit(recipeAttrRepository.getLabelsSearch(initializer))
                 }
             }
             field = initializer
@@ -43,7 +43,7 @@ class SearchCategoryViewModel @Inject constructor(
         0
     )
 
-    val category: CategoryFieldModel by lazy {
-        repositoryRecipeFieldsInfo.getCategory(categoryName)
+    val category: CategorySearchModel by lazy {
+        recipeAttrRepository.getCategory(categoryID)
     }
 }

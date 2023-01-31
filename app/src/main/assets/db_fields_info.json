@@ -1,0 +1,1268 @@
+{
+  "basic": [
+    {
+      "ID": 1,
+      "tag": null,
+      "name": "servings",
+      "columnName": "servings",
+      "measure": "ppl",
+      "stepSize": 1,
+      "rangeMin": 1,
+      "rangeMax": 20
+    },
+    {
+      "ID": 2,
+      "tag": "ingr",
+      "name": "ingredients",
+      "columnName": "ingredients",
+      "measure": "pcs",
+      "stepSize": 1,
+      "rangeMin": 1,
+      "rangeMax": 30
+    },
+    {
+      "ID": 3,
+      "tag": "time",
+      "name": "time",
+      "columnName": "time",
+      "measure": "min",
+      "stepSize": 5,
+      "rangeMin": 5,
+      "rangeMax": 600
+    },
+    {
+      "ID": 4,
+      "tag": null,
+      "name": "weight",
+      "columnName": "weight",
+      "measure": "g",
+      "stepSize": 50,
+      "rangeMin": 0,
+      "rangeMax": 5000
+    }
+  ],
+  "labels": [
+    {
+      "ID": 1,
+      "tag": "balanced",
+      "name": "balanced",
+      "categoryID": 1,
+      "description": "Protein/Fat/Carb values in 15/35/50 ratio",
+      "previewURL": ""
+    },
+    {
+      "ID": 2,
+      "tag": "high-fiber",
+      "name": "high-fiber",
+      "categoryID": 1,
+      "description": "More than 5g fiber per serving",
+      "previewURL": ""
+    },
+    {
+      "ID": 3,
+      "tag": "high-protein",
+      "name": "high-protein",
+      "categoryID": 1,
+      "description": "More than 50% of total calories from proteins",
+      "previewURL": ""
+    },
+    {
+      "ID": 4,
+      "tag": "low-carb",
+      "name": "low-carb",
+      "categoryID": 1,
+      "description": "Less than 20% of total calories from carbs",
+      "previewURL": ""
+    },
+    {
+      "ID": 5,
+      "tag": "low-fat",
+      "name": "low-fat",
+      "categoryID": 1,
+      "description": "Less than 15% of total calories from fat",
+      "previewURL": ""
+    },
+    {
+      "ID": 6,
+      "tag": "low-sodium",
+      "name": "low-sodium",
+      "categoryID": 1,
+      "description": "Less than 140mg Na per serving",
+      "previewURL": ""
+    },
+    {
+      "ID": 7,
+      "tag": "alcohol-cocktail",
+      "name": "alcohol-cocktail",
+      "categoryID": 2,
+      "description": "Describes an alcoholic cocktail",
+      "previewURL": ""
+    },
+    {
+      "ID": 8,
+      "tag": "alcohol-free",
+      "name": "alcohol-free",
+      "categoryID": 2,
+      "description": "No alcohol used or contained",
+      "previewURL": ""
+    },
+    {
+      "ID": 9,
+      "tag": "celery-free",
+      "name": "celery-free",
+      "categoryID": 2,
+      "description": "Does not contain celery or derivatives",
+      "previewURL": ""
+    },
+    {
+      "ID": 10,
+      "tag": "crustacean-free",
+      "name": "crustacean-free",
+      "categoryID": 2,
+      "description": "Does not contain crustaceans (shrimp, lobster etc.) or derivatives",
+      "previewURL": ""
+    },
+    {
+      "ID": 11,
+      "tag": "dairy-free",
+      "name": "dairy-free",
+      "categoryID": 2,
+      "description": "No dairy; no lactose",
+      "previewURL": ""
+    },
+    {
+      "ID": 12,
+      "tag": "DASH",
+      "name": "DASH",
+      "categoryID": 2,
+      "description": "Dietary Approaches to Stop Hypertension diet",
+      "previewURL": ""
+    },
+    {
+      "ID": 13,
+      "tag": "egg-free",
+      "name": "egg-free",
+      "categoryID": 2,
+      "description": "No eggs or products containing eggs",
+      "previewURL": ""
+    },
+    {
+      "ID": 14,
+      "tag": "fish-free",
+      "name": "fish-free",
+      "categoryID": 2,
+      "description": "No fish or fish derivatives",
+      "previewURL": ""
+    },
+    {
+      "ID": 15,
+      "tag": "fodmap-free",
+      "name": "fodmap-free",
+      "categoryID": 2,
+      "description": "Does not contain FODMAP foods",
+      "previewURL": ""
+    },
+    {
+      "ID": 16,
+      "tag": "gluten-free",
+      "name": "gluten-free",
+      "categoryID": 2,
+      "description": "No ingredients containing gluten",
+      "previewURL": ""
+    },
+    {
+      "ID": 17,
+      "tag": "immuno-supportive",
+      "name": "immuno-supportive",
+      "categoryID": 2,
+      "description": "Recipes which fit a science-based approach to eating to strengthen the immune system",
+      "previewURL": ""
+    },
+    {
+      "ID": 18,
+      "tag": "keto-friendly",
+      "name": "keto-friendly",
+      "categoryID": 2,
+      "description": "Maximum 7 grams of net carbs per serving",
+      "previewURL": ""
+    },
+    {
+      "ID": 19,
+      "tag": "kidney-friendly",
+      "name": "kidney-friendly",
+      "categoryID": 2,
+      "description": "Per serving \u2013 phosphorus less than 250 mg AND potassium less than 500 mg AND sodium less than 500 mg",
+      "previewURL": ""
+    },
+    {
+      "ID": 20,
+      "tag": "kosher",
+      "name": "kosher",
+      "categoryID": 2,
+      "description": "Contains only ingredients allowed by the kosher diet. However it does not guarantee kosher preparation of the ingredients themselves",
+      "previewURL": ""
+    },
+    {
+      "ID": 21,
+      "tag": "low-potassium",
+      "name": "low-potassium",
+      "categoryID": 2,
+      "description": "Less than 150mg per serving",
+      "previewURL": ""
+    },
+    {
+      "ID": 22,
+      "tag": "low-sugar",
+      "name": "low-sugar",
+      "categoryID": 2,
+      "description": "No simple sugars \u2013 glucose, dextrose, galactose, fructose, sucrose, lactose, maltose",
+      "previewURL": ""
+    },
+    {
+      "ID": 23,
+      "tag": "lupine-free",
+      "name": "lupine-free",
+      "categoryID": 2,
+      "description": "Does not contain lupine or derivatives",
+      "previewURL": ""
+    },
+    {
+      "ID": 24,
+      "tag": "Mediterranean",
+      "name": "Mediterranean",
+      "categoryID": 2,
+      "description": "Mediterranean diet",
+      "previewURL": ""
+    },
+    {
+      "ID": 25,
+      "tag": "mollusk-free",
+      "name": "mollusk-free",
+      "categoryID": 2,
+      "description": "No mollusks",
+      "previewURL": ""
+    },
+    {
+      "ID": 26,
+      "tag": "No-oil-added",
+      "name": "No-oil-added",
+      "categoryID": 2,
+      "description": "No oil added except to what is contained in the basic ingredients",
+      "previewURL": ""
+    },
+    {
+      "ID": 27,
+      "tag": "paleo",
+      "name": "paleo",
+      "categoryID": 2,
+      "description": "Excludes what are perceived to be agricultural products; grains, legumes, dairy products, potatoes, refined salt, refined sugar, and processed oils",
+      "previewURL": ""
+    },
+    {
+      "ID": 28,
+      "tag": "peanut-free",
+      "name": "peanut-free",
+      "categoryID": 2,
+      "description": "No peanuts or products containing peanuts",
+      "previewURL": ""
+    },
+    {
+      "ID": 29,
+      "tag": "pecatarian",
+      "name": "pecatarian",
+      "categoryID": 2,
+      "description": "Does not contain meat or meat based products, can contain dairy and fish",
+      "previewURL": ""
+    },
+    {
+      "ID": 30,
+      "tag": "pork-free",
+      "name": "pork-free",
+      "categoryID": 2,
+      "description": "Does not contain pork or derivatives",
+      "previewURL": ""
+    },
+    {
+      "ID": 31,
+      "tag": "red-meat-free",
+      "name": "red-meat-free",
+      "categoryID": 2,
+      "description": "Does not contain beef, lamb, pork, duck, goose, game, horse, and other types of red meat or products containing red meat.",
+      "previewURL": ""
+    },
+    {
+      "ID": 32,
+      "tag": "sesame-free",
+      "name": "sesame-free",
+      "categoryID": 2,
+      "description": "Does not contain sesame seed or derivatives",
+      "previewURL": ""
+    },
+    {
+      "ID": 33,
+      "tag": "shellfish-free",
+      "name": "shellfish-free",
+      "categoryID": 2,
+      "description": "No shellfish or shellfish derivatives",
+      "previewURL": ""
+    },
+    {
+      "ID": 34,
+      "tag": "soy-free",
+      "name": "soy-free",
+      "categoryID": 2,
+      "description": "No soy or products containing soy",
+      "previewURL": ""
+    },
+    {
+      "ID": 35,
+      "tag": "sugar-conscious",
+      "name": "sugar-conscious",
+      "categoryID": 2,
+      "description": "Less than 4g of sugar per serving",
+      "previewURL": ""
+    },
+    {
+      "ID": 36,
+      "tag": "sulfite-free",
+      "name": "sulfite-free",
+      "categoryID": 2,
+      "description": "No Sulfites",
+      "previewURL": ""
+    },
+    {
+      "ID": 37,
+      "tag": "tree-nut-free",
+      "name": "tree-nut-free",
+      "categoryID": 2,
+      "description": "No tree nuts or products containing tree nuts",
+      "previewURL": ""
+    },
+    {
+      "ID": 38,
+      "tag": "vegan",
+      "name": "vegan",
+      "categoryID": 2,
+      "description": "No meat, poultry, fish, dairy, eggs or honey",
+      "previewURL": ""
+    },
+    {
+      "ID": 39,
+      "tag": "vegetarian",
+      "name": "vegetarian",
+      "categoryID": 2,
+      "description": "No meat, poultry, or fish",
+      "previewURL": ""
+    },
+    {
+      "ID": 40,
+      "tag": "wheat-free",
+      "name": "wheat-free",
+      "categoryID": 2,
+      "description": "No wheat, can have gluten though",
+      "previewURL": ""
+    },
+    {
+      "ID": 41,
+      "tag": "breakfast",
+      "name": "breakfast",
+      "categoryID": 3,
+      "description": "description for this label is not yet available",
+      "previewURL": ""
+    },
+    {
+      "ID": 42,
+      "tag": "brunch",
+      "name": "brunch",
+      "categoryID": 3,
+      "description": "description for this label is not yet available",
+      "previewURL": ""
+    },
+    {
+      "ID": 43,
+      "tag": "lunch/dinner",
+      "name": "lunch/dinner",
+      "categoryID": 3,
+      "description": "description for this label is not yet available",
+      "previewURL": ""
+    },
+    {
+      "ID": 44,
+      "tag": "snack",
+      "name": "snack",
+      "categoryID": 3,
+      "description": "description for this label is not yet available",
+      "previewURL": ""
+    },
+    {
+      "ID": 45,
+      "tag": "teatime",
+      "name": "teatime",
+      "categoryID": 3,
+      "description": "description for this label is not yet available",
+      "previewURL": ""
+    },
+    {
+      "ID": 46,
+      "tag": "alcohol cocktail",
+      "name": "alcohol cocktail",
+      "categoryID": 4,
+      "description": "description for this label is not yet available",
+      "previewURL": ""
+    },
+    {
+      "ID": 47,
+      "tag": "biscuits and cookies",
+      "name": "biscuits and cookies",
+      "categoryID": 4,
+      "description": "description for this label is not yet available",
+      "previewURL": ""
+    },
+    {
+      "ID": 48,
+      "tag": "bread",
+      "name": "bread",
+      "categoryID": 4,
+      "description": "description for this label is not yet available",
+      "previewURL": ""
+    },
+    {
+      "ID": 49,
+      "tag": "cereals",
+      "name": "cereals",
+      "categoryID": 4,
+      "description": "description for this label is not yet available",
+      "previewURL": ""
+    },
+    {
+      "ID": 50,
+      "tag": "condiments and sauces",
+      "name": "condiments and sauces",
+      "categoryID": 4,
+      "description": "description for this label is not yet available",
+      "previewURL": ""
+    },
+    {
+      "ID": 51,
+      "tag": "desserts",
+      "name": "desserts",
+      "categoryID": 4,
+      "description": "description for this label is not yet available",
+      "previewURL": ""
+    },
+    {
+      "ID": 52,
+      "tag": "drinks",
+      "name": "drinks",
+      "categoryID": 4,
+      "description": "description for this label is not yet available",
+      "previewURL": ""
+    },
+    {
+      "ID": 53,
+      "tag": "egg",
+      "name": "egg",
+      "categoryID": 4,
+      "description": "description for this label is not yet available",
+      "previewURL": ""
+    },
+    {
+      "ID": 54,
+      "tag": "ice cream and custard",
+      "name": "ice cream and custard",
+      "categoryID": 4,
+      "description": "description for this label is not yet available",
+      "previewURL": ""
+    },
+    {
+      "ID": 55,
+      "tag": "main course",
+      "name": "main course",
+      "categoryID": 4,
+      "description": "description for this label is not yet available",
+      "previewURL": ""
+    },
+    {
+      "ID": 56,
+      "tag": "pancake",
+      "name": "pancake",
+      "categoryID": 4,
+      "description": "description for this label is not yet available",
+      "previewURL": ""
+    },
+    {
+      "ID": 57,
+      "tag": "pasta",
+      "name": "pasta",
+      "categoryID": 4,
+      "description": "description for this label is not yet available",
+      "previewURL": ""
+    },
+    {
+      "ID": 58,
+      "tag": "pastry",
+      "name": "pastry",
+      "categoryID": 4,
+      "description": "description for this label is not yet available",
+      "previewURL": ""
+    },
+    {
+      "ID": 59,
+      "tag": "pies and tarts",
+      "name": "pies and tarts",
+      "categoryID": 4,
+      "description": "description for this label is not yet available",
+      "previewURL": ""
+    },
+    {
+      "ID": 60,
+      "tag": "pizza",
+      "name": "pizza",
+      "categoryID": 4,
+      "description": "description for this label is not yet available",
+      "previewURL": ""
+    },
+    {
+      "ID": 61,
+      "tag": "preps",
+      "name": "preps",
+      "categoryID": 4,
+      "description": "description for this label is not yet available",
+      "previewURL": ""
+    },
+    {
+      "ID": 62,
+      "tag": "preserve",
+      "name": "preserve",
+      "categoryID": 4,
+      "description": "description for this label is not yet available",
+      "previewURL": ""
+    },
+    {
+      "ID": 63,
+      "tag": "salad",
+      "name": "salad",
+      "categoryID": 4,
+      "description": "description for this label is not yet available",
+      "previewURL": ""
+    },
+    {
+      "ID": 64,
+      "tag": "sandwiches",
+      "name": "sandwiches",
+      "categoryID": 4,
+      "description": "description for this label is not yet available",
+      "previewURL": ""
+    },
+    {
+      "ID": 65,
+      "tag": "seafood",
+      "name": "seafood",
+      "categoryID": 4,
+      "description": "description for this label is not yet available",
+      "previewURL": ""
+    },
+    {
+      "ID": 66,
+      "tag": "side dish",
+      "name": "side dish",
+      "categoryID": 4,
+      "description": "description for this label is not yet available",
+      "previewURL": ""
+    },
+    {
+      "ID": 67,
+      "tag": "soup",
+      "name": "soup",
+      "categoryID": 4,
+      "description": "description for this label is not yet available",
+      "previewURL": ""
+    },
+    {
+      "ID": 68,
+      "tag": "special occasions",
+      "name": "special occasions",
+      "categoryID": 4,
+      "description": "description for this label is not yet available",
+      "previewURL": ""
+    },
+    {
+      "ID": 69,
+      "tag": "starter",
+      "name": "starter",
+      "categoryID": 4,
+      "description": "description for this label is not yet available",
+      "previewURL": ""
+    },
+    {
+      "ID": 70,
+      "tag": "sweets",
+      "name": "sweets",
+      "categoryID": 4,
+      "description": "description for this label is not yet available",
+      "previewURL": ""
+    },
+    {
+      "ID": 71,
+      "tag": "american",
+      "name": "american",
+      "categoryID": 5,
+      "description": "description for this label is not yet available",
+      "previewURL": ""
+    },
+    {
+      "ID": 72,
+      "tag": "asian",
+      "name": "asian",
+      "categoryID": 5,
+      "description": "description for this label is not yet available",
+      "previewURL": ""
+    },
+    {
+      "ID": 73,
+      "tag": "british",
+      "name": "british",
+      "categoryID": 5,
+      "description": "description for this label is not yet available",
+      "previewURL": ""
+    },
+    {
+      "ID": 74,
+      "tag": "caribbean",
+      "name": "caribbean",
+      "categoryID": 5,
+      "description": "description for this label is not yet available",
+      "previewURL": ""
+    },
+    {
+      "ID": 75,
+      "tag": "central europe",
+      "name": "central europe",
+      "categoryID": 5,
+      "description": "description for this label is not yet available",
+      "previewURL": ""
+    },
+    {
+      "ID": 76,
+      "tag": "chinese",
+      "name": "chinese",
+      "categoryID": 5,
+      "description": "description for this label is not yet available",
+      "previewURL": ""
+    },
+    {
+      "ID": 77,
+      "tag": "eastern europe",
+      "name": "eastern europe",
+      "categoryID": 5,
+      "description": "description for this label is not yet available",
+      "previewURL": ""
+    },
+    {
+      "ID": 78,
+      "tag": "french",
+      "name": "french",
+      "categoryID": 5,
+      "description": "description for this label is not yet available",
+      "previewURL": ""
+    },
+    {
+      "ID": 79,
+      "tag": "greek",
+      "name": "greek",
+      "categoryID": 5,
+      "description": "description for this label is not yet available",
+      "previewURL": ""
+    },
+    {
+      "ID": 80,
+      "tag": "indian",
+      "name": "indian",
+      "categoryID": 5,
+      "description": "description for this label is not yet available",
+      "previewURL": ""
+    },
+    {
+      "ID": 81,
+      "tag": "italian",
+      "name": "italian",
+      "categoryID": 5,
+      "description": "description for this label is not yet available",
+      "previewURL": ""
+    },
+    {
+      "ID": 82,
+      "tag": "japanese",
+      "name": "japanese",
+      "categoryID": 5,
+      "description": "description for this label is not yet available",
+      "previewURL": ""
+    },
+    {
+      "ID": 83,
+      "tag": "korean",
+      "name": "korean",
+      "categoryID": 5,
+      "description": "description for this label is not yet available",
+      "previewURL": ""
+    },
+    {
+      "ID": 84,
+      "tag": "kosher",
+      "name": "kosher",
+      "categoryID": 5,
+      "description": "description for this label is not yet available",
+      "previewURL": ""
+    },
+    {
+      "ID": 85,
+      "tag": "mediterranean",
+      "name": "mediterranean",
+      "categoryID": 5,
+      "description": "description for this label is not yet available",
+      "previewURL": ""
+    },
+    {
+      "ID": 86,
+      "tag": "mexican",
+      "name": "mexican",
+      "categoryID": 5,
+      "description": "description for this label is not yet available",
+      "previewURL": ""
+    },
+    {
+      "ID": 87,
+      "tag": "middle eastern",
+      "name": "middle eastern",
+      "categoryID": 5,
+      "description": "description for this label is not yet available",
+      "previewURL": ""
+    },
+    {
+      "ID": 88,
+      "tag": "nordic",
+      "name": "nordic",
+      "categoryID": 5,
+      "description": "description for this label is not yet available",
+      "previewURL": ""
+    },
+    {
+      "ID": 89,
+      "tag": "south american",
+      "name": "south american",
+      "categoryID": 5,
+      "description": "description for this label is not yet available",
+      "previewURL": ""
+    },
+    {
+      "ID": 90,
+      "tag": "south east asian",
+      "name": "south east asian",
+      "categoryID": 5,
+      "description": "description for this label is not yet available",
+      "previewURL": ""
+    },
+    {
+      "ID": 91,
+      "tag": "world",
+      "name": "world",
+      "categoryID": 5,
+      "description": "description for this label is not yet available",
+      "previewURL": ""
+    }
+  ],
+  "categories": [
+    {
+      "ID": 1,
+      "tag": "diet",
+      "name": "diet",
+      "allowMultiple": true,
+      "previewURL": "<svg width=\"100pt\" height=\"100pt\" viewBox=\"0 0 100 100\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M8.333 56.667h50a5.006 5.006 0 0 0 5-5V45a5.003 5.003 0 0 0-5-5h-50A8.344 8.344 0 0 0 0 48.333v13.334a8.348 8.348 0 0 0 2.443 5.89A8.348 8.348 0 0 0 8.333 70a1.667 1.667 0 0 0 0-3.333 5 5 0 0 1 0-10Zm-5-8.334a5.012 5.012 0 0 1 1.466-3.534 5.012 5.012 0 0 1 3.534-1.466h50A1.668 1.668 0 0 1 60 45v6.667a1.667 1.667 0 0 1-1.667 1.666h-5v-5a1.666 1.666 0 1 0-3.333 0v5h-6.667V50A1.666 1.666 0 1 0 40 50v3.333h-6.667v-5a1.666 1.666 0 1 0-3.333 0v5h-6.667V50A1.666 1.666 0 1 0 20 50v3.333h-6.667v-5a1.666 1.666 0 1 0-3.333 0v5H8.333a8.291 8.291 0 0 0-5 1.67v-6.67Zm12.813-11.834a1.665 1.665 0 0 0 2.227-.771A18.043 18.043 0 0 1 35.833 25a18.788 18.788 0 0 1 13.028 5.254c.64.602 1.638.602 2.278 0A18.788 18.788 0 0 1 64.167 25c13.434 0 20.834 10.062 20.834 28.333 0 1.556-.078 3.185-.233 4.845a1.668 1.668 0 0 0 3.321.31 56.64 56.64 0 0 0 .245-5.155c0-20.125-8.808-31.666-24.167-31.666A21.763 21.763 0 0 0 55 23.663v-.33a8.348 8.348 0 0 1 2.443-5.89A8.348 8.348 0 0 1 63.333 15a5.002 5.002 0 0 0 4.331-7.5A5.002 5.002 0 0 0 63.333 5C53.213 5.011 45.011 13.213 45 23.333v.33a21.76 21.76 0 0 0-9.167-1.996 21.408 21.408 0 0 0-20.459 12.605 1.667 1.667 0 0 0 .772 2.227Zm32.187-13.166a15.017 15.017 0 0 1 15-15c1.283 0 2.084 1.389 1.443 2.5a1.667 1.667 0 0 1-1.443.834 11.683 11.683 0 0 0-11.667 11.666v2.23c-.574.394-1.13.812-1.667 1.255a23.864 23.864 0 0 0-1.666-1.255v-2.23Zm29.186 60.366c.718.577.834 1.626.258 2.344C73.074 91.902 67.503 95 61.667 95A17.574 17.574 0 0 1 50 90.66 17.574 17.574 0 0 1 38.333 95c-13.765 0-23.499-16.642-26-33.082a1.667 1.667 0 0 1 1.397-1.895 1.668 1.668 0 0 1 1.897 1.393c2.231 14.665 10.947 30.252 22.705 30.252a14.575 14.575 0 0 0 10.498-4.454 1.666 1.666 0 0 1 2.337 0 14.575 14.575 0 0 0 10.498 4.454c6.053 0 10.687-4.193 13.509-7.71a1.672 1.672 0 0 1 2.344-.258l.001-.001Zm16.226-33.43c-1.248-.297-2.35.869-1.982 2.098.164.552.603.98 1.159 1.131 3.724.964 5.008 5.599 2.31 8.342a4.995 4.995 0 0 1-3.565 1.493h-50a5.006 5.006 0 0 0-5 5V75a5.003 5.003 0 0 0 5 5h50a8.348 8.348 0 0 0 5.89-2.443 8.348 8.348 0 0 0 2.443-5.89V58.333a8.31 8.31 0 0 0-6.255-8.064Zm2.922 21.398a5.012 5.012 0 0 1-1.466 3.534 5.012 5.012 0 0 1-3.534 1.466H90v-5a1.667 1.667 0 0 0-3.333 0v5H80v-3.334a1.666 1.666 0 1 0-3.333 0v3.334H70v-5a1.667 1.667 0 0 0-3.333 0v5H60v-3.334a1.666 1.666 0 1 0-3.333 0v3.334H50v-5a1.667 1.667 0 0 0-3.333 0v5h-5A1.668 1.668 0 0 1 40 75v-6.667a1.667 1.667 0 0 1 1.667-1.666h50a8.291 8.291 0 0 0 5-1.67v6.67Z\"/></svg>"
+    },
+    {
+      "ID": 2,
+      "tag": "health",
+      "name": "health",
+      "allowMultiple": true,
+      "previewURL": "<svg width=\"100pt\" height=\"100pt\" viewBox=\"0 0 100 100\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M25.895 7.001h-.002a25.82 25.82 0 0 0-18.305 7.613c-10.117 10.131-10.117 26.505 0 36.637l7.02 7.033v-.001l.002.001 34.166 34.21a1.727 1.727 0 0 0 2.443 0l34.172-34.21.001-.001 7.02-7.033.001-.001c10.116-10.13 10.116-26.505-.001-36.636-10.118-10.131-26.492-10.131-36.61 0v.001l-5.798 5.81-5.804-5.81A25.809 25.809 0 0 0 25.895 7v.001Zm48.21 3.422c5.728 0 11.457 2.206 15.862 6.617a22.411 22.411 0 0 1 0 31.784v-.001h-.001l-7.019 7.034-32.951 32.989L17.05 55.857l-7.019-7.033h.001-.001a22.411 22.411 0 0 1 0-31.784c4.406-4.411 10.127-6.6 15.862-6.601 5.734-.001 11.455 2.19 15.861 6.601l7.025 7.036v-.001c.324.324.764.506 1.222.505.459 0 .898-.182 1.221-.506l7.02-7.034c4.406-4.412 10.134-6.617 15.861-6.617h.002ZM44.663 32.828h-.001c-.952 0-1.723.77-1.724 1.719v7.068h-7.047c-.953 0-1.725.77-1.725 1.719v10.697c0 .95.772 1.72 1.725 1.72h7.047v7.067a1.722 1.722 0 0 0 1.724 1.719h10.674c.952 0 1.724-.77 1.724-1.719v-7.067h7.048c.952 0 1.724-.77 1.724-1.72V43.334c0-.949-.772-1.719-1.724-1.719H57.06v-7.068c0-.95-.772-1.719-1.724-1.719H44.663Zm1.724 3.439h7.225v7.067c0 .949.772 1.719 1.724 1.719h7.048v7.259h-7.048c-.952 0-1.724.77-1.724 1.719V61.1h-7.225l-.001-7.069c0-.949-.772-1.719-1.724-1.719h-7.048v-7.259h7.048c.953 0 1.724-.77 1.724-1.719l.001-7.067Z\"/></svg>\n"
+    },
+    {
+      "ID": 3,
+      "tag": "mealType",
+      "name": "meal",
+      "allowMultiple": false,
+      "previewURL": "<svg width=\"100pt\" height=\"100pt\" viewBox=\"0 0 100 100\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"m45.223 41.383-4.55-5.103V20.86H38.17v16.441l5.118 5.67z\"/><path d=\"M39.422 2.494c16.607 0 31.052 11.79 34.237 28.118l2.502-.453C72.75 12.585 57.28-.001 39.422-.001 18.834 0 2 16.668 2 37.302c0 18.707 13.99 34.58 32.53 36.962l.342-2.495c-17.29-2.267-30.37-17.12-30.37-34.467 0-19.275 15.697-34.807 34.92-34.807zM94.474 67.573c-.569-10.09-8.19-18.367-17.971-20.068.34-.567.569-1.247.569-1.927a4.071 4.071 0 0 0-4.095-4.082 4.071 4.071 0 0 0-4.095 4.082c0 .68.228 1.36.455 1.927-9.782 1.7-17.403 9.978-17.972 20.068h-3.413v2.494H98v-2.494zM72.977 43.991c.91 0 1.592.68 1.592 1.587 0 .907-.682 1.587-1.592 1.587s-1.593-.68-1.593-1.587c0-.907.683-1.587 1.593-1.587zm0 5.782c10.123 0 18.426 7.936 19.108 17.8H53.867c.682-9.977 8.986-17.8 19.11-17.8zM88.56 74.49c-1.252-.34-2.503.452-3.526 1.133-.228.113-.455.227-.57.34-1.137.567-1.705 1.135-2.388 1.588-.341.227-.57.453-.91.68a4.315 4.315 0 0 0-3.298-2.04c-.797 0-1.82.226-2.958.453-.682.113-1.592.34-2.047.34-3.298 0-4.777-.794-6.37-1.474s-2.956-1.36-5.459-1.02c-2.957.34-4.777 1.7-6.71 3.287-.114.113-.342.227-.57.34-.91.567-2.046 1.36-2.16 2.721 0 1.134.568 2.155.91 2.721a68.545 68.545 0 0 1 2.843 4.875c.91 1.588 1.934 3.288 2.844 4.875l1.364 2.04.91-2.267c.228-.68.91-.907 2.162-1.36.113 0 .34-.113.454-.113.683-.227 1.48-.227 2.275-.227h1.138c1.023 0 2.161-.113 3.185-.113 3.298 0 6.825-.113 10.01-1.36 4.322-1.588 5.914-3.175 9.327-6.463l.113-.114c1.138-1.134 1.706-3.514 1.706-4.648.227-1.588-.57-3.628-2.275-4.195zm-.114 4.08c-.113 1.135-.569 2.608-1.023 3.062l-.114.113c-3.412 3.288-4.664 4.422-8.53 5.896-2.844 1.02-5.916 1.134-9.214 1.134-1.023 0-2.161 0-3.298.113h-1.024c-.91 0-2.047 0-3.07.34-.114 0-.342.114-.455.114a7.634 7.634 0 0 0-2.39 1.134c-.682-1.134-1.25-2.268-1.933-3.288-.91-1.587-1.934-3.287-2.844-4.875-.34-.453-.569-.907-.569-1.247.114-.227.683-.567 1.024-.794.228-.227.569-.34.797-.567 2.047-1.7 3.298-2.494 5.46-2.834 1.82-.227 2.843.227 4.207.907 1.593.68 3.64 1.587 7.393 1.7.683 0 1.593-.227 2.616-.453.797-.227 1.82-.453 2.275-.34.569 0 1.251.567 1.479 1.134.113.453-.228 1.134-.569 1.474-.455.453-1.138.68-2.047.907-3.753.907-7.848 1.02-11.602 0l-.569 2.382a27.371 27.371 0 0 0 12.853 0c1.024-.227 2.162-.568 3.072-1.475.682-.567 1.137-1.36 1.364-2.267.797-.453 1.365-.907 1.934-1.36s1.138-.907 2.047-1.474c.228-.114.455-.227.682-.454.341-.227 1.138-.68 1.48-.794.227.226.682 1.019.568 1.813zM49.09 83.22c-.227-.34-.569-.68-1.023-.68-.455-.114-.91 0-1.252.34l-4.663 3.4c-.683.454-.91 1.475-.455 2.155l6.71 10.885c.229.34.57.68 1.024.68h.342c.34 0 .682-.113.91-.34l4.663-3.402c.683-.453.91-1.474.455-2.154zm1.024 13.945-5.801-9.41 3.185-2.381 5.8 9.41z\"/></svg>\n"
+    },
+    {
+      "ID": 4,
+      "tag": "dishType",
+      "name": "dish",
+      "allowMultiple": false,
+      "previewURL": "<svg width=\"100pt\" height=\"100pt\" viewBox=\"0 0 100 100\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:bx=\"https://boxy-svg.com\"><g bx:origin=\"0 -2.322335\"><path d=\"M66.134 59.233c-1.262-1.893-3.537-2.672-5.671-1.93-.13.046-.587.171-.899-.14l-.097-.097c-1.2-1.201-1.786-2.868-1.574-4.454.272-2.023.481-7.194-3.46-11.515-2.185-2.395-4.945-3.61-8.206-3.61l-.169.002c-7.077.09-12.905 5.93-12.993 13.019-.042 3.34 1.17 6.162 3.602 8.39 4.314 3.948 9.473 3.742 11.494 3.467 1.579-.214 3.244.375 4.441 1.573l.101.1c.31.313.185.769.14.901-.74 2.134.035 4.417 1.926 5.682a4.84 4.84 0 0 0 2.684.801c.895 0 1.792-.24 2.562-.727a4.909 4.909 0 0 0 2.304-3.899 4.9 4.9 0 0 0 3.89-2.308c.992-1.584.962-3.695-.076-5.255zm-17.33.566c-.327 0-.655.02-.98.064-2.07.283-6.056.286-9.458-2.83-1.88-1.723-2.815-3.907-2.782-6.496.07-5.636 4.882-10.458 10.509-10.53 2.552-.074 4.766.906 6.483 2.788 3.108 3.408 3.103 7.402 2.825 9.476-.227 1.69.154 3.425 1.027 4.92l-3.706 3.714c-1.206-.698-2.552-1.107-3.918-1.107zm15.273 3.346c-.701 1.118-1.913 1.312-2.804 1.003a1.254 1.254 0 0 0-1.3.3c-.342.341-.457.847-.3 1.304.309.89.117 2.102-1 2.806a2.334 2.334 0 0 1-2.508-.037c-1.064-.713-1.242-1.896-.945-2.756.402-1.16.175-2.367-.544-3.25l3.366-3.374c.884.721 2.087.945 3.245.546a2.344 2.344 0 0 1 2.75.945c.5.747.514 1.756.04 2.513z\"/><path d=\"M45.647 41.55c-2.38.029-4.583 1.09-6.732 3.243a1.264 1.264 0 0 0 0 1.785 1.254 1.254 0 0 0 1.78 0c1.66-1.665 3.291-2.485 4.984-2.505 1.832.028 3.345.62 4.572 1.965.47.515 1.265.551 1.778.08.514-.467.55-1.267.081-1.781-1.714-1.882-3.852-2.81-6.462-2.787zM72.092 37.683a3.225 3.225 0 0 0 0-6.45 3.225 3.225 0 0 0 0 6.45zm0-3.926a.703.703 0 0 1 0 1.404.703.703 0 0 1 0-1.404zM80.496 43.883a3.225 3.225 0 0 0-3.219-3.225 3.225 3.225 0 0 0 0 6.45 3.227 3.227 0 0 0 3.22-3.225zm-3.921 0a.702.702 0 1 1 1.403-.001.702.702 0 0 1-1.403.001zM87.834 45.144a2.831 2.831 0 0 0 0-5.664 2.833 2.833 0 0 0-2.828 2.832 2.836 2.836 0 0 0 2.828 2.832zm0-3.141c.17 0 .308.14.308.309 0 .34-.618.34-.618 0 .002-.17.14-.31.31-.31zM82.348 36.636a3.028 3.028 0 0 0 0-6.057 3.03 3.03 0 0 0 0 6.057zm0-3.533a.506.506 0 0 1 0 1.013.505.505 0 0 1 0-1.013zM80.062 49.21a2.909 2.909 0 0 0 0 5.818 2.909 2.909 0 0 0 0-5.817zm0 3.295a.385.385 0 1 1 0-.77.385.385 0 0 1 0 .77zM80.062 40.432c.567 0 1.027.462 1.027 1.03v.85a1.259 1.259 0 1 0 2.518 0v-.85a3.552 3.552 0 0 0-3.545-3.552 1.26 1.26 0 0 0-1.258 1.262 1.258 1.258 0 0 0 1.258 1.26zM86.514 45.696a1.26 1.26 0 0 0-1.258 1.262v.85c0 .569-.46 1.03-1.027 1.03a1.26 1.26 0 0 0-1.26 1.262 1.26 1.26 0 0 0 1.26 1.262 3.552 3.552 0 0 0 3.545-3.551v-.851a1.262 1.262 0 0 0-1.26-1.264zM74.99 31.532c.566 0 1.026.462 1.026 1.029v.85a1.259 1.259 0 1 0 2.518 0v-.85a3.552 3.552 0 0 0-3.545-3.552 1.26 1.26 0 0 0 0 2.523zM30.291 35.853c.013-.024.04-.033.052-.057.027-.054.026-.114.044-.169 1.036-2.592 1.395-4.95 1.504-6.243a2.364 2.364 0 0 0-.682-1.87 2.325 2.325 0 0 0-1.867-.686c-1.288.108-3.64.468-6.224 1.505-.06.018-.12.018-.177.045-.033.017-.053.046-.084.066-2.169.906-4.481 2.282-6.475 4.462-2.72 2.97-3.943 5.298-4.49 6.726-.3.781-.867 1.393-1.595 1.726l-4.976 2.25a1.26 1.26 0 0 0-.052 2.275l5.05 2.562 2.554 5.059c.214.424.65.692 1.122.692h.028c.485-.01.92-.3 1.118-.742l2.248-4.987a3.066 3.066 0 0 1 1.72-1.599c1.423-.547 3.746-1.771 6.714-4.498 2.189-2.008 3.564-4.334 4.468-6.517zm-.926-6.494c-.088.928-.32 2.374-.832 4.006a11.361 11.361 0 0 1-3.164-3.17 19.978 19.978 0 0 1 3.996-.836zM18.208 44.513a5.572 5.572 0 0 0-3.113 2.916l-1.165 2.583-1.553-3.076a1.256 1.256 0 0 0-.554-.556l-3.07-1.557 2.579-1.167a5.586 5.586 0 0 0 2.908-3.118c.47-1.224 1.543-3.247 3.995-5.926 1.462-1.599 3.132-2.705 4.763-3.488a13.824 13.824 0 0 0 4.605 4.614c-.78 1.632-1.885 3.306-3.48 4.77-2.677 2.462-4.694 3.536-5.915 4.005zM6.048 39.568a1.26 1.26 0 0 0 1.498-.965 14.092 14.092 0 0 1 9.84-10.55 1.262 1.262 0 0 0-.703-2.422A16.612 16.612 0 0 0 5.086 38.067a1.261 1.261 0 0 0 .962 1.502z\"/><path d=\"M78.419 20c-7.837 0-14.912 4.176-18.749 10.97a25.214 25.214 0 0 0-19.312.05C36.528 24.197 29.445 20 21.583 20 9.683 20 0 29.7 0 41.625s9.683 21.624 21.583 21.624c1.467 0 2.96-.207 4.454-.529C29.448 72.752 38.927 80 50.08 80c11.141 0 20.608-7.232 24.03-17.247 1.451.302 2.898.499 4.308.499 11.9 0 21.583-9.7 21.583-21.625 0-11.923-9.68-21.626-21.58-21.626zM25.338 60.336c-1.264.26-2.522.391-3.755.391-10.512 0-19.064-8.568-19.064-19.101 0-10.532 8.551-19.101 19.064-19.101 6.88 0 13.093 3.635 16.499 9.566-.01.006-.01.015-.019.02-7.967 4.303-13.395 12.74-13.395 22.426 0 1.994.253 3.925.688 5.788 0 .005-.02 0-.018.01zm24.744 17.14c-12.625 0-22.894-10.292-22.894-22.939 0-12.65 10.27-22.938 22.894-22.938s22.893 10.29 22.893 22.938c0 12.65-10.27 22.938-22.893 22.938zm16.154-42.593c2.417-4.288 7.003-7.008 11.943-7.008 3.666 0 7.112 1.43 9.703 4.026a13.673 13.673 0 0 1 4.018 9.722c0 7.582-6.156 13.749-13.721 13.749-.89 0-1.79-.094-2.693-.278v-.059l-.018.003c.003-.169.026-.334.026-.503 0-7.895-3.606-14.963-9.253-19.635-.002-.003 0-.015-.005-.016zM78.42 60.724c-1.178 0-2.384-.121-3.6-.361.003-.019-.01-.041-.008-.06.206-.887.371-1.789.481-2.71.965.179 1.93.302 2.887.302 8.955 0 16.24-7.3 16.24-16.27a16.18 16.18 0 0 0-4.756-11.505 16.116 16.116 0 0 0-11.484-4.767c-5.744 0-11.05 3.128-13.949 8.047a25.567 25.567 0 0 0-2.263-1.352c-.002-.004-.007-.019-.01-.02 3.414-5.895 9.612-9.504 16.462-9.504 10.512 0 19.065 8.568 19.065 19.101-.002 10.53-8.553 19.1-19.065 19.1z\"/></g></svg>\n"
+    },
+    {
+      "ID": 5,
+      "tag": "cuisineType",
+      "name": "cuisine",
+      "allowMultiple": false,
+      "previewURL": "<svg width=\"100pt\" height=\"100pt\" viewBox=\"0 0 100 100\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M87.351 25.301c-3.438-.032-5.62 3.694-3.928 6.706a4.457 4.457 0 0 0 3.927 2.283 4.451 4.451 0 0 0 3.157-1.317 4.511 4.511 0 0 0-.001-6.354 4.453 4.453 0 0 0-3.155-1.318Zm0 6.551c-.827 0-1.573-.5-1.889-1.269-.602-1.462.594-3.033 2.154-2.826a2.052 2.052 0 0 1 1.777 2.039 2.052 2.052 0 0 1-2.042 2.056ZM35.468 14.293a5.235 5.235 0 0 0 3.719-1.549 5.317 5.317 0 0 0 .002-7.488 5.237 5.237 0 0 0-7.437 0 5.307 5.307 0 0 0-1.541 3.743c.003 2.922 2.354 5.291 5.257 5.295v-.001Zm0-8.151v.001a2.846 2.846 0 0 1 2.84 2.855c0 2.199-2.365 3.574-4.257 2.475a2.87 2.87 0 0 1-1.418-2.474 2.849 2.849 0 0 1 2.835-2.856v-.001Zm20.325 38.919a5.32 5.32 0 0 0-1.541-3.742 5.245 5.245 0 0 0-3.717-1.548c-2.904.001-5.257 2.37-5.257 5.293a5.308 5.308 0 0 0 1.541 3.741 5.234 5.234 0 0 0 3.717 1.55c2.902-.003 5.255-2.372 5.257-5.294Zm-5.257 2.856c-2.185.001-3.551-2.378-2.46-4.283a2.835 2.835 0 0 1 2.457-1.429 2.846 2.846 0 0 1 2.838 2.856c0 .757-.299 1.483-.831 2.018a2.822 2.822 0 0 1-2.005.838h.001Zm-34.71-17.083a5.24 5.24 0 0 0 3.719-1.55 5.308 5.308 0 0 0 1.542-3.743 5.306 5.306 0 0 0-1.54-3.744 5.234 5.234 0 0 0-7.438-.002 5.314 5.314 0 0 0-1.54 3.744c.003 2.922 2.354 5.29 5.257 5.295Zm0-8.151c.753-.001 1.475.3 2.007.835.533.535.832 1.262.832 2.019.026 2.199-2.323 3.601-4.227 2.524a2.858 2.858 0 0 1-1.447-2.522 2.848 2.848 0 0 1 2.835-2.856Z\"/><path d=\"M94.987 29.497c-.26-4.023-3.525-7.173-7.432-7.173a7.298 7.298 0 0 0-4.888 1.897c-3.968-3.902-8.921-7.263-14.405-9.761-6.218-2.833-12.682-4.33-18.694-4.33a46.755 46.755 0 0 0-4.962.31 8.823 8.823 0 0 0 .065-1.794C44.358 3.797 40.427 0 35.721 0c-4.704 0-8.636 3.797-8.948 8.644h-.001a9.534 9.534 0 0 0 1.877 6.181l.25.337a60.852 60.852 0 0 0-6.391 4.193 8.823 8.823 0 0 0-6.43-2.816c-4.705 0-8.636 3.798-8.949 8.644a9.536 9.536 0 0 0 1.877 6.182l1.444 1.943C7.029 39.93 5 47.993 5 55.038c-.034 16.052 8.453 30.899 22.256 38.935A44.345 44.345 0 0 0 49.568 100c15.946 0 30.677-8.575 38.629-22.488a45.087 45.087 0 0 0 5.939-22.474c0-5-1.264-12.499-2.917-17.439l2.211-2.976a7.74 7.74 0 0 0 1.557-5.126ZM29.189 8.804c.203-3.128 2.702-6.366 6.533-6.366 3.833 0 6.331 3.237 6.534 6.369a6.895 6.895 0 0 1-1.401 4.558l-5.133 6.913-5.123-6.9a7.066 7.066 0 0 1-1.41-4.574ZM9.547 25.343c.201-3.128 2.702-6.366 6.532-6.366 3.833 0 6.331 3.237 6.534 6.369l.001.001a6.9 6.9 0 0 1-1.401 4.558l-5.134 6.912-5.123-6.9a7.071 7.071 0 0 1-1.409-4.574Zm2.527 10.151 3.037 4.088a1.207 1.207 0 0 0 1.94 0l6.101-8.216a9.275 9.275 0 0 0 1.867-4.902 9.293 9.293 0 0 0-1.089-5.134c2.05-1.54 4.2-2.942 6.435-4.197l4.388 5.909a1.207 1.207 0 0 0 1.94 0l6.102-8.216a9.804 9.804 0 0 0 1.081-1.842 54.513 54.513 0 0 1 1.501-.176l5.085 7.386c.59.852.894 1.871.867 2.908a4.889 4.889 0 0 1-1.011 2.861l-1.436 1.878a3.286 3.286 0 0 1-3.017 1.262l-1.63-.21h.001a5.878 5.878 0 0 0-3.354.56 5.92 5.92 0 0 0-2.49 2.329 3.335 3.335 0 0 1-1.403 1.311 3.297 3.297 0 0 1-1.889.317l-3.762-.481h.001a6.088 6.088 0 0 0-5.852 2.665 5.486 5.486 0 0 0-.933 2.98 5.486 5.486 0 0 0 .841 3.007l2.485 3.954a5.05 5.05 0 0 0 4.278 2.36 4.972 4.972 0 0 0 2.369-.598l2.558-1.382c1.254-.677 3.289-.683 4.757-.074h.001a9.743 9.743 0 0 0 1.874 5.043l6.104 8.22a1.206 1.206 0 0 0 1.939 0l3.095-4.168.393.542c.168.236.346.465.532.685l3.108 3.685a1.598 1.598 0 0 1-.241 2.291l-4.71 3.646a7.622 7.622 0 0 0-2.636 3.822l-1.571 5.129a3.204 3.204 0 0 1-.594 1.106l-1.528 1.851v.001a9.038 9.038 0 0 0-2.022 4.843 2.424 2.424 0 0 1-1.465 1.988 1.193 1.193 0 0 1-1.045-.057 1.212 1.212 0 0 1-.603-.861l-1.438-8.698h-.001a6.771 6.771 0 0 0-1.276-2.974l-5.271-6.964a6.146 6.146 0 0 1-1.032-2.092l-1.741-6.324a6.647 6.647 0 0 0-4.618-4.635l-.379-.103a4.856 4.856 0 0 1-2.045-1.156l-3.244-3.078a7.375 7.375 0 0 1-1.317-1.671 7.244 7.244 0 0 0-3.269-2.976 7.185 7.185 0 0 0-4.379-.51 1.184 1.184 0 0 0-.139.036l-3.251 1.064v.001a47.763 47.763 0 0 1 3.002-8.033h-.001Zm32.183 9.371c.201-3.128 2.702-6.366 6.532-6.366 3.833 0 6.331 3.237 6.534 6.369h.001a6.898 6.898 0 0 1-1.401 4.559l-5.133 6.912-5.124-6.9a7.07 7.07 0 0 1-1.408-4.574h-.001Zm47.458 10.174c.001 23.419-18.907 42.47-42.147 42.47-23.239 0-42.145-19.053-42.145-42.472.02-2.934.345-5.859.969-8.725L13 44.803c1.993-.365 4 .567 5.017 2.331a9.79 9.79 0 0 0 1.751 2.223l3.244 3.078v-.001a7.269 7.269 0 0 0 3.07 1.732l.377.104a4.207 4.207 0 0 1 2.923 2.934l1.739 6.325a8.617 8.617 0 0 0 1.439 2.92l5.271 6.964a4.31 4.31 0 0 1 .815 1.897l1.438 8.698c.38 2.324 2.819 3.679 4.974 2.765a4.833 4.833 0 0 0 2.011-1.588 4.895 4.895 0 0 0 .925-2.398 6.597 6.597 0 0 1 1.477-3.537l1.527-1.851h.001a5.638 5.638 0 0 0 1.045-1.946l1.569-5.13a5.206 5.206 0 0 1 1.798-2.607l4.713-3.646a4.047 4.047 0 0 0 .611-5.801l-3.108-3.685a8.587 8.587 0 0 1-.415-.535l-.838-1.158 1.489-2.005a9.33 9.33 0 0 0 1.876-6.18c-.311-4.848-4.243-8.646-8.948-8.646-4.253 0-7.871 3.101-8.761 7.275-2.011-.598-4.419-.468-6.088.433l-2.559 1.381a2.624 2.624 0 0 1-3.457-.916l-2.484-3.955a3.045 3.045 0 0 1 .049-3.317 3.706 3.706 0 0 1 1.544-1.314 3.672 3.672 0 0 1 1.999-.299l3.762.481a5.734 5.734 0 0 0 5.684-2.812 3.48 3.48 0 0 1 3.449-1.707l1.629.21a5.706 5.706 0 0 0 5.243-2.194l1.436-1.877a7.344 7.344 0 0 0 .217-8.646l-4.274-6.204c.49-.021.956-.033 1.389-.033 5.67 0 11.79 1.422 17.696 4.114a50.635 50.635 0 0 1 5.385 2.864l-3.252 5.613a4.59 4.59 0 0 0 .525 5.264 5.757 5.757 0 0 0 3.642 1.944l.589.073a2.975 2.975 0 0 1 2.479 2.102 2.897 2.897 0 0 1-.84 2.986l-5.841 5.199h-.001a5.635 5.635 0 0 0-1.883 4.209v1.38a4.88 4.88 0 0 0 2.222 4.108 2.69 2.69 0 0 1 1.215 2.003l.137 1.377h-.001c.223 2.31 2.154 4.072 4.461 4.066h3.418a7.252 7.252 0 0 0 3.987-1.196 7.325 7.325 0 0 0 2.688-3.197l.206-.471a2.688 2.688 0 0 1 2.358-1.631l.803-.036c.13-.006.26-.016.39-.029l1.706-.173c.038.668.059 1.306.059 1.902l-.002.002Zm-.259-4.334-1.747.177a7.222 7.222 0 0 1-.257.019l-.804.037h.001a5.073 5.073 0 0 0-2.674.897 5.124 5.124 0 0 0-1.792 2.19l-.206.472v-.001a4.87 4.87 0 0 1-4.457 2.935h-3.419a2.061 2.061 0 0 1-2.051-1.871l-.137-1.378a5.113 5.113 0 0 0-2.311-3.807 2.449 2.449 0 0 1-1.114-2.062v-1.379c0-.911.388-1.779 1.066-2.382l5.841-5.199h.001a5.352 5.352 0 0 0 1.554-5.519 5.44 5.44 0 0 0-1.688-2.579 5.38 5.38 0 0 0-2.812-1.236l-.591-.074v.001a3.342 3.342 0 0 1-2.115-1.129 2.134 2.134 0 0 1-.25-2.442l3.197-5.515a45.356 45.356 0 0 1 6.444 5.264 7.778 7.778 0 0 0-1.011 3.372 7.905 7.905 0 0 0 1.555 5.127l4.907 6.605v.001a1.207 1.207 0 0 0 1.939 0l.903-1.215a67.284 67.284 0 0 1 2.028 10.691Zm.036-17.543-3.937 5.299-3.928-5.288a5.441 5.441 0 0 1-1.086-3.519c.155-2.405 2.074-4.893 5.015-4.893s4.86 2.488 5.015 4.896a5.303 5.303 0 0 1-1.079 3.505Z\"/></svg>"
+    }
+  ],
+  "nutrients": [
+    {
+      "ID": 1,
+      "tag": "ENERC_KCAL",
+      "name": "Energy",
+      "description": "description for this nutrient is not yet available",
+      "previewURL": "",
+      "measure": "kcal",
+      "hasRDI": true,
+      "dailyAllowance": 2000,
+      "rangeMin": 0,
+      "rangeMax": 5000,
+      "stepSize": 50
+    },
+    {
+      "ID": 2,
+      "tag": "FAT",
+      "name": "Fat",
+      "description": "description for this nutrient is not yet available",
+      "previewURL": "",
+      "measure": "g",
+      "hasRDI": true,
+      "dailyAllowance": 65,
+      "rangeMin": 0,
+      "rangeMax": 100,
+      "stepSize": 1
+    },
+    {
+      "ID": 3,
+      "tag": "FASAT",
+      "name": "Saturated",
+      "description": "description for this nutrient is not yet available",
+      "previewURL": "",
+      "measure": "g",
+      "hasRDI": true,
+      "dailyAllowance": 20,
+      "rangeMin": 0,
+      "rangeMax": 100,
+      "stepSize": 1
+    },
+    {
+      "ID": 4,
+      "tag": "FATRN",
+      "name": "Trans",
+      "description": "description for this nutrient is not yet available",
+      "previewURL": "",
+      "measure": "g",
+      "hasRDI": false,
+      "dailyAllowance": 2,
+      "rangeMin": 0,
+      "rangeMax": 100,
+      "stepSize": 1
+    },
+    {
+      "ID": 5,
+      "tag": "FAMS",
+      "name": "Monounsaturated",
+      "description": "description for this nutrient is not yet available",
+      "previewURL": "",
+      "measure": "g",
+      "hasRDI": false,
+      "dailyAllowance": 22,
+      "rangeMin": 0,
+      "rangeMax": 100,
+      "stepSize": 1
+    },
+    {
+      "ID": 6,
+      "tag": "FAPU",
+      "name": "Polyunsaturated",
+      "description": "description for this nutrient is not yet available",
+      "previewURL": "",
+      "measure": "g",
+      "hasRDI": false,
+      "dailyAllowance": 20,
+      "rangeMin": 0,
+      "rangeMax": 100,
+      "stepSize": 1
+    },
+    {
+      "ID": 7,
+      "tag": "CHOCDF",
+      "name": "Carbs",
+      "description": "description for this nutrient is not yet available",
+      "previewURL": "",
+      "measure": "g",
+      "hasRDI": true,
+      "dailyAllowance": 300,
+      "rangeMin": 0,
+      "rangeMax": 100,
+      "stepSize": 1
+    },
+    {
+      "ID": 8,
+      "tag": "CHOCDF.net",
+      "name": "Carbs (net)",
+      "description": "description for this nutrient is not yet available",
+      "previewURL": "",
+      "measure": "g",
+      "hasRDI": false,
+      "dailyAllowance": 300,
+      "rangeMin": 0,
+      "rangeMax": 100,
+      "stepSize": 1
+    },
+    {
+      "ID": 9,
+      "tag": "FIBTG",
+      "name": "Fiber",
+      "description": "description for this nutrient is not yet available",
+      "previewURL": "",
+      "measure": "g",
+      "hasRDI": true,
+      "dailyAllowance": 25,
+      "rangeMin": 0,
+      "rangeMax": 100,
+      "stepSize": 1
+    },
+    {
+      "ID": 10,
+      "tag": "SUGAR",
+      "name": "Sugars",
+      "description": "description for this nutrient is not yet available",
+      "previewURL": "",
+      "measure": "g",
+      "hasRDI": false,
+      "dailyAllowance": 25,
+      "rangeMin": 0,
+      "rangeMax": 100,
+      "stepSize": 1
+    },
+    {
+      "ID": 11,
+      "tag": "SUGAR.added",
+      "name": "Sugars, added",
+      "description": "description for this nutrient is not yet available",
+      "previewURL": "",
+      "measure": "g",
+      "hasRDI": false,
+      "dailyAllowance": 25,
+      "rangeMin": 0,
+      "rangeMax": 100,
+      "stepSize": 1
+    },
+    {
+      "ID": 12,
+      "tag": "PROCNT",
+      "name": "Protein",
+      "description": "description for this nutrient is not yet available",
+      "previewURL": "",
+      "measure": "g",
+      "hasRDI": true,
+      "dailyAllowance": 50,
+      "rangeMin": 0,
+      "rangeMax": 100,
+      "stepSize": 1
+    },
+    {
+      "ID": 13,
+      "tag": "CHOLE",
+      "name": "Cholesterol",
+      "description": "description for this nutrient is not yet available",
+      "previewURL": "",
+      "measure": "mg",
+      "hasRDI": true,
+      "dailyAllowance": 300,
+      "rangeMin": 0,
+      "rangeMax": 100,
+      "stepSize": 1
+    },
+    {
+      "ID": 14,
+      "tag": "NA",
+      "name": "Sodium",
+      "description": "description for this nutrient is not yet available",
+      "previewURL": "",
+      "measure": "mg",
+      "hasRDI": true,
+      "dailyAllowance": 2400,
+      "rangeMin": 0,
+      "rangeMax": 100,
+      "stepSize": 1
+    },
+    {
+      "ID": 15,
+      "tag": "CA",
+      "name": "Calcium",
+      "description": "description for this nutrient is not yet available",
+      "previewURL": "",
+      "measure": "mg",
+      "hasRDI": true,
+      "dailyAllowance": 1000,
+      "rangeMin": 0,
+      "rangeMax": 100,
+      "stepSize": 1
+    },
+    {
+      "ID": 16,
+      "tag": "MG",
+      "name": "Magnesium",
+      "description": "description for this nutrient is not yet available",
+      "previewURL": "",
+      "measure": "mg",
+      "hasRDI": true,
+      "dailyAllowance": 420,
+      "rangeMin": 0,
+      "rangeMax": 100,
+      "stepSize": 1
+    },
+    {
+      "ID": 17,
+      "tag": "K",
+      "name": "Potassium",
+      "description": "description for this nutrient is not yet available",
+      "previewURL": "",
+      "measure": "mg",
+      "hasRDI": true,
+      "dailyAllowance": 4700,
+      "rangeMin": 0,
+      "rangeMax": 100,
+      "stepSize": 1
+    },
+    {
+      "ID": 18,
+      "tag": "FE",
+      "name": "Iron",
+      "description": "description for this nutrient is not yet available",
+      "previewURL": "",
+      "measure": "mg",
+      "hasRDI": true,
+      "dailyAllowance": 18,
+      "rangeMin": 0,
+      "rangeMax": 100,
+      "stepSize": 1
+    },
+    {
+      "ID": 19,
+      "tag": "ZN",
+      "name": "Zinc",
+      "description": "description for this nutrient is not yet available",
+      "previewURL": "",
+      "measure": "mg",
+      "hasRDI": true,
+      "dailyAllowance": 11,
+      "rangeMin": 0,
+      "rangeMax": 100,
+      "stepSize": 1
+    },
+    {
+      "ID": 20,
+      "tag": "P",
+      "name": "Phosphorus",
+      "description": "description for this nutrient is not yet available",
+      "previewURL": "",
+      "measure": "mg",
+      "hasRDI": true,
+      "dailyAllowance": 700,
+      "rangeMin": 0,
+      "rangeMax": 100,
+      "stepSize": 1
+    },
+    {
+      "ID": 21,
+      "tag": "VITA_RAE",
+      "name": "Vitamin A",
+      "description": "description for this nutrient is not yet available",
+      "previewURL": "",
+      "measure": "\u00b5g",
+      "hasRDI": true,
+      "dailyAllowance": 900,
+      "rangeMin": 0,
+      "rangeMax": 100,
+      "stepSize": 1
+    },
+    {
+      "ID": 22,
+      "tag": "VITC",
+      "name": "Vitamin C",
+      "description": "description for this nutrient is not yet available",
+      "previewURL": "",
+      "measure": "mg",
+      "hasRDI": true,
+      "dailyAllowance": 90,
+      "rangeMin": 0,
+      "rangeMax": 100,
+      "stepSize": 1
+    },
+    {
+      "ID": 23,
+      "tag": "THIA",
+      "name": "Thiamin (B1)",
+      "description": "description for this nutrient is not yet available",
+      "previewURL": "",
+      "measure": "mg",
+      "hasRDI": true,
+      "dailyAllowance": 1.2,
+      "rangeMin": 0,
+      "rangeMax": 100,
+      "stepSize": 1
+    },
+    {
+      "ID": 24,
+      "tag": "RIBF",
+      "name": "Riboflavin (B2)",
+      "description": "description for this nutrient is not yet available",
+      "previewURL": "",
+      "measure": "mg",
+      "hasRDI": true,
+      "dailyAllowance": 1.3,
+      "rangeMin": 0,
+      "rangeMax": 100,
+      "stepSize": 1
+    },
+    {
+      "ID": 25,
+      "tag": "NIA",
+      "name": "Niacin (B3)",
+      "description": "description for this nutrient is not yet available",
+      "previewURL": "",
+      "measure": "mg",
+      "hasRDI": true,
+      "dailyAllowance": 16,
+      "rangeMin": 0,
+      "rangeMax": 100,
+      "stepSize": 1
+    },
+    {
+      "ID": 26,
+      "tag": "VITB6A",
+      "name": "Vitamin B6",
+      "description": "description for this nutrient is not yet available",
+      "previewURL": "",
+      "measure": "mg",
+      "hasRDI": true,
+      "dailyAllowance": 1.3,
+      "rangeMin": 0,
+      "rangeMax": 100,
+      "stepSize": 1
+    },
+    {
+      "ID": 27,
+      "tag": "FOLDFE",
+      "name": "Folate equivalent (total)",
+      "description": "description for this nutrient is not yet available",
+      "previewURL": "",
+      "measure": "\u00b5g",
+      "hasRDI": true,
+      "dailyAllowance": 400,
+      "rangeMin": 0,
+      "rangeMax": 100,
+      "stepSize": 1
+    },
+    {
+      "ID": 28,
+      "tag": "FOLFD",
+      "name": "Folate (food)",
+      "description": "description for this nutrient is not yet available",
+      "previewURL": "",
+      "measure": "\u00b5g",
+      "hasRDI": false,
+      "dailyAllowance": 400,
+      "rangeMin": 0,
+      "rangeMax": 100,
+      "stepSize": 1
+    },
+    {
+      "ID": 29,
+      "tag": "FOLAC",
+      "name": "Folic acid",
+      "description": "description for this nutrient is not yet available",
+      "previewURL": "",
+      "measure": "\u00b5g",
+      "hasRDI": false,
+      "dailyAllowance": 400,
+      "rangeMin": 0,
+      "rangeMax": 100,
+      "stepSize": 1
+    },
+    {
+      "ID": 30,
+      "tag": "VITB12",
+      "name": "Vitamin B12",
+      "description": "description for this nutrient is not yet available",
+      "previewURL": "",
+      "measure": "\u00b5g",
+      "hasRDI": true,
+      "dailyAllowance": 2.4,
+      "rangeMin": 0,
+      "rangeMax": 100,
+      "stepSize": 1
+    },
+    {
+      "ID": 31,
+      "tag": "VITD",
+      "name": "Vitamin D",
+      "description": "description for this nutrient is not yet available",
+      "previewURL": "",
+      "measure": "\u00b5g",
+      "hasRDI": true,
+      "dailyAllowance": 15,
+      "rangeMin": 0,
+      "rangeMax": 100,
+      "stepSize": 1
+    },
+    {
+      "ID": 32,
+      "tag": "TOCPHA",
+      "name": "Vitamin E",
+      "description": "description for this nutrient is not yet available",
+      "previewURL": "",
+      "measure": "mg",
+      "hasRDI": true,
+      "dailyAllowance": 15,
+      "rangeMin": 0,
+      "rangeMax": 100,
+      "stepSize": 1
+    },
+    {
+      "ID": 33,
+      "tag": "VITK1",
+      "name": "Vitamin K",
+      "description": "description for this nutrient is not yet available",
+      "previewURL": "",
+      "measure": "\u00b5g",
+      "hasRDI": true,
+      "dailyAllowance": 120,
+      "rangeMin": 0,
+      "rangeMax": 100,
+      "stepSize": 1
+    },
+    {
+      "ID": 34,
+      "tag": "Sugar.alcohol",
+      "name": "Sugar alcohols",
+      "description": "description for this nutrient is not yet available",
+      "previewURL": "",
+      "measure": "g",
+      "hasRDI": false,
+      "dailyAllowance": 0,
+      "rangeMin": 0,
+      "rangeMax": 100,
+      "stepSize": 1
+    },
+    {
+      "ID": 35,
+      "tag": "WATER",
+      "name": "Water",
+      "description": "description for this nutrient is not yet available",
+      "previewURL": "",
+      "measure": "g",
+      "hasRDI": false,
+      "dailyAllowance": 0,
+      "rangeMin": 0,
+      "rangeMax": 100,
+      "stepSize": 1
+    }
+  ]
+}

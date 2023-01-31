@@ -141,8 +141,8 @@ class RangeInput @JvmOverloads constructor(
     }
 
 
-    fun addHeaderClickCallback(callback: (String) -> Unit) {
-        binding.clHeader.setOnClickListener { callback(binding.tvHeader.text.toString()) }
+    fun addHeaderClickCallback(callback: () -> Unit) {
+        binding.clHeader.setOnClickListener { callback.invoke() }
     }
 
     fun addStopTrackingCallback(callback: (Float, Float) -> Unit) {

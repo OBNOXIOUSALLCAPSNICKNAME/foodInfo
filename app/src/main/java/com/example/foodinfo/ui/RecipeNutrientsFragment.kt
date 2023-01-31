@@ -55,9 +55,9 @@ class RecipeNutrientsFragment : BaseFragment<FragmentRecipeNutrientsBinding>(
         )
     }
 
-    private val onNutrientClickListener: (String) -> Unit = { label ->
+    private val onNutrientClickListener: (Int) -> Unit = { infoID ->
         viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
-            val nutrientItem = viewModel.getNutrient(label)
+            val nutrientItem = viewModel.getNutrient(infoID)
             withContext(Dispatchers.Main) {
                 showDescriptionDialog(
                     nutrientItem.label,

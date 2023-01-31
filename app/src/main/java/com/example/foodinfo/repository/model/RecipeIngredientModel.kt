@@ -4,7 +4,7 @@ import androidx.recyclerview.widget.DiffUtil
 
 
 data class RecipeIngredientModel(
-    val id: Long,
+    val ID: Int,
     val text: String,
     val measure: String,
     val quantity: Float,
@@ -22,7 +22,7 @@ data class RecipeIngredientModel(
             oldItem: RecipeIngredientModel,
             newItem: RecipeIngredientModel
         ): Boolean {
-            return oldItem.id == newItem.id
+            return oldItem.ID == newItem.ID
         }
 
         override fun areContentsTheSame(

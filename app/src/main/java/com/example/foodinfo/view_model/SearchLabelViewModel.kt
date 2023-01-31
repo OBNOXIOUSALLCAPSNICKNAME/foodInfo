@@ -4,9 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.example.foodinfo.repository.RepositoryRecipeFieldsInfo
-import com.example.foodinfo.repository.RepositoryRecipes
-import com.example.foodinfo.repository.RepositorySearchFilter
+import com.example.foodinfo.repository.RecipeAttrRepository
+import com.example.foodinfo.repository.RecipeRepository
+import com.example.foodinfo.repository.SearchFilterRepository
 import com.example.foodinfo.repository.model.LabelHintModel
 import com.example.foodinfo.repository.model.RecipeShortModel
 import kotlinx.coroutines.flow.SharedFlow
@@ -16,25 +16,24 @@ import javax.inject.Inject
 
 
 class SearchLabelViewModel @Inject constructor(
-    private val repositoryRecipes: RepositoryRecipes,
-    private val repositoryRecipeFieldsInfo: RepositoryRecipeFieldsInfo,
-    private val repositorySearchFilter: RepositorySearchFilter
+    private val recipeRepository: RecipeRepository,
+    private val recipeAttrRepository: RecipeAttrRepository,
+    private val searchFilterRepository: SearchFilterRepository
 ) : ViewModel() {
 
-    lateinit var categoryName: String
-    lateinit var labelName: String
+    var labelID: Int = -1
 
     val recipes: SharedFlow<PagingData<RecipeShortModel>> by lazy {
-        repositoryRecipes.getByFilter(repositorySearchFilter.getQueryByLabel(categoryName, labelName))
+        recipeRepository.getByFilter(searchFilterRepository.getQueryByLabel(labelID))
             .cachedIn(viewModelScope)
             .shareIn(viewModelScope, SharingStarted.WhileSubscribed(stopTimeoutMillis = 5000), 1)
     }
 
-    fun updateFavoriteMark(recipeId: String) {
-        repositoryRecipes.updateFavoriteMark(recipeId)
+    fun invertFavoriteStatus(recipeId: String) {
+        recipeRepository.invertFavoriteStatus(recipeId)
     }
 
-    fun getLabel(category: String, label: String): LabelHintModel {
-        return repositoryRecipeFieldsInfo.getLabelHint(category, label)
+    fun getLabel(labelID: Int): LabelHintModel {
+        return recipeAttrRepository.getLabelHint(labelID)
     }
 }

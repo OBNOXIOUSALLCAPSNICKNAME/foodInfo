@@ -1,19 +1,20 @@
 package com.example.foodinfo.repository.mapper
 
-import com.example.foodinfo.local.entity.SearchInputEntity
+import com.example.foodinfo.local.dto.SearchInputDB
 import com.example.foodinfo.repository.model.SearchInputModel
 
 
-fun SearchInputEntity.toModel(): SearchInputModel {
+fun SearchInputDB.toModel(): SearchInputModel {
     return SearchInputModel(
-        id = this.id,
+        ID = this.ID,
         inputText = this.inputText,
         date = this.date.toString() // implement proper conversion
     )
 }
 
-fun SearchInputModel.toEntity(): SearchInputEntity {
-    return SearchInputEntity(
+fun SearchInputModel.toDB(): SearchInputDB {
+    return SearchInputDB(
+        ID = this.ID,
         inputText = this.inputText,
         date = this.date.toLong() // implement proper conversion
     )

@@ -39,20 +39,17 @@ class SearchCategoryFragment : BaseFragment<FragmentSearchCategoryBinding>(
         )
     }
 
-    private val onItemClickListener: (String) -> Unit = { label ->
+    private val onItemClickListener: (Int) -> Unit = { infoID ->
         findNavController().navigate(
-            SearchCategoryFragmentDirections.actionFSearchCategoryToFSearchLabel(
-                args.category,
-                label
-            )
+            SearchCategoryFragmentDirections.actionFSearchCategoryToFSearchLabel(infoID)
         )
     }
 
 
     override fun initUI() {
-        viewModel.categoryName = args.category
+        viewModel.categoryID = args.categoryID
 
-        binding.tvCategory.text = args.category
+        binding.tvCategory.text = viewModel.category.name
         binding.btnBack.setOnClickListener { onBackClickListener() }
         binding.btnSearch.setOnClickListener { onSearchClickListener() }
 

@@ -2,9 +2,10 @@ package com.example.foodinfo.view_model
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.foodinfo.repository.RepositoryRecipeFieldsInfo
-import com.example.foodinfo.repository.RepositorySearchFilter
-import com.example.foodinfo.repository.model.CategoryFilterEditModel
+import com.example.foodinfo.repository.RecipeAttrRepository
+import com.example.foodinfo.repository.SearchFilterRepository
+import com.example.foodinfo.repository.model.CategoryOfSearchFilterEditModel
+import com.example.foodinfo.repository.model.CategorySearchModel
 import com.example.foodinfo.repository.model.LabelHintModel
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -13,28 +14,32 @@ import javax.inject.Inject
 
 
 class SearchFilterCategoryViewModel @Inject constructor(
-    private val repositoryRecipeFieldsInfo: RepositoryRecipeFieldsInfo,
-    private val repositorySearchFilter: RepositorySearchFilter
+    private val recipeAttrRepository: RecipeAttrRepository,
+    private val searchFilterRepository: SearchFilterRepository
 ) : ViewModel() {
 
-    lateinit var categoryName: String
+    var categoryID: Int = -1
 
-    val labels: SharedFlow<CategoryFilterEditModel> by lazy {
-        repositorySearchFilter.getCategoryEdit(categoryName = categoryName).shareIn(
+    val labels: SharedFlow<CategoryOfSearchFilterEditModel> by lazy {
+        searchFilterRepository.getCategoryEdit(categoryID = categoryID).shareIn(
             viewModelScope, SharingStarted.WhileSubscribed(stopTimeoutMillis = 5000), 1
         )
     }
 
 
-    fun getLabelHint(labelName: String): LabelHintModel {
-        return repositoryRecipeFieldsInfo.getLabelHint(categoryName, labelName)
+    fun getLabelHint(ID: Int): LabelHintModel {
+        return recipeAttrRepository.getLabelHint(ID)
     }
 
     fun reset() {
-        repositorySearchFilter.resetCategory(categoryName = categoryName)
+        searchFilterRepository.resetCategory(categoryID = categoryID)
     }
 
-    fun updateLabel(id: Long, isSelected: Boolean) {
-        repositorySearchFilter.updateLabel(id, isSelected)
+    fun updateLabel(id: Int, isSelected: Boolean) {
+        searchFilterRepository.updateLabel(id, isSelected)
+    }
+
+    val category: CategorySearchModel by lazy {
+        recipeAttrRepository.getCategory(categoryID)
     }
 }

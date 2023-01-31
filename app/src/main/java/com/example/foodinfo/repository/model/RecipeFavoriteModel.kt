@@ -4,7 +4,7 @@ import androidx.recyclerview.widget.DiffUtil
 
 
 data class RecipeFavoriteModel(
-    val id: String,
+    val ID: String,
     val name: String,
     val calories: String,
     val source: String,
@@ -16,7 +16,7 @@ data class RecipeFavoriteModel(
         override fun areItemsTheSame(
             oldItem: RecipeFavoriteModel, newItem: RecipeFavoriteModel
         ): Boolean {
-            return oldItem.id == newItem.id
+            return oldItem.ID == newItem.ID
         }
 
         override fun areContentsTheSame(

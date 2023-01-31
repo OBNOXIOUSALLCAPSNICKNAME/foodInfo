@@ -1,18 +1,14 @@
 package com.example.foodinfo.di.module
 
-import android.content.Context
-import com.example.foodinfo.local.dao.RecipeFieldsInfoDao
-import com.example.foodinfo.local.dao.RecipesDAO
-import com.example.foodinfo.local.dao.SearchFilterDAO
-import com.example.foodinfo.local.dao.SearchHistoryDAO
-import com.example.foodinfo.repository.RepositoryRecipeFieldsInfo
-import com.example.foodinfo.repository.RepositoryRecipes
-import com.example.foodinfo.repository.RepositorySearchFilter
-import com.example.foodinfo.repository.RepositorySearchHistory
-import com.example.foodinfo.repository.impl.RepositoryRecipeFieldsInfoImpl
-import com.example.foodinfo.repository.impl.RepositoryRecipesImpl
-import com.example.foodinfo.repository.impl.RepositorySearchFilterImpl
-import com.example.foodinfo.repository.impl.RepositorySearchHistoryImpl
+import com.example.foodinfo.local.dao.*
+import com.example.foodinfo.repository.RecipeAttrRepository
+import com.example.foodinfo.repository.RecipeRepository
+import com.example.foodinfo.repository.SearchFilterRepository
+import com.example.foodinfo.repository.SearchHistoryRepository
+import com.example.foodinfo.repository.impl.RecipeAttrRepositoryImpl
+import com.example.foodinfo.repository.impl.RecipeRepositoryImpl
+import com.example.foodinfo.repository.impl.SearchFilterRepositoryImpl
+import com.example.foodinfo.repository.impl.SearchHistoryRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -24,34 +20,33 @@ class RepositoryModule {
     @Provides
     @Singleton
     fun provideRepositoryRecipes(
-        context: Context,
-        recipesDAO: RecipesDAO,
-    ): RepositoryRecipes {
-        return RepositoryRecipesImpl(context, recipesDAO)
+        recipeDAO: RecipeDAO
+    ): RecipeRepository {
+        return RecipeRepositoryImpl(recipeDAO)
     }
 
     @Provides
     @Singleton
     fun provideRepositorySearchFilter(
         searchFilterDAO: SearchFilterDAO,
-        recipeFieldsInfoDao: RecipeFieldsInfoDao,
-    ): RepositorySearchFilter {
-        return RepositorySearchFilterImpl(searchFilterDAO, recipeFieldsInfoDao)
+        recipeAttrDao: RecipeAttrDAO,
+    ): SearchFilterRepository {
+        return SearchFilterRepositoryImpl(searchFilterDAO, recipeAttrDao)
     }
 
     @Provides
     @Singleton
     fun provideRepositorySearchInput(
         searchHistoryDAO: SearchHistoryDAO
-    ): RepositorySearchHistory {
-        return RepositorySearchHistoryImpl(searchHistoryDAO)
+    ): SearchHistoryRepository {
+        return SearchHistoryRepositoryImpl(searchHistoryDAO)
     }
 
     @Provides
     @Singleton
     fun provideRepositoryRepositoryRecipeFieldsInfo(
-        recipeFieldsInfoDao: RecipeFieldsInfoDao
-    ): RepositoryRecipeFieldsInfo {
-        return RepositoryRecipeFieldsInfoImpl(recipeFieldsInfoDao)
+        recipeAttrDao: RecipeAttrDAO
+    ): RecipeAttrRepository {
+        return RecipeAttrRepositoryImpl(recipeAttrDao)
     }
 }

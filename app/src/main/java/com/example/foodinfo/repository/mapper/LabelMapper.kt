@@ -1,57 +1,58 @@
 package com.example.foodinfo.repository.mapper
 
-import com.example.foodinfo.local.entity.LabelFieldEntity
-import com.example.foodinfo.local.entity.LabelFilterEntity
-import com.example.foodinfo.local.entity.LabelRecipeEntity
+import com.example.foodinfo.local.dto.LabelOfRecipeExtendedDB
+import com.example.foodinfo.local.dto.LabelOfSearchFilterDB
+import com.example.foodinfo.local.dto.LabelOfSearchFilterExtendedDB
+import com.example.foodinfo.local.dto.LabelRecipeAttrDB
 import com.example.foodinfo.repository.model.*
 
 
-fun LabelFieldEntity.toModelHint(): LabelHintModel {
+fun LabelRecipeAttrDB.toModelHint(): LabelHintModel {
     return LabelHintModel(
-        id = this.id,
+        ID = this.ID,
         name = this.name,
         description = this.description,
         preview = SVGModel(this.previewURL)
     )
 }
 
-fun LabelFieldEntity.toModelSearch(): LabelSearchModel {
+fun LabelRecipeAttrDB.toModelSearch(): LabelSearchModel {
     return LabelSearchModel(
-        id = this.id,
+        ID = this.ID,
         name = this.name,
         preview = SVGModel(this.previewURL)
     )
 }
 
-fun LabelRecipeEntity.toModelShort(): LabelShortModel {
+fun LabelOfRecipeExtendedDB.toModelShort(): LabelShortModel {
     return LabelShortModel(
-        id = this.id,
-        name = this.name
+        infoID = this.infoID,
+        name = this.attrInfo.name
     )
 }
 
-fun LabelFilterEntity.toModelEdit(): LabelFilterEditModel {
-    return LabelFilterEditModel(
-        id = this.id,
-        name = this.name,
+fun LabelOfSearchFilterExtendedDB.toModelEdit(): LabelOfSearchFilterEditModel {
+    return LabelOfSearchFilterEditModel(
+        ID = this.ID,
+        infoID = this.infoID,
+        name = this.attrInfo.name,
         isSelected = this.isSelected
     )
 }
 
-fun LabelFilterEntity.toModelShort(): LabelShortModel {
+fun LabelOfSearchFilterExtendedDB.toModelShort(): LabelShortModel {
     return LabelShortModel(
-        id = this.id,
-        name = this.name
+        infoID = this.infoID,
+        name = this.attrInfo.name
     )
 }
 
 
-fun LabelFilterEditModel.toEntity(filterName: String, category: String): LabelFilterEntity {
-    return LabelFilterEntity(
-        id = this.id,
+fun LabelOfSearchFilterEditModel.toDB(filterName: String, category: String): LabelOfSearchFilterDB {
+    return LabelOfSearchFilterDB(
+        ID = this.ID,
         filterName = filterName,
-        category = category,
-        name = this.name,
+        infoID = this.infoID,
         isSelected = this.isSelected
     )
 }

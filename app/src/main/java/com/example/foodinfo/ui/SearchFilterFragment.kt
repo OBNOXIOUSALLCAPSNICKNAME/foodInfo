@@ -47,14 +47,14 @@ class SearchFilterFragment : BaseFragment<FragmentSearchFilterBinding>(
         )
     }
 
-    private val onBaseFieldValueChangedCallback: (Long, Float, Float) -> Unit = { id, minValue, maxValue ->
+    private val onBaseFieldValueChangedCallback: (Int, Float, Float) -> Unit = { id, minValue, maxValue ->
         viewModel.updateField(id, minValue, maxValue)
     }
 
-    private val onCategoryChangedCallback: (String) -> Unit = { category ->
+    private val onCategoryChangedCallback: (Int) -> Unit = { categoryID ->
         findNavController().navigate(
             SearchFilterFragmentDirections.actionFSearchFilterToFSearchFilterCategory(
-                category,
+                categoryID,
                 viewModel.filterName
             )
         )
@@ -135,22 +135,17 @@ class SearchFilterFragment : BaseFragment<FragmentSearchFilterBinding>(
     }
 
     override fun subscribeUI() {
-        super.subscribeUI()
         repeatOn(Lifecycle.State.STARTED) {
-            viewModel.rangeFields.collectLatest(recyclerAdapterBaseFields::submitList)
-        }
-        repeatOn(Lifecycle.State.STARTED) {
-            viewModel.categories.collectLatest(recyclerAdapterCategories::submitList)
-        }
-        repeatOn(Lifecycle.State.STARTED) {
-            viewModel.nutrients.collectLatest { nutrients ->
-                if (nutrients.isEmpty()) {
+            viewModel.filter.collectLatest { filter ->
+                recyclerAdapterCategories.submitList(filter.categories)
+                recyclerAdapterBaseFields.submitList(filter.baseFields)
+                if (filter.nutrients.isEmpty()) {
                     binding.rvNutrients.isVisible = false
                     binding.tvNutrientsNoData.isVisible = true
                 } else {
                     binding.rvNutrients.isVisible = true
                     binding.tvNutrientsNoData.isVisible = false
-                    recyclerAdapterNutrients.submitList(nutrients)
+                    recyclerAdapterNutrients.submitList(filter.nutrients)
                 }
             }
         }

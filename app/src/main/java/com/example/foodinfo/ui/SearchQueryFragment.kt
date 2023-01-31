@@ -45,7 +45,7 @@ class SearchQueryFragment : BaseFragment<FragmentSearchQueryBinding>(
     }
 
     private val onFavoriteClickListener: (String) -> Unit = { id ->
-        viewModel.updateFavoriteMark(id)
+        viewModel.invertFavoriteStatus(id)
     }
 
     private val navigateBackCallback = object : OnBackPressedCallback(true) {

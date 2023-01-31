@@ -4,7 +4,7 @@ import androidx.recyclerview.widget.DiffUtil
 
 
 data class LabelShortModel(
-    val id: Long,
+    val infoID: Int,
     val name: String
 ) {
 
@@ -15,7 +15,7 @@ data class LabelShortModel(
             oldItem: LabelShortModel,
             newItem: LabelShortModel
         ): Boolean {
-            return oldItem.id == newItem.id
+            return oldItem.infoID == newItem.infoID
         }
 
         override fun areContentsTheSame(

@@ -12,7 +12,7 @@ import com.example.foodinfo.ui.view_holder.SearchLabelsViewHolder
 
 class SearchLabelsAdapter(
     context: Context,
-    private val onItemClickListener: (String) -> Unit,
+    private val onItemClickListener: (Int) -> Unit,
 ) : ListAdapter<LabelSearchModel, ViewHolder>(
     LabelSearchModel.ItemCallBack
 ) {

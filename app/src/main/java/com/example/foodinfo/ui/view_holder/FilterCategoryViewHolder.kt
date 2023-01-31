@@ -4,20 +4,20 @@ import android.view.LayoutInflater
 import androidx.core.view.isVisible
 import com.example.foodinfo.databinding.RvItemFilterInputCategoryBinding
 import com.example.foodinfo.databinding.TvChipBinding
-import com.example.foodinfo.repository.model.CategoryFilterPreviewModel
+import com.example.foodinfo.repository.model.CategoryOfSearchFilterPreviewModel
 
 
 class FilterCategoryViewHolder(
     private val inflater: LayoutInflater,
     private val binding: RvItemFilterInputCategoryBinding,
-    private val onBtnEditClickListener: (String) -> Unit
-) : BaseViewHolder<RvItemFilterInputCategoryBinding, CategoryFilterPreviewModel>(binding) {
+    private val onBtnEditClickListener: (Int) -> Unit
+) : BaseViewHolder<RvItemFilterInputCategoryBinding, CategoryOfSearchFilterPreviewModel>(binding) {
 
     init {
-        binding.ivEdit.setOnClickListener { onBtnEditClickListener(item.name) }
+        binding.ivEdit.setOnClickListener { onBtnEditClickListener(item.ID) }
     }
 
-    override fun bind(newItem: CategoryFilterPreviewModel) {
+    override fun bind(newItem: CategoryOfSearchFilterPreviewModel) {
         super.bind(newItem)
         binding.tvTitle.text = item.name
         if (item.labels.isEmpty()) {

@@ -44,7 +44,7 @@ class FavoriteFragment : BaseFragment<FragmentFavoriteBinding>(
     }
 
     private val onDeleteClickListener: () -> Unit = {
-        viewModel.delSelected()
+        viewModel.delRecipesFromFavorite()
         viewModel.unselectAll()
         viewModel.setEditMode(false)
     }

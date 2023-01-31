@@ -41,9 +41,9 @@ class SearchFilterNutrientsFragment : BaseFragment<FragmentSearchFilterNutrients
         viewModel.reset()
     }
 
-    private val onHeaderClickCallback: (String) -> Unit = { fieldName ->
+    private val onHeaderClickCallback: (Int) -> Unit = { infoID ->
         viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
-            val labelItem = viewModel.getNutrient(fieldName)
+            val labelItem = viewModel.getNutrient(infoID)
             withContext(Dispatchers.Main) {
                 showDescriptionDialog(
                     labelItem.label,
@@ -54,7 +54,7 @@ class SearchFilterNutrientsFragment : BaseFragment<FragmentSearchFilterNutrients
         }
     }
 
-    private val onValueChangedCallback: (Long, Float, Float) -> Unit = { id, minValue, maxValue ->
+    private val onValueChangedCallback: (Int, Float, Float) -> Unit = { id, minValue, maxValue ->
         viewModel.updateField(id, minValue, maxValue)
     }
 

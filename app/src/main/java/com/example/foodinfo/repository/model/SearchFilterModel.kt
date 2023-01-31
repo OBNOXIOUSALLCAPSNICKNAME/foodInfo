@@ -1,12 +1,11 @@
 package com.example.foodinfo.repository.model
 
 import androidx.recyclerview.widget.DiffUtil
-import com.example.foodinfo.local.entity.SearchFilterEntity
+import com.example.foodinfo.local.dto.SearchFilterDB
 
 
 data class SearchFilterModel(
-    val id: Long = 0,
-    val name: String = SearchFilterEntity.DEFAULT_NAME
+    val name: String = SearchFilterDB.DEFAULT_NAME
 ) {
 
     object ItemCallBack :
@@ -16,7 +15,7 @@ data class SearchFilterModel(
             oldItem: SearchFilterModel,
             newItem: SearchFilterModel
         ): Boolean {
-            return oldItem.id == newItem.id
+            return oldItem.name == newItem.name
         }
 
         override fun areContentsTheSame(

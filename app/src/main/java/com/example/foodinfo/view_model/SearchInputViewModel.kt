@@ -2,7 +2,7 @@ package com.example.foodinfo.view_model
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.foodinfo.repository.RepositorySearchHistory
+import com.example.foodinfo.repository.SearchHistoryRepository
 import com.example.foodinfo.repository.model.SearchInputModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -17,7 +17,7 @@ import javax.inject.Inject
 
 
 class SearchInputViewModel @Inject constructor(
-    private val repositorySearchHistory: RepositorySearchHistory
+    private val searchHistoryRepository: SearchHistoryRepository
 ) : ViewModel() {
 
     private var job: Job? = null
@@ -36,7 +36,7 @@ class SearchInputViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             withContext((Dispatchers.IO)) {
-                _searchHistory.emit(repositorySearchHistory.getHistoryLatest(""))
+                _searchHistory.emit(searchHistoryRepository.getHistoryLatest(""))
             }
         }
     }
@@ -45,11 +45,11 @@ class SearchInputViewModel @Inject constructor(
     fun updateSearchHistory(inputText: String = "") {
         job?.cancel()
         job = viewModelScope.launch(Dispatchers.IO) {
-            _searchHistory.emit(repositorySearchHistory.getHistoryLatest(inputText))
+            _searchHistory.emit(searchHistoryRepository.getHistoryLatest(inputText))
         }
     }
 
     fun addToHistory(inputText: String) {
-        repositorySearchHistory.addInput(SearchInputModel(inputText = inputText))
+        searchHistoryRepository.addInput(SearchInputModel(inputText = inputText))
     }
 }

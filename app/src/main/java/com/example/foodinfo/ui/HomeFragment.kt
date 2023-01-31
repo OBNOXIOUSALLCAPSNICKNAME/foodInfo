@@ -25,9 +25,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
 
     private lateinit var recyclerAdapter: HomeCategoriesAdapter
 
-    private val onItemClickListener: (String) -> Unit = { category ->
+    private val onItemClickListener: (Int) -> Unit = { categoryID ->
         findNavController().navigate(
-            HomeFragmentDirections.actionFHomeToFSearchCategory(category)
+            HomeFragmentDirections.actionFHomeToFSearchCategory(categoryID)
         )
     }
 

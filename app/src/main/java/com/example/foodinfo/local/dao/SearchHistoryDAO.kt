@@ -1,32 +1,17 @@
 package com.example.foodinfo.local.dao
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
-import com.example.foodinfo.local.entity.SearchInputEntity
+import com.example.foodinfo.local.dto.SearchInputDB
 
 
-@Dao
+// All UPDATE functions must truly UPDATE content (not DELETE and INSERT) so all indices will stay the same
 interface SearchHistoryDAO {
-    @Query(
-        "SELECT * FROM ${SearchInputEntity.TABLE_NAME} " +
-                "WHERE ${SearchInputEntity.Columns.INPUT_TEXT} " +
-                "LIKE '%' || :inputText || '%' " +
-                "ORDER BY ${SearchInputEntity.Columns.DATE} DESC " +
-                "LIMIT ${SearchInputEntity.LIMIT}"
-    )
-    suspend fun getHistoryLatest(inputText: String): List<SearchInputEntity>
 
-    @Query(
-        "SELECT * FROM ${SearchInputEntity.TABLE_NAME} " +
-                "ORDER BY ${SearchInputEntity.Columns.DATE}"
-    )
-    fun getHistoryAll(): List<SearchInputEntity>
+    // select top 7 rows filtered by "date" column
+    fun getHistoryLatest(inputText: String): List<SearchInputDB>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun addHistory(searchInput: List<SearchInputEntity>)
+    fun getHistoryAll(): List<SearchInputDB>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun addInput(searchInput: SearchInputEntity)
+    fun addHistory(searchInput: List<SearchInputDB>)
+
+    fun addInput(searchInput: SearchInputDB)
 }

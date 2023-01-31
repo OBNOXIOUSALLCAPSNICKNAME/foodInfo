@@ -4,7 +4,7 @@ import androidx.recyclerview.widget.DiffUtil
 
 
 data class LabelSearchModel(
-    val id: Long,
+    val ID: Int,
     val name: String,
     val preview: SVGModel
 ) {
@@ -16,7 +16,7 @@ data class LabelSearchModel(
             oldItem: LabelSearchModel,
             newItem: LabelSearchModel
         ): Boolean {
-            return oldItem.id == newItem.id
+            return oldItem.ID == newItem.ID
         }
 
         override fun areContentsTheSame(

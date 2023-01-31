@@ -37,14 +37,14 @@ class FavoriteAdapter(
             holder.bind(recipe)
             holder.binding.clItem.setOnClickListener {
                 if (isEditMode.invoke()) {
-                    onReadyToSelect.invoke(recipe.id)
+                    onReadyToSelect.invoke(recipe.ID)
                     this.notifyItemChanged(holder.bindingAdapterPosition, listOf(true))
                 } else {
-                    onReadyTNavigate.invoke(recipe.id)
+                    onReadyTNavigate.invoke(recipe.ID)
                 }
             }
             holder.binding.clItem.setOnLongClickListener {
-                onHoldClickListener(recipe.id)
+                onHoldClickListener(recipe.ID)
                 this.notifyItemChanged(holder.bindingAdapterPosition, listOf(true))
                 true
             }

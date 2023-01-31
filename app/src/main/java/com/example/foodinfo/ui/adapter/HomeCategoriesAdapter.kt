@@ -6,14 +6,14 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.foodinfo.databinding.RvItemCategoryBinding
-import com.example.foodinfo.repository.model.CategoryFieldModel
+import com.example.foodinfo.repository.model.CategorySearchModel
 import com.example.foodinfo.ui.view_holder.HomeCategoriesViewHolder
 
 
 class HomeCategoriesAdapter(
     context: Context,
-    private val onItemClickListener: (String) -> Unit
-) : ListAdapter<CategoryFieldModel, ViewHolder>(CategoryFieldModel.ItemCallBack) {
+    private val onItemClickListener: (Int) -> Unit
+) : ListAdapter<CategorySearchModel, ViewHolder>(CategorySearchModel.ItemCallBack) {
 
     private val layoutInflater = LayoutInflater.from(context)
 

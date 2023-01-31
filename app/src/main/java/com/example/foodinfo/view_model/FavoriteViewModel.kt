@@ -4,15 +4,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.example.foodinfo.repository.RepositoryRecipes
+import com.example.foodinfo.repository.RecipeRepository
 import com.example.foodinfo.repository.model.RecipeFavoriteModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
 
 class FavoriteViewModel @Inject constructor(
-    private val repositoryRecipes: RepositoryRecipes
+    private val recipeRepository: RecipeRepository
 ) : ViewModel() {
 
     private val _isEditMode = MutableStateFlow(false)
@@ -34,10 +33,10 @@ class FavoriteViewModel @Inject constructor(
     // on fragment's onStart() (but forcing View layer to care about such stuff is kinda
     // breaking the concept of having separate ViewModel/Model layers)
     val totalRecipesCount: Int
-        get() = repositoryRecipes.getFavoriteIds().size
+        get() = recipeRepository.getFavoriteIds().size
 
     val recipes: StateFlow<PagingData<RecipeFavoriteModel>> =
-        repositoryRecipes.getFavorite()
+        recipeRepository.getFavorite()
             .cachedIn(viewModelScope)
             .stateIn(viewModelScope, SharingStarted.Lazily, PagingData.empty())
 
@@ -50,8 +49,8 @@ class FavoriteViewModel @Inject constructor(
         return id in selectedRecipes
     }
 
-    fun delSelected() {
-        repositoryRecipes.delFromFavorite(selectedRecipes.toList())
+    fun delRecipesFromFavorite() {
+        recipeRepository.delFromFavorite(selectedRecipes.toList())
     }
 
     fun updateSelectStatus(id: String) {
@@ -64,7 +63,7 @@ class FavoriteViewModel @Inject constructor(
     }
 
     fun selectAll() {
-        selectedRecipes.addAll(repositoryRecipes.getFavoriteIds())
+        selectedRecipes.addAll(recipeRepository.getFavoriteIds())
         _selectedCount.value = selectedRecipes.size
     }
 

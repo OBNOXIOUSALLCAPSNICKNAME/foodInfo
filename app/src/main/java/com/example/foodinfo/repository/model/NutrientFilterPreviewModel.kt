@@ -4,7 +4,7 @@ import androidx.recyclerview.widget.DiffUtil
 
 
 data class NutrientFilterPreviewModel(
-    val id: Long,
+    val ID: Int,
     val name: String,
     val measure: String,
     val minValue: Float,
@@ -18,7 +18,7 @@ data class NutrientFilterPreviewModel(
             oldItem: NutrientFilterPreviewModel,
             newItem: NutrientFilterPreviewModel
         ): Boolean {
-            return oldItem.id == newItem.id
+            return oldItem.ID == newItem.ID
         }
 
         override fun areContentsTheSame(

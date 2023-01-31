@@ -3,16 +3,16 @@ package com.example.foodinfo.ui.view_holder
 import android.view.LayoutInflater
 import com.example.foodinfo.databinding.ItemRecipeCategoryBinding
 import com.example.foodinfo.databinding.TvChipBinding
-import com.example.foodinfo.repository.model.CategoryRecipeModel
+import com.example.foodinfo.repository.model.CategoryOfRecipeModel
 
 
 class RecipeCategoryViewHolder(
     private val inflater: LayoutInflater,
     private val binding: ItemRecipeCategoryBinding,
-    private val onLabelClickListener: (String, String) -> Unit
-) : BaseViewHolder<ItemRecipeCategoryBinding, CategoryRecipeModel>(binding) {
+    private val onLabelClickListener: (Int) -> Unit
+) : BaseViewHolder<ItemRecipeCategoryBinding, CategoryOfRecipeModel>(binding) {
 
-    override fun bind(newItem: CategoryRecipeModel) {
+    override fun bind(newItem: CategoryOfRecipeModel) {
         super.bind(newItem)
         binding.tvTitle.text = item.name
         for (label in item.labels) {
@@ -20,7 +20,7 @@ class RecipeCategoryViewHolder(
                 TvChipBinding.inflate(inflater, null, false).apply {
                     this.textView.text = label.name
                 }.root.apply {
-                    setOnClickListener { onLabelClickListener(item.name, label.name) }
+                    setOnClickListener { onLabelClickListener(label.infoID) }
                 }
             )
         }

@@ -1,17 +1,17 @@
 package com.example.foodinfo.ui.view_holder
 
 import com.example.foodinfo.databinding.RvItemFilterInputBaseFieldBinding
-import com.example.foodinfo.repository.model.BaseFieldFilterEditModel
+import com.example.foodinfo.repository.model.BasicOfSearchFilterEditModel
 
 
 class FilterBaseFieldViewHolder(
     private val binding: RvItemFilterInputBaseFieldBinding,
-    onValueChangedCallback: (Long, Float, Float) -> Unit
-) : BaseViewHolder<RvItemFilterInputBaseFieldBinding, BaseFieldFilterEditModel>(binding) {
+    onValueChangedCallback: (Int, Float, Float) -> Unit
+) : BaseViewHolder<RvItemFilterInputBaseFieldBinding, BasicOfSearchFilterEditModel>(binding) {
 
     private val onValueChangedCallback: (Float, Float) -> Unit = { minValue, maxValue ->
         if (item.minValue != minValue || item.maxValue != maxValue) {
-            onValueChangedCallback.invoke(item.id, minValue, maxValue)
+            onValueChangedCallback.invoke(item.ID, minValue, maxValue)
         }
     }
 
@@ -20,7 +20,7 @@ class FilterBaseFieldViewHolder(
     }
 
 
-    override fun bind(newItem: BaseFieldFilterEditModel) {
+    override fun bind(newItem: BasicOfSearchFilterEditModel) {
         super.bind(newItem)
         with(binding.root) {
             header = item.name
