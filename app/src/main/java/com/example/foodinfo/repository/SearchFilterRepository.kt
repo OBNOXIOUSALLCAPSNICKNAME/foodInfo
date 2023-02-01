@@ -7,44 +7,44 @@ import com.example.foodinfo.repository.model.SearchFilterEditModel
 import kotlinx.coroutines.flow.Flow
 
 
-interface SearchFilterRepository {
+abstract class SearchFilterRepository : BaseRepository() {
 
-    fun getQueryByFilter(
+    abstract fun getQueryByFilter(
         filterName: String = SearchFilterDB.DEFAULT_NAME,
         inputText: String = ""
     ): String
 
-    fun getQueryByLabel(labelID: Int): String
+    abstract fun getQueryByLabel(labelID: Int): String
 
 
-    fun getCategoryEdit(
+    abstract fun getCategoryEdit(
         filterName: String = SearchFilterDB.DEFAULT_NAME,
         categoryID: Int
     ): Flow<CategoryOfSearchFilterEditModel>
 
-    fun getNutrientsEdit(
+    abstract fun getNutrientsEdit(
         filterName: String = SearchFilterDB.DEFAULT_NAME
     ): Flow<List<NutrientOfSearchFilterEditModel>>
 
-    fun getFilterEdit(
+    abstract fun getFilterEdit(
         filterName: String = SearchFilterDB.DEFAULT_NAME
     ): Flow<SearchFilterEditModel>
 
 
-    fun createFilter(filterName: String = SearchFilterDB.DEFAULT_NAME)
+    abstract fun createFilter(filterName: String = SearchFilterDB.DEFAULT_NAME)
 
-    fun resetFilter(filterName: String = SearchFilterDB.DEFAULT_NAME)
+    abstract fun resetFilter(filterName: String = SearchFilterDB.DEFAULT_NAME)
 
-    fun resetBasics(filterName: String = SearchFilterDB.DEFAULT_NAME)
+    abstract fun resetBasics(filterName: String = SearchFilterDB.DEFAULT_NAME)
 
-    fun resetNutrients(filterName: String = SearchFilterDB.DEFAULT_NAME)
+    abstract fun resetNutrients(filterName: String = SearchFilterDB.DEFAULT_NAME)
 
-    fun resetCategory(filterName: String = SearchFilterDB.DEFAULT_NAME, categoryID: Int)
+    abstract fun resetCategory(filterName: String = SearchFilterDB.DEFAULT_NAME, categoryID: Int)
 
 
-    fun updateBaseField(id: Int, minValue: Float, maxValue: Float)
+    abstract fun updateBaseField(id: Int, minValue: Float, maxValue: Float)
 
-    fun updateNutrient(id: Int, minValue: Float, maxValue: Float)
+    abstract fun updateNutrient(id: Int, minValue: Float, maxValue: Float)
 
-    fun updateLabel(id: Int, isSelected: Boolean)
+    abstract fun updateLabel(id: Int, isSelected: Boolean)
 }

@@ -20,7 +20,7 @@ import javax.inject.Inject
 
 class RecipeRepositoryImpl @Inject constructor(
     private val recipeDAO: RecipeDAO
-) : RecipeRepository {
+) : RecipeRepository() {
 
     override fun getPopular(): Flow<PagingData<RecipeShortModel>> {
         return Pager(

@@ -6,24 +6,24 @@ import com.example.foodinfo.utils.State
 import kotlinx.coroutines.flow.Flow
 
 
-interface RecipeRepository {
-    fun getPopular(): Flow<PagingData<RecipeShortModel>>
+abstract class RecipeRepository : BaseRepository() {
+    abstract fun getPopular(): Flow<PagingData<RecipeShortModel>>
 
-    fun getFavorite(): Flow<PagingData<RecipeFavoriteModel>>
+    abstract fun getFavorite(): Flow<PagingData<RecipeFavoriteModel>>
 
-    fun getFavoriteIds(): List<String>
+    abstract fun getFavoriteIds(): List<String>
 
-    fun getByFilter(query: String): Flow<PagingData<RecipeShortModel>>
+    abstract fun getByFilter(query: String): Flow<PagingData<RecipeShortModel>>
 
-    fun getByIdExtended(recipeID: String): Flow<State<RecipeExtendedModel>>
+    abstract fun getByIdExtended(recipeID: String): Flow<State<RecipeExtendedModel>>
 
-    fun getByIdIngredients(recipeID: String): Flow<State<List<RecipeIngredientModel>>>
+    abstract fun getByIdIngredients(recipeID: String): Flow<State<List<RecipeIngredientModel>>>
 
-    fun getByIdNutrients(recipeID: String): Flow<State<List<NutrientOfRecipeModel>>>
+    abstract fun getByIdNutrients(recipeID: String): Flow<State<List<NutrientOfRecipeModel>>>
 
-    fun getByIdLabels(recipeID: String): Flow<State<List<CategoryOfRecipeModel>>>
+    abstract fun getByIdLabels(recipeID: String): Flow<State<List<CategoryOfRecipeModel>>>
 
-    fun invertFavoriteStatus(ID: String)
+    abstract fun invertFavoriteStatus(ID: String)
 
-    fun delFromFavorite(ID: List<String>)
+    abstract fun delFromFavorite(ID: List<String>)
 }

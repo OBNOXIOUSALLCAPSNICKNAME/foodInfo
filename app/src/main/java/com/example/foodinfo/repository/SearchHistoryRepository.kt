@@ -3,12 +3,12 @@ package com.example.foodinfo.repository
 import com.example.foodinfo.repository.model.SearchInputModel
 
 
-interface SearchHistoryRepository {
-    suspend fun getHistoryLatest(inputText: String): List<SearchInputModel>
+abstract class SearchHistoryRepository : BaseRepository() {
+    abstract suspend fun getHistoryLatest(inputText: String): List<SearchInputModel>
 
-    fun getHistoryAll(): List<SearchInputModel>
+    abstract fun getHistoryAll(): List<SearchInputModel>
 
-    fun addHistory(searchHistory: List<SearchInputModel>)
+    abstract fun addHistory(searchHistory: List<SearchInputModel>)
 
-    fun addInput(searchInput: SearchInputModel)
+    abstract fun addInput(searchInput: SearchInputModel)
 }

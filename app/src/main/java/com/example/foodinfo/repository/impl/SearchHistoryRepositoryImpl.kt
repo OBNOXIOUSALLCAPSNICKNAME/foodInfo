@@ -10,7 +10,7 @@ import javax.inject.Inject
 
 class SearchHistoryRepositoryImpl @Inject constructor(
     private val searchHistoryDAO: SearchHistoryDAO
-) : SearchHistoryRepository {
+) : SearchHistoryRepository() {
 
     override suspend fun getHistoryLatest(inputText: String): List<SearchInputModel> {
         return searchHistoryDAO.getHistoryLatest(inputText).map { it.toModel() }

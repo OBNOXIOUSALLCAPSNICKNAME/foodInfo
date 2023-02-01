@@ -22,7 +22,7 @@ import javax.inject.Inject
 class SearchFilterRepositoryImpl @Inject constructor(
     private val searchFilterDAO: SearchFilterDAO,
     private val recipeAttrDAO: RecipeAttrDAO
-) : SearchFilterRepository {
+) : SearchFilterRepository() {
 
     override fun getQueryByFilter(filterName: String, inputText: String): String {
         val builder = FilterQueryBuilder(

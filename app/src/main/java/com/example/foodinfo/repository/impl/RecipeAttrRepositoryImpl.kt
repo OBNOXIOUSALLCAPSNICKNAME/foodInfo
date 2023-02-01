@@ -14,7 +14,7 @@ import javax.inject.Inject
 
 class RecipeAttrRepositoryImpl @Inject constructor(
     private val recipeAttrDao: RecipeAttrDAO
-) : RecipeAttrRepository {
+) : RecipeAttrRepository() {
     override fun getNutrientHint(ID: Int): NutrientHintModel {
         return recipeAttrDao.getNutrient(ID).toModelHint()
     }

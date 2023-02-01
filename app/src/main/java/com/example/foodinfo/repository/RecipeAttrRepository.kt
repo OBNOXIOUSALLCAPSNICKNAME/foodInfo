@@ -6,15 +6,15 @@ import com.example.foodinfo.repository.model.LabelSearchModel
 import com.example.foodinfo.repository.model.NutrientHintModel
 
 
-interface RecipeAttrRepository {
+abstract class RecipeAttrRepository : BaseRepository() {
 
-    fun getNutrientHint(ID: Int): NutrientHintModel
+    abstract fun getNutrientHint(ID: Int): NutrientHintModel
 
-    fun getLabelHint(ID: Int): LabelHintModel
+    abstract fun getLabelHint(ID: Int): LabelHintModel
 
-    fun getLabelsSearch(categoryID: Int): List<LabelSearchModel>
+    abstract fun getLabelsSearch(categoryID: Int): List<LabelSearchModel>
 
-    fun getCategory(ID: Int): CategorySearchModel
+    abstract fun getCategory(ID: Int): CategorySearchModel
 
-    fun getCategories(): List<CategorySearchModel>
+    abstract fun getCategories(): List<CategorySearchModel>
 }
