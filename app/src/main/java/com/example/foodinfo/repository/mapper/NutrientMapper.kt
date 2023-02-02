@@ -1,9 +1,7 @@
 package com.example.foodinfo.repository.mapper
 
-import com.example.foodinfo.local.dto.NutrientOfRecipeExtendedDB
-import com.example.foodinfo.local.dto.NutrientOfSearchFilterDB
-import com.example.foodinfo.local.dto.NutrientOfSearchFilterExtendedDB
-import com.example.foodinfo.local.dto.NutrientRecipeAttrDB
+import com.example.foodinfo.local.dto.*
+import com.example.foodinfo.remote.dto.NutrientOfRecipeNetwork
 import com.example.foodinfo.repository.model.*
 import com.example.foodinfo.repository.model.filter_field.NutrientOfFilterPreset
 
@@ -81,4 +79,8 @@ fun NutrientOfSearchFilterEditModel.toDB(filterName: String): NutrientOfSearchFi
         minValue = this.minValue,
         maxValue = this.maxValue
     )
+}
+
+fun NutrientOfRecipeNetwork.toDB(): NutrientOfRecipeDB {
+    throw java.lang.NullPointerException() //TODO implement conversion
 }
