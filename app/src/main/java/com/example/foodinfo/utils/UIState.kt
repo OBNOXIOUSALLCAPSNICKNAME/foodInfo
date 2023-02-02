@@ -1,14 +1,13 @@
 package com.example.foodinfo.utils
 
 
-sealed class UiState {
-    class Loading : UiState()
-    class Success : UiState()
-    class Error(val message: String, val error: Exception) : UiState()
+sealed class UIState {
+    class Loading : UIState()
+    class Success : UIState()
+    class Error(val message: String, val error: Exception) : UIState()
 
     fun equalState(other: Any): Boolean {
-        if (other is Error) {
-            this as Error
+        if (other is Error && this is Error) {
             return this.message == other.message &&
                     this.error.javaClass == other.error.javaClass
         }

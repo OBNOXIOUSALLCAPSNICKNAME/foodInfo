@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.viewbinding.ViewBinding
-import com.example.foodinfo.utils.UiState
+import com.example.foodinfo.utils.UIState
 import com.example.foodinfo.utils.repeatOn
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.*
@@ -37,15 +37,15 @@ abstract class BaseFragment<VB : ViewBinding>(
     open fun subscribeUI() {}
 
 
-    private var _uiState = MutableSharedFlow<UiState>(
+    private var _uiState = MutableSharedFlow<UIState>(
         replay = 1,
         onBufferOverflow = BufferOverflow.DROP_OLDEST
     ).also {
-        it.tryEmit(UiState.Loading())
+        it.tryEmit(UIState.Loading())
     }
-    private val uiState: SharedFlow<UiState> = _uiState.asSharedFlow()
+    private val uiState: SharedFlow<UIState> = _uiState.asSharedFlow()
 
-    private val uiChunksState: HashMap<Any, UiState> = hashMapOf()
+    private val uiChunksState: HashMap<Any, UIState> = hashMapOf()
 
 
     /**
@@ -55,7 +55,7 @@ abstract class BaseFragment<VB : ViewBinding>(
      *
      * @param callBack runnable that is executed each time UI state changes
      */
-    fun observeUiState(callBack: suspend (UiState) -> Unit) {
+    fun observeUiState(callBack: suspend (UIState) -> Unit) {
         repeatOn(Lifecycle.State.STARTED) {
             uiState.distinctUntilChanged { old, new ->
                 old.equalState(new)
@@ -65,7 +65,7 @@ abstract class BaseFragment<VB : ViewBinding>(
         }
     }
 
-    fun updateUiState(value: UiState): Boolean {
+    fun updateUiState(value: UIState): Boolean {
         return _uiState.tryEmit(value)
     }
 

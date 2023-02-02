@@ -110,13 +110,13 @@ class RecipeExtendedFragment : BaseFragment<FragmentRecipeExtendedBinding>(
     override fun subscribeUI() {
         observeUiState { uiState ->
             when (uiState) {
-                is UiState.Error   -> {}
-                is UiState.Success -> {
+                is UIState.Error   -> {}
+                is UIState.Success -> {
                     binding.pbContent.isVisible = false
                     binding.svContent.isVisible = true
                     binding.svContent.baseAnimation()
                 }
-                is UiState.Loading -> {
+                is UIState.Loading -> {
                     binding.pbContent.isVisible = true
                     binding.svContent.isVisible = false
                 }
@@ -126,16 +126,16 @@ class RecipeExtendedFragment : BaseFragment<FragmentRecipeExtendedBinding>(
 
         repeatOn(Lifecycle.State.STARTED) {
             viewModel.recipe.collectLatest { recipe ->
-                val state: UiState = when (recipe) {
+                val state: UIState = when (recipe) {
                     is State.Success -> {
                         initRecipe(recipe.data)
-                        UiState.Success()
+                        UIState.Success()
                     }
                     is State.Error   -> {
-                        UiState.Error(recipe.message, recipe.error)
+                        UIState.Error(recipe.message, recipe.error)
                     }
                     else             -> {
-                        UiState.Loading()
+                        UIState.Loading()
                     }
                 }
                 updateUiState(state)

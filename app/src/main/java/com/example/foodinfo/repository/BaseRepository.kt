@@ -12,7 +12,7 @@ abstract class BaseRepository {
         return flow<State<T>> {
             emit(State.Loading())
             try {
-                fetchDelegate.invoke().distinctUntilChanged().collectLatest { data ->
+                fetchDelegate.invoke().distinctUntilChanged().collect { data ->
                     if (data == null || data is Collection<*> && data.isEmpty()) {
                         emit(State.Error(ErrorMessages.NO_DATA, NoDataException()))
                     } else {
@@ -101,7 +101,7 @@ abstract class BaseRepository {
                         }
                     }
                 }
-            }.collectLatest { }
+            }.collect { }
         }.flowOn(Dispatchers.IO)
     }
 
