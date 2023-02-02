@@ -5,23 +5,23 @@ import com.example.foodinfo.remote.dto.*
 
 class RecipeAPIImpl : RecipeAPI() {
 
-    override fun getRecipe(ID: String): RecipeNetwork? {
-        return RecipeNetwork()
+    override fun getRecipes(ID: String): List<RecipeNetwork> {
+        return listOf()
     }
 
     override fun getRecipeExtended(ID: String): RecipeExtendedNetwork? {
         return RecipeExtendedNetwork()
     }
 
-    override fun getLabels(ID: String): LabelOfRecipeNetwork? {
-        return LabelOfRecipeNetwork()
+    override fun getLabels(ID: String): List<LabelOfRecipeNetwork> {
+        return listOf()
     }
 
-    override fun getNutrients(ID: String): NutrientOfRecipeNetwork? {
-        return NutrientOfRecipeNetwork()
+    override fun getNutrients(ID: String): List<NutrientOfRecipeNetwork> {
+        return listOf()
     }
 
-    override fun getIngredients(ID: String): IngredientOfRecipeNetwork? {
-        return IngredientOfRecipeNetwork()
+    override fun getIngredients(ID: String): List<IngredientOfRecipeNetwork> {
+        return listOf()
     }
 }
