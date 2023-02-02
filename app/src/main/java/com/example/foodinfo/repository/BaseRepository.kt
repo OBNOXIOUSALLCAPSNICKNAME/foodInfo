@@ -1,10 +1,7 @@
 package com.example.foodinfo.repository
 
 import android.content.Context
-import com.example.foodinfo.utils.NoDataException
-import com.example.foodinfo.utils.NoInternetException
-import com.example.foodinfo.utils.State
-import com.example.foodinfo.utils.hasInternet
+import com.example.foodinfo.utils.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
@@ -20,13 +17,13 @@ abstract class BaseRepository {
             try {
                 runnable.invoke().collect { data ->
                     if (data == null || data is Collection<*> && data.isEmpty()) {
-                        emit(State.Error("no data found", NoDataException()))
+                        emit(State.Error(ErrorMessages.NO_DATA, NoDataException()))
                     } else {
                         emit(State.Success(data))
                     }
                 }
             } catch (e: Exception) {
-                emit(State.Error("something went wrong", e))
+                emit(State.Error(ErrorMessages.UNKNOWN_ERROR, e))
             }
         }.flowOn(Dispatchers.IO)
     }
@@ -38,15 +35,15 @@ abstract class BaseRepository {
                 try {
                     val data = runnable.invoke()
                     if (data == null || data is Collection<*> && data.isEmpty()) {
-                        emit(State.Error("no data found", NoDataException()))
+                        emit(State.Error(ErrorMessages.NO_DATA, NoDataException()))
                     } else {
                         emit(State.Success(data))
                     }
                 } catch (e: Exception) {
-                    emit(State.Error("something went wrong", e))
+                    emit(State.Error(ErrorMessages.UNKNOWN_ERROR, e))
                 }
             } else {
-                emit(State.Error("no internet", NoInternetException()))
+                emit(State.Error(ErrorMessages.NO_INTERNET, NoInternetException()))
             }
         }.flowOn(Dispatchers.IO)
     }
@@ -70,55 +67,72 @@ abstract class BaseRepository {
             ) { local, remote ->
                 when (remote) {
                     is State.Loading -> {
-                        if (local is State.Success) {
 
-                            // mapping to Model and emitting local data if available while fetching data from remote
-                            emit(State.Success(mapLocalToModelDelegate(local.data)))
-                        }
+                        // try map to Model and emit local data. Ignore errors, wait until remote data fetched
+                        tryEmit(local, mapLocalToModelDelegate, this::emit)
                     }
                     is State.Success -> {
                         if (!remoteEmitted) { // if remote data not yet added into local DB
+                            try {
 
-                            // map remote data into local and add it to local DB
-                            updateLocalDelegate(mapRemoteToLocalDelegate(remote.data))
+                                // try map remote data into local and add it to local DB
+                                updateLocalDelegate(mapRemoteToLocalDelegate(remote.data))
+                            } catch (e: Exception) {
 
-                            // adding remote data into local DB may trigger combine block to collect data
-                            // (if remote and local data are different) so this flag will determine
-                            // is local data was already updated and should be emitted or not
-                            remoteEmitted = true
-
-                        } else {
-                            when (local) {
-                                is State.Success -> {
-
-                                    // mapping to Model and emitting local data
-                                    emit(State.Success(mapLocalToModelDelegate(local.data)))
+                                // last chance to load any data
+                                tryEmit(local, mapLocalToModelDelegate, this::emit)?.let {
+                                    emit(State.Error(ErrorMessages.UNKNOWN_ERROR, e))
                                 }
-                                is State.Error   -> {
+                            } finally {
 
-                                    // if failed to emit remote data into DB
-                                    // or failed to fetch local data due to any reason (e.g. invalid query)
-                                    emit(State.Error(local.message, local.error))
-                                }
-                                is State.Loading -> {} // do nothing, just wait until Success or Error
+                                // adding remote data into local DB may trigger combine block to collect data
+                                // (if remote and local data are different) so this flag will determine
+                                // was local data already updated and should be emitted or not
+                                remoteEmitted = true
+                            }
+                        } else { // when remote data was successfully added into local DB
+
+                            tryEmit(local, mapLocalToModelDelegate, this::emit)?.let { error ->
+                                emit(State.Error(error.message, error.error))
                             }
                         }
                     }
                     is State.Error   -> {
-                        if (local is State.Success) {
 
-                            // mapping to Model and emitting local data if available without errors
-                            emit(State.Success(mapLocalToModelDelegate(local.data)))
-                        } else {
-
-                            // emitting error message from remote to display proper screen for user
-                            // e.g. "No data found", "API is not responding" or "No internet connection"
+                        tryEmit(local, mapLocalToModelDelegate, this::emit)?.let {
                             emit(State.Error(remote.message, remote.error))
                         }
                     }
                 }
             }.collect { }
         }.flowOn(Dispatchers.IO)
+    }
+
+    private suspend fun <localT, modelT> tryEmit(
+        local: State<localT>,
+        mapDelegate: (localT) -> modelT,
+        emit: suspend (State<modelT>) -> Unit,
+    ): State.Error<modelT>? {
+        return when (local) {
+            is State.Success -> {
+                try {
+                    emit(State.Success(mapDelegate(local.data)))
+                    null
+                } catch (e: Exception) {
+
+                    // if local data was successfully fetched but mapping failed, it means that
+                    // local data does not fit current the model (for example, if some data was partially
+                    // loaded on previous screen but it is not enough for current case)
+                    State.Error(ErrorMessages.CORRUPTED_DATA, CorruptedDataException())
+                }
+            }
+            is State.Error   -> {
+                State.Error(local.message, local.error)
+            }
+            is State.Loading -> {
+                null
+            }
+        }
     }
 
     /* Use case:
