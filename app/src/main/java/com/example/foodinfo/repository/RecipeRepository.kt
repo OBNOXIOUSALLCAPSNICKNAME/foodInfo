@@ -17,11 +17,13 @@ abstract class RecipeRepository : BaseRepository() {
 
     abstract fun getByIdExtended(recipeID: String): Flow<State<RecipeExtendedModel>>
 
-    abstract fun getByIdIngredients(recipeID: String): Flow<State<List<RecipeIngredientModel>>>
+
+    abstract fun getByIdLabels(recipeID: String): Flow<State<List<CategoryOfRecipeModel>>>
 
     abstract fun getByIdNutrients(recipeID: String): Flow<State<List<NutrientOfRecipeModel>>>
 
-    abstract fun getByIdLabels(recipeID: String): Flow<State<List<CategoryOfRecipeModel>>>
+    abstract fun getByIdIngredients(recipeID: String): Flow<State<List<RecipeIngredientModel>>>
+
 
     abstract fun invertFavoriteStatus(ID: String)
 

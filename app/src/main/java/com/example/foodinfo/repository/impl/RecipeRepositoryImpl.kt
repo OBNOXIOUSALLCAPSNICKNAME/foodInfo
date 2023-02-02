@@ -67,14 +67,14 @@ class RecipeRepositoryImpl @Inject constructor(
         )
     }
 
-    override fun getByIdIngredients(recipeID: String): Flow<State<List<RecipeIngredientModel>>> {
+    override fun getByIdLabels(recipeID: String): Flow<State<List<CategoryOfRecipeModel>>> {
         return getLatest(
             context = context,
-            fetchLocalDelegate = { recipeDAO.getIngredients(recipeID) },
-            fetchRemoteDelegate = { recipeAPI.getIngredients(recipeID) },
-            updateLocalDelegate = { recipeDAO.addIngredients(it) },
-            mapRemoteToLocalDelegate = { it.map { ingredient -> ingredient.toDB() } },
-            mapLocalToModelDelegate = { it.map { ingredient -> ingredient.toModel() } }
+            fetchLocalDelegate = { recipeDAO.getLabels(recipeID) },
+            fetchRemoteDelegate = { recipeAPI.getLabels(recipeID) },
+            updateLocalDelegate = { recipeDAO.addLabels(it) },
+            mapRemoteToLocalDelegate = { it.map { label -> label.toDB() } },
+            mapLocalToModelDelegate = { it.toModelRecipe() }
         )
     }
 
@@ -89,14 +89,14 @@ class RecipeRepositoryImpl @Inject constructor(
         )
     }
 
-    override fun getByIdLabels(recipeID: String): Flow<State<List<CategoryOfRecipeModel>>> {
+    override fun getByIdIngredients(recipeID: String): Flow<State<List<RecipeIngredientModel>>> {
         return getLatest(
             context = context,
-            fetchLocalDelegate = { recipeDAO.getLabels(recipeID) },
-            fetchRemoteDelegate = { recipeAPI.getLabels(recipeID) },
-            updateLocalDelegate = { recipeDAO.addLabels(it) },
-            mapRemoteToLocalDelegate = { it.map { label -> label.toDB() } },
-            mapLocalToModelDelegate = { it.toModelRecipe() }
+            fetchLocalDelegate = { recipeDAO.getIngredients(recipeID) },
+            fetchRemoteDelegate = { recipeAPI.getIngredients(recipeID) },
+            updateLocalDelegate = { recipeDAO.addIngredients(it) },
+            mapRemoteToLocalDelegate = { it.map { ingredient -> ingredient.toDB() } },
+            mapLocalToModelDelegate = { it.map { ingredient -> ingredient.toModel() } }
         )
     }
 

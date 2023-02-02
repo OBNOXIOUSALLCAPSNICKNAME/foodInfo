@@ -3,7 +3,6 @@ package com.example.foodinfo.ui
 import androidx.core.view.forEachIndexed
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -17,12 +16,14 @@ import com.example.foodinfo.repository.model.RecipeExtendedModel
 import com.example.foodinfo.ui.adapter.RecipeCategoriesAdapter
 import com.example.foodinfo.ui.custom_view.NonScrollLinearLayoutManager
 import com.example.foodinfo.ui.decorator.ListItemDecoration
-import com.example.foodinfo.utils.*
+import com.example.foodinfo.utils.appComponent
+import com.example.foodinfo.utils.baseAnimation
 import com.example.foodinfo.utils.glide.GlideApp
+import com.example.foodinfo.utils.setFavorite
+import com.example.foodinfo.utils.showDescriptionDialog
 import com.example.foodinfo.view_model.RecipeExtendedViewModel
 import com.google.android.material.imageview.ShapeableImageView
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -108,39 +109,21 @@ class RecipeExtendedFragment : BaseFragment<FragmentRecipeExtendedBinding>(
     }
 
     override fun subscribeUI() {
-        observeUiState { uiState ->
-            when (uiState) {
-                is UIState.Error   -> {}
-                is UIState.Success -> {
-                    binding.pbContent.isVisible = false
-                    binding.svContent.isVisible = true
-                    binding.svContent.baseAnimation()
-                }
-                is UIState.Loading -> {
-                    binding.pbContent.isVisible = true
-                    binding.svContent.isVisible = false
-                }
+        observeData(
+            dataFlow = viewModel.recipe,
+            successHandlerDelegate = { recipe ->
+                initRecipe(recipe)
+            },
+            loadingHandlerDelegate = {
+                binding.pbContent.isVisible = true
+                binding.svContent.isVisible = false
+            },
+            onInitComplete = {
+                binding.pbContent.isVisible = false
+                binding.svContent.isVisible = true
+                binding.svContent.baseAnimation()
             }
-
-        }
-
-        repeatOn(Lifecycle.State.STARTED) {
-            viewModel.recipe.collectLatest { recipe ->
-                val state: UIState = when (recipe) {
-                    is State.Success -> {
-                        initRecipe(recipe.data)
-                        UIState.Success()
-                    }
-                    is State.Error   -> {
-                        UIState.Error(recipe.message, recipe.error)
-                    }
-                    else             -> {
-                        UIState.Loading()
-                    }
-                }
-                updateUiState(state)
-            }
-        }
+        )
     }
 
 
