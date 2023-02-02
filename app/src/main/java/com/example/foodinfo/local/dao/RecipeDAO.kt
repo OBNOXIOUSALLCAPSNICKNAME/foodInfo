@@ -6,7 +6,6 @@ import com.example.foodinfo.local.dto.*
 import kotlinx.coroutines.flow.Flow
 
 
-// All UPDATE functions must truly UPDATE content (not DELETE and INSERT) so all indices will stay the same
 interface RecipeDAO {
 
     // return recipes in random order (in case there is no such attribute as "Popular" for recipe yet)
@@ -34,13 +33,23 @@ interface RecipeDAO {
     fun delFromFavorite(recipeIDs: List<String>)
 
 
-    // must also delete recipe ingredients, nutrients and labels
-    fun removeRecipes(recipeIds: List<String>)
+    // removeRecipe() and removeRecipes() must also delete recipe ingredients, nutrients and labels
+    fun removeRecipe(recipeID: String)
 
-    fun addRecipes(
-        recipes: List<RecipeDB>,
-        nutrients: List<NutrientOfRecipeDB>,
-        ingredients: List<IngredientOfRecipeDB>,
-        labels: List<LabelOfRecipeDB>
-    )
+    fun removeRecipes(recipeIDs: List<String>)
+
+
+    // addRecipes() and addRecipeExtended() must not lose favoriteMark status when updating
+    fun addRecipes(recipes: List<RecipeDB>)
+
+    fun addRecipeExtended(recipe: RecipeExtendedDB)
+
+
+    // addLabels(), addNutrients() and addIngredients()
+    // must firstly remove all labels/nutrients/ingredients for recipes that already in DB
+    fun addLabels(labels: List<LabelOfRecipeDB>)
+
+    fun addNutrients(nutrients: List<NutrientOfRecipeDB>)
+
+    fun addIngredients(ingredients: List<IngredientOfRecipeDB>)
 }

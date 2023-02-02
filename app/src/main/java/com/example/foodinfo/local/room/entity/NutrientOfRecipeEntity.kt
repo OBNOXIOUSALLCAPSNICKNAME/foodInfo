@@ -29,7 +29,7 @@ data class NutrientOfRecipeEntity(
     @ColumnInfo(name = Columns.INFO_ID)
     override val infoID: Int,
 
-    @ColumnInfo(name = Columns.TOTAL_VALUE)
+    @ColumnInfo(name = Columns.VALUE)
     override val value: Float
 
 ) : NutrientOfRecipeDB(
@@ -40,7 +40,7 @@ data class NutrientOfRecipeEntity(
 ) {
 
     companion object {
-        fun fromDB(item: NutrientOfRecipeDB): NutrientOfRecipeEntity {
+        fun toEntity(item: NutrientOfRecipeDB): NutrientOfRecipeEntity {
             return NutrientOfRecipeEntity(
                 ID = item.ID,
                 recipeID = item.recipeID,

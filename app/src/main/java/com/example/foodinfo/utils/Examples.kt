@@ -9,9 +9,9 @@ fun queryExample() {
         AND time >= 255.0
         AND id IN (SELECT recipe_id FROM nutrient_of_recipe
             WHERE CASE
-                WHEN info_id = '2' THEN total_value BETWEEN 6.0 AND 26.0
-                WHEN info_id = '7' THEN total_value <= 26.0
-                WHEN info_id = '12' THEN total_value >= 82.0
+                WHEN info_id = 2 THEN total_value BETWEEN 6.0 AND 26.0
+                WHEN info_id = 7 THEN total_value <= 26.0
+                WHEN info_id = 12 THEN total_value >= 82.0
                 ELSE NULL END
             GROUP BY recipe_id
             HAVING  count(recipe_id) = 3)

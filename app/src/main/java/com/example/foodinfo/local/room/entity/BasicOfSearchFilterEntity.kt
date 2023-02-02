@@ -43,7 +43,7 @@ data class BasicOfSearchFilterEntity(
     maxValue = maxValue
 ) {
     companion object {
-        fun fromDB(item: BasicOfSearchFilterDB): BasicOfSearchFilterEntity {
+        fun toEntity(item: BasicOfSearchFilterDB): BasicOfSearchFilterEntity {
             return BasicOfSearchFilterEntity(
                 ID = item.ID,
                 infoID = item.infoID,

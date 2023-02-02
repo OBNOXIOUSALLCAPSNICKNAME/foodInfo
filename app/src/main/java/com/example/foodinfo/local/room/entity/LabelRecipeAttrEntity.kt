@@ -41,7 +41,7 @@ data class LabelRecipeAttrEntity(
 ) {
 
     companion object {
-        fun fromDB(item: LabelRecipeAttrDB): LabelRecipeAttrEntity {
+        fun toEntity(item: LabelRecipeAttrDB): LabelRecipeAttrEntity {
             return LabelRecipeAttrEntity(
                 ID = item.ID,
                 categoryID = item.categoryID,

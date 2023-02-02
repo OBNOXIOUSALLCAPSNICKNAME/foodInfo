@@ -5,6 +5,7 @@ import androidx.room.Relation
 import com.example.foodinfo.local.dto.NutrientOfRecipeDB
 import com.example.foodinfo.local.dto.NutrientOfRecipeExtendedDB
 import com.example.foodinfo.local.dto.NutrientRecipeAttrDB
+import com.example.foodinfo.local.room.entity.NutrientOfRecipeEntity
 import com.example.foodinfo.local.room.entity.NutrientRecipeAttrEntity
 
 
@@ -18,8 +19,8 @@ data class NutrientOfRecipeExtendedPOJO(
     @ColumnInfo(name = NutrientOfRecipeDB.Columns.INFO_ID)
     override val infoID: Int,
 
-    @ColumnInfo(name = NutrientOfRecipeDB.Columns.TOTAL_VALUE)
-    override val totalValue: Float,
+    @ColumnInfo(name = NutrientOfRecipeDB.Columns.VALUE)
+    override val value: Float,
 
     @Relation(
         parentColumn = NutrientOfRecipeDB.Columns.INFO_ID,
@@ -31,6 +32,18 @@ data class NutrientOfRecipeExtendedPOJO(
     ID = ID,
     recipeID = recipeID,
     infoID = infoID,
-    totalValue = totalValue,
+    value = value,
     attrInfo = attrInfo
-)
+) {
+
+    companion object {
+        fun toEntity(item: NutrientOfRecipeExtendedDB): NutrientOfRecipeEntity {
+            return NutrientOfRecipeEntity(
+                ID = item.ID,
+                recipeID = item.recipeID,
+                infoID = item.infoID,
+                value = item.value
+            )
+        }
+    }
+}

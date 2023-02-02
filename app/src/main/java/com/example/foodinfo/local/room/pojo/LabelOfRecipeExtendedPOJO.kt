@@ -5,6 +5,7 @@ import androidx.room.Relation
 import com.example.foodinfo.local.dto.LabelOfRecipeDB
 import com.example.foodinfo.local.dto.LabelOfRecipeExtendedDB
 import com.example.foodinfo.local.dto.LabelRecipeAttrDB
+import com.example.foodinfo.local.room.entity.LabelOfRecipeEntity
 import com.example.foodinfo.local.room.entity.LabelRecipeAttrEntity
 
 
@@ -30,4 +31,15 @@ data class LabelOfRecipeExtendedPOJO(
     recipeID = recipeID,
     infoID = infoID,
     attrInfo = attrInfo
-)
+) {
+
+    companion object {
+        fun toEntity(item: LabelOfRecipeExtendedDB): LabelOfRecipeEntity {
+            return LabelOfRecipeEntity(
+                ID = item.ID,
+                recipeID = item.recipeID,
+                infoID = item.infoID
+            )
+        }
+    }
+}

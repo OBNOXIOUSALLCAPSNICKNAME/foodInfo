@@ -23,9 +23,9 @@ fun NutrientOfRecipeExtendedDB.toModel(): NutrientOfRecipeModel {
         infoID = this.infoID,
         name = this.attrInfo.name,
         measure = this.attrInfo.measure,
-        totalWeight = this.totalValue,
+        totalWeight = this.value,
         dailyWeight = this.attrInfo.dailyAllowance,
-        dailyPercent = (this.totalValue * 100 / this.attrInfo.dailyAllowance).toInt()
+        dailyPercent = (this.value * 100 / this.attrInfo.dailyAllowance).toInt()
     )
 }
 

@@ -29,7 +29,7 @@ data class SearchInputEntity(
 ) {
 
     companion object {
-        fun fromDB(item: SearchInputDB): SearchInputEntity {
+        fun toEntity(item: SearchInputDB): SearchInputEntity {
             return SearchInputEntity(
                 ID = item.ID,
                 inputText = item.inputText,

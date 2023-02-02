@@ -36,11 +36,11 @@ interface SearchHistoryDAORoom : SearchHistoryDAO {
 
 
     override fun addHistory(searchInput: List<SearchInputDB>) {
-        addInputEntity(searchInput.map { SearchInputEntity.fromDB(it) })
+        addInputEntity(searchInput.map { SearchInputEntity.toEntity(it) })
     }
 
     override fun addInput(searchInput: SearchInputDB) {
-        addInputEntity(SearchInputEntity.fromDB(searchInput))
+        addInputEntity(SearchInputEntity.toEntity(searchInput))
     }
 
 

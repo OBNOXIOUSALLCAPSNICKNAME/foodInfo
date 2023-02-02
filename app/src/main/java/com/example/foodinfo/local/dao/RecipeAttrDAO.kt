@@ -6,7 +6,6 @@ import com.example.foodinfo.local.dto.LabelRecipeAttrDB
 import com.example.foodinfo.local.dto.NutrientRecipeAttrDB
 
 
-// All UPDATE functions must truly UPDATE content (not DELETE and INSERT) so all indices will stay the same
 interface RecipeAttrDAO {
 
     fun getNutrient(ID: Int): NutrientRecipeAttrDB

@@ -59,7 +59,7 @@ data class FilterQueryBuilder(
         var query = ""
         query += "WHEN ${NutrientOfRecipeDB.Columns.INFO_ID} = $infoID THEN "
         query += rangeFieldToQuery(
-            NutrientOfRecipeDB.Columns.TOTAL_VALUE,
+            NutrientOfRecipeDB.Columns.VALUE,
             minValue,
             maxValue
         )

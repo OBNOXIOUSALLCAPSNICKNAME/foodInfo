@@ -64,7 +64,7 @@ data class IngredientOfRecipeEntity(
 ) {
 
     companion object {
-        fun fromDB(item: IngredientOfRecipeDB): IngredientOfRecipeEntity {
+        fun toEntity(item: IngredientOfRecipeDB): IngredientOfRecipeEntity {
             return IngredientOfRecipeEntity(
                 ID = item.ID,
                 recipeID = item.recipeID,
