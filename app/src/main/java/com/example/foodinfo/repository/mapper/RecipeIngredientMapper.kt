@@ -1,6 +1,7 @@
 package com.example.foodinfo.repository.mapper
 
 import com.example.foodinfo.local.dto.IngredientOfRecipeDB
+import com.example.foodinfo.remote.dto.IngredientOfRecipeNetwork
 import com.example.foodinfo.repository.model.RecipeIngredientModel
 
 
@@ -16,4 +17,8 @@ fun IngredientOfRecipeDB.toModel(): RecipeIngredientModel {
         foodCategory = this.foodCategory,
         previewURL = this.previewURL
     )
+}
+
+fun IngredientOfRecipeNetwork.toDB(): IngredientOfRecipeDB {
+    throw java.lang.NullPointerException() //TODO implement conversion
 }

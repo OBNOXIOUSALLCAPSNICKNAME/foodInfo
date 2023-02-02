@@ -1,11 +1,13 @@
 package com.example.foodinfo.repository.impl
 
+import android.content.Context
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.map
 import androidx.sqlite.db.SimpleSQLiteQuery
 import com.example.foodinfo.local.dao.RecipeDAO
+import com.example.foodinfo.remote.api.RecipeAPI
 import com.example.foodinfo.repository.RecipeRepository
 import com.example.foodinfo.repository.mapper.*
 import com.example.foodinfo.repository.model.*
@@ -19,7 +21,9 @@ import javax.inject.Inject
 
 
 class RecipeRepositoryImpl @Inject constructor(
-    private val recipeDAO: RecipeDAO
+    private val context: Context,
+    private val recipeDAO: RecipeDAO,
+    private val recipeAPI: RecipeAPI,
 ) : RecipeRepository() {
 
     override fun getPopular(): Flow<PagingData<RecipeShortModel>> {

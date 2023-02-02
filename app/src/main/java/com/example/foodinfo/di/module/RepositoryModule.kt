@@ -1,6 +1,11 @@
 package com.example.foodinfo.di.module
 
-import com.example.foodinfo.local.dao.*
+import android.content.Context
+import com.example.foodinfo.local.dao.RecipeAttrDAO
+import com.example.foodinfo.local.dao.RecipeDAO
+import com.example.foodinfo.local.dao.SearchFilterDAO
+import com.example.foodinfo.local.dao.SearchHistoryDAO
+import com.example.foodinfo.remote.api.RecipeAPI
 import com.example.foodinfo.repository.RecipeAttrRepository
 import com.example.foodinfo.repository.RecipeRepository
 import com.example.foodinfo.repository.SearchFilterRepository
@@ -20,9 +25,11 @@ class RepositoryModule {
     @Provides
     @Singleton
     fun provideRepositoryRecipes(
-        recipeDAO: RecipeDAO
+        context: Context,
+        recipeDAO: RecipeDAO,
+        recipeAPI: RecipeAPI
     ): RecipeRepository {
-        return RecipeRepositoryImpl(recipeDAO)
+        return RecipeRepositoryImpl(context, recipeDAO, recipeAPI)
     }
 
     @Provides
