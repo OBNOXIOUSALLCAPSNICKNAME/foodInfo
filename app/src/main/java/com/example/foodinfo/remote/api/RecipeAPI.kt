@@ -5,13 +5,13 @@ import com.example.foodinfo.remote.dto.*
 
 abstract class RecipeAPI {
 
-    abstract fun getRecipe(ID: String): RecipeNetwork?
+    abstract fun getRecipes(ID: String): List<RecipeNetwork>
 
     abstract fun getRecipeExtended(ID: String): RecipeExtendedNetwork?
 
-    abstract fun getLabels(ID: String): LabelOfRecipeNetwork?
+    abstract fun getLabels(ID: String): List<LabelOfRecipeNetwork>
 
-    abstract fun getNutrients(ID: String): NutrientOfRecipeNetwork?
+    abstract fun getNutrients(ID: String): List<NutrientOfRecipeNetwork>
 
-    abstract fun getIngredients(ID: String): IngredientOfRecipeNetwork?
+    abstract fun getIngredients(ID: String): List<IngredientOfRecipeNetwork>
 }
