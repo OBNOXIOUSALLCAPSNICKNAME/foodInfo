@@ -3,19 +3,16 @@ package com.example.foodinfo.repository
 import android.content.Context
 import com.example.foodinfo.utils.*
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.*
 
 
 abstract class BaseRepository {
 
-    private fun <T> fetchLocal(runnable: () -> Flow<T>): Flow<State<T>> {
+    private fun <T> fetchLocal(fetchDelegate: () -> Flow<T>): Flow<State<T>> {
         return flow<State<T>> {
             emit(State.Loading())
             try {
-                runnable.invoke().collect { data ->
+                fetchDelegate.invoke().distinctUntilChanged().collectLatest { data ->
                     if (data == null || data is Collection<*> && data.isEmpty()) {
                         emit(State.Error(ErrorMessages.NO_DATA, NoDataException()))
                     } else {
@@ -28,12 +25,12 @@ abstract class BaseRepository {
         }.flowOn(Dispatchers.IO)
     }
 
-    private fun <T> fetchRemote(context: Context, runnable: () -> T?): Flow<State<T>> {
+    private fun <T> fetchRemote(context: Context, fetchDelegate: () -> T?): Flow<State<T>> {
         return flow<State<T>> {
             emit(State.Loading())
             if (context.hasInternet()) {
                 try {
-                    val data = runnable.invoke()
+                    val data = fetchDelegate.invoke()
                     if (data == null || data is Collection<*> && data.isEmpty()) {
                         emit(State.Error(ErrorMessages.NO_DATA, NoDataException()))
                     } else {
@@ -104,7 +101,7 @@ abstract class BaseRepository {
                         }
                     }
                 }
-            }.collect { }
+            }.collectLatest { }
         }.flowOn(Dispatchers.IO)
     }
 
@@ -121,7 +118,7 @@ abstract class BaseRepository {
                 } catch (e: Exception) {
 
                     // if local data was successfully fetched but mapping failed, it means that
-                    // local data does not fit current the model (for example, if some data was partially
+                    // local data does not fit the current model (for example, if some data was partially
                     // loaded on previous screen but it is not enough for current case)
                     State.Error(ErrorMessages.CORRUPTED_DATA, CorruptedDataException())
                 }
