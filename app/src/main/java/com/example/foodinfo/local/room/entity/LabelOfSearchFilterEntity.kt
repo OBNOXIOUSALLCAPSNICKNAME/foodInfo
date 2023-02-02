@@ -40,7 +40,7 @@ data class LabelOfSearchFilterEntity(
 ) {
 
     companion object {
-        fun fromDB(item: LabelOfSearchFilterDB): LabelOfSearchFilterEntity {
+        fun toEntity(item: LabelOfSearchFilterDB): LabelOfSearchFilterEntity {
             return LabelOfSearchFilterEntity(
                 ID = item.ID,
                 filterName = item.filterName,

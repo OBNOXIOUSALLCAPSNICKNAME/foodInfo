@@ -44,7 +44,7 @@ data class NutrientOfSearchFilterEntity(
 ) {
 
     companion object {
-        fun fromDB(item: NutrientOfSearchFilterDB): NutrientOfSearchFilterEntity {
+        fun toEntity(item: NutrientOfSearchFilterDB): NutrientOfSearchFilterEntity {
             return NutrientOfSearchFilterEntity(
                 ID = item.ID,
                 filterName = item.filterName,

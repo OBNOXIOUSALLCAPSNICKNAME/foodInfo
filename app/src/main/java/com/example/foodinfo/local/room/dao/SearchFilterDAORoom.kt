@@ -119,21 +119,21 @@ interface SearchFilterDAORoom : SearchFilterDAO {
     fun updateBasicsEntity(baseFields: List<BasicOfSearchFilterEntity>)
 
     override fun updateBasics(basics: List<BasicOfSearchFilterDB>) {
-        updateBasicsEntity(basics.map { BasicOfSearchFilterEntity.fromDB(it) })
+        updateBasicsEntity(basics.map { BasicOfSearchFilterEntity.toEntity(it) })
     }
 
     @Update
     fun updateLabelsEntity(labels: List<LabelOfSearchFilterEntity>)
 
     override fun updateLabels(labels: List<LabelOfSearchFilterDB>) {
-        updateLabelsEntity(labels.map { LabelOfSearchFilterEntity.fromDB(it) })
+        updateLabelsEntity(labels.map { LabelOfSearchFilterEntity.toEntity(it) })
     }
 
     @Update
     fun updateNutrientsEntity(nutrients: List<NutrientOfSearchFilterEntity>)
 
     override fun updateNutrients(nutrients: List<NutrientOfSearchFilterDB>) {
-        updateNutrientsEntity(nutrients.map { NutrientOfSearchFilterEntity.fromDB(it) })
+        updateNutrientsEntity(nutrients.map { NutrientOfSearchFilterEntity.toEntity(it) })
     }
 
 
@@ -147,9 +147,9 @@ interface SearchFilterDAORoom : SearchFilterDAO {
     ) {
         val success = insertFilterEntity(SearchFilterEntity(name = filterName))
         if (success > 0) {
-            insertBasicsEntity(basics.map { BasicOfSearchFilterEntity.fromDB(it) })
-            insertLabelsEntity(labels.map { LabelOfSearchFilterEntity.fromDB(it) })
-            insertNutrientsEntity(nutrients.map { NutrientOfSearchFilterEntity.fromDB(it) })
+            insertBasicsEntity(basics.map { BasicOfSearchFilterEntity.toEntity(it) })
+            insertLabelsEntity(labels.map { LabelOfSearchFilterEntity.toEntity(it) })
+            insertNutrientsEntity(nutrients.map { NutrientOfSearchFilterEntity.toEntity(it) })
         } else if (overwrite) {
             updateBasics(basics)
             updateLabels(labels)

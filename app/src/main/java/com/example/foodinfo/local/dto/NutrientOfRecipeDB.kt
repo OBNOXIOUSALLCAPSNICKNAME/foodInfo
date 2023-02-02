@@ -12,7 +12,7 @@ open class NutrientOfRecipeDB(
         const val ID = "id"
         const val RECIPE_ID = "recipe_id"
         const val INFO_ID = "info_id"
-        const val TOTAL_VALUE = "total_value"
+        const val VALUE = "value"
     }
 
     companion object {

@@ -80,27 +80,27 @@ interface RecipeAttrDAORoom : RecipeAttrDAO {
     fun addNutrientsEntity(attrs: List<NutrientRecipeAttrEntity>)
 
     override fun addNutrients(attrs: List<NutrientRecipeAttrDB>) {
-        addNutrientsEntity(attrs.map { NutrientRecipeAttrEntity.fromDB(it) })
+        addNutrientsEntity(attrs.map { NutrientRecipeAttrEntity.toEntity(it) })
     }
 
     @Insert
     fun addBasicsEntity(attrs: List<BasicRecipeAttrEntity>)
 
     override fun addBasics(attrs: List<BasicRecipeAttrDB>) {
-        addBasicsEntity(attrs.map { BasicRecipeAttrEntity.fromDB(it) })
+        addBasicsEntity(attrs.map { BasicRecipeAttrEntity.toEntity(it) })
     }
 
     @Insert
     fun addLabelsEntity(attrs: List<LabelRecipeAttrEntity>)
 
     override fun addLabels(attrs: List<LabelRecipeAttrDB>) {
-        addLabelsEntity(attrs.map { LabelRecipeAttrEntity.fromDB(it) })
+        addLabelsEntity(attrs.map { LabelRecipeAttrEntity.toEntity(it) })
     }
 
     @Insert
     fun addCategoriesEntity(attrs: List<CategoryRecipeAttrEntity>)
 
     override fun addCategories(attrs: List<CategoryRecipeAttrDB>) {
-        addCategoriesEntity(attrs.map { CategoryRecipeAttrEntity.fromDB(it) })
+        addCategoriesEntity(attrs.map { CategoryRecipeAttrEntity.toEntity(it) })
     }
 }

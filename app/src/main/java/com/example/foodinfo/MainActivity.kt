@@ -62,20 +62,27 @@ class MainActivity : AppCompatActivity() {
             gson.fromJson(
                 dbRecipes.get(AssetsKeyWords.RECIPES).toString(),
                 object : TypeToken<List<RecipeDB>>() {}.type
-            ),
-            gson.fromJson(
-                dbRecipes.get(AssetsKeyWords.NUTRIENTS).toString(),
-                object : TypeToken<List<NutrientOfRecipeDB>>() {}.type
-            ),
-            gson.fromJson(
-                dbRecipes.get(AssetsKeyWords.INGREDIENTS).toString(),
-                object : TypeToken<List<IngredientOfRecipeDB>>() {}.type
-            ),
+            )
+        )
+        dataBase.recipeDAO.addLabels(
             gson.fromJson(
                 dbRecipes.get(AssetsKeyWords.LABELS).toString(),
                 object : TypeToken<List<LabelOfRecipeDB>>() {}.type
             )
         )
+        dataBase.recipeDAO.addNutrients(
+            gson.fromJson(
+                dbRecipes.get(AssetsKeyWords.NUTRIENTS).toString(),
+                object : TypeToken<List<NutrientOfRecipeDB>>() {}.type
+            )
+        )
+        dataBase.recipeDAO.addIngredients(
+            gson.fromJson(
+                dbRecipes.get(AssetsKeyWords.INGREDIENTS).toString(),
+                object : TypeToken<List<IngredientOfRecipeDB>>() {}.type
+            )
+        )
+
         dataBase.searchHistoryDAO.addHistory(
             gson.fromJson(
                 dbRecipes.get(AssetsKeyWords.SEARCH_HISTORY).toString(),
