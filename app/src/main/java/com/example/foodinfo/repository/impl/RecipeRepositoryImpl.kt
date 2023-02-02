@@ -14,7 +14,6 @@ import com.example.foodinfo.repository.model.*
 import com.example.foodinfo.utils.State
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -58,39 +57,47 @@ class RecipeRepositoryImpl @Inject constructor(
     }
 
     override fun getByIdExtended(recipeID: String): Flow<State<RecipeExtendedModel>> {
-        return flow {
-            emit(State.Loading())
-            recipeDAO.getByIdExtended(recipeID).collect {
-                emit(State.Success(it.toModelExtended()))
-            }
-        }.flowOn(Dispatchers.IO)
+        return getLatest(
+            context = context,
+            fetchLocalDelegate = { recipeDAO.getByIdExtended(recipeID) },
+            fetchRemoteDelegate = { recipeAPI.getRecipeExtended(recipeID) },
+            updateLocalDelegate = { recipeDAO.addRecipeExtended(it) },
+            mapRemoteToLocalDelegate = { it!!.toDB() },
+            mapLocalToModelDelegate = { it.toModelExtended() }
+        )
     }
 
     override fun getByIdIngredients(recipeID: String): Flow<State<List<RecipeIngredientModel>>> {
-        return flow {
-            emit(State.Loading())
-            recipeDAO.getIngredients(recipeID).collect { list ->
-                emit(State.Success(list.map { it.toModel() }))
-            }
-        }.flowOn(Dispatchers.IO)
+        return getLatest(
+            context = context,
+            fetchLocalDelegate = { recipeDAO.getIngredients(recipeID) },
+            fetchRemoteDelegate = { recipeAPI.getIngredients(recipeID) },
+            updateLocalDelegate = { recipeDAO.addIngredients(it) },
+            mapRemoteToLocalDelegate = { it.map { ingredient -> ingredient.toDB() } },
+            mapLocalToModelDelegate = { it.map { ingredient -> ingredient.toModel() } }
+        )
     }
 
     override fun getByIdNutrients(recipeID: String): Flow<State<List<NutrientOfRecipeModel>>> {
-        return flow {
-            emit(State.Loading())
-            recipeDAO.getNutrients(recipeID).collect { list ->
-                emit(State.Success(list.map { it.toModel() }))
-            }
-        }.flowOn(Dispatchers.IO)
+        return getLatest(
+            context = context,
+            fetchLocalDelegate = { recipeDAO.getNutrients(recipeID) },
+            fetchRemoteDelegate = { recipeAPI.getNutrients(recipeID) },
+            updateLocalDelegate = { recipeDAO.addNutrients(it) },
+            mapRemoteToLocalDelegate = { it.map { nutrient -> nutrient.toDB() } },
+            mapLocalToModelDelegate = { it.map { nutrient -> nutrient.toModel() } }
+        )
     }
 
     override fun getByIdLabels(recipeID: String): Flow<State<List<CategoryOfRecipeModel>>> {
-        return flow {
-            emit(State.Loading())
-            recipeDAO.getLabels(recipeID).collect {
-                emit(State.Success(it.toModelRecipe()))
-            }
-        }.flowOn(Dispatchers.IO)
+        return getLatest(
+            context = context,
+            fetchLocalDelegate = { recipeDAO.getLabels(recipeID) },
+            fetchRemoteDelegate = { recipeAPI.getLabels(recipeID) },
+            updateLocalDelegate = { recipeDAO.addLabels(it) },
+            mapRemoteToLocalDelegate = { it.map { label -> label.toDB() } },
+            mapLocalToModelDelegate = { it.toModelRecipe() }
+        )
     }
 
     override fun invertFavoriteStatus(ID: String) {

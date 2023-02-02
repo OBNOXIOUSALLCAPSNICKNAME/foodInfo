@@ -46,14 +46,14 @@ abstract class BaseRepository {
     }
 
 
-    fun <modelT, localT, remoteT> getLatest(
+    fun <modelT, localInT, localOutT, remoteT> getLatest(
         // not sure if "Delegate" postfix is correct here
         context: Context,
-        fetchLocalDelegate: () -> Flow<localT>,
+        fetchLocalDelegate: () -> Flow<localOutT>,
         fetchRemoteDelegate: () -> remoteT,
-        updateLocalDelegate: (localT) -> Unit,
-        mapRemoteToLocalDelegate: (remoteT) -> localT,
-        mapLocalToModelDelegate: (localT) -> modelT,
+        updateLocalDelegate: (localInT) -> Unit,
+        mapRemoteToLocalDelegate: (remoteT) -> localInT,
+        mapLocalToModelDelegate: (localOutT) -> modelT,
     ): Flow<State<modelT>> {
         return flow<State<modelT>> {
             var remoteEmitted = false
@@ -131,19 +131,4 @@ abstract class BaseRepository {
             }
         }
     }
-
-    /* Use case:
-
-        fun getRecipeExtended(ID: String): Flow<State<RecipeExtendedModel>> {
-            return getLatest(
-                context = context,
-                fetchLocalDelegate = { recipeDAO.getByIdExtended(ID) },
-                fetchRemoteDelegate = { recipeAPI.getRecipe(ID) },
-                updateLocalDelegate = { recipeDAO.addRecipe(it) },
-                mapRemoteToLocalDelegate = { it.toDB() },
-                mapLocalToModelDelegate = { it.toModelExtended() }
-            )
-        }
-
-     */
 }
