@@ -116,6 +116,8 @@ class RecipeExtendedFragment : BaseFragment<FragmentRecipeExtendedBinding>(
             },
             loadingHandlerDelegate = {
                 binding.pbContent.isVisible = true
+            },
+            onInitStart = {
                 binding.svContent.isVisible = false
             },
             onInitComplete = {

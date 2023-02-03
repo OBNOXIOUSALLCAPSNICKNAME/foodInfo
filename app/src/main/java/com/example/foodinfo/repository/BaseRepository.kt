@@ -8,15 +8,37 @@ import kotlinx.coroutines.flow.*
 
 abstract class BaseRepository {
 
-    private fun <T> fetchLocal(fetchDelegate: () -> Flow<T>): Flow<State<T>> {
+    private fun <T> fetchRemote(context: Context, fetchDelegate: () -> T?): Flow<State<T>> {
         return flow<State<T>> {
             emit(State.Loading())
             try {
-                fetchDelegate.invoke().distinctUntilChanged().collect { data ->
-                    if (data == null || data is Collection<*> && data.isEmpty()) {
-                        emit(State.Error(ErrorMessages.NO_DATA, NoDataException()))
-                    } else {
-                        emit(State.Success(data))
+                if (context.hasInternet()) {
+                    emitData(fetchDelegate(), this::emit)
+                } else {
+                    emit(State.Error(ErrorMessages.NO_INTERNET, NoInternetException()))
+                }
+            } catch (e: Exception) {
+                emit(State.Error(ErrorMessages.UNKNOWN_ERROR, e))
+            }
+
+        }.flowOn(Dispatchers.IO)
+    }
+
+    private fun <T> fetchLocal(
+        fetchOnceDelegate: (() -> T)? = null,
+        fetchFlowDelegate: (() -> Flow<T>)? = null,
+    ): Flow<State<T>> {
+        if (fetchOnceDelegate == null && fetchFlowDelegate == null)
+            throw java.lang.NullPointerException()
+
+        return flow<State<T>> {
+            emit(State.Loading())
+            try {
+                if (fetchOnceDelegate != null) {
+                    emitData(fetchOnceDelegate(), this::emit)
+                } else {
+                    fetchFlowDelegate!!().distinctUntilChanged().collect { data ->
+                        emitData(data, this::emit)
                     }
                 }
             } catch (e: Exception) {
@@ -25,32 +47,12 @@ abstract class BaseRepository {
         }.flowOn(Dispatchers.IO)
     }
 
-    private fun <T> fetchRemote(context: Context, fetchDelegate: () -> T?): Flow<State<T>> {
-        return flow<State<T>> {
-            emit(State.Loading())
-            if (context.hasInternet()) {
-                try {
-                    val data = fetchDelegate.invoke()
-                    if (data == null || data is Collection<*> && data.isEmpty()) {
-                        emit(State.Error(ErrorMessages.NO_DATA, NoDataException()))
-                    } else {
-                        emit(State.Success(data))
-                    }
-                } catch (e: Exception) {
-                    emit(State.Error(ErrorMessages.UNKNOWN_ERROR, e))
-                }
-            } else {
-                emit(State.Error(ErrorMessages.NO_INTERNET, NoInternetException()))
-            }
-        }.flowOn(Dispatchers.IO)
-    }
 
-
-    fun <modelT, localInT, localOutT, remoteT> getLatest(
-        // not sure if "Delegate" postfix is correct here
+    protected fun <modelT, localInT, localOutT, remoteT> getLatest(
         context: Context,
-        fetchLocalDelegate: () -> Flow<localOutT>,
         fetchRemoteDelegate: () -> remoteT,
+        fetchLocalOnceDelegate: (() -> localOutT)? = null,
+        fetchLocalFlowDelegate: (() -> Flow<localOutT>)? = null,
         updateLocalDelegate: (localInT) -> Unit,
         mapRemoteToLocalDelegate: (remoteT) -> localInT,
         mapLocalToModelDelegate: (localOutT) -> modelT,
@@ -59,14 +61,14 @@ abstract class BaseRepository {
             var remoteEmitted = false
             emit(State.Loading()) // immediately emitting loading state
             combine(
-                fetchLocal(fetchLocalDelegate), // flow in Local module
-                fetchRemote(context, fetchRemoteDelegate) // flow in Remote module
+                fetchLocal(fetchLocalOnceDelegate, fetchLocalFlowDelegate), // flow of data from local source
+                fetchRemote(context, fetchRemoteDelegate) // flow of data from remote source
             ) { local, remote ->
                 when (remote) {
                     is State.Loading -> {
 
                         // try map to Model and emit local data. Ignore errors, wait until remote data fetched
-                        tryEmit(local, mapLocalToModelDelegate, this::emit)
+                        tryEmitState(local, mapLocalToModelDelegate, this::emit)
                     }
                     is State.Success -> {
                         if (!remoteEmitted) { // if remote data not yet added into local DB
@@ -77,7 +79,7 @@ abstract class BaseRepository {
                             } catch (e: Exception) {
 
                                 // last chance to load any data
-                                tryEmit(local, mapLocalToModelDelegate, this::emit)?.let {
+                                tryEmitState(local, mapLocalToModelDelegate, this::emit)?.let {
                                     emit(State.Error(ErrorMessages.UNKNOWN_ERROR, e))
                                 }
                             } finally {
@@ -89,14 +91,14 @@ abstract class BaseRepository {
                             }
                         } else { // when remote data was successfully added into local DB
 
-                            tryEmit(local, mapLocalToModelDelegate, this::emit)?.let { error ->
+                            tryEmitState(local, mapLocalToModelDelegate, this::emit)?.let { error ->
                                 emit(State.Error(error.message, error.error))
                             }
                         }
                     }
                     is State.Error   -> {
 
-                        tryEmit(local, mapLocalToModelDelegate, this::emit)?.let {
+                        tryEmitState(local, mapLocalToModelDelegate, this::emit)?.let {
                             emit(State.Error(remote.message, remote.error))
                         }
                     }
@@ -105,7 +107,7 @@ abstract class BaseRepository {
         }.flowOn(Dispatchers.IO)
     }
 
-    private suspend fun <localT, modelT> tryEmit(
+    private suspend fun <localT, modelT> tryEmitState(
         local: State<localT>,
         mapDelegate: (localT) -> modelT,
         emit: suspend (State<modelT>) -> Unit,
@@ -129,6 +131,14 @@ abstract class BaseRepository {
             is State.Loading -> {
                 null
             }
+        }
+    }
+
+    private suspend fun <T> emitData(data: T?, emit: suspend (State<T>) -> Unit) {
+        if (data == null || data is Collection<*> && data.isEmpty()) {
+            emit(State.Error(ErrorMessages.NO_DATA, NoDataException()))
+        } else {
+            emit(State.Success(data))
         }
     }
 }

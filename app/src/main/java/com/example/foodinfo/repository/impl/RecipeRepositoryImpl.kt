@@ -59,8 +59,8 @@ class RecipeRepositoryImpl @Inject constructor(
     override fun getByIdExtended(recipeID: String): Flow<State<RecipeExtendedModel>> {
         return getLatest(
             context = context,
-            fetchLocalDelegate = { recipeDAO.getByIdExtended(recipeID) },
             fetchRemoteDelegate = { recipeAPI.getRecipeExtended(recipeID) },
+            fetchLocalFlowDelegate = { recipeDAO.getByIdExtended(recipeID) },
             updateLocalDelegate = { recipeDAO.addRecipeExtended(it) },
             mapRemoteToLocalDelegate = { it!!.toDB() },
             mapLocalToModelDelegate = { it.toModelExtended() }
@@ -70,8 +70,8 @@ class RecipeRepositoryImpl @Inject constructor(
     override fun getByIdLabels(recipeID: String): Flow<State<List<CategoryOfRecipeModel>>> {
         return getLatest(
             context = context,
-            fetchLocalDelegate = { recipeDAO.getLabels(recipeID) },
             fetchRemoteDelegate = { recipeAPI.getLabels(recipeID) },
+            fetchLocalFlowDelegate = { recipeDAO.getLabels(recipeID) },
             updateLocalDelegate = { recipeDAO.addLabels(it) },
             mapRemoteToLocalDelegate = { it.map { label -> label.toDB() } },
             mapLocalToModelDelegate = { it.toModelRecipe() }
@@ -81,8 +81,8 @@ class RecipeRepositoryImpl @Inject constructor(
     override fun getByIdNutrients(recipeID: String): Flow<State<List<NutrientOfRecipeModel>>> {
         return getLatest(
             context = context,
-            fetchLocalDelegate = { recipeDAO.getNutrients(recipeID) },
             fetchRemoteDelegate = { recipeAPI.getNutrients(recipeID) },
+            fetchLocalFlowDelegate = { recipeDAO.getNutrients(recipeID) },
             updateLocalDelegate = { recipeDAO.addNutrients(it) },
             mapRemoteToLocalDelegate = { it.map { nutrient -> nutrient.toDB() } },
             mapLocalToModelDelegate = { it.map { nutrient -> nutrient.toModel() } }
@@ -92,8 +92,8 @@ class RecipeRepositoryImpl @Inject constructor(
     override fun getByIdIngredients(recipeID: String): Flow<State<List<RecipeIngredientModel>>> {
         return getLatest(
             context = context,
-            fetchLocalDelegate = { recipeDAO.getIngredients(recipeID) },
             fetchRemoteDelegate = { recipeAPI.getIngredients(recipeID) },
+            fetchLocalFlowDelegate = { recipeDAO.getIngredients(recipeID) },
             updateLocalDelegate = { recipeDAO.addIngredients(it) },
             mapRemoteToLocalDelegate = { it.map { ingredient -> ingredient.toDB() } },
             mapLocalToModelDelegate = { it.map { ingredient -> ingredient.toModel() } }
