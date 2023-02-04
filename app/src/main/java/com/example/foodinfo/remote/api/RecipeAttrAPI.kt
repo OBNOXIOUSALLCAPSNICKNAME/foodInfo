@@ -11,6 +11,8 @@ abstract class RecipeAttrAPI {
 
     abstract fun getLabels(): List<LabelRecipeAttrNetwork>
 
+    abstract fun getCategoryLabels(categoryID: Int): List<LabelRecipeAttrNetwork>
+
     abstract fun getNutrients(): List<NutrientRecipeAttrNetwork>
 
     abstract fun getCategory(ID: Int): CategoryRecipeAttrNetwork

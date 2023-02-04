@@ -17,6 +17,10 @@ class RecipeAttrAPIImpl : RecipeAttrAPI() {
         return listOf()
     }
 
+    override fun getCategoryLabels(categoryID: Int): List<LabelRecipeAttrNetwork> {
+        return listOf()
+    }
+
     override fun getNutrients(): List<NutrientRecipeAttrNetwork> {
         return listOf()
     }
