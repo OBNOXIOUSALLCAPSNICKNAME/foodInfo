@@ -13,5 +13,7 @@ abstract class RecipeAttrAPI {
 
     abstract fun getNutrients(): List<NutrientRecipeAttrNetwork>
 
+    abstract fun getCategory(ID: Int): CategoryRecipeAttrNetwork
+
     abstract fun getCategories(): List<CategoryRecipeAttrNetwork>
 }

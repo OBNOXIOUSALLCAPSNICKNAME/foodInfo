@@ -21,6 +21,10 @@ class RecipeAttrAPIImpl : RecipeAttrAPI() {
         return listOf()
     }
 
+    override fun getCategory(ID: Int): CategoryRecipeAttrNetwork {
+        return CategoryRecipeAttrNetwork()
+    }
+
     override fun getCategories(): List<CategoryRecipeAttrNetwork> {
         return listOf()
     }
