@@ -59,6 +59,7 @@ abstract class BaseRepository {
     ): Flow<State<modelT>> {
         return flow<State<modelT>> {
             var remoteEmitted = false
+            var remoteEmissionError: Exception? = null
             emit(State.Loading()) // immediately emitting loading state
             combine(
                 fetchLocal(fetchLocalOnceDelegate, fetchLocalFlowDelegate), // flow of data from local source
@@ -78,26 +79,32 @@ abstract class BaseRepository {
                                 updateLocalDelegate(mapRemoteToLocalDelegate(remote.data))
                             } catch (e: Exception) {
 
-                                // last chance to load any data
-                                tryEmitState(local, mapLocalToModelDelegate, this::emit)?.let {
-                                    emit(State.Error(ErrorMessages.UNKNOWN_ERROR, e))
-                                }
+                                // save remote emission error
+                                remoteEmissionError = e
                             } finally {
 
                                 // adding remote data into local DB may trigger combine block to collect data
                                 // (if remote and local data are different) so this flag will determine
-                                // was local data already updated and should be emitted or not
+                                // if local data was already updated and should be emitted or not
+                                // to prevent updateLocalDelegate to trigger twice
                                 remoteEmitted = true
                             }
-                        } else { // when remote data was successfully added into local DB
+                        }
 
-                            tryEmitState(local, mapLocalToModelDelegate, this::emit)?.let { error ->
-                                emit(State.Error(error.message, error.error))
+                        tryEmitState(local, mapLocalToModelDelegate, this::emit)?.let { error ->
+
+                            // emit error only when remote data was already added unto DB, else just wait
+                            when {
+                                remoteEmitted && remoteEmissionError != null -> {
+                                    emit(State.Error(ErrorMessages.UNKNOWN_ERROR, remoteEmissionError!!))
+                                }
+                                remoteEmitted && remoteEmissionError == null -> {
+                                    emit(State.Error(error.message, error.error))
+                                }
                             }
                         }
                     }
                     is State.Error   -> {
-
                         tryEmitState(local, mapLocalToModelDelegate, this::emit)?.let {
                             emit(State.Error(remote.message, remote.error))
                         }
