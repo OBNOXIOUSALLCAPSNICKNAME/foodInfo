@@ -4,8 +4,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.foodinfo.repository.RecipeAttrRepository
 import com.example.foodinfo.repository.model.CategorySearchModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.*
+import com.example.foodinfo.utils.State
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.shareIn
 import javax.inject.Inject
 
 
@@ -13,9 +15,9 @@ class HomeViewModel @Inject constructor(
     recipeAttrRepository: RecipeAttrRepository
 ) : ViewModel() {
 
-    val categories: SharedFlow<List<CategorySearchModel>> = flow {
-        emit(recipeAttrRepository.getCategories())
-    }.flowOn(Dispatchers.IO).shareIn(
-        viewModelScope, SharingStarted.WhileSubscribed(stopTimeoutMillis = 5000), 1
-    )
+    val categories: SharedFlow<State<List<CategorySearchModel>>> by lazy {
+        recipeAttrRepository.getCategories().shareIn(
+            viewModelScope, SharingStarted.WhileSubscribed(stopTimeoutMillis = 5000), 1
+        )
+    }
 }

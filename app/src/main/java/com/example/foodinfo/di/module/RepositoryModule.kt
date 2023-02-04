@@ -52,8 +52,9 @@ class RepositoryModule {
     @Provides
     @Singleton
     fun provideRepositoryRepositoryRecipeFieldsInfo(
+        context: Context,
         recipeAttrDao: RecipeAttrDAO
     ): RecipeAttrRepository {
-        return RecipeAttrRepositoryImpl(recipeAttrDao)
+        return RecipeAttrRepositoryImpl(context, recipeAttrDao)
     }
 }

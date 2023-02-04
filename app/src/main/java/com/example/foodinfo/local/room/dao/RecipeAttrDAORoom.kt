@@ -3,11 +3,9 @@ package com.example.foodinfo.local.room.dao
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Transaction
 import com.example.foodinfo.local.dao.RecipeAttrDAO
-import com.example.foodinfo.local.dto.BasicRecipeAttrDB
-import com.example.foodinfo.local.dto.CategoryRecipeAttrDB
-import com.example.foodinfo.local.dto.LabelRecipeAttrDB
-import com.example.foodinfo.local.dto.NutrientRecipeAttrDB
+import com.example.foodinfo.local.dto.*
 import com.example.foodinfo.local.room.entity.BasicRecipeAttrEntity
 import com.example.foodinfo.local.room.entity.CategoryRecipeAttrEntity
 import com.example.foodinfo.local.room.entity.LabelRecipeAttrEntity
@@ -45,6 +43,17 @@ interface RecipeAttrDAORoom : RecipeAttrDAO {
                 "WHERE ${CategoryRecipeAttrDB.Columns.ID} = :ID"
     )
     override fun getCategory(ID: Int): CategoryRecipeAttrEntity
+
+
+    @Transaction
+    override fun getRecipeAttrs(): RecipeAttrsDB {
+        return RecipeAttrsDB(
+            basics = getBasicsAllEntity(),
+            labels = getLabelsAllEntity(),
+            nutrients = getNutrientsAllEntity(),
+            categories = getCategoriesAllEntity(),
+        )
+    }
 
 
     @Query("SELECT * FROM ${CategoryRecipeAttrDB.TABLE_NAME}")

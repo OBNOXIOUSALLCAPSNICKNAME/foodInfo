@@ -1,9 +1,6 @@
 package com.example.foodinfo.local.dao
 
-import com.example.foodinfo.local.dto.BasicRecipeAttrDB
-import com.example.foodinfo.local.dto.CategoryRecipeAttrDB
-import com.example.foodinfo.local.dto.LabelRecipeAttrDB
-import com.example.foodinfo.local.dto.NutrientRecipeAttrDB
+import com.example.foodinfo.local.dto.*
 
 
 interface RecipeAttrDAO {
@@ -17,6 +14,9 @@ interface RecipeAttrDAO {
     fun getLabel(ID: Int): LabelRecipeAttrDB
 
     fun getCategoryLabels(categoryID: Int): List<LabelRecipeAttrDB>
+
+
+    fun getRecipeAttrs(): RecipeAttrsDB
 
 
     fun getCategoriesAll(): List<CategoryRecipeAttrDB>

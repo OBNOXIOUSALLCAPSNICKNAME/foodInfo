@@ -59,7 +59,6 @@ class SearchFilterCategoryFragment : BaseFragment<FragmentSearchFilterCategoryBi
 
         binding.btnBack.setOnClickListener { onBackClickListener() }
         binding.btnReset.setOnClickListener { onResetClickListener() }
-        binding.tvHeader.text = viewModel.category.name
 
         recyclerAdapter = FilterCategoryEditAdapter(
             requireContext(),
@@ -78,9 +77,16 @@ class SearchFilterCategoryFragment : BaseFragment<FragmentSearchFilterCategoryBi
 
     override fun subscribeUI() {
         repeatOn(Lifecycle.State.STARTED) {
-            viewModel.labels.collectLatest {
-                recyclerAdapter.submitList(it.labels)
+            viewModel.labels.collectLatest { category ->
+                recyclerAdapter.submitList(category.labels)
             }
         }
+
+        observeData(
+            dataFlow = viewModel.category,
+            successHandlerDelegate = { category ->
+                binding.tvHeader.text = category.name
+            }
+        )
     }
 }
