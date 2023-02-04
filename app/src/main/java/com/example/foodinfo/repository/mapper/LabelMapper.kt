@@ -2,6 +2,7 @@ package com.example.foodinfo.repository.mapper
 
 import com.example.foodinfo.local.dto.*
 import com.example.foodinfo.remote.dto.LabelOfRecipeNetwork
+import com.example.foodinfo.remote.dto.LabelRecipeAttrNetwork
 import com.example.foodinfo.repository.model.*
 
 
@@ -56,5 +57,9 @@ fun LabelOfSearchFilterEditModel.toDB(filterName: String, category: String): Lab
 }
 
 fun LabelOfRecipeNetwork.toDB(): LabelOfRecipeDB {
+    throw java.lang.NullPointerException() //TODO implement conversion
+}
+
+fun LabelRecipeAttrNetwork.toDB(): LabelRecipeAttrDB {
     throw java.lang.NullPointerException() //TODO implement conversion
 }

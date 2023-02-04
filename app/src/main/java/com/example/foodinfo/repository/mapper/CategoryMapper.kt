@@ -3,6 +3,7 @@ package com.example.foodinfo.repository.mapper
 import com.example.foodinfo.local.dto.CategoryRecipeAttrDB
 import com.example.foodinfo.local.dto.LabelOfRecipeExtendedDB
 import com.example.foodinfo.local.dto.LabelOfSearchFilterExtendedDB
+import com.example.foodinfo.remote.dto.CategoryRecipeAttrNetwork
 import com.example.foodinfo.repository.model.*
 import com.example.foodinfo.repository.model.filter_field.CategoryOfFilterPreset
 
@@ -46,4 +47,8 @@ fun List<LabelOfSearchFilterExtendedDB>.toModelFilterField(): List<CategoryOfFil
             labelInfoIDs = category.value.filter { it.isSelected }.map { it.infoID }
         )
     }.filter { it.labelInfoIDs.isNotEmpty() }
+}
+
+fun CategoryRecipeAttrNetwork.toDB(): CategoryRecipeAttrDB {
+    throw java.lang.NullPointerException() //TODO implement conversion
 }

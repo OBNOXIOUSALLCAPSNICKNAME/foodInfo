@@ -2,6 +2,8 @@ package com.example.foodinfo.repository.mapper
 
 import com.example.foodinfo.local.dto.BasicOfSearchFilterDB
 import com.example.foodinfo.local.dto.BasicOfSearchFilterExtendedDB
+import com.example.foodinfo.local.dto.BasicRecipeAttrDB
+import com.example.foodinfo.remote.dto.BasicRecipeAttrNetwork
 import com.example.foodinfo.repository.model.BasicOfSearchFilterEditModel
 import com.example.foodinfo.repository.model.filter_field.BasicOfFilterPreset
 
@@ -39,4 +41,8 @@ fun BasicOfSearchFilterEditModel.toDB(filterName: String): BasicOfSearchFilterDB
         minValue = this.minValue,
         maxValue = this.maxValue
     )
+}
+
+fun BasicRecipeAttrNetwork.toDB(): BasicRecipeAttrDB {
+    throw java.lang.NullPointerException() //TODO implement conversion
 }

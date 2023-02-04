@@ -2,6 +2,7 @@ package com.example.foodinfo.repository.mapper
 
 import com.example.foodinfo.local.dto.*
 import com.example.foodinfo.remote.dto.NutrientOfRecipeNetwork
+import com.example.foodinfo.remote.dto.NutrientRecipeAttrNetwork
 import com.example.foodinfo.repository.model.*
 import com.example.foodinfo.repository.model.filter_field.NutrientOfFilterPreset
 
@@ -82,5 +83,9 @@ fun NutrientOfSearchFilterEditModel.toDB(filterName: String): NutrientOfSearchFi
 }
 
 fun NutrientOfRecipeNetwork.toDB(): NutrientOfRecipeDB {
+    throw java.lang.NullPointerException() //TODO implement conversion
+}
+
+fun NutrientRecipeAttrNetwork.toDB(): NutrientRecipeAttrDB {
     throw java.lang.NullPointerException() //TODO implement conversion
 }
