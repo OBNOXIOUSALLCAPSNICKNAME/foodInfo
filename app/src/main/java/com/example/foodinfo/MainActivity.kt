@@ -119,6 +119,6 @@ class MainActivity : AppCompatActivity() {
             )
         )
 
-        appComponent.searchFilterRepository.createFilter()
+        appComponent.searchFilterRepository.createFilter(attrs = dataBase.recipeAttrDao.getRecipeAttrs())
     }
 }

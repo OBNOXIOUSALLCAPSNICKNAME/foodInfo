@@ -5,7 +5,7 @@ import androidx.recyclerview.widget.DiffUtil
 
 data class BasicOfSearchFilterEditModel(
     val ID: Int,
-    val infoUID: Int,
+    val infoID: Int,
     val name: String,
     val measure: String,
     val stepSize: Float,
@@ -29,7 +29,8 @@ data class BasicOfSearchFilterEditModel(
             oldItem: BasicOfSearchFilterEditModel,
             newItem: BasicOfSearchFilterEditModel
         ): Boolean {
-            return oldItem.name == newItem.name &&
+            return oldItem.infoID == newItem.infoID &&
+                    oldItem.name == newItem.name &&
                     oldItem.measure == newItem.measure &&
                     oldItem.stepSize == newItem.stepSize &&
                     oldItem.rangeMin == newItem.rangeMin &&

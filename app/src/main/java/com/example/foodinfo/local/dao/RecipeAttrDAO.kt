@@ -27,6 +27,8 @@ interface RecipeAttrDAO {
 
     fun getLabelsAll(): List<LabelRecipeAttrDB>
 
+    fun getLabelsExtendedAll(): List<LabelRecipeAttrExtendedDB>
+
 
     fun addNutrients(attrs: List<NutrientRecipeAttrDB>)
 
@@ -35,4 +37,6 @@ interface RecipeAttrDAO {
     fun addLabels(attrs: List<LabelRecipeAttrDB>)
 
     fun addCategories(attrs: List<CategoryRecipeAttrDB>)
+
+    fun addRecipeAttrs(attrs: RecipeAttrsDB)
 }

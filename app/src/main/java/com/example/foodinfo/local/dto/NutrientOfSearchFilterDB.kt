@@ -20,4 +20,22 @@ open class NutrientOfSearchFilterDB(
     companion object {
         const val TABLE_NAME = "nutrient_of_search_filter"
     }
+
+    override fun equals(other: Any?): Boolean {
+        return (other is NutrientOfSearchFilterDB) &&
+                other.ID == this.ID &&
+                other.filterName == this.filterName &&
+                other.infoID == this.infoID &&
+                other.minValue == this.minValue &&
+                other.maxValue == this.maxValue
+    }
+
+    override fun hashCode(): Int {
+        var result = ID
+        result = 31 * result + filterName.hashCode()
+        result = 31 * result + infoID
+        result = 31 * result + minValue.hashCode()
+        result = 31 * result + maxValue.hashCode()
+        return result
+    }
 }

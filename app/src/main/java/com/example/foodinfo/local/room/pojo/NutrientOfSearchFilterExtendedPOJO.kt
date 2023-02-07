@@ -28,7 +28,7 @@ data class NutrientOfSearchFilterExtendedPOJO(
         parentColumn = NutrientOfSearchFilterDB.Columns.INFO_ID,
         entityColumn = NutrientRecipeAttrDB.Columns.ID
     )
-    override val attrInfo: NutrientRecipeAttrEntity
+    override val attrInfo: NutrientRecipeAttrEntity?
 
 ) : NutrientOfSearchFilterExtendedDB(
     ID = ID,

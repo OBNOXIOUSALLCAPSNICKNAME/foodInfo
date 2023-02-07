@@ -6,9 +6,7 @@ import com.example.foodinfo.local.dto.NutrientOfRecipeDB
 import com.example.foodinfo.local.dto.RecipeDB
 import com.example.foodinfo.local.room.entity.RecipeEntity
 import com.example.foodinfo.local.room.entity.SearchFilterEntity
-import com.example.foodinfo.repository.model.filter_field.BasicOfFilterPreset
-import com.example.foodinfo.repository.model.filter_field.CategoryOfFilterPreset
-import com.example.foodinfo.repository.model.filter_field.NutrientOfFilterPreset
+import com.example.foodinfo.repository.model.SearchFilterPresetModel
 
 
 /**
@@ -26,17 +24,13 @@ import com.example.foodinfo.repository.model.filter_field.NutrientOfFilterPreset
  *
  * @sample queryExample
  */
-data class FilterQueryBuilder(
-    val basicsOfFilterPresets: List<BasicOfFilterPreset> = listOf(),
-    val categoriesOfFilterPreset: List<CategoryOfFilterPreset> = listOf(),
-    val nutrientsOfFilterPreset: List<NutrientOfFilterPreset> = listOf()
-) {
+data class FilterQueryBuilder(val searchFilterPreset: SearchFilterPresetModel) {
     private var inputText: String = ""
 
 
     private fun nutrientFieldsToQuery(): String {
-        if (nutrientsOfFilterPreset.isEmpty()) return ""
-        val nutrientQueryList = nutrientsOfFilterPreset.map { field ->
+        if (searchFilterPreset.nutrients.isEmpty()) return ""
+        val nutrientQueryList = searchFilterPreset.nutrients.map { field ->
             nutrientFieldToQuery(
                 field.infoID,
                 field.minValue,
@@ -82,7 +76,7 @@ data class FilterQueryBuilder(
     }
 
     private fun categoryFieldsToQuery(): String {
-        val labels = categoriesOfFilterPreset.flatMap { it.labelInfoIDs }
+        val labels = searchFilterPreset.categories.flatMap { it.labelInfoIDs }
         if (labels.isEmpty()) return ""
 
         var query = "${RecipeDB.Columns.ID} IN "
@@ -94,7 +88,7 @@ data class FilterQueryBuilder(
         query += "WHERE ${LabelOfRecipeDB.Columns.INFO_ID} IN (${labels.joinToString(", ")}) "
         query += "GROUP BY ${LabelOfRecipeDB.Columns.RECIPE_ID}, ${LabelRecipeAttrDB.Columns.CATEGORY_ID}) "
         query += "GROUP BY ${LabelOfRecipeDB.Columns.RECIPE_ID} "
-        query += "HAVING count(${LabelOfRecipeDB.Columns.RECIPE_ID}) = ${categoriesOfFilterPreset.size})"
+        query += "HAVING count(${LabelOfRecipeDB.Columns.RECIPE_ID}) = ${searchFilterPreset.categories.size})"
         return query
     }
 
@@ -111,7 +105,7 @@ data class FilterQueryBuilder(
     fun getQuery(): String {
         var query = ""
         val subQueryList = arrayListOf<String>()
-        subQueryList.addAll(basicsOfFilterPresets.map { field ->
+        subQueryList.addAll(searchFilterPreset.basics.map { field ->
             rangeFieldToQuery(
                 field.columnName,
                 field.minValue,

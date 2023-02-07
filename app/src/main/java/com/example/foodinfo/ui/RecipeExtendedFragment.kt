@@ -113,6 +113,7 @@ class RecipeExtendedFragment : BaseFragment<FragmentRecipeExtendedBinding>(
             dataFlow = viewModel.recipe,
             successHandlerDelegate = { recipe ->
                 initRecipe(recipe)
+                binding.pbContent.isVisible = false
             },
             loadingHandlerDelegate = {
                 binding.pbContent.isVisible = true
@@ -121,7 +122,6 @@ class RecipeExtendedFragment : BaseFragment<FragmentRecipeExtendedBinding>(
                 binding.svContent.isVisible = false
             },
             onInitComplete = {
-                binding.pbContent.isVisible = false
                 binding.svContent.isVisible = true
                 binding.svContent.baseAnimation()
             }

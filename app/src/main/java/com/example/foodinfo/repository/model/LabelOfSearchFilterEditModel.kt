@@ -24,8 +24,8 @@ data class LabelOfSearchFilterEditModel(
             oldItem: LabelOfSearchFilterEditModel,
             newItem: LabelOfSearchFilterEditModel
         ): Boolean {
-            return oldItem.name == newItem.name &&
-                    oldItem.infoID == newItem.infoID &&
+            return oldItem.infoID == newItem.infoID &&
+                    oldItem.name == newItem.name &&
                     oldItem.isSelected == newItem.isSelected
         }
     }

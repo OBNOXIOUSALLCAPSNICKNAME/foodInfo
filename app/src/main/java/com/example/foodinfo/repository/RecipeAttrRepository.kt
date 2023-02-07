@@ -26,6 +26,8 @@ abstract class RecipeAttrRepository : BaseRepository() {
 
     abstract fun getLabelsDB(): Flow<State<List<LabelRecipeAttrDB>>>
 
+    abstract fun getLabelsExtendedDB(): Flow<State<List<LabelRecipeAttrExtendedDB>>>
+
     abstract fun getNutrientsDB(): Flow<State<List<NutrientRecipeAttrDB>>>
 
     abstract fun getCategoriesDB(): Flow<State<List<CategoryRecipeAttrDB>>>

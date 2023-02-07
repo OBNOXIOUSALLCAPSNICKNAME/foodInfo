@@ -8,36 +8,35 @@ import kotlinx.coroutines.flow.*
 
 abstract class BaseRepository {
 
-    private fun <T> fetchRemote(context: Context, fetchDelegate: () -> T?): Flow<State<T>> {
+    private fun <T> fetchRemote(context: Context, dataProvider: () -> T?): Flow<State<T>> {
         return flow<State<T>> {
             emit(State.Loading())
             try {
                 if (context.hasInternet()) {
-                    emitData(fetchDelegate(), this::emit)
+                    emitData(dataProvider(), this::emit)
                 } else {
                     emit(State.Error(ErrorMessages.NO_INTERNET, NoInternetException()))
                 }
             } catch (e: Exception) {
                 emit(State.Error(ErrorMessages.UNKNOWN_ERROR, e))
             }
-
         }.flowOn(Dispatchers.IO)
     }
 
     private fun <T> fetchLocal(
-        fetchOnceDelegate: (() -> T)? = null,
-        fetchFlowDelegate: (() -> Flow<T>)? = null,
+        dataProvider: (() -> T)? = null,
+        dataFlowProvider: (() -> Flow<T>)? = null,
     ): Flow<State<T>> {
-        if (fetchOnceDelegate == null && fetchFlowDelegate == null)
+        if (dataProvider == null && dataFlowProvider == null)
             throw java.lang.NullPointerException()
 
         return flow<State<T>> {
             emit(State.Loading())
             try {
-                if (fetchOnceDelegate != null) {
-                    emitData(fetchOnceDelegate(), this::emit)
+                if (dataProvider != null) {
+                    emitData(dataProvider(), this::emit)
                 } else {
-                    fetchFlowDelegate!!().distinctUntilChanged().collect { data ->
+                    dataFlowProvider!!().distinctUntilChanged().collect { data ->
                         emitData(data, this::emit)
                     }
                 }
@@ -48,11 +47,11 @@ abstract class BaseRepository {
     }
 
 
-    protected fun <modelT, localInT, localOutT, remoteT> getLatest(
+    protected fun <modelT, localInT, localOutT, remoteT> getData(
         context: Context,
-        fetchRemoteDelegate: () -> remoteT,
-        fetchLocalOnceDelegate: (() -> localOutT)? = null,
-        fetchLocalFlowDelegate: (() -> Flow<localOutT>)? = null,
+        remoteDataProvider: () -> remoteT,
+        localDataProvider: (() -> localOutT)? = null,
+        localDataFlowProvider: (() -> Flow<localOutT>)? = null,
         updateLocalDelegate: (localInT) -> Unit,
         mapRemoteToLocalDelegate: (remoteT) -> localInT,
         mapLocalToModelDelegate: (localOutT) -> modelT,
@@ -62,8 +61,8 @@ abstract class BaseRepository {
             var remoteEmissionError: Exception? = null
             emit(State.Loading()) // immediately emitting loading state
             combine(
-                fetchLocal(fetchLocalOnceDelegate, fetchLocalFlowDelegate), // flow of data from local source
-                fetchRemote(context, fetchRemoteDelegate) // flow of data from remote source
+                fetchLocal(localDataProvider, localDataFlowProvider), // flow of data from local source
+                fetchRemote(context, remoteDataProvider) // flow of data from remote source
             ) { local, remote ->
                 when (remote) {
                     is State.Loading -> {

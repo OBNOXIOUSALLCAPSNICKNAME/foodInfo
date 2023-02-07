@@ -17,7 +17,7 @@ fun CategoryRecipeAttrDB.toModel(): CategorySearchModel {
 }
 
 fun List<LabelOfRecipeExtendedDB>.toModelRecipe(): List<CategoryOfRecipeModel> {
-    return this.groupBy { label -> label.attrInfo.categoryInfo.name }.entries.map { category ->
+    return this.groupBy { label -> label.attrInfo!!.categoryInfo!!.name }.entries.map { category ->
         CategoryOfRecipeModel(
             name = category.key,
             labels = category.value.map { it.toModelShort() }
@@ -27,22 +27,22 @@ fun List<LabelOfRecipeExtendedDB>.toModelRecipe(): List<CategoryOfRecipeModel> {
 
 fun List<LabelOfSearchFilterExtendedDB>.toModelFilterEdit(categoryID: Int): CategoryOfSearchFilterEditModel {
     return CategoryOfSearchFilterEditModel(
-        labels = this.filter { it.attrInfo.categoryID == categoryID }.map { it.toModelEdit() }
+        labels = this.filter { it.attrInfo!!.categoryID == categoryID }.map { it.toModelEdit() }
     )
 }
 
 fun List<LabelOfSearchFilterExtendedDB>.toModelFilterPreview(): List<CategoryOfSearchFilterPreviewModel> {
-    return this.groupBy { label -> label.attrInfo.categoryID }.entries.map { category ->
+    return this.groupBy { label -> label.attrInfo!!.categoryID }.entries.map { category ->
         CategoryOfSearchFilterPreviewModel(
             ID = category.key,
-            name = category.value.first().attrInfo.categoryInfo.name,
+            name = category.value.first().attrInfo!!.categoryInfo!!.name,
             labels = category.value.filter { it.isSelected }.map { it.toModelShort() }
         )
     }
 }
 
-fun List<LabelOfSearchFilterExtendedDB>.toModelFilterField(): List<CategoryOfFilterPreset> {
-    return this.groupBy { label -> label.attrInfo.categoryInfo.name }.entries.map { category ->
+fun List<LabelOfSearchFilterExtendedDB>.toModelPreset(): List<CategoryOfFilterPreset> {
+    return this.groupBy { label -> label.attrInfo!!.categoryInfo!!.name }.entries.map { category ->
         CategoryOfFilterPreset(
             labelInfoIDs = category.value.filter { it.isSelected }.map { it.infoID }
         )

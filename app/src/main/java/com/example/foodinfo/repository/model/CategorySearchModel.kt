@@ -22,8 +22,7 @@ data class CategorySearchModel(
             oldItem: CategorySearchModel,
             newItem: CategorySearchModel
         ): Boolean {
-            return oldItem.ID == newItem.ID &&
-                    oldItem.name == newItem.name &&
+            return oldItem.name == newItem.name &&
                     oldItem.preview.content == newItem.preview.content
         }
     }

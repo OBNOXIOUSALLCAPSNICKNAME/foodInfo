@@ -27,7 +27,7 @@ data class LabelOfSearchFilterExtendedPOJO(
         entityColumn = LabelRecipeAttrDB.Columns.ID,
         entity = LabelRecipeAttrEntity::class
     )
-    override val attrInfo: LabelRecipeAttrExtendedPOJO
+    override val attrInfo: LabelRecipeAttrExtendedPOJO?
 
 ) : LabelOfSearchFilterExtendedDB(
     ID = ID,

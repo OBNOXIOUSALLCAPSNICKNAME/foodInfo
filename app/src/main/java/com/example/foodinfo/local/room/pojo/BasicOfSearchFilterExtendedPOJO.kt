@@ -28,7 +28,7 @@ data class BasicOfSearchFilterExtendedPOJO(
         parentColumn = BasicOfSearchFilterDB.Columns.INFO_ID,
         entityColumn = BasicRecipeAttrDB.Columns.ID
     )
-    override val attrInfo: BasicRecipeAttrEntity
+    override val attrInfo: BasicRecipeAttrEntity?
 
 ) : BasicOfSearchFilterExtendedDB(
     ID = ID,

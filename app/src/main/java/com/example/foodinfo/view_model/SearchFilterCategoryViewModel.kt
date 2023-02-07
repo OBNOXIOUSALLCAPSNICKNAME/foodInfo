@@ -7,6 +7,8 @@ import com.example.foodinfo.repository.SearchFilterRepository
 import com.example.foodinfo.repository.model.CategoryOfSearchFilterEditModel
 import com.example.foodinfo.repository.model.CategorySearchModel
 import com.example.foodinfo.repository.model.LabelHintModel
+import com.example.foodinfo.repository.model.LabelOfSearchFilterEditModel
+import com.example.foodinfo.repository.use_case.SearchFilterUseCase
 import com.example.foodinfo.utils.State
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -16,13 +18,14 @@ import javax.inject.Inject
 
 class SearchFilterCategoryViewModel @Inject constructor(
     private val recipeAttrRepository: RecipeAttrRepository,
-    private val searchFilterRepository: SearchFilterRepository
+    private val searchFilterRepository: SearchFilterRepository,
+    private val searchFilterUseCase: SearchFilterUseCase,
 ) : ViewModel() {
 
     var categoryID: Int = -1
 
-    val labels: SharedFlow<CategoryOfSearchFilterEditModel> by lazy {
-        searchFilterRepository.getCategoryEdit(categoryID = categoryID).shareIn(
+    val labels: SharedFlow<State<CategoryOfSearchFilterEditModel>> by lazy {
+        searchFilterUseCase.getCategoryEdit(categoryID = categoryID).shareIn(
             viewModelScope, SharingStarted.WhileSubscribed(stopTimeoutMillis = 5000), 1
         )
     }
@@ -33,11 +36,11 @@ class SearchFilterCategoryViewModel @Inject constructor(
     }
 
     fun reset() {
-        searchFilterRepository.resetCategory(categoryID = categoryID)
+        searchFilterUseCase.resetCategory(categoryID = categoryID)
     }
 
-    fun updateLabel(id: Int, isSelected: Boolean) {
-        searchFilterRepository.updateLabel(id, isSelected)
+    fun update(labels: List<LabelOfSearchFilterEditModel>) {
+        searchFilterRepository.updateLabels(labels = labels)
     }
 
     val category: SharedFlow<State<CategorySearchModel>> by lazy {

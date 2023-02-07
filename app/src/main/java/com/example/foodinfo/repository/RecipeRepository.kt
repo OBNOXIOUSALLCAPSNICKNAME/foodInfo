@@ -1,6 +1,8 @@
 package com.example.foodinfo.repository
 
 import androidx.paging.PagingData
+import com.example.foodinfo.local.dto.NutrientRecipeAttrDB
+import com.example.foodinfo.local.dto.RecipeAttrsDB
 import com.example.foodinfo.repository.model.*
 import com.example.foodinfo.utils.State
 import kotlinx.coroutines.flow.Flow
@@ -15,12 +17,15 @@ abstract class RecipeRepository : BaseRepository() {
 
     abstract fun getByFilter(query: String): Flow<PagingData<RecipeShortModel>>
 
-    abstract fun getByIdExtended(recipeID: String): Flow<State<RecipeExtendedModel>>
+    abstract fun getByIdExtended(
+        recipeID: String,
+        attrs: RecipeAttrsDB
+    ): Flow<State<RecipeExtendedModel>>
 
-
-    abstract fun getByIdLabels(recipeID: String): Flow<State<List<CategoryOfRecipeModel>>>
-
-    abstract fun getByIdNutrients(recipeID: String): Flow<State<List<NutrientOfRecipeModel>>>
+    abstract fun getByIdNutrients(
+        recipeID: String,
+        attrs: List<NutrientRecipeAttrDB>
+    ): Flow<State<List<NutrientOfRecipeModel>>>
 
     abstract fun getByIdIngredients(recipeID: String): Flow<State<List<RecipeIngredientModel>>>
 

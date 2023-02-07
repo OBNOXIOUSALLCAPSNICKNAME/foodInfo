@@ -23,8 +23,8 @@ data class RecipeFavoriteModel(
             oldItem: RecipeFavoriteModel, newItem: RecipeFavoriteModel
         ): Boolean {
             return oldItem.name == newItem.name &&
-                    oldItem.source == newItem.source &&
                     oldItem.calories == newItem.calories &&
+                    oldItem.source == newItem.source &&
                     oldItem.servings == newItem.servings &&
                     oldItem.previewURL == newItem.previewURL
         }

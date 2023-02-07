@@ -7,5 +7,5 @@ open class BasicOfSearchFilterExtendedDB(
     open val filterName: String,
     open val minValue: Float,
     open val maxValue: Float,
-    open val attrInfo: BasicRecipeAttrDB
+    open val attrInfo: BasicRecipeAttrDB?
 )

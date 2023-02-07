@@ -1,7 +1,7 @@
 package com.example.foodinfo.ui
 
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -9,11 +9,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.foodinfo.databinding.FragmentSearchFilterCategoryBinding
 import com.example.foodinfo.ui.adapter.FilterCategoryEditAdapter
 import com.example.foodinfo.utils.appComponent
-import com.example.foodinfo.utils.repeatOn
+import com.example.foodinfo.utils.baseAnimation
 import com.example.foodinfo.utils.showDescriptionDialog
 import com.example.foodinfo.view_model.SearchFilterCategoryViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -35,6 +34,7 @@ class SearchFilterCategoryFragment : BaseFragment<FragmentSearchFilterCategoryBi
 
     private val onResetClickListener: () -> Unit = {
         viewModel.reset()
+        recyclerAdapter.notifyDataSetChanged()
     }
 
     private val onQuestionMarkClickListener: (Int) -> Unit = { infoID ->
@@ -50,9 +50,6 @@ class SearchFilterCategoryFragment : BaseFragment<FragmentSearchFilterCategoryBi
         }
     }
 
-    private val onItemClickListener: (Int, Boolean) -> Unit = { ID, isSelected ->
-        viewModel.updateLabel(ID, isSelected)
-    }
 
     override fun initUI() {
         viewModel.categoryID = args.categoryID
@@ -62,8 +59,7 @@ class SearchFilterCategoryFragment : BaseFragment<FragmentSearchFilterCategoryBi
 
         recyclerAdapter = FilterCategoryEditAdapter(
             requireContext(),
-            onQuestionMarkClickListener,
-            onItemClickListener
+            onQuestionMarkClickListener
         )
 
         with(binding.rvLabels) {
@@ -76,16 +72,28 @@ class SearchFilterCategoryFragment : BaseFragment<FragmentSearchFilterCategoryBi
     }
 
     override fun subscribeUI() {
-        repeatOn(Lifecycle.State.STARTED) {
-            viewModel.labels.collectLatest { category ->
+        observeData(
+            dataFlow = viewModel.labels,
+            onInitStart = {
+                binding.rvLabels.isVisible = false
+            },
+            onInitComplete = {
+                binding.rvLabels.isVisible = true
+                binding.rvLabels.baseAnimation()
+            },
+            loadingHandlerDelegate = {
+                binding.pbContent.isVisible = true
+            },
+            successHandlerDelegate = { category ->
                 recyclerAdapter.submitList(category.labels)
+                binding.pbContent.isVisible = false
             }
-        }
+        )
 
         observeData(
             dataFlow = viewModel.category,
-            successHandlerDelegate = { category ->
-                binding.tvHeader.text = category.name
+            successHandlerDelegate = { categoryInfo ->
+                binding.tvHeader.text = categoryInfo.name
             }
         )
     }

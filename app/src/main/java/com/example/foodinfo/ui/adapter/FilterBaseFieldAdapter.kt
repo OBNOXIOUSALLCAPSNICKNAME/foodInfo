@@ -11,8 +11,7 @@ import com.example.foodinfo.ui.view_holder.FilterBaseFieldViewHolder
 
 
 class FilterBaseFieldAdapter(
-    context: Context,
-    private val onValueChangedCallback: (Int, Float, Float) -> Unit
+    context: Context
 ) : ListAdapter<BasicOfSearchFilterEditModel, ViewHolder>(BasicOfSearchFilterEditModel.ItemCallBack) {
 
     private val layoutInflater = LayoutInflater.from(context)
@@ -20,8 +19,7 @@ class FilterBaseFieldAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return FilterBaseFieldViewHolder(
-            RvItemFilterInputBaseFieldBinding.inflate(layoutInflater, parent, false),
-            onValueChangedCallback
+            RvItemFilterInputBaseFieldBinding.inflate(layoutInflater, parent, false)
         )
     }
 

@@ -1,7 +1,6 @@
 package com.example.foodinfo.ui
 
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -11,7 +10,6 @@ import com.example.foodinfo.databinding.FragmentSearchLabelBinding
 import com.example.foodinfo.ui.adapter.SearchRecipeAdapter
 import com.example.foodinfo.ui.decorator.GridItemDecoration
 import com.example.foodinfo.utils.appComponent
-import com.example.foodinfo.utils.repeatOn
 import com.example.foodinfo.utils.showDescriptionDialog
 import com.example.foodinfo.view_model.SearchLabelViewModel
 import kotlinx.coroutines.Dispatchers
@@ -100,8 +98,12 @@ class SearchLabelFragment : BaseFragment<FragmentSearchLabelBinding>(
     }
 
     override fun subscribeUI() {
-        repeatOn(Lifecycle.State.STARTED) {
-            viewModel.recipes.collectLatest(recyclerAdapter::submitData)
-        }
+        observeData(
+            dataFlow = viewModel.filterQuery,
+            successHandlerDelegate = { query ->
+                viewModel.query = query
+                viewModel.recipes.collectLatest(recyclerAdapter::submitData)
+            }
+        )
     }
 }

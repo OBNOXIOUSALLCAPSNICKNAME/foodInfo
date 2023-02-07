@@ -9,13 +9,13 @@ import kotlinx.coroutines.flow.Flow
 
 
 @Dao
-interface SearchFilterDAORoom : SearchFilterDAO {
+abstract class SearchFilterDAORoom : SearchFilterDAO {
     @Transaction
     @Query(
         "SELECT * FROM ${LabelOfSearchFilterDB.TABLE_NAME} WHERE " +
                 "${LabelOfSearchFilterDB.Columns.FILTER_NAME} LIKE '%' || :filterName || '%'"
     )
-    fun getLabelsPOJO(filterName: String): List<LabelOfSearchFilterExtendedPOJO>
+    abstract fun getLabelsPOJO(filterName: String): List<LabelOfSearchFilterExtendedPOJO>
 
     override fun getLabels(filterName: String): List<LabelOfSearchFilterExtendedDB> {
         return getLabelsPOJO(filterName)
@@ -26,7 +26,7 @@ interface SearchFilterDAORoom : SearchFilterDAO {
         "SELECT * FROM ${NutrientOfSearchFilterDB.TABLE_NAME} WHERE " +
                 "${NutrientOfSearchFilterDB.Columns.FILTER_NAME} LIKE '%' || :filterName || '%'"
     )
-    fun getNutrientsPOJO(filterName: String): List<NutrientOfSearchFilterExtendedPOJO>
+    abstract fun getNutrientsPOJO(filterName: String): List<NutrientOfSearchFilterExtendedPOJO>
 
     override fun getNutrients(filterName: String): List<NutrientOfSearchFilterExtendedDB> {
         return getNutrientsPOJO(filterName)
@@ -37,10 +37,21 @@ interface SearchFilterDAORoom : SearchFilterDAO {
         "SELECT * FROM ${BasicOfSearchFilterDB.TABLE_NAME} WHERE " +
                 "${BasicOfSearchFilterDB.Columns.FILTER_NAME} LIKE '%' || :filterName || '%'"
     )
-    fun getBasicsPOJO(filterName: String): List<BasicOfSearchFilterExtendedPOJO>
+    abstract fun getBasicsPOJO(filterName: String): List<BasicOfSearchFilterExtendedPOJO>
 
     override fun getBasics(filterName: String): List<BasicOfSearchFilterExtendedDB> {
         return getBasicsPOJO(filterName)
+    }
+
+    @Transaction
+    @Query(
+        "SELECT * FROM ${SearchFilterDB.TABLE_NAME} WHERE " +
+                "${SearchFilterDB.Columns.NAME} LIKE '%' || :filterName || '%'"
+    )
+    abstract fun getFilterExtendedPOJO(filterName: String): SearchFilterExtendedPOJO
+
+    override fun getFilterExtended(filterName: String): SearchFilterExtendedDB {
+        return getFilterExtendedPOJO(filterName)
     }
 
 
@@ -49,7 +60,7 @@ interface SearchFilterDAORoom : SearchFilterDAO {
         "SELECT * FROM ${LabelOfSearchFilterDB.TABLE_NAME} WHERE " +
                 "${LabelOfSearchFilterDB.Columns.FILTER_NAME} LIKE '%' || :filterName || '%'"
     )
-    fun observeLabelsPOJO(filterName: String): Flow<List<LabelOfSearchFilterExtendedPOJO>>
+    abstract fun observeLabelsPOJO(filterName: String): Flow<List<LabelOfSearchFilterExtendedPOJO>>
 
     override fun observeLabels(filterName: String): Flow<List<LabelOfSearchFilterExtendedDB>> {
         return observeLabelsPOJO(filterName)
@@ -60,7 +71,7 @@ interface SearchFilterDAORoom : SearchFilterDAO {
         "SELECT * FROM ${NutrientOfSearchFilterDB.TABLE_NAME} WHERE " +
                 "${NutrientOfSearchFilterDB.Columns.FILTER_NAME} LIKE '%' || :filterName || '%'"
     )
-    fun observeNutrientsPOJO(filterName: String): Flow<List<NutrientOfSearchFilterExtendedPOJO>>
+    abstract fun observeNutrientsPOJO(filterName: String): Flow<List<NutrientOfSearchFilterExtendedPOJO>>
 
     override fun observeNutrients(filterName: String): Flow<List<NutrientOfSearchFilterExtendedDB>> {
         return observeNutrientsPOJO(filterName)
@@ -71,7 +82,7 @@ interface SearchFilterDAORoom : SearchFilterDAO {
         "SELECT * FROM ${SearchFilterDB.TABLE_NAME} WHERE " +
                 "${SearchFilterDB.Columns.NAME} LIKE '%' || :filterName || '%'"
     )
-    fun observeFilterExtendedPOJO(filterName: String): Flow<SearchFilterExtendedPOJO>
+    abstract fun observeFilterExtendedPOJO(filterName: String): Flow<SearchFilterExtendedPOJO>
 
     override fun observeFilterExtended(filterName: String): Flow<SearchFilterExtendedDB> {
         return observeFilterExtendedPOJO(filterName)
@@ -79,16 +90,16 @@ interface SearchFilterDAORoom : SearchFilterDAO {
 
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insertFilterEntity(filter: SearchFilterEntity): Long
+    abstract fun insertFilterEntity(filter: SearchFilterEntity): Long
 
     @Insert
-    fun insertBasicsEntity(baseFields: List<BasicOfSearchFilterEntity>)
+    abstract fun insertBasicsEntity(baseFields: List<BasicOfSearchFilterEntity>)
 
     @Insert
-    fun insertLabelsEntity(labels: List<LabelOfSearchFilterEntity>)
+    abstract fun insertLabelsEntity(labels: List<LabelOfSearchFilterEntity>)
 
     @Insert
-    fun insertNutrientsEntity(nutrients: List<NutrientOfSearchFilterEntity>)
+    abstract fun insertNutrientsEntity(nutrients: List<NutrientOfSearchFilterEntity>)
 
 
     @Query(
@@ -97,14 +108,14 @@ interface SearchFilterDAORoom : SearchFilterDAO {
                 "${BasicOfSearchFilterDB.Columns.MAX_VALUE} = :maxValue " +
                 "WHERE ${BasicOfSearchFilterDB.Columns.ID} == :id"
     )
-    override fun updateBasic(id: Int, minValue: Float, maxValue: Float)
+    abstract override fun updateBasic(id: Int, minValue: Float, maxValue: Float)
 
     @Query(
         "UPDATE ${LabelOfSearchFilterDB.TABLE_NAME} SET " +
                 "${LabelOfSearchFilterDB.Columns.IS_SELECTED} = :isSelected " +
                 "WHERE ${LabelOfSearchFilterDB.Columns.ID} == :id"
     )
-    override fun updateLabel(id: Int, isSelected: Boolean)
+    abstract override fun updateLabel(id: Int, isSelected: Boolean)
 
     @Query(
         "UPDATE ${NutrientOfSearchFilterDB.TABLE_NAME} SET " +
@@ -112,28 +123,86 @@ interface SearchFilterDAORoom : SearchFilterDAO {
                 "${NutrientOfSearchFilterDB.Columns.MAX_VALUE} = :maxValue " +
                 "WHERE ${NutrientOfSearchFilterDB.Columns.ID} == :id"
     )
-    override fun updateNutrient(id: Int, minValue: Float, maxValue: Float)
+    abstract override fun updateNutrient(id: Int, minValue: Float, maxValue: Float)
 
 
     @Update
-    fun updateBasicsEntity(baseFields: List<BasicOfSearchFilterEntity>)
+    abstract fun updateBasicsEntity(baseFields: List<BasicOfSearchFilterEntity>)
 
     override fun updateBasics(basics: List<BasicOfSearchFilterDB>) {
         updateBasicsEntity(basics.map { BasicOfSearchFilterEntity.toEntity(it) })
     }
 
     @Update
-    fun updateLabelsEntity(labels: List<LabelOfSearchFilterEntity>)
+    abstract fun updateLabelsEntity(labels: List<LabelOfSearchFilterEntity>)
 
     override fun updateLabels(labels: List<LabelOfSearchFilterDB>) {
         updateLabelsEntity(labels.map { LabelOfSearchFilterEntity.toEntity(it) })
     }
 
     @Update
-    fun updateNutrientsEntity(nutrients: List<NutrientOfSearchFilterEntity>)
+    abstract fun updateNutrientsEntity(nutrients: List<NutrientOfSearchFilterEntity>)
 
     override fun updateNutrients(nutrients: List<NutrientOfSearchFilterDB>) {
         updateNutrientsEntity(nutrients.map { NutrientOfSearchFilterEntity.toEntity(it) })
+    }
+
+
+    @Transaction
+    override fun invalidateFilter(
+        filterName: String,
+        basics: List<BasicOfSearchFilterDB>?,
+        labels: List<LabelOfSearchFilterDB>?,
+        nutrients: List<NutrientOfSearchFilterDB>?
+    ) {
+        if (basics != null) {
+            deleteBasics(filterName)
+            insertBasicsEntity(basics.map { BasicOfSearchFilterEntity.toEntity(it) })
+        }
+        if (labels != null) {
+            deleteLabels(filterName)
+            insertLabelsEntity(labels.map { LabelOfSearchFilterEntity.toEntity(it) })
+        }
+        if (nutrients != null) {
+            deleteNutrients(filterName)
+            insertNutrientsEntity(nutrients.map { NutrientOfSearchFilterEntity.toEntity(it) })
+        }
+    }
+
+    @Query(
+        "DELETE FROM ${BasicOfSearchFilterDB.TABLE_NAME} WHERE " +
+                "${BasicOfSearchFilterDB.Columns.FILTER_NAME} LIKE :filterName"
+    )
+    abstract fun deleteBasics(filterName: String)
+
+    @Transaction
+    override fun invalidateBasics(filterName: String, basics: List<BasicOfSearchFilterDB>) {
+        deleteBasics(filterName)
+        insertBasicsEntity(basics.map { BasicOfSearchFilterEntity.toEntity(it) })
+    }
+
+    @Query(
+        "DELETE FROM ${LabelOfSearchFilterDB.TABLE_NAME} WHERE " +
+                "${LabelOfSearchFilterDB.Columns.FILTER_NAME} LIKE :filterName"
+    )
+    abstract fun deleteLabels(filterName: String)
+
+    @Transaction
+    override fun invalidateLabels(filterName: String, labels: List<LabelOfSearchFilterDB>) {
+        deleteLabels(filterName)
+        insertLabelsEntity(labels.map { LabelOfSearchFilterEntity.toEntity(it) })
+    }
+
+    @Query(
+        "DELETE FROM ${NutrientOfSearchFilterDB.TABLE_NAME} WHERE " +
+                "${NutrientOfSearchFilterDB.Columns.FILTER_NAME} LIKE :filterName"
+    )
+    abstract fun deleteNutrients(filterName: String)
+
+    @Transaction
+    override fun invalidateNutrients(filterName: String, nutrients: List<NutrientOfSearchFilterDB>) {
+        deleteNutrients(filterName)
+        insertNutrientsEntity(nutrients.map { NutrientOfSearchFilterEntity.toEntity(it) })
     }
 
 
@@ -142,18 +211,13 @@ interface SearchFilterDAORoom : SearchFilterDAO {
         filterName: String,
         basics: List<BasicOfSearchFilterDB>,
         labels: List<LabelOfSearchFilterDB>,
-        nutrients: List<NutrientOfSearchFilterDB>,
-        overwrite: Boolean
+        nutrients: List<NutrientOfSearchFilterDB>
     ) {
         val success = insertFilterEntity(SearchFilterEntity(name = filterName))
         if (success > 0) {
             insertBasicsEntity(basics.map { BasicOfSearchFilterEntity.toEntity(it) })
             insertLabelsEntity(labels.map { LabelOfSearchFilterEntity.toEntity(it) })
             insertNutrientsEntity(nutrients.map { NutrientOfSearchFilterEntity.toEntity(it) })
-        } else if (overwrite) {
-            updateBasics(basics)
-            updateLabels(labels)
-            updateNutrients(nutrients)
         }
     }
 }

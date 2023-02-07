@@ -26,7 +26,16 @@ fun LabelRecipeAttrDB.toModelSearch(): LabelSearchModel {
 fun LabelOfRecipeExtendedDB.toModelShort(): LabelShortModel {
     return LabelShortModel(
         infoID = this.infoID,
-        name = this.attrInfo.name
+        name = this.attrInfo!!.name
+    )
+}
+
+fun LabelOfSearchFilterExtendedDB.toDB(): LabelOfSearchFilterDB {
+    return LabelOfSearchFilterDB(
+        ID = this.ID,
+        filterName = this.filterName,
+        infoID = this.infoID,
+        isSelected = this.isSelected
     )
 }
 
@@ -34,7 +43,7 @@ fun LabelOfSearchFilterExtendedDB.toModelEdit(): LabelOfSearchFilterEditModel {
     return LabelOfSearchFilterEditModel(
         ID = this.ID,
         infoID = this.infoID,
-        name = this.attrInfo.name,
+        name = this.attrInfo!!.name,
         isSelected = this.isSelected
     )
 }
@@ -42,12 +51,12 @@ fun LabelOfSearchFilterExtendedDB.toModelEdit(): LabelOfSearchFilterEditModel {
 fun LabelOfSearchFilterExtendedDB.toModelShort(): LabelShortModel {
     return LabelShortModel(
         infoID = this.infoID,
-        name = this.attrInfo.name
+        name = this.attrInfo!!.name
     )
 }
 
 
-fun LabelOfSearchFilterEditModel.toDB(filterName: String, category: String): LabelOfSearchFilterDB {
+fun LabelOfSearchFilterEditModel.toDB(filterName: String): LabelOfSearchFilterDB {
     return LabelOfSearchFilterDB(
         ID = this.ID,
         filterName = filterName,
@@ -55,6 +64,24 @@ fun LabelOfSearchFilterEditModel.toDB(filterName: String, category: String): Lab
         isSelected = this.isSelected
     )
 }
+
+fun LabelRecipeAttrDB.toFilterDefault(filterName: String): LabelOfSearchFilterDB {
+    return LabelOfSearchFilterDB(
+        filterName = filterName,
+        infoID = this.ID,
+        isSelected = false
+    )
+}
+
+fun LabelRecipeAttrDB.toFilter(label: LabelOfSearchFilterExtendedDB): LabelOfSearchFilterDB {
+    return LabelOfSearchFilterDB(
+        ID = label.ID,
+        filterName = label.filterName,
+        infoID = this.ID,
+        isSelected = label.isSelected
+    )
+}
+
 
 fun LabelOfRecipeNetwork.toDB(): LabelOfRecipeDB {
     throw java.lang.NullPointerException() //TODO implement conversion

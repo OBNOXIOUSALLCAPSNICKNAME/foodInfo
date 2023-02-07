@@ -27,8 +27,11 @@ data class NutrientOfRecipeModel(
             oldItem: NutrientOfRecipeModel,
             newItem: NutrientOfRecipeModel
         ): Boolean {
-            return oldItem.name == newItem.name &&
+            return oldItem.infoID == newItem.infoID &&
+                    oldItem.name == newItem.name &&
+                    oldItem.measure == newItem.measure &&
                     oldItem.totalWeight == newItem.totalWeight &&
+                    oldItem.dailyWeight == newItem.dailyWeight &&
                     oldItem.dailyPercent == newItem.dailyPercent
         }
     }

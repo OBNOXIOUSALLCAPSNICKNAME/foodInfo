@@ -7,6 +7,8 @@ import androidx.paging.PagingData
 import androidx.paging.map
 import androidx.sqlite.db.SimpleSQLiteQuery
 import com.example.foodinfo.local.dao.RecipeDAO
+import com.example.foodinfo.local.dto.NutrientRecipeAttrDB
+import com.example.foodinfo.local.dto.RecipeAttrsDB
 import com.example.foodinfo.remote.api.RecipeAPI
 import com.example.foodinfo.repository.RecipeRepository
 import com.example.foodinfo.repository.mapper.*
@@ -56,33 +58,28 @@ class RecipeRepositoryImpl @Inject constructor(
         ).flow.map { pagingData -> pagingData.map { it.toModelShort() } }.flowOn(Dispatchers.IO)
     }
 
-    override fun getByIdExtended(recipeID: String): Flow<State<RecipeExtendedModel>> {
-        return getLatest(
+    override fun getByIdExtended(
+        recipeID: String,
+        attrs: RecipeAttrsDB
+    ): Flow<State<RecipeExtendedModel>> {
+        return getData(
             context = context,
-            fetchRemoteDelegate = { recipeAPI.getRecipeExtended(recipeID) },
-            fetchLocalFlowDelegate = { recipeDAO.getByIdExtended(recipeID) },
+            remoteDataProvider = { recipeAPI.getRecipeExtended(recipeID, attrs) },
+            localDataFlowProvider = { recipeDAO.getByIdExtended(recipeID) },
             updateLocalDelegate = { recipeDAO.addRecipeExtended(it) },
             mapRemoteToLocalDelegate = { it!!.toDB() },
             mapLocalToModelDelegate = { it.toModelExtended() }
         )
     }
 
-    override fun getByIdLabels(recipeID: String): Flow<State<List<CategoryOfRecipeModel>>> {
-        return getLatest(
+    override fun getByIdNutrients(
+        recipeID: String,
+        attrs: List<NutrientRecipeAttrDB>
+    ): Flow<State<List<NutrientOfRecipeModel>>> {
+        return getData(
             context = context,
-            fetchRemoteDelegate = { recipeAPI.getLabels(recipeID) },
-            fetchLocalFlowDelegate = { recipeDAO.getLabels(recipeID) },
-            updateLocalDelegate = { recipeDAO.addLabels(it) },
-            mapRemoteToLocalDelegate = { it.map { label -> label.toDB() } },
-            mapLocalToModelDelegate = { it.toModelRecipe() }
-        )
-    }
-
-    override fun getByIdNutrients(recipeID: String): Flow<State<List<NutrientOfRecipeModel>>> {
-        return getLatest(
-            context = context,
-            fetchRemoteDelegate = { recipeAPI.getNutrients(recipeID) },
-            fetchLocalFlowDelegate = { recipeDAO.getNutrients(recipeID) },
+            remoteDataProvider = { recipeAPI.getNutrients(recipeID, attrs) },
+            localDataFlowProvider = { recipeDAO.getNutrients(recipeID) },
             updateLocalDelegate = { recipeDAO.addNutrients(it) },
             mapRemoteToLocalDelegate = { it.map { nutrient -> nutrient.toDB() } },
             mapLocalToModelDelegate = { it.map { nutrient -> nutrient.toModel() } }
@@ -90,10 +87,10 @@ class RecipeRepositoryImpl @Inject constructor(
     }
 
     override fun getByIdIngredients(recipeID: String): Flow<State<List<RecipeIngredientModel>>> {
-        return getLatest(
+        return getData(
             context = context,
-            fetchRemoteDelegate = { recipeAPI.getIngredients(recipeID) },
-            fetchLocalFlowDelegate = { recipeDAO.getIngredients(recipeID) },
+            remoteDataProvider = { recipeAPI.getIngredients(recipeID) },
+            localDataFlowProvider = { recipeDAO.getIngredients(recipeID) },
             updateLocalDelegate = { recipeDAO.addIngredients(it) },
             mapRemoteToLocalDelegate = { it.map { ingredient -> ingredient.toDB() } },
             mapLocalToModelDelegate = { it.map { ingredient -> ingredient.toModel() } }

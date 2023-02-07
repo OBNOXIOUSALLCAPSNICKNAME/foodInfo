@@ -6,5 +6,5 @@ open class NutrientOfRecipeExtendedDB(
     open val recipeID: String,
     open val infoID: Int,
     open val value: Float,
-    open val attrInfo: NutrientRecipeAttrDB
+    open val attrInfo: NutrientRecipeAttrDB?
 )

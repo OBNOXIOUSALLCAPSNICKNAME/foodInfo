@@ -6,9 +6,10 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.example.foodinfo.repository.RecipeAttrRepository
 import com.example.foodinfo.repository.RecipeRepository
-import com.example.foodinfo.repository.SearchFilterRepository
 import com.example.foodinfo.repository.model.LabelHintModel
 import com.example.foodinfo.repository.model.RecipeShortModel
+import com.example.foodinfo.repository.use_case.SearchFilterUseCase
+import com.example.foodinfo.utils.State
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.shareIn
@@ -18,13 +19,19 @@ import javax.inject.Inject
 class SearchLabelViewModel @Inject constructor(
     private val recipeRepository: RecipeRepository,
     private val recipeAttrRepository: RecipeAttrRepository,
-    private val searchFilterRepository: SearchFilterRepository
+    private val searchFilterUseCase: SearchFilterUseCase
 ) : ViewModel() {
 
     var labelID: Int = -1
+    var query: String = ""
+
+    val filterQuery: SharedFlow<State<String>> by lazy {
+        searchFilterUseCase.getQueryByLabel(labelID)
+            .shareIn(viewModelScope, SharingStarted.WhileSubscribed(stopTimeoutMillis = 5000), 1)
+    }
 
     val recipes: SharedFlow<PagingData<RecipeShortModel>> by lazy {
-        recipeRepository.getByFilter(searchFilterRepository.getQueryByLabel(labelID))
+        recipeRepository.getByFilter(query)
             .cachedIn(viewModelScope)
             .shareIn(viewModelScope, SharingStarted.WhileSubscribed(stopTimeoutMillis = 5000), 1)
     }

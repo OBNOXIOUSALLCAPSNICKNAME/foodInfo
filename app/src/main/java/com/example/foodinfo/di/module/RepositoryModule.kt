@@ -6,6 +6,7 @@ import com.example.foodinfo.local.dao.RecipeDAO
 import com.example.foodinfo.local.dao.SearchFilterDAO
 import com.example.foodinfo.local.dao.SearchHistoryDAO
 import com.example.foodinfo.remote.api.RecipeAPI
+import com.example.foodinfo.remote.api.RecipeAttrAPI
 import com.example.foodinfo.repository.RecipeAttrRepository
 import com.example.foodinfo.repository.RecipeRepository
 import com.example.foodinfo.repository.SearchFilterRepository
@@ -14,6 +15,8 @@ import com.example.foodinfo.repository.impl.RecipeAttrRepositoryImpl
 import com.example.foodinfo.repository.impl.RecipeRepositoryImpl
 import com.example.foodinfo.repository.impl.SearchFilterRepositoryImpl
 import com.example.foodinfo.repository.impl.SearchHistoryRepositoryImpl
+import com.example.foodinfo.repository.use_case.RecipeUseCase
+import com.example.foodinfo.repository.use_case.SearchFilterUseCase
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -24,7 +27,7 @@ class RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideRepositoryRecipes(
+    fun provideRecipeRepository(
         context: Context,
         recipeDAO: RecipeDAO,
         recipeAPI: RecipeAPI
@@ -34,16 +37,16 @@ class RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideRepositorySearchFilter(
-        searchFilterDAO: SearchFilterDAO,
-        recipeAttrDao: RecipeAttrDAO,
+    fun provideSearchFilterRepository(
+        context: Context,
+        searchFilterDAO: SearchFilterDAO
     ): SearchFilterRepository {
-        return SearchFilterRepositoryImpl(searchFilterDAO, recipeAttrDao)
+        return SearchFilterRepositoryImpl(context, searchFilterDAO)
     }
 
     @Provides
     @Singleton
-    fun provideRepositorySearchInput(
+    fun provideSearchInputRepository(
         searchHistoryDAO: SearchHistoryDAO
     ): SearchHistoryRepository {
         return SearchHistoryRepositoryImpl(searchHistoryDAO)
@@ -51,10 +54,29 @@ class RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideRepositoryRepositoryRecipeFieldsInfo(
+    fun provideRecipeAttrRepository(
         context: Context,
-        recipeAttrDao: RecipeAttrDAO
+        recipeAttrDAO: RecipeAttrDAO,
+        recipeAttrAPI: RecipeAttrAPI,
     ): RecipeAttrRepository {
-        return RecipeAttrRepositoryImpl(context, recipeAttrDao)
+        return RecipeAttrRepositoryImpl(context, recipeAttrDAO, recipeAttrAPI)
+    }
+
+    @Provides
+    @Singleton
+    fun provideRecipeUseCase(
+        recipeAttrRepository: RecipeAttrRepository,
+        recipeRepository: RecipeRepository
+    ): RecipeUseCase {
+        return RecipeUseCase(recipeAttrRepository, recipeRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideSearchFilterUseCase(
+        recipeAttrRepository: RecipeAttrRepository,
+        searchFilterRepository: SearchFilterRepository
+    ): SearchFilterUseCase {
+        return SearchFilterUseCase(recipeAttrRepository, searchFilterRepository)
     }
 }

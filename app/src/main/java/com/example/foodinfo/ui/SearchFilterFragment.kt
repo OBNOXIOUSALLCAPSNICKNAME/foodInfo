@@ -2,7 +2,6 @@ package com.example.foodinfo.ui
 
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -14,9 +13,8 @@ import com.example.foodinfo.ui.adapter.FilterNutrientsAdapter
 import com.example.foodinfo.ui.custom_view.NonScrollLinearLayoutManager
 import com.example.foodinfo.ui.decorator.ListItemDecoration
 import com.example.foodinfo.utils.appComponent
-import com.example.foodinfo.utils.repeatOn
+import com.example.foodinfo.utils.baseAnimation
 import com.example.foodinfo.view_model.SearchFilterViewModel
-import kotlinx.coroutines.flow.collectLatest
 
 
 class SearchFilterFragment : BaseFragment<FragmentSearchFilterBinding>(
@@ -37,6 +35,11 @@ class SearchFilterFragment : BaseFragment<FragmentSearchFilterBinding>(
 
     private val onResetClickListener: () -> Unit = {
         viewModel.reset()
+        recyclerAdapterBaseFields.notifyDataSetChanged()
+    }
+
+    private val onUpdateClickListener: () -> Unit = {
+        viewModel.update(recyclerAdapterBaseFields.currentList)
     }
 
     private val onNutrientsEditClickListener: () -> Unit = {
@@ -47,9 +50,6 @@ class SearchFilterFragment : BaseFragment<FragmentSearchFilterBinding>(
         )
     }
 
-    private val onBaseFieldValueChangedCallback: (Int, Float, Float) -> Unit = { id, minValue, maxValue ->
-        viewModel.updateField(id, minValue, maxValue)
-    }
 
     private val onCategoryChangedCallback: (Int) -> Unit = { categoryID ->
         findNavController().navigate(
@@ -78,10 +78,7 @@ class SearchFilterFragment : BaseFragment<FragmentSearchFilterBinding>(
             onNutrientsEditClickListener()
         }
 
-        recyclerAdapterBaseFields = FilterBaseFieldAdapter(
-            requireContext(),
-            onBaseFieldValueChangedCallback
-        )
+        recyclerAdapterBaseFields = FilterBaseFieldAdapter(requireContext())
         with(binding.rvBaseFields) {
             adapter = recyclerAdapterBaseFields
             layoutManager = NonScrollLinearLayoutManager(context).also {
@@ -135,10 +132,21 @@ class SearchFilterFragment : BaseFragment<FragmentSearchFilterBinding>(
     }
 
     override fun subscribeUI() {
-        repeatOn(Lifecycle.State.STARTED) {
-            viewModel.filter.collectLatest { filter ->
+        observeData(
+            dataFlow = viewModel.filter,
+            onInitStart = {
+                binding.svContent.isVisible = false
+            },
+            onInitComplete = {
+                binding.svContent.isVisible = true
+                binding.svContent.baseAnimation()
+            },
+            loadingHandlerDelegate = {
+                binding.pbContent.isVisible = true
+            },
+            successHandlerDelegate = { filter ->
                 recyclerAdapterCategories.submitList(filter.categories)
-                recyclerAdapterBaseFields.submitList(filter.baseFields)
+                recyclerAdapterBaseFields.submitList(filter.basics)
                 if (filter.nutrients.isEmpty()) {
                     binding.rvNutrients.isVisible = false
                     binding.tvNutrientsNoData.isVisible = true
@@ -147,7 +155,15 @@ class SearchFilterFragment : BaseFragment<FragmentSearchFilterBinding>(
                     binding.tvNutrientsNoData.isVisible = false
                     recyclerAdapterNutrients.submitList(filter.nutrients)
                 }
+                binding.pbContent.isVisible = false
+            },
+            onRefreshStart = {
+                binding.svContent.isVisible = false
+            },
+            onRefreshComplete = {
+                binding.svContent.isVisible = true
+                binding.svContent.baseAnimation()
             }
-        }
+        )
     }
 }

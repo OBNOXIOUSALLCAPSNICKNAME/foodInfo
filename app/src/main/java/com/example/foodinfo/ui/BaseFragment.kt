@@ -1,6 +1,7 @@
 package com.example.foodinfo.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -53,11 +54,11 @@ abstract class BaseFragment<VB : ViewBinding>(
      * and will be shown to user before this block is called and can lead to unwanted UI appearance.
      * Does nothing by default
      * @param successHandlerDelegate Calls when data state is [State.Success]. (e.g. initialize
-     * UI with passed data). Does nothing by default
+     * UI with passed data and hide spinner). Does nothing by default
      * @param onInitStart Calls before before data collection starts. (e.g. hide all UI).
      * Does nothing by default
-     * @param onInitComplete Calls after the first call of loadingHandlerDelegate. (e.g. hide spinner and
-     * start initialization animation). Does nothing by default
+     * @param onInitComplete Calls after the first call of loadingHandlerDelegate. (e.g. start initialization
+     * animation). Does nothing by default
      * @param onRefreshStart Calls before loadingHandlerDelegate (every time except first
      * loadingHandlerDelegate call). (e.g. hide UI and determine which part of data was updated to start
      * proper refresh animation. Just like payloads in DiffUtil). Does nothing by default
@@ -69,7 +70,7 @@ abstract class BaseFragment<VB : ViewBinding>(
         root: View = binding.root,
         errorHandlerDelegate: (View, String, Exception) -> Unit = this::defaultErrorHandler,
         loadingHandlerDelegate: () -> Unit = {},
-        successHandlerDelegate: (T) -> Unit = {},
+        successHandlerDelegate: suspend (T) -> Unit = {},
         onInitStart: () -> Unit = {},
         onInitComplete: (T) -> Unit = {},
         onRefreshStart: (T) -> Unit = {},
@@ -79,6 +80,7 @@ abstract class BaseFragment<VB : ViewBinding>(
             onInitStart()
             var isInitialized = false
             dataFlow.distinctUntilChanged { old, new -> old.equalState(new) }.collectLatest { data ->
+                Log.d("123", "${data}")
                 when (data) {
                     is State.Error   -> {
                         errorHandlerDelegate(root, data.message, data.error)

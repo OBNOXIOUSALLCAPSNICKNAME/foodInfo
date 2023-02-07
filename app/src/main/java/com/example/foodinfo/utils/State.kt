@@ -12,7 +12,11 @@ sealed class State<T> {
                 this.message == other.message && this.error.javaClass == other.error.javaClass
             }
             this is Success && other is Success -> {
-                this.data == other.data
+                if (this.data is Collection<*> && other.data is Collection<*>) {
+                    this.data.toSet() == other.data.toSet()
+                } else {
+                    this.data == other.data
+                }
             }
             else                                -> {
                 this.javaClass == other.javaClass

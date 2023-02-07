@@ -3,7 +3,9 @@ package com.example.foodinfo.repository.impl
 import android.content.Context
 import com.example.foodinfo.local.dao.RecipeAttrDAO
 import com.example.foodinfo.local.dto.*
+import com.example.foodinfo.remote.api.RecipeAttrAPI
 import com.example.foodinfo.repository.RecipeAttrRepository
+import com.example.foodinfo.repository.mapper.toDB
 import com.example.foodinfo.repository.mapper.toModel
 import com.example.foodinfo.repository.mapper.toModelHint
 import com.example.foodinfo.repository.mapper.toModelSearch
@@ -18,102 +20,113 @@ import javax.inject.Inject
 
 class RecipeAttrRepositoryImpl @Inject constructor(
     private val context: Context,
-    private val recipeAttrDao: RecipeAttrDAO,
-    //    private val recipeAPI: RecipeAPI
+    private val recipeAttrDAO: RecipeAttrDAO,
+    private val recipeAttrAPI: RecipeAttrAPI
 ) : RecipeAttrRepository() {
     override fun getNutrientHint(ID: Int): NutrientHintModel {
-        return recipeAttrDao.getNutrient(ID).toModelHint()
+        return recipeAttrDAO.getNutrient(ID).toModelHint()
     }
 
     override fun getLabelHint(ID: Int): LabelHintModel {
-        return recipeAttrDao.getLabel(ID).toModelHint()
+        return recipeAttrDAO.getLabel(ID).toModelHint()
     }
 
     override fun getLabelsSearch(categoryID: Int): Flow<State<List<LabelSearchModel>>> {
-        return getLatest(
+        return getData(
             context = context,
-            fetchRemoteDelegate = { },
-            fetchLocalOnceDelegate = { recipeAttrDao.getCategoryLabels(categoryID) },
-            updateLocalDelegate = { },
-            mapRemoteToLocalDelegate = { },
+            remoteDataProvider = { recipeAttrAPI.getCategoryLabels(categoryID) },
+            localDataProvider = { recipeAttrDAO.getCategoryLabels(categoryID) },
+            updateLocalDelegate = { recipeAttrDAO.addLabels(it) },
+            mapRemoteToLocalDelegate = { it.map { label -> label.toDB() } },
             mapLocalToModelDelegate = { it.map { label -> label.toModelSearch() } }
         )
     }
 
     override fun getCategory(ID: Int): Flow<State<CategorySearchModel>> {
-        return getLatest(
+        return getData(
             context = context,
-            fetchRemoteDelegate = { },
-            fetchLocalOnceDelegate = { recipeAttrDao.getCategory(ID) },
-            updateLocalDelegate = { },
-            mapRemoteToLocalDelegate = { },
+            remoteDataProvider = { recipeAttrAPI.getCategory(ID) },
+            localDataProvider = { recipeAttrDAO.getCategory(ID) },
+            updateLocalDelegate = { recipeAttrDAO.addCategories(listOf(it)) },
+            mapRemoteToLocalDelegate = { it.toDB() },
             mapLocalToModelDelegate = { it.toModel() }
         )
     }
 
     override fun getCategories(): Flow<State<List<CategorySearchModel>>> {
-        return getLatest(
+        return getData(
             context = context,
-            fetchRemoteDelegate = { },
-            fetchLocalOnceDelegate = { recipeAttrDao.getCategoriesAll() },
-            updateLocalDelegate = { },
-            mapRemoteToLocalDelegate = { },
+            remoteDataProvider = { recipeAttrAPI.getCategories() },
+            localDataProvider = { recipeAttrDAO.getCategoriesAll() },
+            updateLocalDelegate = { recipeAttrDAO.addCategories(it) },
+            mapRemoteToLocalDelegate = { it.map { category -> category.toDB() } },
             mapLocalToModelDelegate = { it.map { label -> label.toModel() } }
         )
     }
 
 
     override fun getBasicsDB(): Flow<State<List<BasicRecipeAttrDB>>> {
-        return getLatest(
+        return getData(
             context = context,
-            fetchRemoteDelegate = { },
-            fetchLocalOnceDelegate = { recipeAttrDao.getBasicsAll() },
-            updateLocalDelegate = { },
-            mapRemoteToLocalDelegate = { },
+            remoteDataProvider = { recipeAttrAPI.getBasics() },
+            localDataProvider = { recipeAttrDAO.getBasicsAll() },
+            updateLocalDelegate = { recipeAttrDAO.addBasics(it) },
+            mapRemoteToLocalDelegate = { it.map { basic -> basic.toDB() } },
             mapLocalToModelDelegate = { it }
         )
     }
 
     override fun getLabelsDB(): Flow<State<List<LabelRecipeAttrDB>>> {
-        return getLatest(
+        return getData(
             context = context,
-            fetchRemoteDelegate = { },
-            fetchLocalOnceDelegate = { recipeAttrDao.getLabelsAll() },
-            updateLocalDelegate = { },
-            mapRemoteToLocalDelegate = { },
+            remoteDataProvider = { recipeAttrAPI.getLabels() },
+            localDataProvider = { recipeAttrDAO.getLabelsAll() },
+            updateLocalDelegate = { recipeAttrDAO.addLabels(it) },
+            mapRemoteToLocalDelegate = { it.map { label -> label.toDB() } },
+            mapLocalToModelDelegate = { it }
+        )
+    }
+
+    override fun getLabelsExtendedDB(): Flow<State<List<LabelRecipeAttrExtendedDB>>> {
+        return getData(
+            context = context,
+            remoteDataProvider = { recipeAttrAPI.getLabels() },
+            localDataProvider = { recipeAttrDAO.getLabelsExtendedAll() },
+            updateLocalDelegate = { recipeAttrDAO.addLabels(it) },
+            mapRemoteToLocalDelegate = { it.map { label -> label.toDB() } },
             mapLocalToModelDelegate = { it }
         )
     }
 
     override fun getNutrientsDB(): Flow<State<List<NutrientRecipeAttrDB>>> {
-        return getLatest(
+        return getData(
             context = context,
-            fetchRemoteDelegate = { },
-            fetchLocalOnceDelegate = { recipeAttrDao.getNutrientsAll() },
-            updateLocalDelegate = { },
-            mapRemoteToLocalDelegate = { },
+            remoteDataProvider = { recipeAttrAPI.getNutrients() },
+            localDataProvider = { recipeAttrDAO.getNutrientsAll() },
+            updateLocalDelegate = { recipeAttrDAO.addNutrients(it) },
+            mapRemoteToLocalDelegate = { it.map { nutrient -> nutrient.toDB() } },
             mapLocalToModelDelegate = { it }
         )
     }
 
     override fun getCategoriesDB(): Flow<State<List<CategoryRecipeAttrDB>>> {
-        return getLatest(
+        return getData(
             context = context,
-            fetchRemoteDelegate = { },
-            fetchLocalOnceDelegate = { recipeAttrDao.getCategoriesAll() },
-            updateLocalDelegate = { },
-            mapRemoteToLocalDelegate = { },
+            remoteDataProvider = { recipeAttrAPI.getCategories() },
+            localDataProvider = { recipeAttrDAO.getCategoriesAll() },
+            updateLocalDelegate = { recipeAttrDAO.addCategories(it) },
+            mapRemoteToLocalDelegate = { it.map { category -> category.toDB() } },
             mapLocalToModelDelegate = { it }
         )
     }
 
     override fun getRecipeAttrsDB(): Flow<State<RecipeAttrsDB>> {
-        return getLatest(
+        return getData(
             context = context,
-            fetchRemoteDelegate = { },
-            fetchLocalOnceDelegate = { recipeAttrDao.getRecipeAttrs() },
-            updateLocalDelegate = { },
-            mapRemoteToLocalDelegate = { },
+            remoteDataProvider = { recipeAttrAPI.getRecipeAttrs() },
+            localDataProvider = { recipeAttrDAO.getRecipeAttrs() },
+            updateLocalDelegate = { recipeAttrDAO.addRecipeAttrs(it) },
+            mapRemoteToLocalDelegate = { it.toDB() },
             mapLocalToModelDelegate = { it }
         )
     }

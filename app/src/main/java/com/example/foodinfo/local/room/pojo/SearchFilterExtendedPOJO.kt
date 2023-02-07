@@ -17,7 +17,7 @@ data class SearchFilterExtendedPOJO(
         entityColumn = BasicOfSearchFilterDB.Columns.FILTER_NAME,
         entity = BasicOfSearchFilterEntity::class
     )
-    override val basic: List<BasicOfSearchFilterExtendedPOJO>,
+    override val basics: List<BasicOfSearchFilterExtendedPOJO>,
 
     @Relation(
         parentColumn = SearchFilterDB.Columns.NAME,
@@ -35,7 +35,7 @@ data class SearchFilterExtendedPOJO(
 
 ) : SearchFilterExtendedDB(
     name = name,
-    basic = basic,
+    basics = basics,
     labels = labels,
     nutrients = nutrients
 )
