@@ -31,7 +31,7 @@ fun List<LabelOfSearchFilterExtendedDB>.toModelFilterEdit(categoryID: Int): Cate
     )
 }
 
-fun List<LabelOfSearchFilterExtendedDB>.toModelFilterPreview(): List<CategoryOfSearchFilterPreviewModel> {
+fun List<LabelOfSearchFilterExtendedDB>.toModelPreview(): List<CategoryOfSearchFilterPreviewModel> {
     return this.groupBy { label -> label.attrInfo!!.categoryID }.entries.map { category ->
         CategoryOfSearchFilterPreviewModel(
             ID = category.key,

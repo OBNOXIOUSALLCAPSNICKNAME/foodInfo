@@ -137,7 +137,7 @@ class SearchFilterRepositoryImpl @Inject constructor(
     override fun createFilter(filterName: String, attrs: RecipeAttrsDB) {
         searchFilterDAO.insertFilter(
             filterName,
-            attrs.basics.map { it.toFilterDefault(filterName) },
+            attrs.basics.filter { it.tag != null }.map { it.toFilterDefault(filterName) },
             attrs.labels.map { it.toFilterDefault(filterName) },
             attrs.nutrients.map { it.toFilterDefault(filterName) }
         )
@@ -207,7 +207,7 @@ class SearchFilterRepositoryImpl @Inject constructor(
         attrs: List<BasicRecipeAttrDB>
     ): List<BasicOfSearchFilterDB>? {
         val basicsMap = basics.associateBy { it.infoID }
-        val basicsNew = attrs.map { basicAttr ->
+        val basicsNew = attrs.filter { it.tag != null }.map { basicAttr ->
             val basic = basicsMap[basicAttr.ID]
             if (basic != null) {
                 basicAttr.toFilter(basic)

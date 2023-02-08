@@ -18,8 +18,8 @@ fun SearchFilterModel.toDB(): SearchFilterDB {
 fun SearchFilterExtendedDB.toModelEdit(): SearchFilterEditModel {
     return SearchFilterEditModel(
         name = this.name,
-        basics = this.basics.map { it.toModelEdit() },
-        categories = this.labels.toModelFilterPreview(),
+        basics = this.basics.toModelEdit(),
+        categories = this.labels.toModelPreview(),
         nutrients = this.nutrients.toModelPreview()
     )
 }

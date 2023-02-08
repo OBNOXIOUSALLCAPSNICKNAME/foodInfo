@@ -156,13 +156,6 @@ class SearchFilterFragment : BaseFragment<FragmentSearchFilterBinding>(
                     recyclerAdapterNutrients.submitList(filter.nutrients)
                 }
                 binding.pbContent.isVisible = false
-            },
-            onRefreshStart = {
-                binding.svContent.isVisible = false
-            },
-            onRefreshComplete = {
-                binding.svContent.isVisible = true
-                binding.svContent.baseAnimation()
             }
         )
     }

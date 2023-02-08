@@ -6,8 +6,8 @@ import com.example.foodinfo.local.dto.BasicRecipeAttrDB
 import com.example.foodinfo.remote.dto.BasicRecipeAttrNetwork
 import com.example.foodinfo.repository.model.BasicOfSearchFilterEditModel
 import com.example.foodinfo.repository.model.filter_field.BasicOfFilterPreset
-import java.lang.Float
-import kotlin.String
+import kotlin.math.max
+import kotlin.math.min
 
 
 fun BasicOfSearchFilterExtendedDB.toDB(): BasicOfSearchFilterDB {
@@ -20,18 +20,20 @@ fun BasicOfSearchFilterExtendedDB.toDB(): BasicOfSearchFilterDB {
     )
 }
 
-fun BasicOfSearchFilterExtendedDB.toModelEdit(): BasicOfSearchFilterEditModel {
-    return BasicOfSearchFilterEditModel(
-        ID = this.ID,
-        infoID = this.attrInfo!!.ID,
-        name = this.attrInfo!!.name,
-        measure = this.attrInfo!!.measure,
-        stepSize = this.attrInfo!!.stepSize,
-        rangeMin = this.attrInfo!!.rangeMin,
-        rangeMax = this.attrInfo!!.rangeMax,
-        minValue = this.minValue,
-        maxValue = this.maxValue
-    )
+fun List<BasicOfSearchFilterExtendedDB>.toModelEdit(): List<BasicOfSearchFilterEditModel> {
+    return this.map { basic ->
+        BasicOfSearchFilterEditModel(
+            ID = basic.ID,
+            infoID = basic.attrInfo!!.ID,
+            name = basic.attrInfo!!.name,
+            measure = basic.attrInfo!!.measure,
+            stepSize = basic.attrInfo!!.stepSize,
+            rangeMin = basic.attrInfo!!.rangeMin,
+            rangeMax = basic.attrInfo!!.rangeMax,
+            minValue = basic.minValue,
+            maxValue = basic.maxValue
+        )
+    }
 }
 
 fun List<BasicOfSearchFilterExtendedDB>.toModelPreset(): List<BasicOfFilterPreset> {
@@ -68,8 +70,8 @@ fun BasicRecipeAttrDB.toFilter(basic: BasicOfSearchFilterExtendedDB): BasicOfSea
         ID = basic.ID,
         filterName = basic.filterName,
         infoID = this.ID,
-        minValue = Float.max(basic.minValue, this.rangeMin),
-        maxValue = Float.min(basic.maxValue, this.rangeMax)
+        minValue = max(basic.minValue, this.rangeMin),
+        maxValue = min(basic.maxValue, this.rangeMax)
     )
 }
 

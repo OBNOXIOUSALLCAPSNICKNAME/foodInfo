@@ -1,7 +1,6 @@
 package com.example.foodinfo.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -80,7 +79,6 @@ abstract class BaseFragment<VB : ViewBinding>(
             onInitStart()
             var isInitialized = false
             dataFlow.distinctUntilChanged { old, new -> old.equalState(new) }.collectLatest { data ->
-                Log.d("123", "${data}")
                 when (data) {
                     is State.Error   -> {
                         errorHandlerDelegate(root, data.message, data.error)
