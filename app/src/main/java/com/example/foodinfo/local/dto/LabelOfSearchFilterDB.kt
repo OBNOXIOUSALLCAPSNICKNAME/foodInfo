@@ -22,15 +22,13 @@ open class LabelOfSearchFilterDB(
 
     override fun equals(other: Any?): Boolean {
         return (other is LabelOfSearchFilterDB) &&
-                other.ID == this.ID &&
                 other.filterName == this.filterName &&
                 other.infoID == this.infoID &&
                 other.isSelected == this.isSelected
     }
 
     override fun hashCode(): Int {
-        var result = ID
-        result = 31 * result + filterName.hashCode()
+        var result = filterName.hashCode()
         result = 31 * result + infoID
         result = 31 * result + isSelected.hashCode()
         return result

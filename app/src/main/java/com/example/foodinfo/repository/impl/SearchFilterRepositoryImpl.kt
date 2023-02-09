@@ -189,27 +189,6 @@ class SearchFilterRepositoryImpl @Inject constructor(
     }
 
 
-    private fun verifyLabels(
-        filterName: String,
-        labels: List<LabelOfSearchFilterExtendedDB>,
-        attrs: List<LabelRecipeAttrDB>
-    ): List<LabelOfSearchFilterDB>? {
-        val labelsMap = labels.associateBy { it.infoID }
-        val labelsNew = attrs.map { labelAttr ->
-            val label = labelsMap[labelAttr.ID]
-            if (label != null) {
-                labelAttr.toFilter(label)
-            } else {
-                labelAttr.toFilterDefault(filterName)
-            }
-        }
-        return if (labelsNew.sortedBy { it.ID } != labels.map { it.toDB() }.sortedBy { it.ID }) {
-            labelsNew
-        } else {
-            null
-        }
-    }
-
     private fun verifyBasics(
         filterName: String,
         basics: List<BasicOfSearchFilterExtendedDB>,
@@ -226,6 +205,27 @@ class SearchFilterRepositoryImpl @Inject constructor(
         }
         return if (basicsNew.sortedBy { it.ID } != basics.map { it.toDB() }.sortedBy { it.ID }) {
             basicsNew
+        } else {
+            null
+        }
+    }
+
+    private fun verifyLabels(
+        filterName: String,
+        labels: List<LabelOfSearchFilterExtendedDB>,
+        attrs: List<LabelRecipeAttrDB>
+    ): List<LabelOfSearchFilterDB>? {
+        val labelsMap = labels.associateBy { it.infoID }
+        val labelsNew = attrs.map { labelAttr ->
+            val label = labelsMap[labelAttr.ID]
+            if (label != null) {
+                labelAttr.toFilter(label)
+            } else {
+                labelAttr.toFilterDefault(filterName)
+            }
+        }
+        return if (labelsNew.sortedBy { it.ID } != labels.map { it.toDB() }.sortedBy { it.ID }) {
+            labelsNew
         } else {
             null
         }
