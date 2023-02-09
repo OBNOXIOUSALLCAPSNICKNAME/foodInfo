@@ -94,6 +94,16 @@ fun NutrientOfSearchFilterEditModel.toDB(filterName: String): NutrientOfSearchFi
     )
 }
 
+fun NutrientOfSearchFilterExtendedDB.toDefault(): NutrientOfSearchFilterDB {
+    return NutrientOfSearchFilterDB(
+        ID = this.ID,
+        filterName = this.filterName,
+        infoID = this.infoID,
+        minValue = this.attrInfo!!.rangeMin,
+        maxValue = this.attrInfo!!.rangeMax
+    )
+}
+
 fun NutrientRecipeAttrDB.toFilterDefault(filterName: String): NutrientOfSearchFilterDB {
     return NutrientOfSearchFilterDB(
         filterName = filterName,

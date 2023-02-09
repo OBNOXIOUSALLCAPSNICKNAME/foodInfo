@@ -5,7 +5,10 @@ import com.example.foodinfo.local.dao.SearchFilterDAO
 import com.example.foodinfo.local.dto.*
 import com.example.foodinfo.repository.SearchFilterRepository
 import com.example.foodinfo.repository.mapper.*
-import com.example.foodinfo.repository.model.*
+import com.example.foodinfo.repository.model.CategoryOfSearchFilterEditModel
+import com.example.foodinfo.repository.model.NutrientOfSearchFilterEditModel
+import com.example.foodinfo.repository.model.SearchFilterEditModel
+import com.example.foodinfo.repository.model.SearchFilterPresetModel
 import com.example.foodinfo.repository.model.filter_field.CategoryOfFilterPreset
 import com.example.foodinfo.utils.FilterQueryBuilder
 import com.example.foodinfo.utils.State
@@ -143,40 +146,46 @@ class SearchFilterRepositoryImpl @Inject constructor(
         )
     }
 
-    override fun resetFilter(filterName: String, attrs: RecipeAttrsDB) {
-        searchFilterDAO.invalidateFilter(
-            filterName,
-            attrs.basics.map { it.toFilterDefault(filterName) },
-            attrs.labels.map { it.toFilterDefault(filterName) },
-            attrs.nutrients.map { it.toFilterDefault(filterName) }
+    override fun resetFilter(filterName: String) {
+        val filter = searchFilterDAO.getFilterExtended(filterName)
+        searchFilterDAO.updateFilter(
+            filter.basics.map { it.toDefault() },
+            filter.labels.map { it.toDefault() },
+            filter.nutrients.map { it.toDefault() }
         )
     }
 
-    override fun resetNutrients(filterName: String, attrs: List<NutrientRecipeAttrDB>) {
-        searchFilterDAO.invalidateNutrients(filterName, attrs.map { it.toFilterDefault(filterName) })
+    override fun resetNutrients(filterName: String) {
+        searchFilterDAO.updateNutrients(
+            searchFilterDAO.getNutrients(filterName).map { it.toDefault() }
+        )
     }
 
-    override fun resetBasics(filterName: String, attrs: List<BasicRecipeAttrDB>) {
-        searchFilterDAO.invalidateBasics(filterName, attrs.map { it.toFilterDefault(filterName) })
+    override fun resetBasics(filterName: String) {
+        searchFilterDAO.updateBasics(
+            searchFilterDAO.getBasics(filterName).map { it.toDefault() }
+        )
     }
 
-    override fun resetCategory(filterName: String, categoryID: Int, attrs: List<LabelRecipeAttrDB>) {
-        searchFilterDAO.invalidateLabels(
-            filterName, attrs.filter { it.categoryID == categoryID }.map { it.toFilterDefault(filterName) }
+    override fun resetCategory(filterName: String, categoryID: Int) {
+        searchFilterDAO.updateLabels(
+            searchFilterDAO.getLabels(filterName)
+                .filter { it.attrInfo!!.categoryID == categoryID }
+                .map { it.toDefault() }
         )
     }
 
 
-    override fun updateBasics(filterName: String, basics: List<BasicOfSearchFilterEditModel>) {
-        searchFilterDAO.updateBasics(basics.map { it.toDB(filterName) })
+    override fun updateBasic(id: Int, minValue: Float, maxValue: Float) {
+        searchFilterDAO.updateBasic(id, minValue, maxValue)
     }
 
-    override fun updateLabels(filterName: String, labels: List<LabelOfSearchFilterEditModel>) {
-        searchFilterDAO.updateLabels(labels.map { it.toDB(filterName) })
+    override fun updateNutrient(id: Int, minValue: Float, maxValue: Float) {
+        searchFilterDAO.updateNutrient(id, minValue, maxValue)
     }
 
-    override fun updateNutrients(filterName: String, nutrients: List<NutrientOfSearchFilterEditModel>) {
-        searchFilterDAO.updateNutrients(nutrients.map { it.toDB(filterName) })
+    override fun updateLabel(id: Int, isSelected: Boolean) {
+        searchFilterDAO.updateLabel(id, isSelected)
     }
 
 

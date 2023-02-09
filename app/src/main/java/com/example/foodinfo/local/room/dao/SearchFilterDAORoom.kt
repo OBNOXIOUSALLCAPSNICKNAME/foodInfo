@@ -126,6 +126,17 @@ abstract class SearchFilterDAORoom : SearchFilterDAO {
     abstract override fun updateNutrient(id: Int, minValue: Float, maxValue: Float)
 
 
+    @Transaction
+    override fun updateFilter(
+        basics: List<BasicOfSearchFilterDB>,
+        labels: List<LabelOfSearchFilterDB>,
+        nutrients: List<NutrientOfSearchFilterDB>
+    ) {
+        updateBasicsEntity(basics.map { BasicOfSearchFilterEntity.toEntity(it) })
+        updateLabelsEntity(labels.map { LabelOfSearchFilterEntity.toEntity(it) })
+        updateNutrientsEntity(nutrients.map { NutrientOfSearchFilterEntity.toEntity(it) })
+    }
+
     @Update
     abstract fun updateBasicsEntity(baseFields: List<BasicOfSearchFilterEntity>)
 

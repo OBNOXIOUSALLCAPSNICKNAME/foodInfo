@@ -14,11 +14,15 @@
         app:layout_constraintStart_toStartOf = "parent"
         app:layout_constraintTop_toTopOf = "parent" />
 
-    <ImageView
+    <TextView
         android:id = "@+id/btn_reset"
         style = "@style/ButtonEnd"
-        android:contentDescription = "@string/default_content_description"
-        android:src = "@drawable/ic_revert"
+        android:fontFamily = "@font/app_font_regular"
+        android:includeFontPadding = "false"
+        android:text = "@string/reset_text"
+        android:textAlignment = "textEnd"
+        android:textColor = "?appPrimaryColor"
+        android:textSize = "@dimen/text_18"
         app:layout_constraintEnd_toEndOf = "parent"
         app:layout_constraintTop_toTopOf = "parent" />
 

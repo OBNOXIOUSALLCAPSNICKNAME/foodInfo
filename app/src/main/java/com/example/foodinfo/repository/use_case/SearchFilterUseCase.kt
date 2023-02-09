@@ -60,43 +60,4 @@ class SearchFilterUseCase @Inject constructor(
             dataFlowProvider = { searchFilterRepository.getFilterEdit(filterName, it) }
         )
     }
-
-
-    fun createFilter(
-        filterName: String = SearchFilterDB.DEFAULT_NAME
-    ) {
-        setResolved(
-            attrFlow = recipeAttrRepository.getRecipeAttrsDB(),
-            updateDataDelegate = { searchFilterRepository.createFilter(filterName, it) }
-        )
-    }
-
-
-    fun resetFilter(
-        filterName: String = SearchFilterDB.DEFAULT_NAME
-    ): Exception? {
-        return setResolved(
-            attrFlow = recipeAttrRepository.getRecipeAttrsDB(),
-            updateDataDelegate = { searchFilterRepository.resetFilter(filterName, it) }
-        )
-    }
-
-    fun resetCategory(
-        filterName: String = SearchFilterDB.DEFAULT_NAME,
-        categoryID: Int,
-    ): Exception? {
-        return setResolved(
-            attrFlow = recipeAttrRepository.getLabelsDB(),
-            updateDataDelegate = { searchFilterRepository.resetCategory(filterName, categoryID, it) }
-        )
-    }
-
-    fun resetNutrients(
-        filterName: String = SearchFilterDB.DEFAULT_NAME
-    ): Exception? {
-        return setResolved(
-            attrFlow = recipeAttrRepository.getNutrientsDB(),
-            updateDataDelegate = { searchFilterRepository.resetNutrients(filterName, it) }
-        )
-    }
 }

@@ -5,12 +5,14 @@ import com.example.foodinfo.repository.model.BasicOfSearchFilterEditModel
 
 
 class FilterBaseFieldViewHolder(
-    private val binding: RvItemFilterInputBaseFieldBinding
+    private val binding: RvItemFilterInputBaseFieldBinding,
+    onValueChangedCallback: (Int, Float, Float) -> Unit
 ) : BaseViewHolder<RvItemFilterInputBaseFieldBinding, BasicOfSearchFilterEditModel>(binding) {
 
     private val onValueChangedCallback: (Float, Float) -> Unit = { minValue, maxValue ->
-        item.maxValue = maxValue
-        item.minValue = minValue
+        if (item.minValue != minValue || item.maxValue != maxValue) {
+            onValueChangedCallback.invoke(item.ID, minValue, maxValue)
+        }
     }
 
     init {

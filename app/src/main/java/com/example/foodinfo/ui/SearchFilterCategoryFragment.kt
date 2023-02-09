@@ -34,7 +34,10 @@ class SearchFilterCategoryFragment : BaseFragment<FragmentSearchFilterCategoryBi
 
     private val onResetClickListener: () -> Unit = {
         viewModel.reset()
-        recyclerAdapter.notifyDataSetChanged()
+    }
+
+    private val onItemClickListener: (Int, Boolean) -> Unit = { ID, isSelected ->
+        viewModel.update(ID, isSelected)
     }
 
     private val onQuestionMarkClickListener: (Int) -> Unit = { infoID ->
@@ -53,13 +56,15 @@ class SearchFilterCategoryFragment : BaseFragment<FragmentSearchFilterCategoryBi
 
     override fun initUI() {
         viewModel.categoryID = args.categoryID
+        viewModel.filterName = args.searchFilterName
 
         binding.btnBack.setOnClickListener { onBackClickListener() }
         binding.btnReset.setOnClickListener { onResetClickListener() }
 
         recyclerAdapter = FilterCategoryEditAdapter(
             requireContext(),
-            onQuestionMarkClickListener
+            onQuestionMarkClickListener,
+            onItemClickListener
         )
 
         with(binding.rvLabels) {

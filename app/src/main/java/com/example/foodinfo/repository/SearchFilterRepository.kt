@@ -1,7 +1,12 @@
 package com.example.foodinfo.repository
 
-import com.example.foodinfo.local.dto.*
-import com.example.foodinfo.repository.model.*
+import com.example.foodinfo.local.dto.LabelRecipeAttrDB
+import com.example.foodinfo.local.dto.NutrientRecipeAttrDB
+import com.example.foodinfo.local.dto.RecipeAttrsDB
+import com.example.foodinfo.local.dto.SearchFilterDB
+import com.example.foodinfo.repository.model.CategoryOfSearchFilterEditModel
+import com.example.foodinfo.repository.model.NutrientOfSearchFilterEditModel
+import com.example.foodinfo.repository.model.SearchFilterEditModel
 import com.example.foodinfo.utils.ErrorMessages
 import com.example.foodinfo.utils.State
 import kotlinx.coroutines.flow.Flow
@@ -40,42 +45,23 @@ abstract class SearchFilterRepository : BaseRepository() {
         attrs: RecipeAttrsDB
     )
 
-    abstract fun resetFilter(
-        filterName: String = SearchFilterDB.DEFAULT_NAME,
-        attrs: RecipeAttrsDB
-    )
+    abstract fun resetFilter(filterName: String = SearchFilterDB.DEFAULT_NAME)
 
-    abstract fun resetBasics(
-        filterName: String = SearchFilterDB.DEFAULT_NAME,
-        attrs: List<BasicRecipeAttrDB>
-    )
+    abstract fun resetBasics(filterName: String = SearchFilterDB.DEFAULT_NAME)
 
-    abstract fun resetNutrients(
-        filterName: String = SearchFilterDB.DEFAULT_NAME,
-        attrs: List<NutrientRecipeAttrDB>
-    )
+    abstract fun resetNutrients(filterName: String = SearchFilterDB.DEFAULT_NAME)
 
     abstract fun resetCategory(
         filterName: String = SearchFilterDB.DEFAULT_NAME,
-        categoryID: Int,
-        attrs: List<LabelRecipeAttrDB>
+        categoryID: Int
     )
 
 
-    abstract fun updateBasics(
-        filterName: String = SearchFilterDB.DEFAULT_NAME,
-        basics: List<BasicOfSearchFilterEditModel>
-    )
+    abstract fun updateBasic(id: Int, minValue: Float, maxValue: Float)
 
-    abstract fun updateLabels(
-        filterName: String = SearchFilterDB.DEFAULT_NAME,
-        labels: List<LabelOfSearchFilterEditModel>
-    )
+    abstract fun updateNutrient(id: Int, minValue: Float, maxValue: Float)
 
-    abstract fun updateNutrients(
-        filterName: String = SearchFilterDB.DEFAULT_NAME,
-        nutrients: List<NutrientOfSearchFilterEditModel>
-    )
+    abstract fun updateLabel(id: Int, isSelected: Boolean)
 
 
     /**

@@ -3,7 +3,6 @@ package com.example.foodinfo.repository.use_case
 import com.example.foodinfo.utils.State
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.transformWhile
 
 
 interface AttrDependencyResolver {
@@ -35,43 +34,5 @@ interface AttrDependencyResolver {
                 }
             }
         }
-    }
-
-    /**
-     * Function that helps to update data dependent on recipe attributes.
-     *
-     * This function will collect [attrFlow] until [State.Success] or [State.Error] will be collected.
-     *
-     * If [State.Success] was collected, will call [updateDataDelegate], pass [State.Success.data] to it,
-     * stops collecting and return null.
-     *
-     * If an error occurred inside [updateDataDelegate] or [State.Error] was collected, will return that error
-     *
-     */
-    fun <attrT> setResolved(
-        attrFlow: Flow<State<attrT>>,
-        updateDataDelegate: (attrT) -> Unit
-    ): Exception? {
-        var result: Exception? = null
-        attrFlow.transformWhile<State<attrT>, Boolean> { attrs ->
-            when (attrs) {
-                is State.Loading -> {
-                    true
-                }
-                is State.Success -> {
-                    try {
-                        updateDataDelegate(attrs.data)
-                    } catch (e: Exception) {
-                        result = e
-                    }
-                    false
-                }
-                is State.Error   -> {
-                    result = attrs.error
-                    false
-                }
-            }
-        }
-        return result
     }
 }

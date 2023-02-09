@@ -6,14 +6,14 @@ import com.example.foodinfo.repository.model.LabelOfSearchFilterEditModel
 
 class FilterCategoryEditViewHolder(
     private val binding: RvItemFilterInputCategoryEditBinding,
-    private val onQuestionMarkClickListener: (Int) -> Unit
+    private val onQuestionMarkClickListener: (Int) -> Unit,
+    private val onItemClickListener: (Int, Boolean) -> Unit
 ) : BaseViewHolder<RvItemFilterInputCategoryEditBinding, LabelOfSearchFilterEditModel>(binding) {
 
     init {
         binding.ivQuestionMark.setOnClickListener { onQuestionMarkClickListener(item.infoID) }
         binding.llContent.setOnClickListener {
-            item.isSelected = !item.isSelected
-            binding.cbChecked.isChecked = item.isSelected
+            onItemClickListener.invoke(item.ID, !item.isSelected)
         }
     }
 

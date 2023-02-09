@@ -6,12 +6,14 @@ import com.example.foodinfo.repository.model.NutrientOfSearchFilterEditModel
 
 class FilterNutrientFieldEditViewHolder(
     private val binding: RvItemFilterInputNutrientsEditBinding,
-    onHeaderClickCallback: (Int) -> Unit
+    onHeaderClickCallback: (Int) -> Unit,
+    onValueChangedCallback: (Int, Float, Float) -> Unit
 ) : BaseViewHolder<RvItemFilterInputNutrientsEditBinding, NutrientOfSearchFilterEditModel>(binding) {
 
     private val onValueChangedCallback: (Float, Float) -> Unit = { minValue, maxValue ->
-        item.minValue = minValue
-        item.maxValue = maxValue
+        if (item.minValue != minValue || item.maxValue != maxValue) {
+            onValueChangedCallback.invoke(item.ID, minValue, maxValue)
+        }
     }
 
     private val onHeaderClickCallback: () -> Unit = {

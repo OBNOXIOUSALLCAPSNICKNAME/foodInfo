@@ -10,7 +10,7 @@ open class SearchFilterDB(
     }
 
     companion object {
-        const val DEFAULT_NAME = "default_name"
+        const val DEFAULT_NAME = "default filter"
         const val TABLE_NAME = "search_filter"
     }
 }

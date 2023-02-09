@@ -7,7 +7,6 @@ import com.example.foodinfo.repository.SearchFilterRepository
 import com.example.foodinfo.repository.model.CategoryOfSearchFilterEditModel
 import com.example.foodinfo.repository.model.CategorySearchModel
 import com.example.foodinfo.repository.model.LabelHintModel
-import com.example.foodinfo.repository.model.LabelOfSearchFilterEditModel
 import com.example.foodinfo.repository.use_case.SearchFilterUseCase
 import com.example.foodinfo.utils.State
 import kotlinx.coroutines.flow.SharedFlow
@@ -23,6 +22,7 @@ class SearchFilterCategoryViewModel @Inject constructor(
 ) : ViewModel() {
 
     var categoryID: Int = -1
+    var filterName: String = ""
 
     val labels: SharedFlow<State<CategoryOfSearchFilterEditModel>> by lazy {
         searchFilterUseCase.getCategoryEdit(categoryID = categoryID).shareIn(
@@ -36,11 +36,11 @@ class SearchFilterCategoryViewModel @Inject constructor(
     }
 
     fun reset() {
-        searchFilterUseCase.resetCategory(categoryID = categoryID)
+        searchFilterRepository.resetCategory(filterName, categoryID)
     }
 
-    fun update(labels: List<LabelOfSearchFilterEditModel>) {
-        searchFilterRepository.updateLabels(labels = labels)
+    fun update(id: Int, isSelected: Boolean) {
+        searchFilterRepository.updateLabel(id, isSelected)
     }
 
     val category: SharedFlow<State<CategorySearchModel>> by lazy {

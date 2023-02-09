@@ -38,7 +38,10 @@ class SearchFilterNutrientsFragment : BaseFragment<FragmentSearchFilterNutrients
 
     private val onResetClickListener: () -> Unit = {
         viewModel.reset()
-        recyclerAdapter.notifyDataSetChanged()
+    }
+
+    private val onValueChangedCallback: (Int, Float, Float) -> Unit = { id, minValue, maxValue ->
+        viewModel.update(id, minValue, maxValue)
     }
 
     private val onHeaderClickCallback: (Int) -> Unit = { infoID ->
@@ -60,7 +63,8 @@ class SearchFilterNutrientsFragment : BaseFragment<FragmentSearchFilterNutrients
 
         recyclerAdapter = FilterNutrientFieldEditAdapter(
             requireContext(),
-            onHeaderClickCallback
+            onHeaderClickCallback,
+            onValueChangedCallback
         )
 
         binding.btnBack.setOnClickListener { onBackClickListener() }

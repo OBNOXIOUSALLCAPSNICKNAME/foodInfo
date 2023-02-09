@@ -29,6 +29,12 @@ interface SearchFilterDAO {
     fun updateNutrient(id: Int, minValue: Float, maxValue: Float)
 
 
+    fun updateFilter(
+        basics: List<BasicOfSearchFilterDB>,
+        labels: List<LabelOfSearchFilterDB>,
+        nutrients: List<NutrientOfSearchFilterDB>
+    )
+
     fun updateBasics(basics: List<BasicOfSearchFilterDB>)
 
     fun updateLabels(labels: List<LabelOfSearchFilterDB>)

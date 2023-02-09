@@ -65,6 +65,15 @@ fun LabelOfSearchFilterEditModel.toDB(filterName: String): LabelOfSearchFilterDB
     )
 }
 
+fun LabelOfSearchFilterExtendedDB.toDefault(): LabelOfSearchFilterDB {
+    return LabelOfSearchFilterDB(
+        ID = this.ID,
+        filterName = this.filterName,
+        infoID = this.infoID,
+        isSelected = false
+    )
+}
+
 fun LabelRecipeAttrDB.toFilterDefault(filterName: String): LabelOfSearchFilterDB {
     return LabelOfSearchFilterDB(
         filterName = filterName,

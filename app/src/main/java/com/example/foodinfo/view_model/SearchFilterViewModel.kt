@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.foodinfo.local.dto.SearchFilterDB
 import com.example.foodinfo.repository.SearchFilterRepository
-import com.example.foodinfo.repository.model.BasicOfSearchFilterEditModel
 import com.example.foodinfo.repository.model.SearchFilterEditModel
 import com.example.foodinfo.repository.use_case.SearchFilterUseCase
 import com.example.foodinfo.utils.State
@@ -29,10 +28,10 @@ class SearchFilterViewModel @Inject constructor(
 
 
     fun reset() {
-        searchFilterUseCase.resetFilter(filterName)
+        searchFilterRepository.resetFilter(filterName)
     }
 
-    fun update(basics: List<BasicOfSearchFilterEditModel>) {
-        searchFilterRepository.updateBasics(basics = basics)
+    fun update(id: Int, minValue: Float, maxValue: Float) {
+        searchFilterRepository.updateBasic(id, minValue, maxValue)
     }
 }

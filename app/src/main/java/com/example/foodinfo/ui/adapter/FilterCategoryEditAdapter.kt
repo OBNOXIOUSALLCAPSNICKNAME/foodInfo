@@ -12,7 +12,8 @@ import com.example.foodinfo.ui.view_holder.FilterCategoryEditViewHolder
 
 class FilterCategoryEditAdapter(
     context: Context,
-    private val onQuestionMarkClickListener: (Int) -> Unit
+    private val onQuestionMarkClickListener: (Int) -> Unit,
+    private val onItemClickListener: (Int, Boolean) -> Unit
 ) : ListAdapter<LabelOfSearchFilterEditModel, ViewHolder>(
     LabelOfSearchFilterEditModel.ItemCallBack
 ) {
@@ -23,7 +24,8 @@ class FilterCategoryEditAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return FilterCategoryEditViewHolder(
             RvItemFilterInputCategoryEditBinding.inflate(layoutInflater, parent, false),
-            onQuestionMarkClickListener
+            onQuestionMarkClickListener,
+            onItemClickListener
         )
     }
 

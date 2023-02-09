@@ -35,11 +35,10 @@ class SearchFilterFragment : BaseFragment<FragmentSearchFilterBinding>(
 
     private val onResetClickListener: () -> Unit = {
         viewModel.reset()
-        recyclerAdapterBaseFields.notifyDataSetChanged()
     }
 
-    private val onUpdateClickListener: () -> Unit = {
-        viewModel.update(recyclerAdapterBaseFields.currentList)
+    private val onValueChangedCallback: (Int, Float, Float) -> Unit = { id, minValue, maxValue ->
+        viewModel.update(id, minValue, maxValue)
     }
 
     private val onNutrientsEditClickListener: () -> Unit = {
@@ -72,13 +71,18 @@ class SearchFilterFragment : BaseFragment<FragmentSearchFilterBinding>(
 
 
     override fun initUI() {
+        binding.tvFilterName.text = viewModel.filterName
+
         binding.btnBack.setOnClickListener { onBackClickListener() }
         binding.btnReset.setOnClickListener { onResetClickListener() }
         binding.ivNutrientsEdit.setOnClickListener {
             onNutrientsEditClickListener()
         }
 
-        recyclerAdapterBaseFields = FilterBaseFieldAdapter(requireContext())
+        recyclerAdapterBaseFields = FilterBaseFieldAdapter(
+            requireContext(),
+            onValueChangedCallback
+        )
         with(binding.rvBaseFields) {
             adapter = recyclerAdapterBaseFields
             layoutManager = NonScrollLinearLayoutManager(context).also {

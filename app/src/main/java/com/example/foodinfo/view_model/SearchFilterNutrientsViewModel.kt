@@ -34,10 +34,10 @@ class SearchFilterNutrientsViewModel @Inject constructor(
     }
 
     fun reset() {
-        searchFilterUseCase.resetNutrients(filterName)
+        searchFilterRepository.resetNutrients(filterName)
     }
 
-    fun update(nutrients: List<NutrientOfSearchFilterEditModel>) {
-        searchFilterRepository.updateNutrients(filterName, nutrients)
+    fun update(id: Int, minValue: Float, maxValue: Float) {
+        searchFilterRepository.updateNutrient(id, minValue, maxValue)
     }
 }

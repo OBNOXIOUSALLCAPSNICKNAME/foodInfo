@@ -56,6 +56,16 @@ fun BasicOfSearchFilterEditModel.toDB(filterName: String): BasicOfSearchFilterDB
     )
 }
 
+fun BasicOfSearchFilterExtendedDB.toDefault(): BasicOfSearchFilterDB {
+    return BasicOfSearchFilterDB(
+        ID = this.ID,
+        filterName = this.filterName,
+        infoID = this.infoID,
+        minValue = this.attrInfo!!.rangeMin,
+        maxValue = this.attrInfo!!.rangeMax
+    )
+}
+
 fun BasicRecipeAttrDB.toFilterDefault(filterName: String): BasicOfSearchFilterDB {
     return BasicOfSearchFilterDB(
         filterName = filterName,
