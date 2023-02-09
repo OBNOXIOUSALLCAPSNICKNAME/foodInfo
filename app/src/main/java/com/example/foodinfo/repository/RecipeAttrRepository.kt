@@ -2,8 +2,8 @@ package com.example.foodinfo.repository
 
 import com.example.foodinfo.local.dto.*
 import com.example.foodinfo.repository.model.CategorySearchModel
+import com.example.foodinfo.repository.model.CategoryTargetSearchModel
 import com.example.foodinfo.repository.model.LabelHintModel
-import com.example.foodinfo.repository.model.LabelSearchModel
 import com.example.foodinfo.repository.model.NutrientHintModel
 import com.example.foodinfo.utils.State
 import kotlinx.coroutines.flow.Flow
@@ -15,7 +15,7 @@ abstract class RecipeAttrRepository : BaseRepository() {
 
     abstract fun getLabelHint(ID: Int): LabelHintModel
 
-    abstract fun getLabelsSearch(categoryID: Int): Flow<State<List<LabelSearchModel>>>
+    abstract fun getLabelsSearch(categoryID: Int): Flow<State<CategoryTargetSearchModel>>
 
     abstract fun getCategory(ID: Int): Flow<State<CategorySearchModel>>
 

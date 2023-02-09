@@ -73,22 +73,22 @@ class SearchCategoryFragment : BaseFragment<FragmentSearchCategoryBinding>(
 
     override fun subscribeUI() {
         observeData(
-            dataFlow = viewModel.labels,
+            dataFlow = viewModel.category,
             onInitStart = {
                 binding.rvLabels.isVisible = false
+                binding.tvHeader.isVisible = false
             },
             onInitComplete = {
-                binding.rvLabels.isVisible = true
+                binding.tvHeader.baseAnimation()
                 binding.rvLabels.baseAnimation()
             },
-            successHandlerDelegate = { labels ->
-                recyclerAdapter.submitList(labels)
-            }
-        )
-        observeData(
-            dataFlow = viewModel.category,
+            loadingHandlerDelegate = {
+                binding.pbContent.isVisible = true
+            },
             successHandlerDelegate = { category ->
-                binding.tvCategory.text = category.name
+                binding.tvHeader.text = category.name
+                recyclerAdapter.submitList(category.labels)
+                binding.pbContent.isVisible = false
             }
         )
     }

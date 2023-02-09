@@ -1,5 +1,6 @@
 package com.example.foodinfo.ui
 
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -10,6 +11,7 @@ import com.example.foodinfo.databinding.FragmentRecipeNutrientsBinding
 import com.example.foodinfo.ui.adapter.RecipeNutrientsAdapter
 import com.example.foodinfo.ui.decorator.ListItemDecoration
 import com.example.foodinfo.utils.appComponent
+import com.example.foodinfo.utils.baseAnimation
 import com.example.foodinfo.utils.showDescriptionDialog
 import com.example.foodinfo.view_model.RecipeNutrientsViewModel
 import kotlinx.coroutines.Dispatchers
@@ -76,7 +78,7 @@ class RecipeNutrientsFragment : BaseFragment<FragmentRecipeNutrientsBinding>(
             onNutrientClickListener
         )
 
-        with(binding.rvIngredients) {
+        with(binding.rvNutrients) {
             adapter = recyclerAdapter
             setHasFixedSize(true)
             addItemDecoration(
@@ -91,8 +93,18 @@ class RecipeNutrientsFragment : BaseFragment<FragmentRecipeNutrientsBinding>(
     override fun subscribeUI() {
         observeData(
             dataFlow = viewModel.nutrients,
+            onInitStart = {
+                binding.rvNutrients.isVisible = false
+            },
+            onInitComplete = {
+                binding.rvNutrients.baseAnimation()
+            },
+            loadingHandlerDelegate = {
+                binding.pbContent.isVisible = true
+            },
             successHandlerDelegate = { nutrients ->
                 recyclerAdapter.submitList(nutrients)
+                binding.pbContent.isVisible = false
             }
         )
     }

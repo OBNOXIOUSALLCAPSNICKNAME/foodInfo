@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.foodinfo.repository.RecipeAttrRepository
 import com.example.foodinfo.repository.SearchFilterRepository
 import com.example.foodinfo.repository.model.CategoryOfSearchFilterEditModel
-import com.example.foodinfo.repository.model.CategorySearchModel
 import com.example.foodinfo.repository.model.LabelHintModel
 import com.example.foodinfo.repository.use_case.SearchFilterUseCase
 import com.example.foodinfo.utils.State
@@ -41,11 +40,5 @@ class SearchFilterCategoryViewModel @Inject constructor(
 
     fun update(id: Int, isSelected: Boolean) {
         searchFilterRepository.updateLabel(id, isSelected)
-    }
-
-    val category: SharedFlow<State<CategorySearchModel>> by lazy {
-        recipeAttrRepository.getCategory(categoryID).shareIn(
-            viewModelScope, SharingStarted.WhileSubscribed(stopTimeoutMillis = 5000), 1
-        )
     }
 }

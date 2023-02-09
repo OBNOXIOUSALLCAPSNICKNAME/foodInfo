@@ -81,24 +81,19 @@ class SearchFilterCategoryFragment : BaseFragment<FragmentSearchFilterCategoryBi
             dataFlow = viewModel.labels,
             onInitStart = {
                 binding.rvLabels.isVisible = false
+                binding.tvHeader.isVisible = false
             },
             onInitComplete = {
-                binding.rvLabels.isVisible = true
+                binding.tvHeader.baseAnimation()
                 binding.rvLabels.baseAnimation()
             },
             loadingHandlerDelegate = {
                 binding.pbContent.isVisible = true
             },
             successHandlerDelegate = { category ->
+                binding.tvHeader.text = category.name
                 recyclerAdapter.submitList(category.labels)
                 binding.pbContent.isVisible = false
-            }
-        )
-
-        observeData(
-            dataFlow = viewModel.category,
-            successHandlerDelegate = { categoryInfo ->
-                binding.tvHeader.text = categoryInfo.name
             }
         )
     }

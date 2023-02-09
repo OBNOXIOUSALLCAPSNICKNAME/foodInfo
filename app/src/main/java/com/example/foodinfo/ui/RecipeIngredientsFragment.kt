@@ -1,5 +1,6 @@
 package com.example.foodinfo.ui
 
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -9,6 +10,7 @@ import com.example.foodinfo.databinding.FragmentRecipeIngredientsBinding
 import com.example.foodinfo.ui.adapter.RecipeIngredientsAdapter
 import com.example.foodinfo.ui.decorator.ListItemDecoration
 import com.example.foodinfo.utils.appComponent
+import com.example.foodinfo.utils.baseAnimation
 import com.example.foodinfo.utils.getMeasureSpacer
 import com.example.foodinfo.view_model.RecipeIngredientsViewModel
 
@@ -68,8 +70,18 @@ class RecipeIngredientsFragment : BaseFragment<FragmentRecipeIngredientsBinding>
     override fun subscribeUI() {
         observeData(
             dataFlow = viewModel.ingredients,
+            onInitStart = {
+                binding.rvIngredients.isVisible = false
+            },
+            onInitComplete = {
+                binding.rvIngredients.baseAnimation()
+            },
+            loadingHandlerDelegate = {
+                binding.pbContent.isVisible = true
+            },
             successHandlerDelegate = { ingredients ->
                 recyclerAdapter.submitList(ingredients)
+                binding.pbContent.isVisible = false
             }
         )
     }

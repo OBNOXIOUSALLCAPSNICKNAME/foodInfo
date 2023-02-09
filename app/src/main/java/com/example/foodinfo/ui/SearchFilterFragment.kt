@@ -142,7 +142,6 @@ class SearchFilterFragment : BaseFragment<FragmentSearchFilterBinding>(
                 binding.svContent.isVisible = false
             },
             onInitComplete = {
-                binding.svContent.isVisible = true
                 binding.svContent.baseAnimation()
             },
             loadingHandlerDelegate = {

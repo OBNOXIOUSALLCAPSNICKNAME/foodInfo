@@ -93,7 +93,6 @@ class SearchFilterNutrientsFragment : BaseFragment<FragmentSearchFilterNutrients
                 binding.rvNutrients.isVisible = false
             },
             onInitComplete = {
-                binding.rvNutrients.isVisible = true
                 binding.rvNutrients.baseAnimation()
             },
             loadingHandlerDelegate = {

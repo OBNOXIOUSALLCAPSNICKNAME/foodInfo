@@ -111,19 +111,18 @@ class RecipeExtendedFragment : BaseFragment<FragmentRecipeExtendedBinding>(
     override fun subscribeUI() {
         observeData(
             dataFlow = viewModel.recipe,
-            successHandlerDelegate = { recipe ->
-                initRecipe(recipe)
-                binding.pbContent.isVisible = false
-            },
-            loadingHandlerDelegate = {
-                binding.pbContent.isVisible = true
-            },
             onInitStart = {
                 binding.svContent.isVisible = false
             },
             onInitComplete = {
-                binding.svContent.isVisible = true
                 binding.svContent.baseAnimation()
+            },
+            loadingHandlerDelegate = {
+                binding.pbContent.isVisible = true
+            },
+            successHandlerDelegate = { recipe ->
+                initRecipe(recipe)
+                binding.pbContent.isVisible = false
             }
         )
     }

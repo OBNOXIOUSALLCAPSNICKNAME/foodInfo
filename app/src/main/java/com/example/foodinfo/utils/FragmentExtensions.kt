@@ -74,8 +74,5 @@ fun Fragment.repeatOn(state: Lifecycle.State, runnable: suspend () -> Unit) {
 }
 
 fun Fragment.refresh() {
-    val transaction = parentFragmentManager.beginTransaction()
-    transaction.detach(this)
-    transaction.attach(this)
-    transaction.commit()
+    //TODO
 }

@@ -10,8 +10,8 @@ import com.example.foodinfo.repository.mapper.toModel
 import com.example.foodinfo.repository.mapper.toModelHint
 import com.example.foodinfo.repository.mapper.toModelSearch
 import com.example.foodinfo.repository.model.CategorySearchModel
+import com.example.foodinfo.repository.model.CategoryTargetSearchModel
 import com.example.foodinfo.repository.model.LabelHintModel
-import com.example.foodinfo.repository.model.LabelSearchModel
 import com.example.foodinfo.repository.model.NutrientHintModel
 import com.example.foodinfo.utils.State
 import kotlinx.coroutines.flow.Flow
@@ -31,14 +31,14 @@ class RecipeAttrRepositoryImpl @Inject constructor(
         return recipeAttrDAO.getLabel(ID).toModelHint()
     }
 
-    override fun getLabelsSearch(categoryID: Int): Flow<State<List<LabelSearchModel>>> {
+    override fun getLabelsSearch(categoryID: Int): Flow<State<CategoryTargetSearchModel>> {
         return getData(
             context = context,
             remoteDataProvider = { recipeAttrAPI.getCategoryLabels(categoryID) },
             localDataProvider = { recipeAttrDAO.getCategoryLabels(categoryID) },
             updateLocalDelegate = { recipeAttrDAO.addLabels(it) },
             mapRemoteToLocalDelegate = { it.map { label -> label.toDB() } },
-            mapLocalToModelDelegate = { it.map { label -> label.toModelSearch() } }
+            mapLocalToModelDelegate = { it.toModelSearch() }
         )
     }
 
