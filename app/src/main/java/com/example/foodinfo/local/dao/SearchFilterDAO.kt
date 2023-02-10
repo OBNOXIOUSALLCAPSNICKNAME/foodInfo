@@ -6,20 +6,20 @@ import kotlinx.coroutines.flow.Flow
 
 interface SearchFilterDAO {
 
-    fun getBasics(filterName: String): List<BasicOfSearchFilterExtendedDB>
+    fun getBasics(filterName: String): List<@JvmSuppressWildcards(suppress = false) BasicOfSearchFilterExtendedDB>
 
-    fun getLabels(filterName: String): List<LabelOfSearchFilterExtendedDB>
+    fun getLabels(filterName: String): List<@JvmSuppressWildcards(suppress = false) LabelOfSearchFilterExtendedDB>
 
-    fun getNutrients(filterName: String): List<NutrientOfSearchFilterExtendedDB>
+    fun getNutrients(filterName: String): List<@JvmSuppressWildcards(suppress = false) NutrientOfSearchFilterExtendedDB>
 
     fun getFilterExtended(filterName: String): SearchFilterExtendedDB
 
 
-    fun observeLabels(filterName: String): Flow<List<LabelOfSearchFilterExtendedDB>>
+    fun observeLabels(filterName: String): Flow<@JvmSuppressWildcards(suppress = false) List<LabelOfSearchFilterExtendedDB>>
 
-    fun observeNutrients(filterName: String): Flow<List<NutrientOfSearchFilterExtendedDB>>
+    fun observeNutrients(filterName: String): Flow<@JvmSuppressWildcards(suppress = false) List<NutrientOfSearchFilterExtendedDB>>
 
-    fun observeFilterExtended(filterName: String): Flow<SearchFilterExtendedDB>
+    fun observeFilterExtended(filterName: String): Flow<@JvmSuppressWildcards(suppress = false) SearchFilterExtendedDB>
 
 
     fun updateBasic(id: Int, minValue: Float, maxValue: Float)

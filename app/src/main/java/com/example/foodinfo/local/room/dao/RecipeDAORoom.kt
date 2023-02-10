@@ -49,22 +49,14 @@ abstract class RecipeDAORoom : RecipeDAO {
                 "WHERE ${RecipeDB.Columns.ID} " +
                 "LIKE '%' || :recipeID || '%'"
     )
-    abstract fun getByIdExtendedPOJO(recipeID: String): Flow<RecipeExtendedPOJO>
-
-    override fun getByIdExtended(recipeID: String): Flow<RecipeExtendedDB> {
-        return getByIdExtendedPOJO(recipeID)
-    }
+    abstract override fun getByIdExtended(recipeID: String): Flow<RecipeExtendedPOJO>
 
     @Query(
         "SELECT * FROM ${IngredientOfRecipeDB.TABLE_NAME} " +
                 "WHERE ${IngredientOfRecipeDB.Columns.RECIPE_ID} " +
                 "LIKE '%' || :recipeID || '%'"
     )
-    abstract fun getIngredientsEntity(recipeID: String): Flow<List<IngredientOfRecipeEntity>>
-
-    override fun getIngredients(recipeID: String): Flow<List<IngredientOfRecipeDB>> {
-        return getIngredientsEntity(recipeID)
-    }
+    abstract override fun getIngredients(recipeID: String): Flow<List<IngredientOfRecipeEntity>>
 
     @Transaction
     @Query(
@@ -72,11 +64,7 @@ abstract class RecipeDAORoom : RecipeDAO {
                 "WHERE ${NutrientOfRecipeDB.Columns.RECIPE_ID} " +
                 "LIKE '%' || :recipeID || '%'"
     )
-    abstract fun getNutrientsPOJO(recipeID: String): Flow<List<NutrientOfRecipeExtendedPOJO>>
-
-    override fun getNutrients(recipeID: String): Flow<List<NutrientOfRecipeExtendedDB>> {
-        return getNutrientsPOJO(recipeID)
-    }
+    abstract override fun getNutrients(recipeID: String): Flow<List<NutrientOfRecipeExtendedPOJO>>
 
     @Transaction
     @Query(
@@ -84,11 +72,7 @@ abstract class RecipeDAORoom : RecipeDAO {
                 "WHERE ${LabelOfRecipeDB.Columns.RECIPE_ID} " +
                 "LIKE '%' || :recipeID || '%'"
     )
-    abstract fun getLabelsPOJO(recipeID: String): Flow<List<LabelOfRecipeExtendedPOJO>>
-
-    override fun getLabels(recipeID: String): Flow<List<LabelOfRecipeExtendedDB>> {
-        return getLabelsPOJO(recipeID)
-    }
+    abstract override fun getLabels(recipeID: String): Flow<List<LabelOfRecipeExtendedPOJO>>
 
 
     @Query(

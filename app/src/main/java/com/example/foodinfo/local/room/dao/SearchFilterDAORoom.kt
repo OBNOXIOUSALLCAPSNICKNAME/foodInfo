@@ -15,44 +15,28 @@ abstract class SearchFilterDAORoom : SearchFilterDAO {
         "SELECT * FROM ${LabelOfSearchFilterDB.TABLE_NAME} WHERE " +
                 "${LabelOfSearchFilterDB.Columns.FILTER_NAME} LIKE '%' || :filterName || '%'"
     )
-    abstract fun getLabelsPOJO(filterName: String): List<LabelOfSearchFilterExtendedPOJO>
-
-    override fun getLabels(filterName: String): List<LabelOfSearchFilterExtendedDB> {
-        return getLabelsPOJO(filterName)
-    }
+    abstract override fun getLabels(filterName: String): List<LabelOfSearchFilterExtendedPOJO>
 
     @Transaction
     @Query(
         "SELECT * FROM ${NutrientOfSearchFilterDB.TABLE_NAME} WHERE " +
                 "${NutrientOfSearchFilterDB.Columns.FILTER_NAME} LIKE '%' || :filterName || '%'"
     )
-    abstract fun getNutrientsPOJO(filterName: String): List<NutrientOfSearchFilterExtendedPOJO>
-
-    override fun getNutrients(filterName: String): List<NutrientOfSearchFilterExtendedDB> {
-        return getNutrientsPOJO(filterName)
-    }
+    abstract override fun getNutrients(filterName: String): List<NutrientOfSearchFilterExtendedPOJO>
 
     @Transaction
     @Query(
         "SELECT * FROM ${BasicOfSearchFilterDB.TABLE_NAME} WHERE " +
                 "${BasicOfSearchFilterDB.Columns.FILTER_NAME} LIKE '%' || :filterName || '%'"
     )
-    abstract fun getBasicsPOJO(filterName: String): List<BasicOfSearchFilterExtendedPOJO>
-
-    override fun getBasics(filterName: String): List<BasicOfSearchFilterExtendedDB> {
-        return getBasicsPOJO(filterName)
-    }
+    abstract override fun getBasics(filterName: String): List<BasicOfSearchFilterExtendedPOJO>
 
     @Transaction
     @Query(
         "SELECT * FROM ${SearchFilterDB.TABLE_NAME} WHERE " +
                 "${SearchFilterDB.Columns.NAME} LIKE '%' || :filterName || '%'"
     )
-    abstract fun getFilterExtendedPOJO(filterName: String): SearchFilterExtendedPOJO
-
-    override fun getFilterExtended(filterName: String): SearchFilterExtendedDB {
-        return getFilterExtendedPOJO(filterName)
-    }
+    abstract override fun getFilterExtended(filterName: String): SearchFilterExtendedPOJO
 
 
     @Transaction
@@ -60,33 +44,21 @@ abstract class SearchFilterDAORoom : SearchFilterDAO {
         "SELECT * FROM ${LabelOfSearchFilterDB.TABLE_NAME} WHERE " +
                 "${LabelOfSearchFilterDB.Columns.FILTER_NAME} LIKE '%' || :filterName || '%'"
     )
-    abstract fun observeLabelsPOJO(filterName: String): Flow<List<LabelOfSearchFilterExtendedPOJO>>
-
-    override fun observeLabels(filterName: String): Flow<List<LabelOfSearchFilterExtendedDB>> {
-        return observeLabelsPOJO(filterName)
-    }
+    abstract override fun observeLabels(filterName: String): Flow<List<LabelOfSearchFilterExtendedPOJO>>
 
     @Transaction
     @Query(
         "SELECT * FROM ${NutrientOfSearchFilterDB.TABLE_NAME} WHERE " +
                 "${NutrientOfSearchFilterDB.Columns.FILTER_NAME} LIKE '%' || :filterName || '%'"
     )
-    abstract fun observeNutrientsPOJO(filterName: String): Flow<List<NutrientOfSearchFilterExtendedPOJO>>
-
-    override fun observeNutrients(filterName: String): Flow<List<NutrientOfSearchFilterExtendedDB>> {
-        return observeNutrientsPOJO(filterName)
-    }
+    abstract override fun observeNutrients(filterName: String): Flow<List<NutrientOfSearchFilterExtendedPOJO>>
 
     @Transaction
     @Query(
         "SELECT * FROM ${SearchFilterDB.TABLE_NAME} WHERE " +
                 "${SearchFilterDB.Columns.NAME} LIKE '%' || :filterName || '%'"
     )
-    abstract fun observeFilterExtendedPOJO(filterName: String): Flow<SearchFilterExtendedPOJO>
-
-    override fun observeFilterExtended(filterName: String): Flow<SearchFilterExtendedDB> {
-        return observeFilterExtendedPOJO(filterName)
-    }
+    abstract override fun observeFilterExtended(filterName: String): Flow<SearchFilterExtendedPOJO>
 
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
