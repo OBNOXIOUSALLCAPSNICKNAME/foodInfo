@@ -6,20 +6,20 @@ import kotlinx.coroutines.flow.Flow
 
 interface SearchFilterDAO {
 
-    fun getBasics(filterName: String): List<@JvmSuppressWildcards(suppress = false) BasicOfSearchFilterExtendedDB>
+    fun getBasics(filterName: String): List<@JvmWildcard BasicOfSearchFilterExtendedDB>
 
-    fun getLabels(filterName: String): List<@JvmSuppressWildcards(suppress = false) LabelOfSearchFilterExtendedDB>
+    fun getLabels(filterName: String): List<@JvmWildcard LabelOfSearchFilterExtendedDB>
 
-    fun getNutrients(filterName: String): List<@JvmSuppressWildcards(suppress = false) NutrientOfSearchFilterExtendedDB>
+    fun getNutrients(filterName: String): List<@JvmWildcard NutrientOfSearchFilterExtendedDB>
 
     fun getFilterExtended(filterName: String): SearchFilterExtendedDB
 
 
-    fun observeLabels(filterName: String): Flow<@JvmSuppressWildcards(suppress = false) List<LabelOfSearchFilterExtendedDB>>
+    fun observeLabels(filterName: String): Flow<@JvmWildcard List<@JvmWildcard LabelOfSearchFilterExtendedDB>>
 
-    fun observeNutrients(filterName: String): Flow<@JvmSuppressWildcards(suppress = false) List<NutrientOfSearchFilterExtendedDB>>
+    fun observeNutrients(filterName: String): Flow<@JvmWildcard List<@JvmWildcard NutrientOfSearchFilterExtendedDB>>
 
-    fun observeFilterExtended(filterName: String): Flow<@JvmSuppressWildcards(suppress = false) SearchFilterExtendedDB>
+    fun observeFilterExtended(filterName: String): Flow<@JvmWildcard SearchFilterExtendedDB>
 
 
     fun updateBasic(id: Int, minValue: Float, maxValue: Float)

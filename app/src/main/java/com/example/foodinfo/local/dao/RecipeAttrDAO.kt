@@ -13,21 +13,21 @@ interface RecipeAttrDAO {
 
     fun getLabel(ID: Int): LabelRecipeAttrDB
 
-    fun getCategoryLabels(categoryID: Int): List<@JvmSuppressWildcards(suppress = false) LabelRecipeAttrDB>
+    fun getCategoryLabels(categoryID: Int): List<@JvmWildcard LabelRecipeAttrDB>
 
 
     fun getRecipeAttrs(): RecipeAttrsDB
 
 
-    fun getCategoriesAll(): List<@JvmSuppressWildcards(suppress = false) CategoryRecipeAttrDB>
+    fun getCategoriesAll(): List<@JvmWildcard CategoryRecipeAttrDB>
 
-    fun getNutrientsAll(): List<@JvmSuppressWildcards(suppress = false) NutrientRecipeAttrDB>
+    fun getNutrientsAll(): List<@JvmWildcard NutrientRecipeAttrDB>
 
-    fun getBasicsAll(): List<@JvmSuppressWildcards(suppress = false) BasicRecipeAttrDB>
+    fun getBasicsAll(): List<@JvmWildcard BasicRecipeAttrDB>
 
-    fun getLabelsAll(): List<@JvmSuppressWildcards(suppress = false) LabelRecipeAttrDB>
+    fun getLabelsAll(): List<@JvmWildcard LabelRecipeAttrDB>
 
-    fun getLabelsExtendedAll(): List<@JvmSuppressWildcards(suppress = false) LabelRecipeAttrExtendedDB>
+    fun getLabelsExtendedAll(): List<@JvmWildcard LabelRecipeAttrExtendedDB>
 
 
     fun addNutrients(attrs: List<NutrientRecipeAttrDB>)
