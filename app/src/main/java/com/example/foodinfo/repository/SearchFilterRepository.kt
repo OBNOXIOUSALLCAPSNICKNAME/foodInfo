@@ -93,7 +93,7 @@ abstract class SearchFilterRepository : BaseRepository() {
      *              } else {
      *                  // if data is not outdated - map it to Model and return.
      *                  // getVerified will emit them and UI will receive actual data
-     *                  mapToDataModel(result)
+     *                  mapToDataModel(localData)
      *              }
      *          },
      *          dataFlow = getData(
