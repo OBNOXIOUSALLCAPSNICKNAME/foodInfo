@@ -13,7 +13,7 @@ import com.example.foodinfo.ui.view_holder.FilterNutrientFieldEditViewHolder
 class FilterNutrientFieldEditAdapter(
     context: Context,
     private val onHeaderClickCallback: (Int) -> Unit,
-    private val onValueChangedCallback: (Int, Float, Float) -> Unit
+    private val onValueChangedCallback: (Int, Float?, Float?) -> Unit
 ) : ListAdapter<NutrientOfSearchFilterEditModel, ViewHolder>(NutrientOfSearchFilterEditModel.ItemCallBack) {
 
     private val layoutInflater = LayoutInflater.from(context)

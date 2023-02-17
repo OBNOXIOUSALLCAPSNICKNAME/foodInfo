@@ -8,5 +8,5 @@ open class LabelRecipeAttrExtendedDB(
     open val name: String,
     open val description: String,
     open val previewURL: String,
-    open val categoryInfo: CategoryRecipeAttrDB
+    open val categoryInfo: CategoryRecipeAttrDB?
 )

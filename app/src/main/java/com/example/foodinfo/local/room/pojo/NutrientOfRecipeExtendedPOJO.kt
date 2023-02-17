@@ -26,7 +26,7 @@ data class NutrientOfRecipeExtendedPOJO(
         parentColumn = NutrientOfRecipeDB.Columns.INFO_ID,
         entityColumn = NutrientRecipeAttrDB.Columns.ID
     )
-    override val attrInfo: NutrientRecipeAttrEntity
+    override val attrInfo: NutrientRecipeAttrEntity?
 
 ) : NutrientOfRecipeExtendedDB(
     ID = ID,

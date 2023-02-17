@@ -30,10 +30,10 @@ data class BasicOfSearchFilterEntity(
     override val filterName: String,
 
     @ColumnInfo(name = Columns.MIN_VALUE)
-    override val minValue: Float,
+    override val minValue: Float?,
 
     @ColumnInfo(name = Columns.MAX_VALUE)
-    override val maxValue: Float
+    override val maxValue: Float?
 
 ) : BasicOfSearchFilterDB(
     ID = ID,

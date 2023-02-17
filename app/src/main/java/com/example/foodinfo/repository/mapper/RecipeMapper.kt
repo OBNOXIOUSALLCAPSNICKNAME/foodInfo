@@ -1,7 +1,11 @@
 package com.example.foodinfo.repository.mapper
 
+import com.example.foodinfo.local.dto.RecipeAttrsDB
 import com.example.foodinfo.local.dto.RecipeDB
 import com.example.foodinfo.local.dto.RecipeExtendedDB
+import com.example.foodinfo.remote.dto.RecipeAttrsNetwork
+import com.example.foodinfo.remote.dto.RecipeExtendedNetwork
+import com.example.foodinfo.remote.dto.RecipeNetwork
 import com.example.foodinfo.repository.model.RecipeExtendedModel
 import com.example.foodinfo.repository.model.RecipeFavoriteModel
 import com.example.foodinfo.repository.model.RecipeShortModel
@@ -47,4 +51,16 @@ fun RecipeExtendedDB.toModelExtended(): RecipeExtendedModel {
         carb = this.nutrients.findLast { it.infoID == 7 }!!.toModel(),
         fat = this.nutrients.findLast { it.infoID == 2 }!!.toModel()
     )
+}
+
+fun RecipeNetwork.toDB(): RecipeDB {
+    throw java.lang.NullPointerException() //TODO implement conversion
+}
+
+fun RecipeExtendedNetwork.toDB(): RecipeExtendedDB {
+    throw java.lang.NullPointerException() //TODO implement conversion
+}
+
+fun RecipeAttrsNetwork.toDB(): RecipeAttrsDB {
+    throw java.lang.NullPointerException() //TODO implement conversion
 }

@@ -1,38 +1,47 @@
 package com.example.foodinfo.local.dao
 
-import com.example.foodinfo.local.dto.BasicRecipeAttrDB
-import com.example.foodinfo.local.dto.CategoryRecipeAttrDB
-import com.example.foodinfo.local.dto.LabelRecipeAttrDB
-import com.example.foodinfo.local.dto.NutrientRecipeAttrDB
+import com.example.foodinfo.local.dto.*
+import kotlinx.coroutines.flow.Flow
 
 
 interface RecipeAttrDAO {
 
-    fun getNutrient(ID: Int): NutrientRecipeAttrDB
+    fun getLabel(ID: Int): LabelRecipeAttrDB
 
+    fun getNutrient(ID: Int): NutrientRecipeAttrDB
 
     fun getCategory(ID: Int): CategoryRecipeAttrDB
 
 
-    fun getLabel(ID: Int): LabelRecipeAttrDB
+    fun getBasicsAll(): List<@JvmWildcard BasicRecipeAttrDB>
 
-    fun getCategoryLabels(categoryID: Int): List<LabelRecipeAttrDB>
+    fun getLabelsAll(): List<@JvmWildcard LabelRecipeAttrDB>
 
+    fun getNutrientsAll(): List<@JvmWildcard NutrientRecipeAttrDB>
 
-    fun getCategoriesAll(): List<CategoryRecipeAttrDB>
+    fun getCategoriesAll(): List<@JvmWildcard CategoryRecipeAttrDB>
 
-    fun getNutrientsAll(): List<NutrientRecipeAttrDB>
-
-    fun getBasicsAll(): List<BasicRecipeAttrDB>
-
-    fun getLabelsAll(): List<LabelRecipeAttrDB>
+    fun getRecipeAttrs(): RecipeAttrsDB
 
 
-    fun addNutrients(attrs: List<NutrientRecipeAttrDB>)
+    fun observeBasicsAll(): Flow<@JvmWildcard List<@JvmWildcard BasicRecipeAttrDB>>
+
+    fun observeLabelsAll(): Flow<@JvmWildcard List<@JvmWildcard LabelRecipeAttrDB>>
+
+    fun observeNutrientsAll(): Flow<@JvmWildcard List<@JvmWildcard NutrientRecipeAttrDB>>
+
+    fun observeCategoriesAll(): Flow<@JvmWildcard List<@JvmWildcard CategoryRecipeAttrDB>>
+
+    fun observeCategoryLabels(categoryID: Int): Flow<@JvmWildcard List<@JvmWildcard LabelRecipeAttrDB>>
+
 
     fun addBasics(attrs: List<BasicRecipeAttrDB>)
 
     fun addLabels(attrs: List<LabelRecipeAttrDB>)
 
+    fun addNutrients(attrs: List<NutrientRecipeAttrDB>)
+
     fun addCategories(attrs: List<CategoryRecipeAttrDB>)
+
+    fun addRecipeAttrs(attrs: RecipeAttrsDB)
 }

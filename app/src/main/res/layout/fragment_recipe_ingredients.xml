@@ -41,4 +41,15 @@
         app:layout_constraintTop_toBottomOf = "@id/btn_back"
         tools:listitem = "@layout/rv_item_recipe_ingredient" />
 
+    <ProgressBar
+        android:id = "@+id/pb_content"
+        android:layout_width = "@dimen/progress_size"
+        android:layout_height = "@dimen/progress_size"
+        android:layout_gravity = "center"
+        android:visibility = "gone"
+        app:layout_constraintBottom_toBottomOf = "parent"
+        app:layout_constraintEnd_toEndOf = "parent"
+        app:layout_constraintStart_toStartOf = "parent"
+        app:layout_constraintTop_toBottomOf = "@+id/btn_back" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

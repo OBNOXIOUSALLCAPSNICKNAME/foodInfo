@@ -1,9 +1,8 @@
 package com.example.foodinfo.repository.mapper
 
-import com.example.foodinfo.local.dto.LabelOfRecipeExtendedDB
-import com.example.foodinfo.local.dto.LabelOfSearchFilterDB
-import com.example.foodinfo.local.dto.LabelOfSearchFilterExtendedDB
-import com.example.foodinfo.local.dto.LabelRecipeAttrDB
+import com.example.foodinfo.local.dto.*
+import com.example.foodinfo.remote.dto.LabelOfRecipeNetwork
+import com.example.foodinfo.remote.dto.LabelRecipeAttrNetwork
 import com.example.foodinfo.repository.model.*
 
 
@@ -27,7 +26,16 @@ fun LabelRecipeAttrDB.toModelSearch(): LabelSearchModel {
 fun LabelOfRecipeExtendedDB.toModelShort(): LabelShortModel {
     return LabelShortModel(
         infoID = this.infoID,
-        name = this.attrInfo.name
+        name = this.attrInfo!!.name
+    )
+}
+
+fun LabelOfSearchFilterExtendedDB.toDB(): LabelOfSearchFilterDB {
+    return LabelOfSearchFilterDB(
+        ID = this.ID,
+        filterName = this.filterName,
+        infoID = this.infoID,
+        isSelected = this.isSelected
     )
 }
 
@@ -35,7 +43,7 @@ fun LabelOfSearchFilterExtendedDB.toModelEdit(): LabelOfSearchFilterEditModel {
     return LabelOfSearchFilterEditModel(
         ID = this.ID,
         infoID = this.infoID,
-        name = this.attrInfo.name,
+        name = this.attrInfo!!.name,
         isSelected = this.isSelected
     )
 }
@@ -43,16 +51,42 @@ fun LabelOfSearchFilterExtendedDB.toModelEdit(): LabelOfSearchFilterEditModel {
 fun LabelOfSearchFilterExtendedDB.toModelShort(): LabelShortModel {
     return LabelShortModel(
         infoID = this.infoID,
-        name = this.attrInfo.name
+        name = this.attrInfo!!.name
     )
 }
 
 
-fun LabelOfSearchFilterEditModel.toDB(filterName: String, category: String): LabelOfSearchFilterDB {
+fun LabelOfSearchFilterEditModel.toDB(filterName: String): LabelOfSearchFilterDB {
     return LabelOfSearchFilterDB(
         ID = this.ID,
         filterName = filterName,
         infoID = this.infoID,
         isSelected = this.isSelected
     )
+}
+
+fun LabelOfSearchFilterExtendedDB.toDefault(): LabelOfSearchFilterDB {
+    return LabelOfSearchFilterDB(
+        ID = this.ID,
+        filterName = this.filterName,
+        infoID = this.infoID,
+        isSelected = false
+    )
+}
+
+fun LabelRecipeAttrDB.toFilter(filterName: String): LabelOfSearchFilterDB {
+    return LabelOfSearchFilterDB(
+        filterName = filterName,
+        infoID = this.ID,
+        isSelected = false
+    )
+}
+
+
+fun LabelOfRecipeNetwork.toDB(): LabelOfRecipeDB {
+    throw java.lang.NullPointerException() //TODO implement conversion
+}
+
+fun LabelRecipeAttrNetwork.toDB(): LabelRecipeAttrDB {
+    throw java.lang.NullPointerException() //TODO implement conversion
 }

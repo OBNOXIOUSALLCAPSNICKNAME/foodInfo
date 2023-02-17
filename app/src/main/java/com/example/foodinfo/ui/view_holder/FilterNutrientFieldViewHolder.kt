@@ -1,20 +1,24 @@
 package com.example.foodinfo.ui.view_holder
 
 import com.example.foodinfo.databinding.RvItemFilterInputNutrientsBinding
-import com.example.foodinfo.repository.model.NutrientFilterPreviewModel
+import com.example.foodinfo.repository.model.NutrientOfSearchFilterPreviewModel
 
 
 class FilterNutrientFieldViewHolder(
     private val binding: RvItemFilterInputNutrientsBinding,
-    private val getFormattedRange: (Float, Float, String) -> String
-) : BaseViewHolder<RvItemFilterInputNutrientsBinding, NutrientFilterPreviewModel>(binding) {
+    private val getFormattedRange: (Float?, Float?, String) -> String
+) : BaseViewHolder<RvItemFilterInputNutrientsBinding, NutrientOfSearchFilterPreviewModel>(binding) {
 
 
-    override fun bind(newItem: NutrientFilterPreviewModel) {
+    override fun bind(newItem: NutrientOfSearchFilterPreviewModel) {
         super.bind(newItem)
         with(binding) {
             tvHeader.text = item.name
-            tvRange.text = getFormattedRange(item.minValue, item.maxValue, item.measure)
+            tvRange.text = getFormattedRange(
+                item.minValue,
+                item.maxValue,
+                item.measure
+            )
         }
     }
 }

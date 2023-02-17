@@ -22,8 +22,7 @@ data class CategoryOfRecipeModel(
             oldItem: CategoryOfRecipeModel,
             newItem: CategoryOfRecipeModel
         ): Boolean {
-            return oldItem.name == newItem.name &&
-                    oldItem.labels == newItem.labels
+            return oldItem.labels == newItem.labels
         }
     }
 }

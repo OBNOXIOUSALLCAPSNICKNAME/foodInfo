@@ -4,29 +4,38 @@ import com.example.foodinfo.local.dto.*
 import kotlinx.coroutines.flow.Flow
 
 
-// All UPDATE functions must truly UPDATE content (not DELETE and INSERT) so all indices will stay the same
 interface SearchFilterDAO {
 
-    fun getBasics(filterName: String): List<BasicOfSearchFilterExtendedDB>
+    fun getBasics(filterName: String): List<@JvmWildcard BasicOfSearchFilterExtendedDB>
 
-    fun getLabels(filterName: String): List<LabelOfSearchFilterExtendedDB>
+    fun getLabels(filterName: String): List<@JvmWildcard LabelOfSearchFilterExtendedDB>
 
-    fun getNutrients(filterName: String): List<NutrientOfSearchFilterExtendedDB>
+    fun getNutrients(filterName: String): List<@JvmWildcard NutrientOfSearchFilterExtendedDB>
 
-
-    fun observeLabels(filterName: String): Flow<List<LabelOfSearchFilterExtendedDB>>
-
-    fun observeNutrients(filterName: String): Flow<List<NutrientOfSearchFilterExtendedDB>>
-
-    fun observeFilterExtended(filterName: String): Flow<SearchFilterExtendedDB>
+    fun getFilterExtended(filterName: String): SearchFilterExtendedDB
 
 
-    fun updateBasic(id: Int, minValue: Float, maxValue: Float)
+    fun observeBasics(filterName: String): Flow<@JvmWildcard List<@JvmWildcard BasicOfSearchFilterExtendedDB>>
+
+    fun observeLabels(filterName: String): Flow<@JvmWildcard List<@JvmWildcard LabelOfSearchFilterExtendedDB>>
+
+    fun observeNutrients(filterName: String): Flow<@JvmWildcard List<@JvmWildcard NutrientOfSearchFilterExtendedDB>>
+
+    fun observeFilterExtended(filterName: String): Flow<@JvmWildcard SearchFilterExtendedDB>
+
+
+    fun updateBasic(id: Int, minValue: Float?, maxValue: Float?)
 
     fun updateLabel(id: Int, isSelected: Boolean)
 
-    fun updateNutrient(id: Int, minValue: Float, maxValue: Float)
+    fun updateNutrient(id: Int, minValue: Float?, maxValue: Float?)
 
+
+    fun updateFilter(
+        basics: List<BasicOfSearchFilterDB>,
+        labels: List<LabelOfSearchFilterDB>,
+        nutrients: List<NutrientOfSearchFilterDB>
+    )
 
     fun updateBasics(basics: List<BasicOfSearchFilterDB>)
 
@@ -35,19 +44,25 @@ interface SearchFilterDAO {
     fun updateNutrients(nutrients: List<NutrientOfSearchFilterDB>)
 
 
-    /*
-        if overwrite = true and DB already have filter with that name:
-            UPDATE content
-        if overwrite = false and DB already have filter with that name:
-            Do nothing
-        else:
-            INSERT all content into DB
-     */
+    fun invalidateFilter(
+        filterName: String,
+        basics: List<BasicOfSearchFilterDB>? = null,
+        labels: List<LabelOfSearchFilterDB>? = null,
+        nutrients: List<NutrientOfSearchFilterDB>? = null
+    )
+
+    fun invalidateBasics(filterName: String, basics: List<BasicOfSearchFilterDB>)
+
+    fun invalidateLabels(filterName: String, labels: List<LabelOfSearchFilterDB>)
+
+    fun invalidateNutrients(filterName: String, nutrients: List<NutrientOfSearchFilterDB>)
+
+
+    // DO NOT INSERT if filter already exists
     fun insertFilter(
         filterName: String,
         basics: List<BasicOfSearchFilterDB>,
         labels: List<LabelOfSearchFilterDB>,
-        nutrients: List<NutrientOfSearchFilterDB>,
-        overwrite: Boolean = true
+        nutrients: List<NutrientOfSearchFilterDB>
     )
 }

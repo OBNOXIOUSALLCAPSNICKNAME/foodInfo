@@ -1,7 +1,7 @@
 package com.example.foodinfo.ui
 
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -12,11 +12,10 @@ import com.example.foodinfo.databinding.FragmentSearchFilterNutrientsBinding
 import com.example.foodinfo.ui.adapter.FilterNutrientFieldEditAdapter
 import com.example.foodinfo.ui.decorator.ListItemDecoration
 import com.example.foodinfo.utils.appComponent
-import com.example.foodinfo.utils.repeatOn
+import com.example.foodinfo.utils.baseAnimation
 import com.example.foodinfo.utils.showDescriptionDialog
 import com.example.foodinfo.view_model.SearchFilterNutrientsViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -41,6 +40,10 @@ class SearchFilterNutrientsFragment : BaseFragment<FragmentSearchFilterNutrients
         viewModel.reset()
     }
 
+    private val onValueChangedCallback: (Int, Float?, Float?) -> Unit = { id, minValue, maxValue ->
+        viewModel.update(id, minValue, maxValue)
+    }
+
     private val onHeaderClickCallback: (Int) -> Unit = { infoID ->
         viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
             val labelItem = viewModel.getNutrient(infoID)
@@ -54,12 +57,10 @@ class SearchFilterNutrientsFragment : BaseFragment<FragmentSearchFilterNutrients
         }
     }
 
-    private val onValueChangedCallback: (Int, Float, Float) -> Unit = { id, minValue, maxValue ->
-        viewModel.updateField(id, minValue, maxValue)
-    }
-
 
     override fun initUI() {
+        viewModel.filterName = args.searchFilterName
+
         recyclerAdapter = FilterNutrientFieldEditAdapter(
             requireContext(),
             onHeaderClickCallback,
@@ -86,9 +87,21 @@ class SearchFilterNutrientsFragment : BaseFragment<FragmentSearchFilterNutrients
     }
 
     override fun subscribeUI() {
-        super.subscribeUI()
-        repeatOn(Lifecycle.State.STARTED) {
-            viewModel.nutrients.collectLatest(recyclerAdapter::submitList)
-        }
+        observeData(
+            dataFlow = viewModel.nutrients,
+            useLoadingData = false,
+            onStart = {
+                binding.rvNutrients.isVisible = false
+                binding.pbContent.isVisible = true
+            },
+            onInitUI = { nutrients ->
+                recyclerAdapter.submitList(nutrients)
+                binding.pbContent.isVisible = false
+                binding.rvNutrients.baseAnimation()
+            },
+            onRefreshUI = { nutrients ->
+                recyclerAdapter.submitList(nutrients)
+            }
+        )
     }
 }

@@ -1,7 +1,7 @@
 package com.example.foodinfo.ui
 
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -10,13 +10,11 @@ import com.example.foodinfo.R
 import com.example.foodinfo.databinding.FragmentRecipeNutrientsBinding
 import com.example.foodinfo.ui.adapter.RecipeNutrientsAdapter
 import com.example.foodinfo.ui.decorator.ListItemDecoration
-import com.example.foodinfo.utils.State
 import com.example.foodinfo.utils.appComponent
-import com.example.foodinfo.utils.repeatOn
+import com.example.foodinfo.utils.baseAnimation
 import com.example.foodinfo.utils.showDescriptionDialog
 import com.example.foodinfo.view_model.RecipeNutrientsViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -80,7 +78,7 @@ class RecipeNutrientsFragment : BaseFragment<FragmentRecipeNutrientsBinding>(
             onNutrientClickListener
         )
 
-        with(binding.rvIngredients) {
+        with(binding.rvNutrients) {
             adapter = recyclerAdapter
             setHasFixedSize(true)
             addItemDecoration(
@@ -93,12 +91,21 @@ class RecipeNutrientsFragment : BaseFragment<FragmentRecipeNutrientsBinding>(
     }
 
     override fun subscribeUI() {
-        repeatOn(Lifecycle.State.STARTED) {
-            viewModel.nutrients.collectLatest { ingredients ->
-                if (ingredients is State.Success) {
-                    recyclerAdapter.submitList(ingredients.data)
-                }
+        observeData(
+            dataFlow = viewModel.nutrients,
+            useLoadingData = true,
+            onStart = {
+                binding.rvNutrients.isVisible = false
+                binding.pbContent.isVisible = true
+            },
+            onInitUI = { nutrients ->
+                recyclerAdapter.submitList(nutrients)
+                binding.pbContent.isVisible = false
+                binding.rvNutrients.baseAnimation()
+            },
+            onRefreshUI = { nutrients ->
+                recyclerAdapter.submitList(nutrients)
             }
-        }
+        )
     }
 }

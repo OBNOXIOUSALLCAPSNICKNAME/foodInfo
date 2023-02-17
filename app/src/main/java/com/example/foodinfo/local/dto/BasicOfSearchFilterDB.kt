@@ -5,8 +5,8 @@ open class BasicOfSearchFilterDB(
     open val ID: Int = 0,
     open val infoID: Int,
     open val filterName: String,
-    open val minValue: Float,
-    open val maxValue: Float
+    open val minValue: Float?,
+    open val maxValue: Float?
 ) {
 
     object Columns {
@@ -20,4 +20,21 @@ open class BasicOfSearchFilterDB(
     companion object {
         const val TABLE_NAME = "basic_of_search_filter"
     }
+
+    override fun equals(other: Any?): Boolean {
+        return (other is BasicOfSearchFilterDB) &&
+                other.infoID == this.infoID &&
+                other.filterName == this.filterName &&
+                other.minValue == this.minValue &&
+                other.maxValue == this.maxValue
+    }
+
+    override fun hashCode(): Int {
+        var result = infoID
+        result = 31 * result + filterName.hashCode()
+        result = 31 * result + minValue.hashCode()
+        result = 31 * result + maxValue.hashCode()
+        return result
+    }
+
 }

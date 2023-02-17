@@ -3,104 +3,113 @@ package com.example.foodinfo.local.room.dao
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Transaction
 import com.example.foodinfo.local.dao.RecipeAttrDAO
-import com.example.foodinfo.local.dto.BasicRecipeAttrDB
-import com.example.foodinfo.local.dto.CategoryRecipeAttrDB
-import com.example.foodinfo.local.dto.LabelRecipeAttrDB
-import com.example.foodinfo.local.dto.NutrientRecipeAttrDB
+import com.example.foodinfo.local.dto.*
 import com.example.foodinfo.local.room.entity.BasicRecipeAttrEntity
 import com.example.foodinfo.local.room.entity.CategoryRecipeAttrEntity
 import com.example.foodinfo.local.room.entity.LabelRecipeAttrEntity
 import com.example.foodinfo.local.room.entity.NutrientRecipeAttrEntity
+import kotlinx.coroutines.flow.Flow
 
 
 @Dao
-interface RecipeAttrDAORoom : RecipeAttrDAO {
-
-    @Query(
-        "SELECT * FROM ${NutrientRecipeAttrDB.TABLE_NAME} " +
-                "WHERE ${NutrientRecipeAttrDB.Columns.ID} = :ID"
-    )
-    override fun getNutrient(ID: Int): NutrientRecipeAttrEntity
-
+abstract class RecipeAttrDAORoom : RecipeAttrDAO {
 
     @Query(
         "SELECT * FROM ${LabelRecipeAttrDB.TABLE_NAME} " +
                 "WHERE ${LabelRecipeAttrDB.Columns.ID} = :ID"
     )
-    override fun getLabel(ID: Int): LabelRecipeAttrEntity
+    abstract override fun getLabel(ID: Int): LabelRecipeAttrEntity
 
     @Query(
-        "SELECT * FROM ${LabelRecipeAttrDB.TABLE_NAME} " +
-                "WHERE ${LabelRecipeAttrDB.Columns.CATEGORY_ID} = :categoryID"
+        "SELECT * FROM ${NutrientRecipeAttrDB.TABLE_NAME} " +
+                "WHERE ${NutrientRecipeAttrDB.Columns.ID} = :ID"
     )
-    fun getCategoryLabelsEntity(categoryID: Int): List<LabelRecipeAttrEntity>
-
-    override fun getCategoryLabels(categoryID: Int): List<LabelRecipeAttrDB> {
-        return getCategoryLabelsEntity(categoryID)
-    }
+    abstract override fun getNutrient(ID: Int): NutrientRecipeAttrEntity
 
     @Query(
         "SELECT * FROM ${CategoryRecipeAttrDB.TABLE_NAME} " +
                 "WHERE ${CategoryRecipeAttrDB.Columns.ID} = :ID"
     )
-    override fun getCategory(ID: Int): CategoryRecipeAttrEntity
+    abstract override fun getCategory(ID: Int): CategoryRecipeAttrEntity
 
-
-    @Query("SELECT * FROM ${CategoryRecipeAttrDB.TABLE_NAME}")
-    fun getCategoriesAllEntity(): List<CategoryRecipeAttrEntity>
-
-    override fun getCategoriesAll(): List<CategoryRecipeAttrDB> {
-        return getCategoriesAllEntity()
-    }
-
-    @Query("SELECT * FROM ${NutrientRecipeAttrDB.TABLE_NAME}")
-    fun getNutrientsAllEntity(): List<NutrientRecipeAttrEntity>
-
-    override fun getNutrientsAll(): List<NutrientRecipeAttrDB> {
-        return getNutrientsAllEntity()
-    }
 
     @Query("SELECT * FROM ${BasicRecipeAttrDB.TABLE_NAME}")
-    fun getBasicsAllEntity(): List<BasicRecipeAttrEntity>
-
-    override fun getBasicsAll(): List<BasicRecipeAttrDB> {
-        return getBasicsAllEntity()
-    }
+    abstract override fun getBasicsAll(): List<BasicRecipeAttrEntity>
 
     @Query("SELECT * FROM ${LabelRecipeAttrDB.TABLE_NAME}")
-    fun getLabelsAllEntity(): List<LabelRecipeAttrEntity>
+    abstract override fun getLabelsAll(): List<LabelRecipeAttrEntity>
 
-    override fun getLabelsAll(): List<LabelRecipeAttrDB> {
-        return getLabelsAllEntity()
+    @Query("SELECT * FROM ${NutrientRecipeAttrDB.TABLE_NAME}")
+    abstract override fun getNutrientsAll(): List<NutrientRecipeAttrEntity>
+
+    @Query("SELECT * FROM ${CategoryRecipeAttrDB.TABLE_NAME}")
+    abstract override fun getCategoriesAll(): List<CategoryRecipeAttrEntity>
+
+    @Transaction
+    override fun getRecipeAttrs(): RecipeAttrsDB {
+        return RecipeAttrsDB(
+            basics = getBasicsAll(),
+            labels = getLabelsAll(),
+            nutrients = getNutrientsAll(),
+            categories = getCategoriesAll()
+        )
     }
 
 
-    @Insert
-    fun addNutrientsEntity(attrs: List<NutrientRecipeAttrEntity>)
+    @Query("SELECT * FROM ${BasicRecipeAttrDB.TABLE_NAME}")
+    abstract override fun observeBasicsAll(): Flow<List<BasicRecipeAttrEntity>>
 
-    override fun addNutrients(attrs: List<NutrientRecipeAttrDB>) {
-        addNutrientsEntity(attrs.map { NutrientRecipeAttrEntity.toEntity(it) })
-    }
+    @Query("SELECT * FROM ${LabelRecipeAttrDB.TABLE_NAME}")
+    abstract override fun observeLabelsAll(): Flow<List<LabelRecipeAttrEntity>>
+
+    @Query("SELECT * FROM ${NutrientRecipeAttrDB.TABLE_NAME}")
+    abstract override fun observeNutrientsAll(): Flow<List<NutrientRecipeAttrEntity>>
+
+    @Query("SELECT * FROM ${CategoryRecipeAttrDB.TABLE_NAME}")
+    abstract override fun observeCategoriesAll(): Flow<List<CategoryRecipeAttrEntity>>
+
+    @Query(
+        "SELECT * FROM ${LabelRecipeAttrDB.TABLE_NAME} " +
+                "WHERE ${LabelRecipeAttrDB.Columns.CATEGORY_ID} = :categoryID"
+    )
+    abstract override fun observeCategoryLabels(categoryID: Int): Flow<List<LabelRecipeAttrEntity>>
+
 
     @Insert
-    fun addBasicsEntity(attrs: List<BasicRecipeAttrEntity>)
+    abstract fun addBasicsEntity(attrs: List<BasicRecipeAttrEntity>)
 
     override fun addBasics(attrs: List<BasicRecipeAttrDB>) {
         addBasicsEntity(attrs.map { BasicRecipeAttrEntity.toEntity(it) })
     }
 
     @Insert
-    fun addLabelsEntity(attrs: List<LabelRecipeAttrEntity>)
+    abstract fun addLabelsEntity(attrs: List<LabelRecipeAttrEntity>)
 
     override fun addLabels(attrs: List<LabelRecipeAttrDB>) {
         addLabelsEntity(attrs.map { LabelRecipeAttrEntity.toEntity(it) })
     }
 
     @Insert
-    fun addCategoriesEntity(attrs: List<CategoryRecipeAttrEntity>)
+    abstract fun addNutrientsEntity(attrs: List<NutrientRecipeAttrEntity>)
+
+    override fun addNutrients(attrs: List<NutrientRecipeAttrDB>) {
+        addNutrientsEntity(attrs.map { NutrientRecipeAttrEntity.toEntity(it) })
+    }
+
+    @Insert
+    abstract fun addCategoriesEntity(attrs: List<CategoryRecipeAttrEntity>)
 
     override fun addCategories(attrs: List<CategoryRecipeAttrDB>) {
         addCategoriesEntity(attrs.map { CategoryRecipeAttrEntity.toEntity(it) })
+    }
+
+    @Transaction
+    override fun addRecipeAttrs(attrs: RecipeAttrsDB) {
+        addBasics(attrs.basics)
+        addLabels(attrs.labels)
+        addNutrients(attrs.nutrients)
+        addCategories(attrs.categories)
     }
 }

@@ -14,7 +14,7 @@ data class CategoryOfSearchFilterPreviewModel(
             oldItem: CategoryOfSearchFilterPreviewModel,
             newItem: CategoryOfSearchFilterPreviewModel
         ): Boolean {
-            return oldItem.name == newItem.name
+            return oldItem.ID == newItem.ID
         }
 
         override fun areContentsTheSame(

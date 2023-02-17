@@ -50,6 +50,7 @@
     <string name = "long_dash_text">─</string>
     <string name = "any_text">Any</string>
     <string name = "unspecified_text">Unspecified</string>
+    <string name = "reset_text">reset</string>
 
     <string-array name = "preview_range_slider_values">
         <item>0</item>

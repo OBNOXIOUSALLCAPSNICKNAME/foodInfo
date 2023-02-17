@@ -7,20 +7,21 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.viewbinding.ViewBinding
-import com.example.foodinfo.utils.UiState
+import com.example.foodinfo.utils.State
 import com.example.foodinfo.utils.repeatOn
-import kotlinx.coroutines.channels.BufferOverflow
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filterNot
 
-/**
- * Base class to avoid boilerplate binding initialization and releasing.
- */
+
 abstract class BaseFragment<VB : ViewBinding>(
     private val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> VB
 ) : Fragment() {
 
     private var _binding: VB? = null
     val binding get() = _binding!!
+
+    private var isUIInitialized = false
 
     /**
      * Calls in onViewCreated().
@@ -37,36 +38,61 @@ abstract class BaseFragment<VB : ViewBinding>(
     open fun subscribeUI() {}
 
 
-    private var _uiState = MutableSharedFlow<UiState>(
-        replay = 1,
-        onBufferOverflow = BufferOverflow.DROP_OLDEST
-    ).also {
-        it.tryEmit(UiState.Loading())
-    }
-    private val uiState: SharedFlow<UiState> = _uiState.asSharedFlow()
-
-    private val uiChunksState: HashMap<Any, UiState> = hashMapOf()
-
-
     /**
-     * Observes UI state changes.
-     *
-     * All repetitions of the same state are filtered out.
-     *
-     * @param callBack runnable that is executed each time UI state changes
+     * @param dataFlow Flow of data to observe. All repetitions of the same [State] will be filtered out
+     * with [State.Utils.isEqual].
+     * @param useLoadingData When true, if [State.Loading] will be collected with [State.data] **!= null**,
+     * [onInitUI] or [onRefreshUI] will be called.
+     * @param onStart Called before starting to collect provided [dataFlow]. Usage example: hide UI and show
+     * loading spinner/placeholders.
+     * @param onError Called if [State.Error] was collected. Usage example: show error placeholder if UI was
+     * not yet initialized or show snackbar if UI already initialized.
+     * @param onInitUI Called when [State] with [State.data] **!= null** collected and [isUIInitialized]
+     * is **false**. After completion, [isUIInitialized] will be changed to **true**. Usage example: hide
+     * loading spinner/placeholders, initialize UI and start initialize animation.
+     * @param onRefreshUI Called when [State] with [State.data] **!= null** collected and [isUIInitialized]
+     * is **true**. Update UI and start refresh animation.
      */
-    fun observeUiState(callBack: suspend (UiState) -> Unit) {
+    internal inline fun <T> observeData(
+        dataFlow: Flow<State<T>>,
+        useLoadingData: Boolean,
+        crossinline onError: (String, Exception) -> Unit = { _, _ -> },
+        crossinline onStart: () -> Unit = {},
+        crossinline onInitUI: suspend (T) -> Unit,
+        crossinline onRefreshUI: suspend (T) -> Unit
+    ) {
         repeatOn(Lifecycle.State.STARTED) {
-            uiState.distinctUntilChanged { old, new ->
-                old.equalState(new)
-            }.collectLatest {
-                callBack(it)
-            }
+            if (!isUIInitialized)
+                onStart()
+            dataFlow
+                .filterNot(State.Utils::isEmptyLoading)
+                .distinctUntilChanged(State.Utils::isEqual)
+                .collect { state ->
+                    when (state) {
+                        is State.Error   -> {
+                            onError(state.message!!, state.error!!)
+                        }
+                        is State.Success -> {
+                            if (!isUIInitialized) {
+                                onInitUI(state.data!!)
+                                isUIInitialized = true
+                            } else {
+                                onRefreshUI(state.data!!)
+                            }
+                        }
+                        is State.Loading -> {
+                            if (useLoadingData && state.data != null) {
+                                if (!isUIInitialized) {
+                                    onInitUI(state.data)
+                                    isUIInitialized = true
+                                } else {
+                                    onRefreshUI(state.data)
+                                }
+                            }
+                        }
+                    }
+                }
         }
-    }
-
-    fun updateUiState(value: UiState): Boolean {
-        return _uiState.tryEmit(value)
     }
 
 

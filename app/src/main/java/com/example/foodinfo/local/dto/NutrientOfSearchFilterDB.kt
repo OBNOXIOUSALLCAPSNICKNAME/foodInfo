@@ -5,8 +5,8 @@ open class NutrientOfSearchFilterDB(
     open val ID: Int = 0,
     open val filterName: String,
     open val infoID: Int,
-    open val minValue: Float,
-    open val maxValue: Float
+    open val minValue: Float?,
+    open val maxValue: Float?
 ) {
 
     object Columns {
@@ -19,5 +19,21 @@ open class NutrientOfSearchFilterDB(
 
     companion object {
         const val TABLE_NAME = "nutrient_of_search_filter"
+    }
+
+    override fun equals(other: Any?): Boolean {
+        return (other is NutrientOfSearchFilterDB) &&
+                other.filterName == this.filterName &&
+                other.infoID == this.infoID &&
+                other.minValue == this.minValue &&
+                other.maxValue == this.maxValue
+    }
+
+    override fun hashCode(): Int {
+        var result = filterName.hashCode()
+        result = 31 * result + infoID
+        result = 31 * result + minValue.hashCode()
+        result = 31 * result + maxValue.hashCode()
+        return result
     }
 }

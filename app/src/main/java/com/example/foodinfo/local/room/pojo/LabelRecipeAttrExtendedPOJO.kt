@@ -31,7 +31,7 @@ data class LabelRecipeAttrExtendedPOJO(
         parentColumn = LabelRecipeAttrDB.Columns.CATEGORY_ID,
         entityColumn = CategoryRecipeAttrDB.Columns.ID,
     )
-    override val categoryInfo: CategoryRecipeAttrEntity
+    override val categoryInfo: CategoryRecipeAttrEntity?
 
 ) : LabelRecipeAttrExtendedDB(
     ID = ID,

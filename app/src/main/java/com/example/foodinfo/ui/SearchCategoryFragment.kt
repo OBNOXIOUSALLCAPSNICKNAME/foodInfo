@@ -2,7 +2,6 @@ package com.example.foodinfo.ui
 
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
@@ -12,9 +11,7 @@ import com.example.foodinfo.ui.adapter.SearchLabelsAdapter
 import com.example.foodinfo.ui.decorator.GridItemDecoration
 import com.example.foodinfo.utils.appComponent
 import com.example.foodinfo.utils.baseAnimation
-import com.example.foodinfo.utils.repeatOn
 import com.example.foodinfo.view_model.SearchCategoryViewModel
-import kotlinx.coroutines.flow.collectLatest
 
 
 class SearchCategoryFragment : BaseFragment<FragmentSearchCategoryBinding>(
@@ -49,7 +46,6 @@ class SearchCategoryFragment : BaseFragment<FragmentSearchCategoryBinding>(
     override fun initUI() {
         viewModel.categoryID = args.categoryID
 
-        binding.tvCategory.text = viewModel.category.name
         binding.btnBack.setOnClickListener { onBackClickListener() }
         binding.btnSearch.setOnClickListener { onSearchClickListener() }
 
@@ -76,14 +72,25 @@ class SearchCategoryFragment : BaseFragment<FragmentSearchCategoryBinding>(
     }
 
     override fun subscribeUI() {
-        repeatOn(Lifecycle.State.STARTED) {
-            viewModel.labels.collectLatest {
+        observeData(
+            dataFlow = viewModel.category,
+            useLoadingData = false,
+            onStart = {
                 binding.rvLabels.isVisible = false
-                recyclerAdapter.submitList(it) {
-                    binding.rvLabels.isVisible = true
-                    binding.rvLabels.baseAnimation()
-                }
+                binding.tvHeader.isVisible = false
+                binding.pbContent.isVisible = true
+            },
+            onInitUI = { category ->
+                binding.tvHeader.text = category.name
+                recyclerAdapter.submitList(category.labels)
+                binding.pbContent.isVisible = false
+                binding.tvHeader.baseAnimation()
+                binding.rvLabels.baseAnimation()
+            },
+            onRefreshUI = { category ->
+                binding.tvHeader.text = category.name
+                recyclerAdapter.submitList(category.labels)
             }
-        }
+        )
     }
 }

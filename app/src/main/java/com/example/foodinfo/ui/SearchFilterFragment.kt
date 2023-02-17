@@ -2,21 +2,20 @@ package com.example.foodinfo.ui
 
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.foodinfo.R
 import com.example.foodinfo.databinding.FragmentSearchFilterBinding
+import com.example.foodinfo.repository.model.SearchFilterEditModel
 import com.example.foodinfo.ui.adapter.FilterBaseFieldAdapter
 import com.example.foodinfo.ui.adapter.FilterCategoriesAdapter
 import com.example.foodinfo.ui.adapter.FilterNutrientsAdapter
 import com.example.foodinfo.ui.custom_view.NonScrollLinearLayoutManager
 import com.example.foodinfo.ui.decorator.ListItemDecoration
 import com.example.foodinfo.utils.appComponent
-import com.example.foodinfo.utils.repeatOn
+import com.example.foodinfo.utils.baseAnimation
 import com.example.foodinfo.view_model.SearchFilterViewModel
-import kotlinx.coroutines.flow.collectLatest
 
 
 class SearchFilterFragment : BaseFragment<FragmentSearchFilterBinding>(
@@ -39,6 +38,10 @@ class SearchFilterFragment : BaseFragment<FragmentSearchFilterBinding>(
         viewModel.reset()
     }
 
+    private val onValueChangedCallback: (Int, Float?, Float?) -> Unit = { id, minValue, maxValue ->
+        viewModel.update(id, minValue, maxValue)
+    }
+
     private val onNutrientsEditClickListener: () -> Unit = {
         findNavController().navigate(
             SearchFilterFragmentDirections.actionFSearchFilterToFSearchFilterNutrients(
@@ -47,9 +50,6 @@ class SearchFilterFragment : BaseFragment<FragmentSearchFilterBinding>(
         )
     }
 
-    private val onBaseFieldValueChangedCallback: (Int, Float, Float) -> Unit = { id, minValue, maxValue ->
-        viewModel.updateField(id, minValue, maxValue)
-    }
 
     private val onCategoryChangedCallback: (Int) -> Unit = { categoryID ->
         findNavController().navigate(
@@ -60,18 +60,28 @@ class SearchFilterFragment : BaseFragment<FragmentSearchFilterBinding>(
         )
     }
 
-    private val getFormattedRange: (Float, Float, String) -> String =
+    private val getFormattedRange: (Float?, Float?, String) -> String =
         { minValue, maxValue, measure ->
-            getString(
-                R.string.rv_item_filter_nutrient_range,
-                minValue,
-                maxValue,
-                measure
-            )
+            when {
+                minValue != null && maxValue != null -> {
+                    "$minValue$measure - $maxValue$measure"
+                }
+                minValue != null                     -> {
+                    "≥$minValue$measure"
+                }
+                maxValue != null                     -> {
+                    "≤$maxValue$measure"
+                }
+                else                                 -> {
+                    ""
+                }
+            }
         }
 
 
     override fun initUI() {
+        binding.tvFilterName.text = viewModel.filterName
+
         binding.btnBack.setOnClickListener { onBackClickListener() }
         binding.btnReset.setOnClickListener { onResetClickListener() }
         binding.ivNutrientsEdit.setOnClickListener {
@@ -80,7 +90,7 @@ class SearchFilterFragment : BaseFragment<FragmentSearchFilterBinding>(
 
         recyclerAdapterBaseFields = FilterBaseFieldAdapter(
             requireContext(),
-            onBaseFieldValueChangedCallback
+            onValueChangedCallback
         )
         with(binding.rvBaseFields) {
             adapter = recyclerAdapterBaseFields
@@ -135,19 +145,34 @@ class SearchFilterFragment : BaseFragment<FragmentSearchFilterBinding>(
     }
 
     override fun subscribeUI() {
-        repeatOn(Lifecycle.State.STARTED) {
-            viewModel.filter.collectLatest { filter ->
-                recyclerAdapterCategories.submitList(filter.categories)
-                recyclerAdapterBaseFields.submitList(filter.baseFields)
-                if (filter.nutrients.isEmpty()) {
-                    binding.rvNutrients.isVisible = false
-                    binding.tvNutrientsNoData.isVisible = true
-                } else {
-                    binding.rvNutrients.isVisible = true
-                    binding.tvNutrientsNoData.isVisible = false
-                    recyclerAdapterNutrients.submitList(filter.nutrients)
-                }
+        observeData(
+            dataFlow = viewModel.filter,
+            useLoadingData = false,
+            onStart = {
+                binding.svContent.isVisible = false
+                binding.pbContent.isVisible = true
+            },
+            onInitUI = { filter ->
+                initFilter(filter)
+                binding.pbContent.isVisible = false
+                binding.svContent.baseAnimation()
+            },
+            onRefreshUI = { filter ->
+                initFilter(filter)
             }
+        )
+    }
+
+    private fun initFilter(filter: SearchFilterEditModel) {
+        recyclerAdapterCategories.submitList(filter.categories)
+        recyclerAdapterBaseFields.submitList(filter.basics)
+        if (filter.nutrients.isEmpty()) {
+            binding.rvNutrients.isVisible = false
+            binding.tvNutrientsNoData.isVisible = true
+        } else {
+            binding.rvNutrients.isVisible = true
+            binding.tvNutrientsNoData.isVisible = false
+            recyclerAdapterNutrients.submitList(filter.nutrients)
         }
     }
 }

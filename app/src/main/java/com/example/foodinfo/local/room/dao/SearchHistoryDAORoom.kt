@@ -10,7 +10,7 @@ import com.example.foodinfo.local.room.entity.SearchInputEntity
 
 
 @Dao
-interface SearchHistoryDAORoom : SearchHistoryDAO {
+abstract class SearchHistoryDAORoom : SearchHistoryDAO {
     @Query(
         "SELECT * FROM ${SearchInputDB.TABLE_NAME} " +
                 "WHERE ${SearchInputDB.Columns.INPUT_TEXT} " +
@@ -18,35 +18,26 @@ interface SearchHistoryDAORoom : SearchHistoryDAO {
                 "ORDER BY ${SearchInputDB.Columns.DATE} DESC " +
                 "LIMIT ${SearchInputDB.LIMIT}"
     )
-    fun getHistoryLatestEntity(inputText: String): List<SearchInputEntity>
-
-    override fun getHistoryLatest(inputText: String): List<SearchInputDB> {
-        return getHistoryLatestEntity(inputText)
-    }
+    abstract override fun getHistoryLatest(inputText: String): List<SearchInputEntity>
 
     @Query(
         "SELECT * FROM ${SearchInputDB.TABLE_NAME} " +
                 "ORDER BY ${SearchInputDB.Columns.DATE}"
     )
-    fun getHistoryAllEntity(): List<SearchInputEntity>
+    abstract override fun getHistoryAll(): List<SearchInputEntity>
 
-    override fun getHistoryAll(): List<SearchInputDB> {
-        return getHistoryAllEntity()
-    }
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    abstract fun addInputEntity(searchInput: List<SearchInputEntity>)
 
     override fun addHistory(searchInput: List<SearchInputDB>) {
         addInputEntity(searchInput.map { SearchInputEntity.toEntity(it) })
     }
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    abstract fun addInputEntity(searchInput: SearchInputEntity)
+
     override fun addInput(searchInput: SearchInputDB) {
         addInputEntity(SearchInputEntity.toEntity(searchInput))
     }
-
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun addInputEntity(searchInput: SearchInputEntity)
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun addInputEntity(searchInput: List<SearchInputEntity>)
 }

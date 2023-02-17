@@ -5,6 +5,7 @@ import android.os.Parcelable
 import android.view.View
 import android.widget.ImageView
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.example.foodinfo.R
 
@@ -41,6 +42,7 @@ fun ImageView.setFavorite(
 }
 
 fun View.baseAnimation() {
+    isVisible = true
     alpha = 0f
     animate().alpha(1f).setDuration(100).setListener(null)
 }

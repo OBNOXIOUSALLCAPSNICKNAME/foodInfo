@@ -16,14 +16,14 @@ interface RecipeDAO {
     fun getByFilter(query: SupportSQLiteQuery): PagingSource<Int, out RecipeDB>
 
 
-    fun getByIdExtended(recipeID: String): Flow<RecipeExtendedDB>
+    fun getByIdExtended(recipeID: String): Flow<@JvmWildcard RecipeExtendedDB>
 
 
-    fun getIngredients(recipeID: String): Flow<List<IngredientOfRecipeDB>>
+    fun getIngredients(recipeID: String): Flow<@JvmWildcard List<@JvmWildcard IngredientOfRecipeDB>>
 
-    fun getNutrients(recipeID: String): Flow<List<NutrientOfRecipeExtendedDB>>
+    fun getNutrients(recipeID: String): Flow<@JvmWildcard List<@JvmWildcard NutrientOfRecipeExtendedDB>>
 
-    fun getLabels(recipeID: String): Flow<List<LabelOfRecipeExtendedDB>>
+    fun getLabels(recipeID: String): Flow<@JvmWildcard List<@JvmWildcard LabelOfRecipeExtendedDB>>
 
 
     fun getFavoriteIds(): List<String>

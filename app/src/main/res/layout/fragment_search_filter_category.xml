@@ -14,11 +14,12 @@
         app:layout_constraintStart_toStartOf = "parent"
         app:layout_constraintTop_toTopOf = "parent" />
 
-    <ImageView
+    <CheckBox
         android:id = "@+id/btn_reset"
-        style = "@style/ButtonEnd"
-        android:contentDescription = "@string/default_content_description"
-        android:src = "@drawable/ic_revert"
+        android:layout_width = "wrap_content"
+        android:layout_height = "@dimen/dp_66"
+        android:buttonTint = "@drawable/selector_color_cb"
+        android:paddingEnd = "@dimen/dp_18"
         app:layout_constraintEnd_toEndOf = "parent"
         app:layout_constraintTop_toTopOf = "parent" />
 
@@ -47,5 +48,16 @@
         app:layout_constraintTop_toBottomOf = "@+id/btn_back"
         tools:itemCount = "10"
         tools:listitem = "@layout/rv_item_filter_input_category_edit" />
+
+    <ProgressBar
+        android:id = "@+id/pb_content"
+        android:layout_width = "@dimen/progress_size"
+        android:layout_height = "@dimen/progress_size"
+        android:layout_gravity = "center"
+        android:visibility = "gone"
+        app:layout_constraintBottom_toBottomOf = "parent"
+        app:layout_constraintEnd_toEndOf = "parent"
+        app:layout_constraintStart_toStartOf = "parent"
+        app:layout_constraintTop_toBottomOf = "@+id/btn_back" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

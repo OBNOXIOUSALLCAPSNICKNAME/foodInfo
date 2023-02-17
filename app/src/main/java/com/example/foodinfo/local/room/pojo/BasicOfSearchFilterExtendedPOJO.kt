@@ -19,16 +19,16 @@ data class BasicOfSearchFilterExtendedPOJO(
     override val filterName: String,
 
     @ColumnInfo(name = BasicOfSearchFilterDB.Columns.MIN_VALUE)
-    override val minValue: Float,
+    override val minValue: Float?,
 
     @ColumnInfo(name = BasicOfSearchFilterDB.Columns.MAX_VALUE)
-    override val maxValue: Float,
+    override val maxValue: Float?,
 
     @Relation(
         parentColumn = BasicOfSearchFilterDB.Columns.INFO_ID,
         entityColumn = BasicRecipeAttrDB.Columns.ID
     )
-    override val attrInfo: BasicRecipeAttrEntity
+    override val attrInfo: BasicRecipeAttrEntity?
 
 ) : BasicOfSearchFilterExtendedDB(
     ID = ID,

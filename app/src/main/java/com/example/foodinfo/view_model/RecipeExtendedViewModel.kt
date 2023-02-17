@@ -6,6 +6,7 @@ import com.example.foodinfo.repository.RecipeAttrRepository
 import com.example.foodinfo.repository.RecipeRepository
 import com.example.foodinfo.repository.model.LabelHintModel
 import com.example.foodinfo.repository.model.RecipeExtendedModel
+import com.example.foodinfo.repository.use_case.RecipeUseCase
 import com.example.foodinfo.utils.State
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -14,6 +15,7 @@ import javax.inject.Inject
 
 
 class RecipeExtendedViewModel @Inject constructor(
+    private val recipeUseCase: RecipeUseCase,
     private val recipeRepository: RecipeRepository,
     private val recipeAttrRepository: RecipeAttrRepository
 ) :
@@ -22,7 +24,7 @@ class RecipeExtendedViewModel @Inject constructor(
     var recipeId: String = ""
 
     val recipe: SharedFlow<State<RecipeExtendedModel>> by lazy {
-        recipeRepository.getByIdExtended(recipeId).shareIn(
+        recipeUseCase.getByIdExtended(recipeId).shareIn(
             viewModelScope, SharingStarted.WhileSubscribed(stopTimeoutMillis = 5000), 1
         )
     }

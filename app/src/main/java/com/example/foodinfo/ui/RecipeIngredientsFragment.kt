@@ -1,7 +1,7 @@
 package com.example.foodinfo.ui
 
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
@@ -9,12 +9,10 @@ import com.example.foodinfo.R
 import com.example.foodinfo.databinding.FragmentRecipeIngredientsBinding
 import com.example.foodinfo.ui.adapter.RecipeIngredientsAdapter
 import com.example.foodinfo.ui.decorator.ListItemDecoration
-import com.example.foodinfo.utils.State
 import com.example.foodinfo.utils.appComponent
+import com.example.foodinfo.utils.baseAnimation
 import com.example.foodinfo.utils.getMeasureSpacer
-import com.example.foodinfo.utils.repeatOn
 import com.example.foodinfo.view_model.RecipeIngredientsViewModel
-import kotlinx.coroutines.flow.collectLatest
 
 
 class RecipeIngredientsFragment : BaseFragment<FragmentRecipeIngredientsBinding>(
@@ -70,12 +68,21 @@ class RecipeIngredientsFragment : BaseFragment<FragmentRecipeIngredientsBinding>
     }
 
     override fun subscribeUI() {
-        repeatOn(Lifecycle.State.STARTED) {
-            viewModel.ingredients.collectLatest { ingredients ->
-                if (ingredients is State.Success) {
-                    recyclerAdapter.submitList(ingredients.data)
-                }
+        observeData(
+            dataFlow = viewModel.ingredients,
+            useLoadingData = true,
+            onStart = {
+                binding.rvIngredients.isVisible = false
+                binding.pbContent.isVisible = true
+            },
+            onInitUI = { ingredients ->
+                recyclerAdapter.submitList(ingredients)
+                binding.pbContent.isVisible = false
+                binding.rvIngredients.baseAnimation()
+            },
+            onRefreshUI = { ingredients ->
+                recyclerAdapter.submitList(ingredients)
             }
-        }
+        )
     }
 }

@@ -6,5 +6,5 @@ open class LabelOfSearchFilterExtendedDB(
     open val filterName: String,
     open val infoID: Int,
     open val isSelected: Boolean,
-    open val attrInfo: LabelRecipeAttrExtendedDB
+    open val attrInfo: LabelRecipeAttrExtendedDB?
 )

@@ -1,7 +1,6 @@
 package com.example.foodinfo.ui
 
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -10,9 +9,7 @@ import com.example.foodinfo.databinding.FragmentHomeBinding
 import com.example.foodinfo.ui.adapter.HomeCategoriesAdapter
 import com.example.foodinfo.ui.decorator.ListItemDecoration
 import com.example.foodinfo.utils.appComponent
-import com.example.foodinfo.utils.repeatOn
 import com.example.foodinfo.view_model.HomeViewModel
-import kotlinx.coroutines.flow.collectLatest
 
 
 class HomeFragment : BaseFragment<FragmentHomeBinding>(
@@ -70,8 +67,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
     }
 
     override fun subscribeUI() {
-        repeatOn(Lifecycle.State.STARTED) {
-            viewModel.categories.collectLatest(recyclerAdapter::submitList)
-        }
+        observeData(
+            dataFlow = viewModel.categories,
+            useLoadingData = false,
+            onInitUI = recyclerAdapter::submitList,
+            onRefreshUI = recyclerAdapter::submitList
+        )
     }
 }

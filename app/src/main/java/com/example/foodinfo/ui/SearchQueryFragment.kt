@@ -2,7 +2,6 @@ package com.example.foodinfo.ui
 
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
@@ -11,7 +10,6 @@ import com.example.foodinfo.databinding.FragmentSearchQueryBinding
 import com.example.foodinfo.ui.adapter.SearchRecipeAdapter
 import com.example.foodinfo.ui.decorator.GridItemDecoration
 import com.example.foodinfo.utils.appComponent
-import com.example.foodinfo.utils.repeatOn
 import com.example.foodinfo.view_model.SearchQueryViewModel
 import kotlinx.coroutines.flow.collectLatest
 
@@ -96,8 +94,17 @@ class SearchQueryFragment : BaseFragment<FragmentSearchQueryBinding>(
     }
 
     override fun subscribeUI() {
-        repeatOn(Lifecycle.State.STARTED) {
-            viewModel.recipes.collectLatest(recyclerAdapter::submitData)
-        }
+        observeData(
+            dataFlow = viewModel.filterQuery,
+            useLoadingData = false,
+            onInitUI = { query ->
+                viewModel.query = query
+                viewModel.recipes.collectLatest(recyclerAdapter::submitData)
+            },
+            onRefreshUI = { query ->
+                viewModel.query = query
+                viewModel.recipes.collectLatest(recyclerAdapter::submitData)
+            }
+        )
     }
 }

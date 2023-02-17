@@ -13,7 +13,7 @@ import com.example.foodinfo.ui.view_holder.FilterCategoryEditViewHolder
 class FilterCategoryEditAdapter(
     context: Context,
     private val onQuestionMarkClickListener: (Int) -> Unit,
-    private val onItemClickListener: (Int, Boolean) -> Unit,
+    private val onItemClickListener: (Int, Boolean) -> Unit
 ) : ListAdapter<LabelOfSearchFilterEditModel, ViewHolder>(
     LabelOfSearchFilterEditModel.ItemCallBack
 ) {

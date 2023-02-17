@@ -23,7 +23,7 @@
     {
       "ID": 3,
       "tag": "time",
-      "name": "time",
+      "name": "cooking time",
       "columnName": "time",
       "measure": "min",
       "stepSize": 5,
