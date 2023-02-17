@@ -23,7 +23,7 @@ class SearchFilterCategoryViewModel @Inject constructor(
     var categoryID: Int = -1
     var filterName: String = ""
 
-    val labels: SharedFlow<State<CategoryOfSearchFilterEditModel>> by lazy {
+    val category: SharedFlow<State<CategoryOfSearchFilterEditModel>> by lazy {
         searchFilterUseCase.getCategoryEdit(categoryID = categoryID).shareIn(
             viewModelScope, SharingStarted.WhileSubscribed(stopTimeoutMillis = 5000), 1
         )

@@ -10,18 +10,11 @@ import com.example.foodinfo.local.room.entity.BasicRecipeAttrEntity
 import com.example.foodinfo.local.room.entity.CategoryRecipeAttrEntity
 import com.example.foodinfo.local.room.entity.LabelRecipeAttrEntity
 import com.example.foodinfo.local.room.entity.NutrientRecipeAttrEntity
-import com.example.foodinfo.local.room.pojo.LabelRecipeAttrExtendedPOJO
+import kotlinx.coroutines.flow.Flow
 
 
 @Dao
 abstract class RecipeAttrDAORoom : RecipeAttrDAO {
-
-    @Query(
-        "SELECT * FROM ${NutrientRecipeAttrDB.TABLE_NAME} " +
-                "WHERE ${NutrientRecipeAttrDB.Columns.ID} = :ID"
-    )
-    abstract override fun getNutrient(ID: Int): NutrientRecipeAttrEntity
-
 
     @Query(
         "SELECT * FROM ${LabelRecipeAttrDB.TABLE_NAME} " +
@@ -30,10 +23,10 @@ abstract class RecipeAttrDAORoom : RecipeAttrDAO {
     abstract override fun getLabel(ID: Int): LabelRecipeAttrEntity
 
     @Query(
-        "SELECT * FROM ${LabelRecipeAttrDB.TABLE_NAME} " +
-                "WHERE ${LabelRecipeAttrDB.Columns.CATEGORY_ID} = :categoryID"
+        "SELECT * FROM ${NutrientRecipeAttrDB.TABLE_NAME} " +
+                "WHERE ${NutrientRecipeAttrDB.Columns.ID} = :ID"
     )
-    abstract override fun getCategoryLabels(categoryID: Int): List<LabelRecipeAttrEntity>
+    abstract override fun getNutrient(ID: Int): NutrientRecipeAttrEntity
 
     @Query(
         "SELECT * FROM ${CategoryRecipeAttrDB.TABLE_NAME} " +
@@ -41,6 +34,18 @@ abstract class RecipeAttrDAORoom : RecipeAttrDAO {
     )
     abstract override fun getCategory(ID: Int): CategoryRecipeAttrEntity
 
+
+    @Query("SELECT * FROM ${BasicRecipeAttrDB.TABLE_NAME}")
+    abstract override fun getBasicsAll(): List<BasicRecipeAttrEntity>
+
+    @Query("SELECT * FROM ${LabelRecipeAttrDB.TABLE_NAME}")
+    abstract override fun getLabelsAll(): List<LabelRecipeAttrEntity>
+
+    @Query("SELECT * FROM ${NutrientRecipeAttrDB.TABLE_NAME}")
+    abstract override fun getNutrientsAll(): List<NutrientRecipeAttrEntity>
+
+    @Query("SELECT * FROM ${CategoryRecipeAttrDB.TABLE_NAME}")
+    abstract override fun getCategoriesAll(): List<CategoryRecipeAttrEntity>
 
     @Transaction
     override fun getRecipeAttrs(): RecipeAttrsDB {
@@ -53,28 +58,24 @@ abstract class RecipeAttrDAORoom : RecipeAttrDAO {
     }
 
 
-    @Query("SELECT * FROM ${CategoryRecipeAttrDB.TABLE_NAME}")
-    abstract override fun getCategoriesAll(): List<CategoryRecipeAttrEntity>
+    @Query("SELECT * FROM ${BasicRecipeAttrDB.TABLE_NAME}")
+    abstract override fun observeBasicsAll(): Flow<List<BasicRecipeAttrEntity>>
+
+    @Query("SELECT * FROM ${LabelRecipeAttrDB.TABLE_NAME}")
+    abstract override fun observeLabelsAll(): Flow<List<LabelRecipeAttrEntity>>
 
     @Query("SELECT * FROM ${NutrientRecipeAttrDB.TABLE_NAME}")
-    abstract override fun getNutrientsAll(): List<NutrientRecipeAttrEntity>
+    abstract override fun observeNutrientsAll(): Flow<List<NutrientRecipeAttrEntity>>
 
-    @Query("SELECT * FROM ${BasicRecipeAttrDB.TABLE_NAME}")
-    abstract override fun getBasicsAll(): List<BasicRecipeAttrEntity>
+    @Query("SELECT * FROM ${CategoryRecipeAttrDB.TABLE_NAME}")
+    abstract override fun observeCategoriesAll(): Flow<List<CategoryRecipeAttrEntity>>
 
-    @Query("SELECT * FROM ${LabelRecipeAttrDB.TABLE_NAME}")
-    abstract override fun getLabelsAll(): List<LabelRecipeAttrEntity>
+    @Query(
+        "SELECT * FROM ${LabelRecipeAttrDB.TABLE_NAME} " +
+                "WHERE ${LabelRecipeAttrDB.Columns.CATEGORY_ID} = :categoryID"
+    )
+    abstract override fun observeCategoryLabels(categoryID: Int): Flow<List<LabelRecipeAttrEntity>>
 
-    @Query("SELECT * FROM ${LabelRecipeAttrDB.TABLE_NAME}")
-    abstract override fun getLabelsExtendedAll(): List<LabelRecipeAttrExtendedPOJO>
-
-
-    @Insert
-    abstract fun addNutrientsEntity(attrs: List<NutrientRecipeAttrEntity>)
-
-    override fun addNutrients(attrs: List<NutrientRecipeAttrDB>) {
-        addNutrientsEntity(attrs.map { NutrientRecipeAttrEntity.toEntity(it) })
-    }
 
     @Insert
     abstract fun addBasicsEntity(attrs: List<BasicRecipeAttrEntity>)
@@ -88,6 +89,13 @@ abstract class RecipeAttrDAORoom : RecipeAttrDAO {
 
     override fun addLabels(attrs: List<LabelRecipeAttrDB>) {
         addLabelsEntity(attrs.map { LabelRecipeAttrEntity.toEntity(it) })
+    }
+
+    @Insert
+    abstract fun addNutrientsEntity(attrs: List<NutrientRecipeAttrEntity>)
+
+    override fun addNutrients(attrs: List<NutrientRecipeAttrDB>) {
+        addNutrientsEntity(attrs.map { NutrientRecipeAttrEntity.toEntity(it) })
     }
 
     @Insert

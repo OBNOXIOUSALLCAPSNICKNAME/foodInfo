@@ -19,10 +19,10 @@ data class NutrientOfSearchFilterExtendedPOJO(
     override val infoID: Int,
 
     @ColumnInfo(name = NutrientOfSearchFilterDB.Columns.MIN_VALUE)
-    override val minValue: Float,
+    override val minValue: Float?,
 
     @ColumnInfo(name = NutrientOfSearchFilterDB.Columns.MAX_VALUE)
-    override val maxValue: Float,
+    override val maxValue: Float?,
 
     @Relation(
         parentColumn = NutrientOfSearchFilterDB.Columns.INFO_ID,

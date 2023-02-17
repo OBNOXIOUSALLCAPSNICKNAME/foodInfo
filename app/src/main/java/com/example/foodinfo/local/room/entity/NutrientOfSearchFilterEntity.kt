@@ -30,10 +30,10 @@ data class NutrientOfSearchFilterEntity(
     override val infoID: Int,
 
     @ColumnInfo(name = Columns.MIN_VALUE)
-    override val minValue: Float,
+    override val minValue: Float?,
 
     @ColumnInfo(name = Columns.MAX_VALUE)
-    override val maxValue: Float
+    override val maxValue: Float?
 
 ) : NutrientOfSearchFilterDB(
     ID = ID,

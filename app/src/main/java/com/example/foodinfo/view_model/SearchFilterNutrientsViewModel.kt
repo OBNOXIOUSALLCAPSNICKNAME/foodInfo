@@ -37,7 +37,7 @@ class SearchFilterNutrientsViewModel @Inject constructor(
         searchFilterRepository.resetNutrients(filterName)
     }
 
-    fun update(id: Int, minValue: Float, maxValue: Float) {
+    fun update(id: Int, minValue: Float?, maxValue: Float?) {
         searchFilterRepository.updateNutrient(id, minValue, maxValue)
     }
 }

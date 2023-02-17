@@ -11,8 +11,8 @@ data class BasicOfSearchFilterEditModel(
     val stepSize: Float,
     val rangeMin: Float,
     val rangeMax: Float,
-    var minValue: Float,
-    var maxValue: Float
+    var minValue: Float?,
+    var maxValue: Float?
 ) {
 
     object ItemCallBack :

@@ -1,14 +1,29 @@
 package com.example.foodinfo.repository
 
+import com.example.foodinfo.local.dao.SearchHistoryDAO
+import com.example.foodinfo.repository.mapper.toDB
+import com.example.foodinfo.repository.mapper.toModel
 import com.example.foodinfo.repository.model.SearchInputModel
+import javax.inject.Inject
 
 
-abstract class SearchHistoryRepository : BaseRepository() {
-    abstract suspend fun getHistoryLatest(inputText: String): List<SearchInputModel>
+class SearchHistoryRepository @Inject constructor(
+    private val searchHistoryDAO: SearchHistoryDAO
+) : BaseRepository() {
 
-    abstract fun getHistoryAll(): List<SearchInputModel>
+    suspend fun getHistoryLatest(inputText: String): List<SearchInputModel> {
+        return searchHistoryDAO.getHistoryLatest(inputText).map { it.toModel() }
+    }
 
-    abstract fun addHistory(searchHistory: List<SearchInputModel>)
+    fun getHistoryAll(): List<SearchInputModel> {
+        return searchHistoryDAO.getHistoryAll().map { it.toModel() }
+    }
 
-    abstract fun addInput(searchInput: SearchInputModel)
+    fun addHistory(searchHistory: List<SearchInputModel>) {
+        searchHistoryDAO.addHistory(searchHistory.map { it.toDB() })
+    }
+
+    fun addInput(searchInput: SearchInputModel) {
+        searchHistoryDAO.addInput(searchInput.toDB())
+    }
 }

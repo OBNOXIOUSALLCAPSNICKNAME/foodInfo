@@ -34,7 +34,7 @@ fun List<LabelOfRecipeExtendedDB>.toModelRecipe(): List<CategoryOfRecipeModel> {
     }
 }
 
-fun List<LabelOfSearchFilterExtendedDB>.toModelFilterEdit(categoryID: Int): CategoryOfSearchFilterEditModel {
+fun List<LabelOfSearchFilterExtendedDB>.toModelEdit(categoryID: Int): CategoryOfSearchFilterEditModel {
     val labels = this.filter { it.attrInfo!!.categoryID == categoryID }.map { it.toModelEdit() }
     return CategoryOfSearchFilterEditModel(
         name = labels.first().name,

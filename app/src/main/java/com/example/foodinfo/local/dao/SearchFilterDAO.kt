@@ -15,6 +15,8 @@ interface SearchFilterDAO {
     fun getFilterExtended(filterName: String): SearchFilterExtendedDB
 
 
+    fun observeBasics(filterName: String): Flow<@JvmWildcard List<@JvmWildcard BasicOfSearchFilterExtendedDB>>
+
     fun observeLabels(filterName: String): Flow<@JvmWildcard List<@JvmWildcard LabelOfSearchFilterExtendedDB>>
 
     fun observeNutrients(filterName: String): Flow<@JvmWildcard List<@JvmWildcard NutrientOfSearchFilterExtendedDB>>
@@ -22,11 +24,11 @@ interface SearchFilterDAO {
     fun observeFilterExtended(filterName: String): Flow<@JvmWildcard SearchFilterExtendedDB>
 
 
-    fun updateBasic(id: Int, minValue: Float, maxValue: Float)
+    fun updateBasic(id: Int, minValue: Float?, maxValue: Float?)
 
     fun updateLabel(id: Int, isSelected: Boolean)
 
-    fun updateNutrient(id: Int, minValue: Float, maxValue: Float)
+    fun updateNutrient(id: Int, minValue: Float?, maxValue: Float?)
 
 
     fun updateFilter(

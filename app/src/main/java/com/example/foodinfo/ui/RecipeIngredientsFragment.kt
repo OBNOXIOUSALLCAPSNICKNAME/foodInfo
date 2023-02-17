@@ -70,18 +70,18 @@ class RecipeIngredientsFragment : BaseFragment<FragmentRecipeIngredientsBinding>
     override fun subscribeUI() {
         observeData(
             dataFlow = viewModel.ingredients,
-            onInitStart = {
+            useLoadingData = true,
+            onStart = {
                 binding.rvIngredients.isVisible = false
-            },
-            onInitComplete = {
-                binding.rvIngredients.baseAnimation()
-            },
-            loadingHandlerDelegate = {
                 binding.pbContent.isVisible = true
             },
-            successHandlerDelegate = { ingredients ->
+            onInitUI = { ingredients ->
                 recyclerAdapter.submitList(ingredients)
                 binding.pbContent.isVisible = false
+                binding.rvIngredients.baseAnimation()
+            },
+            onRefreshUI = { ingredients ->
+                recyclerAdapter.submitList(ingredients)
             }
         )
     }

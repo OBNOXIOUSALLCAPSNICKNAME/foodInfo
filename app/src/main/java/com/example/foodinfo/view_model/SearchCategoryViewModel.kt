@@ -18,7 +18,7 @@ class SearchCategoryViewModel @Inject constructor(
     var categoryID: Int = 0
 
     val category: SharedFlow<State<CategoryTargetSearchModel>> by lazy {
-        recipeAttrRepository.getLabelsSearch(categoryID).shareIn(
+        recipeAttrRepository.getCategoryLabelsLatest(categoryID).shareIn(
             viewModelScope, SharingStarted.WhileSubscribed(stopTimeoutMillis = 5000), 1
         )
     }

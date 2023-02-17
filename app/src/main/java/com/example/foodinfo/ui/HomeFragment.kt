@@ -69,9 +69,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
     override fun subscribeUI() {
         observeData(
             dataFlow = viewModel.categories,
-            successHandlerDelegate = { categories ->
-                recyclerAdapter.submitList(categories)
-            }
+            useLoadingData = false,
+            onInitUI = recyclerAdapter::submitList,
+            onRefreshUI = recyclerAdapter::submitList
         )
     }
 }

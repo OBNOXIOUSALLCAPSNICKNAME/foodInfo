@@ -118,13 +118,8 @@ data class FilterQueryBuilder(val searchFilterPreset: SearchFilterPresetModel) {
         subQueryList.removeAll(setOf(""))
         query += "SELECT * FROM ${RecipeDB.TABLE_NAME}"
         if (subQueryList.size > 0) {
-            query += " WHERE " + subQueryList.joinToString(SEPARATOR)
+            query += " WHERE " + subQueryList.joinToString(" AND ")
         }
         return query
-    }
-
-
-    companion object {
-        private const val SEPARATOR = " AND "
     }
 }

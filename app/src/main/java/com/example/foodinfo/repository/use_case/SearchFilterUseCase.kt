@@ -7,6 +7,7 @@ import com.example.foodinfo.repository.model.CategoryOfSearchFilterEditModel
 import com.example.foodinfo.repository.model.NutrientOfSearchFilterEditModel
 import com.example.foodinfo.repository.model.SearchFilterEditModel
 import com.example.foodinfo.utils.State
+import com.example.foodinfo.utils.getResolved
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
@@ -14,22 +15,22 @@ import javax.inject.Inject
 class SearchFilterUseCase @Inject constructor(
     private val recipeAttrRepository: RecipeAttrRepository,
     private val searchFilterRepository: SearchFilterRepository
-) : AttrDependencyResolver {
+) {
 
     fun getQueryByFilter(
         filterName: String = SearchFilterDB.DEFAULT_NAME,
         inputText: String
     ): Flow<State<String>> {
         return getResolved(
-            attrFlow = recipeAttrRepository.getRecipeAttrsDB(),
-            dataFlowProvider = { searchFilterRepository.getQueryByFilter(filterName, inputText) }
+            extraDataFlow = recipeAttrRepository.getRecipeAttrsDBLatest(),
+            dataFlowProvider = { searchFilterRepository.getQueryByFilter(filterName, inputText, it) }
         )
     }
 
     fun getQueryByLabel(labelID: Int): Flow<State<String>> {
         return getResolved(
-            attrFlow = recipeAttrRepository.getLabelsExtendedDB(),
-            dataFlowProvider = { searchFilterRepository.getQueryByLabel(labelID) }
+            extraDataFlow = recipeAttrRepository.getRecipeAttrsDBLatest(),
+            dataFlowProvider = { searchFilterRepository.getQueryByLabel(labelID, it) }
         )
     }
 
@@ -38,7 +39,7 @@ class SearchFilterUseCase @Inject constructor(
         categoryID: Int
     ): Flow<State<CategoryOfSearchFilterEditModel>> {
         return getResolved(
-            attrFlow = recipeAttrRepository.getLabelsDB(),
+            extraDataFlow = recipeAttrRepository.getLabelsDBLatest(),
             dataFlowProvider = { searchFilterRepository.getCategoryEdit(filterName, categoryID, it) }
         )
     }
@@ -47,7 +48,7 @@ class SearchFilterUseCase @Inject constructor(
         filterName: String = SearchFilterDB.DEFAULT_NAME
     ): Flow<State<List<NutrientOfSearchFilterEditModel>>> {
         return getResolved(
-            attrFlow = recipeAttrRepository.getNutrientsDB(),
+            extraDataFlow = recipeAttrRepository.getNutrientsDBLatest(),
             dataFlowProvider = { searchFilterRepository.getNutrientsEdit(filterName, it) }
         )
     }
@@ -56,7 +57,7 @@ class SearchFilterUseCase @Inject constructor(
         filterName: String = SearchFilterDB.DEFAULT_NAME
     ): Flow<State<SearchFilterEditModel>> {
         return getResolved(
-            attrFlow = recipeAttrRepository.getRecipeAttrsDB(),
+            extraDataFlow = recipeAttrRepository.getRecipeAttrsDBLatest(),
             dataFlowProvider = { searchFilterRepository.getFilterEdit(filterName, it) }
         )
     }

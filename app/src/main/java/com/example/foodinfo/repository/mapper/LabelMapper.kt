@@ -74,20 +74,11 @@ fun LabelOfSearchFilterExtendedDB.toDefault(): LabelOfSearchFilterDB {
     )
 }
 
-fun LabelRecipeAttrDB.toFilterDefault(filterName: String): LabelOfSearchFilterDB {
+fun LabelRecipeAttrDB.toFilter(filterName: String): LabelOfSearchFilterDB {
     return LabelOfSearchFilterDB(
         filterName = filterName,
         infoID = this.ID,
         isSelected = false
-    )
-}
-
-fun LabelRecipeAttrDB.toFilter(label: LabelOfSearchFilterExtendedDB): LabelOfSearchFilterDB {
-    return LabelOfSearchFilterDB(
-        ID = label.ID,
-        filterName = label.filterName,
-        infoID = this.ID,
-        isSelected = label.isSelected
     )
 }
 

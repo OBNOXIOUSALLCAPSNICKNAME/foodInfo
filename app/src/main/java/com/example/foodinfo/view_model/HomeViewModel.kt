@@ -16,7 +16,7 @@ class HomeViewModel @Inject constructor(
 ) : ViewModel() {
 
     val categories: SharedFlow<State<List<CategorySearchModel>>> by lazy {
-        recipeAttrRepository.getCategories().shareIn(
+        recipeAttrRepository.getCategoriesLatest().shareIn(
             viewModelScope, SharingStarted.WhileSubscribed(stopTimeoutMillis = 5000), 1
         )
     }

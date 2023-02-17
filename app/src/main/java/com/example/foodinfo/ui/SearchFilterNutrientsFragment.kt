@@ -40,7 +40,7 @@ class SearchFilterNutrientsFragment : BaseFragment<FragmentSearchFilterNutrients
         viewModel.reset()
     }
 
-    private val onValueChangedCallback: (Int, Float, Float) -> Unit = { id, minValue, maxValue ->
+    private val onValueChangedCallback: (Int, Float?, Float?) -> Unit = { id, minValue, maxValue ->
         viewModel.update(id, minValue, maxValue)
     }
 
@@ -89,18 +89,18 @@ class SearchFilterNutrientsFragment : BaseFragment<FragmentSearchFilterNutrients
     override fun subscribeUI() {
         observeData(
             dataFlow = viewModel.nutrients,
-            onInitStart = {
+            useLoadingData = false,
+            onStart = {
                 binding.rvNutrients.isVisible = false
-            },
-            onInitComplete = {
-                binding.rvNutrients.baseAnimation()
-            },
-            loadingHandlerDelegate = {
                 binding.pbContent.isVisible = true
             },
-            successHandlerDelegate = { nutrients ->
+            onInitUI = { nutrients ->
                 recyclerAdapter.submitList(nutrients)
                 binding.pbContent.isVisible = false
+                binding.rvNutrients.baseAnimation()
+            },
+            onRefreshUI = { nutrients ->
+                recyclerAdapter.submitList(nutrients)
             }
         )
     }

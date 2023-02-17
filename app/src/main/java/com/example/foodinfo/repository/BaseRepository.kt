@@ -1,150 +1,234 @@
 package com.example.foodinfo.repository
 
-import android.content.Context
-import com.example.foodinfo.utils.*
+import com.example.foodinfo.utils.ErrorMessages
+import com.example.foodinfo.utils.NoDataException
+import com.example.foodinfo.utils.State
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 
 
 abstract class BaseRepository {
 
-    private fun <T> fetchRemote(context: Context, dataProvider: () -> T?): Flow<State<T>> {
-        return flow<State<T>> {
-            emit(State.Loading())
-            try {
-                if (context.hasInternet()) {
-                    emitData(dataProvider(), this::emit)
-                } else {
-                    emit(State.Error(ErrorMessages.NO_INTERNET, NoInternetException()))
-                }
-            } catch (e: Exception) {
-                emit(State.Error(ErrorMessages.UNKNOWN_ERROR, e))
-            }
-        }.flowOn(Dispatchers.IO)
-    }
+    private inline fun <remoteT, localInT> fetchRemote(
+        crossinline dataProvider: () -> remoteT,
+        crossinline mapDelegate: (remoteT) -> localInT
+    ) = flow {
+        emit(State.Loading())
 
-    private fun <T> fetchLocal(
-        dataProvider: (() -> T)? = null,
-        dataFlowProvider: (() -> Flow<T>)? = null,
-    ): Flow<State<T>> {
-        if (dataProvider == null && dataFlowProvider == null)
-            throw java.lang.NullPointerException()
-
-        return flow<State<T>> {
-            emit(State.Loading())
-            try {
-                if (dataProvider != null) {
-                    emitData(dataProvider(), this::emit)
-                } else {
-                    dataFlowProvider!!().distinctUntilChanged().collect { data ->
-                        emitData(data, this::emit)
-                    }
-                }
-            } catch (e: Exception) {
-                emit(State.Error(ErrorMessages.UNKNOWN_ERROR, e))
-            }
-        }.flowOn(Dispatchers.IO)
-    }
-
-
-    protected fun <modelT, localInT, localOutT, remoteT> getData(
-        context: Context,
-        remoteDataProvider: () -> remoteT,
-        localDataProvider: (() -> localOutT)? = null,
-        localDataFlowProvider: (() -> Flow<localOutT>)? = null,
-        updateLocalDelegate: (localInT) -> Unit,
-        mapRemoteToLocalDelegate: (remoteT) -> localInT,
-        mapLocalToModelDelegate: (localOutT) -> modelT,
-    ): Flow<State<modelT>> {
-        return flow<State<modelT>> {
-            var remoteEmitted = false
-            var remoteEmissionError: Exception? = null
-            emit(State.Loading()) // immediately emitting loading state
-            combine(
-                fetchLocal(localDataProvider, localDataFlowProvider), // flow of data from local source
-                fetchRemote(context, remoteDataProvider) // flow of data from remote source
-            ) { local, remote ->
-                when (remote) {
-                    is State.Loading -> {
-
-                        // try map to Model and emit local data. Ignore errors, wait until remote data fetched
-                        tryEmitState(local, mapLocalToModelDelegate, this::emit)
-                    }
-                    is State.Success -> {
-                        if (!remoteEmitted) { // if remote data not yet added into local DB
-                            try {
-
-                                // try map remote data into local and add it to local DB
-                                updateLocalDelegate(mapRemoteToLocalDelegate(remote.data))
-                            } catch (e: Exception) {
-
-                                // save remote emission error
-                                remoteEmissionError = e
-                            } finally {
-
-                                // adding remote data into local DB may trigger combine block to collect data
-                                // (if remote and local data are different) so this flag will determine
-                                // if local data was already updated and should be emitted or not
-                                // to prevent updateLocalDelegate to trigger twice
-                                remoteEmitted = true
-                            }
-                        }
-
-                        tryEmitState(local, mapLocalToModelDelegate, this::emit)?.let { error ->
-
-                            // emit error only when remote data was already added unto DB, else just wait
-                            when {
-                                remoteEmitted && remoteEmissionError != null -> {
-                                    emit(State.Error(ErrorMessages.UNKNOWN_ERROR, remoteEmissionError!!))
-                                }
-                                remoteEmitted && remoteEmissionError == null -> {
-                                    emit(State.Error(error.message, error.error))
-                                }
-                            }
-                        }
-                    }
-                    is State.Error   -> {
-                        tryEmitState(local, mapLocalToModelDelegate, this::emit)?.let {
-                            emit(State.Error(remote.message, remote.error))
-                        }
-                    }
-                }
-            }.collect { }
-        }.flowOn(Dispatchers.IO)
-    }
-
-    private suspend fun <localT, modelT> tryEmitState(
-        local: State<localT>,
-        mapDelegate: (localT) -> modelT,
-        emit: suspend (State<modelT>) -> Unit,
-    ): State.Error<modelT>? {
-        return when (local) {
-            is State.Success -> {
-                try {
-                    emit(State.Success(mapDelegate(local.data)))
-                    null
-                } catch (e: Exception) {
-
-                    // if local data was successfully fetched but mapping failed, it means that
-                    // local data does not fit the current model (for example, if some data was partially
-                    // loaded on previous screen but it is not enough for current case)
-                    State.Error(ErrorMessages.CORRUPTED_DATA, CorruptedDataException())
-                }
-            }
-            is State.Error   -> {
-                State.Error(local.message, local.error)
-            }
-            is State.Loading -> {
-                null
-            }
+        try {
+            val response = dataProvider() // TODO extract data from response
+            emitData(response, mapDelegate, this::emit)
+        } catch (e: Exception) {
+            emit(State.Error(ErrorMessages.UNKNOWN_ERROR, e))
         }
-    }
+    }.flowOn(Dispatchers.IO)
 
-    private suspend fun <T> emitData(data: T?, emit: suspend (State<T>) -> Unit) {
-        if (data == null || data is Collection<*> && data.isEmpty()) {
+    private inline fun <localInT, modelT> fetchLocal(
+        noinline dataProvider: (() -> localInT)? = null,
+        noinline dataFlowProvider: (() -> Flow<localInT>)? = null,
+        crossinline mapDelegate: (localInT) -> modelT
+    ) = flow {
+        emit(State.Loading())
+
+        if (dataProvider == null && dataFlowProvider == null)
+            throw java.lang.IllegalArgumentException()
+
+        try {
+            if (dataProvider != null) {
+                val data = dataProvider()
+                emitData(data, mapDelegate, this::emit)
+            } else {
+                dataFlowProvider!!().collect { data ->
+                    emitData(data, mapDelegate, this::emit)
+                }
+            }
+        } catch (e: Exception) {
+            emit(State.Error(ErrorMessages.UNKNOWN_ERROR, e))
+        }
+    }.flowOn(Dispatchers.IO)
+
+
+    private suspend inline fun <inT, outT> emitData(
+        data: inT?,
+        crossinline mapDelegate: suspend (inT) -> outT,
+        crossinline emit: suspend (State<outT>) -> Unit
+    ) {
+        if (data == null || data is Unit || data is Collection<*> && data.isEmpty()) {
             emit(State.Error(ErrorMessages.NO_DATA, NoDataException()))
         } else {
-            emit(State.Success(data))
+            try {
+                emit(State.Success(mapDelegate(data)))
+            } catch (e: Exception) {
+                emit(State.Error(ErrorMessages.UNKNOWN_ERROR, e))
+            }
         }
     }
+
+    private suspend inline fun <T> handleState(
+        state: State<T>,
+        crossinline onSuccess: suspend (T) -> Unit,
+        crossinline onError: suspend (String, Exception) -> Unit,
+    ) {
+        when (state) {
+            is State.Success -> {
+                onSuccess(state.data!!)
+            }
+            is State.Error   -> {
+                onError(state.message!!, state.error!!)
+            }
+            is State.Loading -> {}
+        }
+    }
+
+
+    /**
+     * ### NOTES:
+     * - Screens that uses data from [State.Loading] to initialize UI should handle situations when
+     * [State.Error] will be emitted after [State.Loading] with data != null (e.g. ignore error,
+     * invalidate UI and show hard message, show soft message).
+     *
+     * - [State.Error] will never be emitted if [State.Success] was emitted at least once. But if local data
+     * changes expected outside of this function (e.g. user changes search filter configuration),
+     * [State.Error] may be emitted even if [State.Success] was previously emitted.
+     *
+     * - If an error occurred both in local and remote data source, remote error will be emitted.
+     *
+     * - If a potential update is expected, data will always be emitted with [State.Loading].
+     * Otherwise data will be emitted with [State.Success]
+     *
+     * - Local DB must pass data into [localDataFlowProvider] after each successful completion of
+     * [updateLocalDelegate] even if data hasn't changed, so [getData] can emit data into correct State
+     * (e.g. if local data was emitted with [State.Loading] and after [updateLocalDelegate] completion
+     * [localDataFlowProvider] will not provide any data due to no changes was made in local DB.
+     * In that case [State.Loading] will be the last emitted value, which can be bad for screens
+     * that does not use data from [State.Loading]).
+     *
+     * - If local or remote data source will pass null or empty collection, [getData] will emit [State.Error]
+     * with [NoDataException]
+     *
+     * - [localDataFlowProvider] and [localDataProvider] are optional, but at least one must be provided,
+     * otherwise an [IllegalArgumentException] will be thrown.
+     *
+     * - Always use [localDataFlowProvider] with [remoteDataProvider], otherwise new data
+     * after [updateLocalDelegate] will not be received
+     *
+     * ### USE CASES:
+     *
+     * [getData] can be used to fetch only local data or without any mapping (but it still useful to handle
+     * errors that may occur while fetching data).
+     * In this case, [remoteT] == [Unit], and [localOutT] == [modelT]:
+     * ~~~
+     * fun getSomeData(): Flow<State<SomeData>> {
+     *     return getData(
+     *         remoteDataProvider = {},
+     *         localDataProvider = { dao.fetch() },
+     *         updateLocalDelegate = {},
+     *         mapToLocalDelegate = {},
+     *         mapToModelDelegate = {}
+     *     )
+     * }
+     * ~~~
+     *
+     * Also it is possible to preprocess data from [localDataFlowProvider]. Be careful and avoid cases when
+     * data was invalidated and not be followed by any changes in local data source. It may lead to infinite
+     * loop or endless loading state for UI
+     * ~~~
+     * fun getSomeData(): Flow<State<SomeData>> {
+     *     return getData(
+     *         remoteDataProvider = { api.fetch() },
+     *         localDataFlowProvider = {
+     *             dao.fetch().transform { data ->
+     *                 // In this case, UI will receive only valid data.
+     *                 val dataToUpdate = verifyData(data)
+     *                 if (dataToUpdate != null) {
+     *                     dao.update(dataToUpdate)
+     *                 } else {
+     *                     emit(data)
+     *                 }
+     *             }
+     *         },
+     *         updateLocalDelegate = { dao.update(it) },
+     *         mapToLocalDelegate = { it.toDB() },
+     *         mapToModelDelegate = { it.toModel() }
+     *     )
+     * }
+     * ~~~
+     */
+    internal inline fun <modelT, localInT, localOutT, remoteT> getData(
+        crossinline remoteDataProvider: () -> remoteT,
+        noinline localDataProvider: (() -> localOutT)? = null,
+        noinline localDataFlowProvider: (() -> Flow<localOutT>)? = null,
+        crossinline updateLocalDelegate: (localInT) -> Unit,
+        crossinline mapToLocalDelegate: (remoteT) -> localInT,
+        crossinline mapToModelDelegate: (localOutT) -> modelT,
+    ) = flow<State<modelT>> {
+        emit(State.Loading())
+
+        var localDBUpdated = false
+        var localDBUpdateError: Exception? = null
+
+        combine(
+            fetchLocal(localDataProvider, localDataFlowProvider, mapToModelDelegate),
+            fetchRemote(remoteDataProvider, mapToLocalDelegate)
+        ) { local, remote ->
+            when (remote) {
+                is State.Loading -> {
+                    handleState(
+                        state = local,
+                        onSuccess = { localData ->
+                            emit(State.Loading(localData))
+                        },
+                        onError = { _, _ ->
+                            // ignore errors, wait until remote data fetched
+                        }
+                    )
+                }
+                is State.Success -> {
+                    if (!localDBUpdated) { // to prevent endless updateLocalDelegate calls
+                        try {
+                            updateLocalDelegate(remote.data!!)
+                        } catch (e: Exception) {
+                            localDBUpdateError = e
+                        }
+                    }
+
+                    handleState(
+                        state = local,
+                        onSuccess = { localData ->
+                            // emit loading only if new collection is expected
+                            if (!localDBUpdated && localDBUpdateError == null) {
+                                emit(State.Loading(localData))
+                            } else {
+                                emit(State.Success(localData))
+                            }
+                        },
+                        onError = { message, error ->
+                            // emit error only if no new collection is expected
+                            if (localDBUpdateError != null) {
+                                emit(State.Error(ErrorMessages.UNKNOWN_ERROR, localDBUpdateError!!))
+                            } else if (localDBUpdated) {
+                                emit(State.Error(message, error))
+                            }
+                        }
+                    )
+
+                    localDBUpdated = true
+                }
+                is State.Error   -> {
+                    handleState(
+                        state = local,
+                        onSuccess = { localData ->
+                            emit(State.Success(localData))
+                        },
+                        onError = { _, _ ->
+                            emit(State.Error(remote.message!!, remote.error!!))
+                        }
+                    )
+                }
+            }
+        }.collect { }
+    }.flowOn(Dispatchers.IO)
 }

@@ -65,7 +65,10 @@ fun Fragment.showDescriptionDialog(
     }.show()
 }
 
-fun Fragment.repeatOn(state: Lifecycle.State, runnable: suspend () -> Unit) {
+inline fun Fragment.repeatOn(
+    state: Lifecycle.State,
+    crossinline runnable: suspend () -> Unit
+) {
     viewLifecycleOwner.lifecycleScope.launch {
         viewLifecycleOwner.lifecycle.repeatOnLifecycle(state) {
             runnable.invoke()

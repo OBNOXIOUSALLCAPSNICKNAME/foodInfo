@@ -96,7 +96,12 @@ class SearchQueryFragment : BaseFragment<FragmentSearchQueryBinding>(
     override fun subscribeUI() {
         observeData(
             dataFlow = viewModel.filterQuery,
-            successHandlerDelegate = { query ->
+            useLoadingData = false,
+            onInitUI = { query ->
+                viewModel.query = query
+                viewModel.recipes.collectLatest(recyclerAdapter::submitData)
+            },
+            onRefreshUI = { query ->
                 viewModel.query = query
                 viewModel.recipes.collectLatest(recyclerAdapter::submitData)
             }

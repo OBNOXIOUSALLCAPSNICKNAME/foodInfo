@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.foodinfo.R
 import com.example.foodinfo.databinding.FragmentSearchFilterBinding
+import com.example.foodinfo.repository.model.SearchFilterEditModel
 import com.example.foodinfo.ui.adapter.FilterBaseFieldAdapter
 import com.example.foodinfo.ui.adapter.FilterCategoriesAdapter
 import com.example.foodinfo.ui.adapter.FilterNutrientsAdapter
@@ -37,7 +38,7 @@ class SearchFilterFragment : BaseFragment<FragmentSearchFilterBinding>(
         viewModel.reset()
     }
 
-    private val onValueChangedCallback: (Int, Float, Float) -> Unit = { id, minValue, maxValue ->
+    private val onValueChangedCallback: (Int, Float?, Float?) -> Unit = { id, minValue, maxValue ->
         viewModel.update(id, minValue, maxValue)
     }
 
@@ -59,14 +60,22 @@ class SearchFilterFragment : BaseFragment<FragmentSearchFilterBinding>(
         )
     }
 
-    private val getFormattedRange: (Float, Float, String) -> String =
+    private val getFormattedRange: (Float?, Float?, String) -> String =
         { minValue, maxValue, measure ->
-            getString(
-                R.string.rv_item_filter_nutrient_range,
-                minValue,
-                maxValue,
-                measure
-            )
+            when {
+                minValue != null && maxValue != null -> {
+                    "$minValue$measure - $maxValue$measure"
+                }
+                minValue != null                     -> {
+                    "≥$minValue$measure"
+                }
+                maxValue != null                     -> {
+                    "≤$maxValue$measure"
+                }
+                else                                 -> {
+                    ""
+                }
+            }
         }
 
 
@@ -138,28 +147,32 @@ class SearchFilterFragment : BaseFragment<FragmentSearchFilterBinding>(
     override fun subscribeUI() {
         observeData(
             dataFlow = viewModel.filter,
-            onInitStart = {
+            useLoadingData = false,
+            onStart = {
                 binding.svContent.isVisible = false
-            },
-            onInitComplete = {
-                binding.svContent.baseAnimation()
-            },
-            loadingHandlerDelegate = {
                 binding.pbContent.isVisible = true
             },
-            successHandlerDelegate = { filter ->
-                recyclerAdapterCategories.submitList(filter.categories)
-                recyclerAdapterBaseFields.submitList(filter.basics)
-                if (filter.nutrients.isEmpty()) {
-                    binding.rvNutrients.isVisible = false
-                    binding.tvNutrientsNoData.isVisible = true
-                } else {
-                    binding.rvNutrients.isVisible = true
-                    binding.tvNutrientsNoData.isVisible = false
-                    recyclerAdapterNutrients.submitList(filter.nutrients)
-                }
+            onInitUI = { filter ->
+                initFilter(filter)
                 binding.pbContent.isVisible = false
+                binding.svContent.baseAnimation()
+            },
+            onRefreshUI = { filter ->
+                initFilter(filter)
             }
         )
+    }
+
+    private fun initFilter(filter: SearchFilterEditModel) {
+        recyclerAdapterCategories.submitList(filter.categories)
+        recyclerAdapterBaseFields.submitList(filter.basics)
+        if (filter.nutrients.isEmpty()) {
+            binding.rvNutrients.isVisible = false
+            binding.tvNutrientsNoData.isVisible = true
+        } else {
+            binding.rvNutrients.isVisible = true
+            binding.tvNutrientsNoData.isVisible = false
+            recyclerAdapterNutrients.submitList(filter.nutrients)
+        }
     }
 }

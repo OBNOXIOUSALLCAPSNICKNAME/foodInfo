@@ -6,8 +6,8 @@ import com.example.foodinfo.local.dto.BasicRecipeAttrDB
 import com.example.foodinfo.remote.dto.BasicRecipeAttrNetwork
 import com.example.foodinfo.repository.model.BasicOfSearchFilterEditModel
 import com.example.foodinfo.repository.model.filter_field.BasicOfFilterPreset
+import java.lang.Float.min
 import kotlin.math.max
-import kotlin.math.min
 
 
 fun BasicOfSearchFilterExtendedDB.toDB(): BasicOfSearchFilterDB {
@@ -17,6 +17,16 @@ fun BasicOfSearchFilterExtendedDB.toDB(): BasicOfSearchFilterDB {
         infoID = this.infoID,
         minValue = this.minValue,
         maxValue = this.maxValue
+    )
+}
+
+fun BasicOfSearchFilterExtendedDB.toDBLatest(): BasicOfSearchFilterDB {
+    return BasicOfSearchFilterDB(
+        ID = this.ID,
+        filterName = this.filterName,
+        infoID = this.infoID,
+        minValue = if (this.minValue != null) max(this.minValue!!, this.attrInfo!!.rangeMin) else null,
+        maxValue = if (this.maxValue != null) min(this.maxValue!!, this.attrInfo!!.rangeMax) else null
     )
 }
 
@@ -37,13 +47,13 @@ fun List<BasicOfSearchFilterExtendedDB>.toModelEdit(): List<BasicOfSearchFilterE
 }
 
 fun List<BasicOfSearchFilterExtendedDB>.toModelPreset(): List<BasicOfFilterPreset> {
-    return this.map { field ->
+    return this.filterNot { it.minValue == null && it.maxValue == null }.map { field ->
         BasicOfFilterPreset(
             columnName = field.attrInfo!!.columnName,
-            minValue = if (field.minValue == field.attrInfo!!.rangeMin) null else field.minValue,
-            maxValue = if (field.maxValue == field.attrInfo!!.rangeMax) null else field.maxValue
+            minValue = if (field.minValue != null) max(field.minValue!!, field.attrInfo!!.rangeMin) else null,
+            maxValue = if (field.maxValue != null) min(field.maxValue!!, field.attrInfo!!.rangeMax) else null
         )
-    }.filter { !(it.minValue == null && it.maxValue == null) }
+    }
 }
 
 fun BasicOfSearchFilterEditModel.toDB(filterName: String): BasicOfSearchFilterDB {
@@ -61,27 +71,17 @@ fun BasicOfSearchFilterExtendedDB.toDefault(): BasicOfSearchFilterDB {
         ID = this.ID,
         filterName = this.filterName,
         infoID = this.infoID,
-        minValue = this.attrInfo!!.rangeMin,
-        maxValue = this.attrInfo!!.rangeMax
+        minValue = null,
+        maxValue = null
     )
 }
 
-fun BasicRecipeAttrDB.toFilterDefault(filterName: String): BasicOfSearchFilterDB {
+fun BasicRecipeAttrDB.toFilter(filterName: String): BasicOfSearchFilterDB {
     return BasicOfSearchFilterDB(
         filterName = filterName,
         infoID = this.ID,
-        minValue = this.rangeMin,
-        maxValue = this.rangeMax
-    )
-}
-
-fun BasicRecipeAttrDB.toFilter(basic: BasicOfSearchFilterExtendedDB): BasicOfSearchFilterDB {
-    return BasicOfSearchFilterDB(
-        ID = basic.ID,
-        filterName = basic.filterName,
-        infoID = this.ID,
-        minValue = max(basic.minValue, this.rangeMin),
-        maxValue = min(basic.maxValue, this.rangeMax)
+        minValue = null,
+        maxValue = null
     )
 }
 
