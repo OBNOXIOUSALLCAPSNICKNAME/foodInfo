@@ -18,14 +18,18 @@ class RecipeUseCase @Inject constructor(
     fun getByIdExtended(recipeID: String): Flow<State<RecipeExtendedModel>> {
         return getResolved(
             extraDataFlow = recipeAttrRepository.getRecipeAttrsDBLatest(),
-            dataFlowProvider = { attrs -> recipeRepository.getByIdExtended(recipeID, attrs) }
+            dataFlowProvider = { attrs ->
+                recipeRepository.getByIdExtended(recipeID, attrs)
+            }
         )
     }
 
     fun getByIdNutrients(recipeID: String): Flow<State<List<NutrientOfRecipeModel>>> {
         return getResolved(
             extraDataFlow = recipeAttrRepository.getNutrientsDBLatest(),
-            dataFlowProvider = { attrs -> recipeRepository.getByIdNutrients(recipeID, attrs) }
+            dataFlowProvider = { attrs ->
+                recipeRepository.getByIdNutrients(recipeID, attrs)
+            }
         )
     }
 }

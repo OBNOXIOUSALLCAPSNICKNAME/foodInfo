@@ -6,7 +6,6 @@ import com.example.foodinfo.local.dto.LabelOfSearchFilterExtendedDB
 import com.example.foodinfo.local.dto.LabelRecipeAttrDB
 import com.example.foodinfo.remote.dto.CategoryRecipeAttrNetwork
 import com.example.foodinfo.repository.model.*
-import com.example.foodinfo.repository.model.filter_field.CategoryOfFilterPreset
 
 
 fun CategoryRecipeAttrDB.toModel(): CategorySearchModel {
@@ -52,12 +51,15 @@ fun List<LabelOfSearchFilterExtendedDB>.toModelPreview(): List<CategoryOfSearchF
     }
 }
 
-fun List<LabelOfSearchFilterExtendedDB>.toModelPreset(): List<CategoryOfFilterPreset> {
+fun List<LabelOfSearchFilterExtendedDB>.toModelPreset(): List<CategoryOfFilterPresetModel> {
     return this.groupBy { label -> label.attrInfo!!.categoryInfo!!.name }.entries.map { category ->
-        CategoryOfFilterPreset(
-            labelInfoIDs = category.value.filter { it.isSelected }.map { it.infoID }
+        CategoryOfFilterPresetModel(
+            tag = category.value.first().attrInfo!!.categoryInfo!!.tag,
+            labels = category.value.filter { it.isSelected }.map { label ->
+                LabelOfFilterPresetModel(label.attrInfo!!.tag, label.infoID)
+            }
         )
-    }.filter { it.labelInfoIDs.isNotEmpty() }
+    }.filter { it.labels.isNotEmpty() }
 }
 
 fun CategoryRecipeAttrNetwork.toDB(): CategoryRecipeAttrDB {

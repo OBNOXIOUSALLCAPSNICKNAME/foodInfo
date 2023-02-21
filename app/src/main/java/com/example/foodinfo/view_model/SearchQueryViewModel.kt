@@ -7,6 +7,7 @@ import androidx.paging.cachedIn
 import com.example.foodinfo.repository.RecipeRepository
 import com.example.foodinfo.repository.model.RecipeShortModel
 import com.example.foodinfo.repository.use_case.SearchFilterUseCase
+import com.example.foodinfo.utils.SearchFilterQuery
 import com.example.foodinfo.utils.State
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -19,11 +20,11 @@ class SearchQueryViewModel @Inject constructor(
     private val searchFilterUseCase: SearchFilterUseCase
 ) : ViewModel() {
 
-    var inputText: String = ""
-    var query: String = ""
+    lateinit var inputText: String
+    lateinit var query: SearchFilterQuery
 
-    val filterQuery: SharedFlow<State<String>> by lazy {
-        searchFilterUseCase.getQueryByFilter(inputText = inputText)
+    val filterQuery: SharedFlow<State<SearchFilterQuery>> by lazy {
+        searchFilterUseCase.getSearchQuery(inputText = inputText)
             .shareIn(viewModelScope, SharingStarted.WhileSubscribed(stopTimeoutMillis = 5000), 1)
     }
 

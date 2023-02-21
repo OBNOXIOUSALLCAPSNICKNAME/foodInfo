@@ -5,9 +5,9 @@ import kotlinx.coroutines.flow.*
 
 
 /**
- * Function that will help atomically to fetch data that depends on some extra data
+ * Function that will help to atomically fetch data that depends on some extra data
  *
- * It will collect [extraDataFlow] and on each emission of [State] with [State.data] != null
+ * It will collect [extraDataFlow] and on each emission of [State] with [State.data] **!= null**
  * will invoke [dataFlowProvider] and re-emit everything from provided flow to result flow. Previous flow from
  * [dataFlowProvider] will be canceled.
  *

@@ -41,7 +41,10 @@ data class RecipeEntity(
     override val servings: Int,
 
     @ColumnInfo(name = Columns.IS_FAVORITE)
-    override val isFavorite: Boolean = false
+    override val isFavorite: Boolean,
+
+    @ColumnInfo(name = Columns.LAST_UPDATE)
+    override val lastUpdate: Long
 
 ) : RecipeDB(
     ID = ID,
@@ -53,7 +56,8 @@ data class RecipeEntity(
     weight = weight,
     cookingTime = cookingTime,
     servings = servings,
-    isFavorite = isFavorite
+    isFavorite = isFavorite,
+    lastUpdate = lastUpdate
 ) {
 
     companion object {
@@ -68,7 +72,8 @@ data class RecipeEntity(
                 weight = item.weight,
                 cookingTime = item.cookingTime,
                 servings = item.servings,
-                isFavorite = item.isFavorite
+                isFavorite = item.isFavorite,
+                lastUpdate = item.lastUpdate
             )
         }
     }

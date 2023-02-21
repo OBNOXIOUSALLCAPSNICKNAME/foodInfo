@@ -38,7 +38,10 @@ data class RecipeExtendedPOJO(
     override val servings: Int,
 
     @ColumnInfo(name = RecipeDB.Columns.IS_FAVORITE)
-    override val isFavorite: Boolean = false,
+    override val isFavorite: Boolean,
+
+    @ColumnInfo(name = RecipeDB.Columns.LAST_UPDATE)
+    override val lastUpdate: Long,
 
     @Relation(
         parentColumn = RecipeDB.Columns.ID,
@@ -71,6 +74,7 @@ data class RecipeExtendedPOJO(
     cookingTime = cookingTime,
     servings = servings,
     isFavorite = isFavorite,
+    lastUpdate = lastUpdate,
     ingredients = ingredients,
     nutrients = nutrients,
     labels = labels
@@ -88,7 +92,8 @@ data class RecipeExtendedPOJO(
                 weight = item.weight,
                 cookingTime = item.cookingTime,
                 servings = item.servings,
-                isFavorite = item.isFavorite
+                isFavorite = item.isFavorite,
+                lastUpdate = item.lastUpdate
             )
         }
     }

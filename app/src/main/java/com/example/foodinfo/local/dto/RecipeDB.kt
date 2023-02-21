@@ -11,7 +11,8 @@ open class RecipeDB(
     open val weight: Int,
     open val cookingTime: Int,
     open val servings: Int,
-    open val isFavorite: Boolean
+    open val isFavorite: Boolean = false,
+    open val lastUpdate: Long = System.currentTimeMillis(),
 ) {
 
     object Columns {
@@ -25,6 +26,7 @@ open class RecipeDB(
         const val COOKING_TIME = "time"
         const val SERVINGS = "servings"
         const val IS_FAVORITE = "is_favorite"
+        const val LAST_UPDATE = "last_update"
     }
 
     companion object {

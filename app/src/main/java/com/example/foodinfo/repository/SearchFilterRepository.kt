@@ -3,12 +3,7 @@ package com.example.foodinfo.repository
 import com.example.foodinfo.local.dao.SearchFilterDAO
 import com.example.foodinfo.local.dto.*
 import com.example.foodinfo.repository.mapper.*
-import com.example.foodinfo.repository.model.CategoryOfSearchFilterEditModel
-import com.example.foodinfo.repository.model.NutrientOfSearchFilterEditModel
-import com.example.foodinfo.repository.model.SearchFilterEditModel
-import com.example.foodinfo.repository.model.SearchFilterPresetModel
-import com.example.foodinfo.repository.model.filter_field.CategoryOfFilterPreset
-import com.example.foodinfo.utils.FilterQueryBuilder
+import com.example.foodinfo.repository.model.*
 import com.example.foodinfo.utils.State
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.transform
@@ -18,40 +13,6 @@ import javax.inject.Inject
 class SearchFilterRepository @Inject constructor(
     private val searchFilterDAO: SearchFilterDAO
 ) : BaseRepository() {
-
-    fun getQueryByFilter(filterName: String, inputText: String, attrs: RecipeAttrsDB): Flow<State<String>> {
-        //TODO attrs will be used for remote query
-        return getData(
-            remoteDataProvider = { },
-            localDataProvider = { searchFilterDAO.getFilterExtended(filterName) },
-            updateLocalDelegate = { },
-            mapToLocalDelegate = { },
-            mapToModelDelegate = {
-                val builder = FilterQueryBuilder(it.toModelPreset())
-                builder.setInputText(inputText)
-                builder.getQuery()
-            }
-        )
-    }
-
-    fun getQueryByLabel(labelID: Int, attrs: RecipeAttrsDB): Flow<State<String>> {
-        //TODO attrs will be used for remote query
-        return getData(
-            remoteDataProvider = { },
-            localDataProvider = {
-                FilterQueryBuilder(
-                    SearchFilterPresetModel(
-                        basics = listOf(),
-                        nutrients = listOf(),
-                        categories = listOf(CategoryOfFilterPreset(listOf(labelID)))
-                    )
-                )
-            },
-            updateLocalDelegate = { },
-            mapToLocalDelegate = { },
-            mapToModelDelegate = { it.getQuery() }
-        )
-    }
 
     fun resetFilter(filterName: String) {
         val filter = searchFilterDAO.getFilterExtended(filterName)
@@ -147,6 +108,44 @@ class SearchFilterRepository @Inject constructor(
         filterName: String,
         attrs: RecipeAttrsDB
     ): Flow<State<SearchFilterEditModel>> {
+        return getFilter(filterName, attrs) { it.toModelEdit() }
+    }
+
+    internal fun getFilterPreset(
+        filterName: String,
+        attrs: RecipeAttrsDB
+    ): Flow<State<SearchFilterPresetModel>> {
+        return getFilter(filterName, attrs) { it.toModelPreset() }
+    }
+
+    internal fun getFilterPresetByLabel(
+        labelID: Int,
+        attrs: RecipeAttrsDB
+    ): Flow<State<SearchFilterPresetModel>> {
+        return getData(
+            remoteDataProvider = { },
+            localDataProvider = {
+                val label = attrs.labels.first { it.ID == labelID }
+                SearchFilterPresetModel(
+                    categories = listOf(
+                        CategoryOfFilterPresetModel(
+                            tag = attrs.categories.first { it.ID == label.categoryID }.tag,
+                            labels = listOf(LabelOfFilterPresetModel(label.tag, label.ID))
+                        )
+                    )
+                )
+            },
+            updateLocalDelegate = { },
+            mapToLocalDelegate = { },
+            mapToModelDelegate = { it }
+        )
+    }
+
+    private fun <T> getFilter(
+        filterName: String,
+        attrs: RecipeAttrsDB,
+        mapDelegate: (SearchFilterExtendedDB) -> T
+    ): Flow<State<T>> {
         return getData(
             remoteDataProvider = { },
             localDataFlowProvider = {
@@ -168,7 +167,7 @@ class SearchFilterRepository @Inject constructor(
             },
             updateLocalDelegate = { },
             mapToLocalDelegate = { },
-            mapToModelDelegate = { it.toModelEdit() }
+            mapToModelDelegate = { mapDelegate(it) }
         )
     }
 

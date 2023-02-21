@@ -11,6 +11,7 @@ import com.example.foodinfo.local.dto.RecipeAttrsDB
 import com.example.foodinfo.remote.api.RecipeAPI
 import com.example.foodinfo.repository.mapper.*
 import com.example.foodinfo.repository.model.*
+import com.example.foodinfo.utils.SearchFilterQuery
 import com.example.foodinfo.utils.State
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -23,15 +24,6 @@ class RecipeRepository @Inject constructor(
     private val recipeDAO: RecipeDAO,
     private val recipeAPI: RecipeAPI,
 ) : BaseRepository() {
-
-    fun getPopular(): Flow<PagingData<RecipeShortModel>> {
-        return Pager(
-            config = DB_POPULAR_PAGER,
-            pagingSourceFactory = {
-                recipeDAO.getPopular()
-            }
-        ).flow.map { pagingData -> pagingData.map { it.toModelShort() } }.flowOn(Dispatchers.IO)
-    }
 
     fun getFavorite(): Flow<PagingData<RecipeFavoriteModel>> {
         return Pager(
@@ -46,11 +38,11 @@ class RecipeRepository @Inject constructor(
         return recipeDAO.getFavoriteIds()
     }
 
-    fun getByFilter(query: String): Flow<PagingData<RecipeShortModel>> {
+    fun getByFilter(query: SearchFilterQuery): Flow<PagingData<RecipeShortModel>> {
         return Pager(
             config = DB_EXPLORE_PAGER,
             pagingSourceFactory = {
-                recipeDAO.getByFilter(SimpleSQLiteQuery(query))
+                recipeDAO.getByFilter(SimpleSQLiteQuery(query.local))
             }
         ).flow.map { pagingData -> pagingData.map { it.toModelShort() } }.flowOn(Dispatchers.IO)
     }
@@ -102,12 +94,6 @@ class RecipeRepository @Inject constructor(
 
     // definitely this is the wrong place to store pager configs but dunno where else
     companion object {
-        val DB_POPULAR_PAGER = PagingConfig(
-            pageSize = 10,
-            initialLoadSize = 20,
-            jumpThreshold = 40,
-            maxSize = 40
-        )
         val DB_EXPLORE_PAGER = PagingConfig(
             pageSize = 10,
             initialLoadSize = 20,

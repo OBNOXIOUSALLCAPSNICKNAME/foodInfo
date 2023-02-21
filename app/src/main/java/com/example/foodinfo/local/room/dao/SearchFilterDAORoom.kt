@@ -12,6 +12,13 @@ import kotlinx.coroutines.flow.Flow
 abstract class SearchFilterDAORoom : SearchFilterDAO {
     @Transaction
     @Query(
+        "SELECT * FROM ${BasicOfSearchFilterDB.TABLE_NAME} WHERE " +
+                "${BasicOfSearchFilterDB.Columns.FILTER_NAME} LIKE '%' || :filterName || '%'"
+    )
+    abstract override fun getBasics(filterName: String): List<BasicOfSearchFilterExtendedPOJO>
+
+    @Transaction
+    @Query(
         "SELECT * FROM ${LabelOfSearchFilterDB.TABLE_NAME} WHERE " +
                 "${LabelOfSearchFilterDB.Columns.FILTER_NAME} LIKE '%' || :filterName || '%'"
     )
@@ -23,13 +30,6 @@ abstract class SearchFilterDAORoom : SearchFilterDAO {
                 "${NutrientOfSearchFilterDB.Columns.FILTER_NAME} LIKE '%' || :filterName || '%'"
     )
     abstract override fun getNutrients(filterName: String): List<NutrientOfSearchFilterExtendedPOJO>
-
-    @Transaction
-    @Query(
-        "SELECT * FROM ${BasicOfSearchFilterDB.TABLE_NAME} WHERE " +
-                "${BasicOfSearchFilterDB.Columns.FILTER_NAME} LIKE '%' || :filterName || '%'"
-    )
-    abstract override fun getBasics(filterName: String): List<BasicOfSearchFilterExtendedPOJO>
 
     @Transaction
     @Query(

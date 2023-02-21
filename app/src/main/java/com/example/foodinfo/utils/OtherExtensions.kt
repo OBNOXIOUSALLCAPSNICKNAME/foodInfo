@@ -46,3 +46,5 @@ fun View.baseAnimation() {
     alpha = 0f
     animate().alpha(1f).setDuration(100).setListener(null)
 }
+
+fun String.trimMultiline() = this.trimIndent().replace(System.lineSeparator(), "")

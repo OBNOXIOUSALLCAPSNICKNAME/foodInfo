@@ -9,6 +9,7 @@ import com.example.foodinfo.repository.RecipeRepository
 import com.example.foodinfo.repository.model.LabelHintModel
 import com.example.foodinfo.repository.model.RecipeShortModel
 import com.example.foodinfo.repository.use_case.SearchFilterUseCase
+import com.example.foodinfo.utils.SearchFilterQuery
 import com.example.foodinfo.utils.State
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -23,10 +24,10 @@ class SearchLabelViewModel @Inject constructor(
 ) : ViewModel() {
 
     var labelID: Int = -1
-    var query: String = ""
+    lateinit var query: SearchFilterQuery
 
-    val filterQuery: SharedFlow<State<String>> by lazy {
-        searchFilterUseCase.getQueryByLabel(labelID)
+    val filterQuery: SharedFlow<State<SearchFilterQuery>> by lazy {
+        searchFilterUseCase.getSearchQueryByLabel(labelID)
             .shareIn(viewModelScope, SharingStarted.WhileSubscribed(stopTimeoutMillis = 5000), 1)
     }
 

@@ -12,13 +12,6 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 abstract class RecipeDAORoom : RecipeDAO {
-    @Query(
-        "SELECT * FROM ${RecipeDB.TABLE_NAME} " +
-                "WHERE ${RecipeDB.Columns.ID} " +
-                "IN (SELECT ${RecipeDB.Columns.ID} " +
-                "FROM ${RecipeDB.TABLE_NAME} ORDER BY RANDOM())"
-    )
-    abstract override fun getPopular(): PagingSource<Int, RecipeEntity>
 
     @Query(
         "SELECT * FROM ${RecipeDB.TABLE_NAME} " +

@@ -4,7 +4,6 @@ import com.example.foodinfo.local.dto.*
 import com.example.foodinfo.remote.dto.NutrientOfRecipeNetwork
 import com.example.foodinfo.remote.dto.NutrientRecipeAttrNetwork
 import com.example.foodinfo.repository.model.*
-import com.example.foodinfo.repository.model.filter_field.NutrientOfFilterPreset
 import kotlin.math.max
 import kotlin.math.min
 
@@ -45,8 +44,14 @@ fun NutrientOfSearchFilterExtendedDB.toDBLatest(): NutrientOfSearchFilterDB {
         ID = this.ID,
         filterName = this.filterName,
         infoID = this.infoID,
-        minValue = if (this.minValue != null) max(this.minValue!!, this.attrInfo!!.rangeMin) else null,
-        maxValue = if (this.maxValue != null) min(this.maxValue!!, this.attrInfo!!.rangeMax) else null
+        minValue = if (this.minValue != null) max(
+            this.minValue!!,
+            this.attrInfo!!.rangeMin
+        ) else null,
+        maxValue = if (this.maxValue != null) min(
+            this.maxValue!!,
+            this.attrInfo!!.rangeMax
+        ) else null
     )
 }
 
@@ -67,25 +72,36 @@ fun List<NutrientOfSearchFilterExtendedDB>.toModelEdit(): List<NutrientOfSearchF
 }
 
 fun List<NutrientOfSearchFilterExtendedDB>.toModelPreview(): List<NutrientOfSearchFilterPreviewModel> {
-    return this.filterNot { it.minValue == null && it.maxValue == null }.map { nutrient ->
-        NutrientOfSearchFilterPreviewModel(
-            ID = nutrient.ID,
-            name = nutrient.attrInfo!!.name,
-            measure = nutrient.attrInfo!!.measure,
-            minValue = nutrient.minValue,
-            maxValue = nutrient.maxValue,
-        )
-    }
+    return this
+        .filterNot { it.minValue == null && it.maxValue == null }
+        .map { nutrient ->
+            NutrientOfSearchFilterPreviewModel(
+                ID = nutrient.ID,
+                name = nutrient.attrInfo!!.name,
+                measure = nutrient.attrInfo!!.measure,
+                minValue = nutrient.minValue,
+                maxValue = nutrient.maxValue,
+            )
+        }
 }
 
-fun List<NutrientOfSearchFilterExtendedDB>.toModelPreset(): List<NutrientOfFilterPreset> {
-    return this.filterNot { it.minValue == null && it.maxValue == null }.map { field ->
-        NutrientOfFilterPreset(
-            infoID = field.attrInfo!!.ID,
-            minValue = if (field.minValue != null) max(field.minValue!!, field.attrInfo!!.rangeMin) else null,
-            maxValue = if (field.maxValue != null) min(field.maxValue!!, field.attrInfo!!.rangeMax) else null
-        )
-    }
+fun List<NutrientOfSearchFilterExtendedDB>.toModelPreset(): List<NutrientOfFilterPresetModel> {
+    return this
+        .filterNot { it.minValue == null && it.maxValue == null }
+        .map { nutrient ->
+            NutrientOfFilterPresetModel(
+                tag = nutrient.attrInfo!!.tag,
+                infoID = nutrient.attrInfo!!.ID,
+                minValue = if (nutrient.minValue != null) max(
+                    nutrient.minValue!!,
+                    nutrient.attrInfo!!.rangeMin
+                ) else null,
+                maxValue = if (nutrient.maxValue != null) min(
+                    nutrient.maxValue!!,
+                    nutrient.attrInfo!!.rangeMax
+                ) else null
+            )
+        }
 }
 
 

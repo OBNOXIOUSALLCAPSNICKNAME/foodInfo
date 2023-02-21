@@ -8,9 +8,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface RecipeDAO {
 
-    // return recipes in random order (in case there is no such attribute as "Popular" for recipe yet)
-    fun getPopular(): PagingSource<Int, out RecipeDB>
-
     fun getFavorite(): PagingSource<Int, out RecipeDB>
 
     fun getByFilter(query: SupportSQLiteQuery): PagingSource<Int, out RecipeDB>

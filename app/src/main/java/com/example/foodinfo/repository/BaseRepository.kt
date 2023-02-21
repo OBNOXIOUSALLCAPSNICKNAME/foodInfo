@@ -109,6 +109,9 @@ abstract class BaseRepository {
      * - If local or remote data source will pass null or empty collection, [getData] will emit [State.Error]
      * with [NoDataException]
      *
+     * - If data collected from local or remote flow is **Unit, null or empty collection**,
+     * [State.Error] will be emitted with [NoDataException].
+     *
      * - [localDataFlowProvider] and [localDataProvider] are optional, but at least one must be provided,
      * otherwise an [IllegalArgumentException] will be thrown.
      *
@@ -229,6 +232,6 @@ abstract class BaseRepository {
                     )
                 }
             }
-        }.collect { }
-    }.flowOn(Dispatchers.IO)
+        }.collect {}
+    }
 }

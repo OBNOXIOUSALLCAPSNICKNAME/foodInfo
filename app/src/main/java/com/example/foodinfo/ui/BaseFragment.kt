@@ -51,7 +51,7 @@ abstract class BaseFragment<VB : ViewBinding>(
      * is **false**. After completion, [isUIInitialized] will be changed to **true**. Usage example: hide
      * loading spinner/placeholders, initialize UI and start initialize animation.
      * @param onRefreshUI Called when [State] with [State.data] **!= null** collected and [isUIInitialized]
-     * is **true**. Update UI and start refresh animation.
+     * is **true**. Usage example: update UI and start refresh animation.
      */
     internal inline fun <T> observeData(
         dataFlow: Flow<State<T>>,

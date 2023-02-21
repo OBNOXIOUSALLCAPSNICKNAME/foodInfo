@@ -6,9 +6,12 @@ import com.example.foodinfo.repository.SearchFilterRepository
 import com.example.foodinfo.repository.model.CategoryOfSearchFilterEditModel
 import com.example.foodinfo.repository.model.NutrientOfSearchFilterEditModel
 import com.example.foodinfo.repository.model.SearchFilterEditModel
+import com.example.foodinfo.utils.APICredentials
+import com.example.foodinfo.utils.SearchFilterQuery
 import com.example.foodinfo.utils.State
 import com.example.foodinfo.utils.getResolved
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.transform
 import javax.inject.Inject
 
 
@@ -17,20 +20,74 @@ class SearchFilterUseCase @Inject constructor(
     private val searchFilterRepository: SearchFilterRepository
 ) {
 
-    fun getQueryByFilter(
+    fun getSearchQuery(
         filterName: String = SearchFilterDB.DEFAULT_NAME,
         inputText: String
-    ): Flow<State<String>> {
+    ): Flow<State<SearchFilterQuery>> {
         return getResolved(
             extraDataFlow = recipeAttrRepository.getRecipeAttrsDBLatest(),
-            dataFlowProvider = { searchFilterRepository.getQueryByFilter(filterName, inputText, it) }
-        )
+            dataFlowProvider = { attrs ->
+                searchFilterRepository.getFilterPreset(filterName, attrs)
+            }
+        ).transform { state ->
+            val query = if (state.data != null) {
+                SearchFilterQuery(
+                    searchFilterPreset = state.data,
+                    apiCredentials = APICredentials(),
+                    isOffline = true,
+                    inputText = inputText
+                )
+            } else null
+            when (state) {
+                is State.Success -> {
+                    emit(State.Success(query!!))
+                }
+                is State.Error   -> {
+                    emit(State.Error(state.message!!, state.error!!))
+                }
+                is State.Loading -> {
+                    emit(State.Loading(query))
+                }
+            }
+        }
     }
 
-    fun getQueryByLabel(labelID: Int): Flow<State<String>> {
+    fun getSearchQueryByLabel(
+        labelID: Int
+    ): Flow<State<SearchFilterQuery>> {
         return getResolved(
             extraDataFlow = recipeAttrRepository.getRecipeAttrsDBLatest(),
-            dataFlowProvider = { searchFilterRepository.getQueryByLabel(labelID, it) }
+            dataFlowProvider = { attrs ->
+                searchFilterRepository.getFilterPresetByLabel(labelID, attrs)
+            }
+        ).transform { state ->
+            val query = if (state.data != null) {
+                SearchFilterQuery(
+                    searchFilterPreset = state.data,
+                    apiCredentials = APICredentials(),
+                    isOffline = true
+                )
+            } else null
+            when (state) {
+                is State.Success -> {
+                    emit(State.Success(query!!))
+                }
+                is State.Error   -> {
+                    emit(State.Error(state.message!!, state.error!!))
+                }
+                is State.Loading -> {
+                    emit(State.Loading(query))
+                }
+            }
+        }
+    }
+
+    fun getFilterEdit(
+        filterName: String = SearchFilterDB.DEFAULT_NAME
+    ): Flow<State<SearchFilterEditModel>> {
+        return getResolved(
+            extraDataFlow = recipeAttrRepository.getRecipeAttrsDBLatest(),
+            dataFlowProvider = { searchFilterRepository.getFilterEdit(filterName, it) }
         )
     }
 
@@ -50,15 +107,6 @@ class SearchFilterUseCase @Inject constructor(
         return getResolved(
             extraDataFlow = recipeAttrRepository.getNutrientsDBLatest(),
             dataFlowProvider = { searchFilterRepository.getNutrientsEdit(filterName, it) }
-        )
-    }
-
-    fun getFilterEdit(
-        filterName: String = SearchFilterDB.DEFAULT_NAME
-    ): Flow<State<SearchFilterEditModel>> {
-        return getResolved(
-            extraDataFlow = recipeAttrRepository.getRecipeAttrsDBLatest(),
-            dataFlowProvider = { searchFilterRepository.getFilterEdit(filterName, it) }
         )
     }
 }
