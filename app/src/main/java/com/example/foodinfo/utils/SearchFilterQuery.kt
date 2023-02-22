@@ -211,7 +211,7 @@ class SearchFilterQuery(
         URL("url"),
         SOURCE("source"),
         LABEL("label"),
-        IMAGES("images"),
+        IMAGE("image"),
         YIELD("yield"),
         INGREDIENT_LINES("ingredientLines"),
         CALORIES("calories"),
