@@ -63,5 +63,10 @@ fun List<LabelOfSearchFilterExtendedDB>.toModelPreset(): List<CategoryOfFilterPr
 }
 
 fun CategoryRecipeAttrNetwork.toDB(): CategoryRecipeAttrDB {
-    throw java.lang.NullPointerException() //TODO implement conversion
+    return CategoryRecipeAttrDB(
+        ID = this.ID,
+        tag = this.tag,
+        name = this.name,
+        previewURL = this.previewURL
+    )
 }

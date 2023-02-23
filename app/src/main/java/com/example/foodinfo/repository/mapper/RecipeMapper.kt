@@ -54,13 +54,18 @@ fun RecipeExtendedDB.toModelExtended(): RecipeExtendedModel {
 }
 
 fun RecipeNetwork.toDB(): RecipeDB {
-    throw java.lang.NullPointerException() //TODO implement conversion
+    throw NullPointerException() //TODO implement conversion
 }
 
-fun RecipeExtendedNetwork.toDB(): RecipeExtendedDB {
-    throw java.lang.NullPointerException() //TODO implement conversion
+fun RecipeExtendedNetwork.toDB(attrs: RecipeAttrsDB): RecipeExtendedDB {
+    throw NullPointerException() //TODO implement conversion
 }
 
 fun RecipeAttrsNetwork.toDB(): RecipeAttrsDB {
-    throw java.lang.NullPointerException() //TODO implement conversion
+    return RecipeAttrsDB(
+        basics = this.basics.map { it.toDB() },
+        labels = this.labels.map { it.toDB() },
+        categories = this.categories.map { it.toDB() },
+        nutrients = this.nutrients.map { it.toDB() }
+    )
 }

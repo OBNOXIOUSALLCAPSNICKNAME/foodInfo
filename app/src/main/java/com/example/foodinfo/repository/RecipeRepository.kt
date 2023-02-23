@@ -52,10 +52,10 @@ class RecipeRepository @Inject constructor(
         attrs: RecipeAttrsDB
     ): Flow<State<RecipeExtendedModel>> {
         return getData(
-            remoteDataProvider = { recipeAPI.getRecipeExtended(recipeID, attrs) },
+            remoteDataProvider = { recipeAPI.getRecipeExtended(recipeID) },
             localDataFlowProvider = { recipeDAO.getByIdExtended(recipeID) },
             updateLocalDelegate = { recipeDAO.addRecipeExtended(it) },
-            mapToLocalDelegate = { it!!.toDB() },
+            mapToLocalDelegate = { it!!.toDB(attrs) },
             mapToModelDelegate = { it.toModelExtended() }
         )
     }
@@ -65,10 +65,10 @@ class RecipeRepository @Inject constructor(
         attrs: List<NutrientRecipeAttrDB>
     ): Flow<State<List<NutrientOfRecipeModel>>> {
         return getData(
-            remoteDataProvider = { recipeAPI.getNutrients(recipeID, attrs) },
+            remoteDataProvider = { recipeAPI.getNutrients(recipeID) },
             localDataFlowProvider = { recipeDAO.getNutrients(recipeID) },
             updateLocalDelegate = { recipeDAO.addNutrients(it) },
-            mapToLocalDelegate = { it.map { nutrient -> nutrient.toDB() } },
+            mapToLocalDelegate = { it.map { nutrient -> nutrient.toDB(attrs) } },
             mapToModelDelegate = { it.map { nutrient -> nutrient.toModel() } }
         )
     }

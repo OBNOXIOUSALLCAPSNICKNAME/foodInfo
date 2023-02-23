@@ -88,5 +88,12 @@ fun LabelOfRecipeNetwork.toDB(): LabelOfRecipeDB {
 }
 
 fun LabelRecipeAttrNetwork.toDB(): LabelRecipeAttrDB {
-    throw java.lang.NullPointerException() //TODO implement conversion
+    return LabelRecipeAttrDB(
+        ID = this.ID,
+        categoryID = this.categoryID,
+        tag = this.tag,
+        name = this.name,
+        description = this.description,
+        previewURL = this.previewURL
+    )
 }
