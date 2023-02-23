@@ -4,25 +4,21 @@ import com.example.foodinfo.local.dto.LabelOfRecipeDB
 import com.example.foodinfo.local.dto.LabelRecipeAttrDB
 import com.example.foodinfo.local.dto.NutrientOfRecipeDB
 import com.example.foodinfo.local.dto.RecipeDB
-import com.example.foodinfo.local.room.entity.RecipeEntity
-import com.example.foodinfo.local.room.entity.SearchFilterEntity
 import com.example.foodinfo.repository.model.CategoryOfFilterPresetModel
 import com.example.foodinfo.repository.model.NutrientOfFilterPresetModel
 import com.example.foodinfo.repository.model.SearchFilterPresetModel
 
 
 /**
- * Class that generate query by [SearchFilterEntity]
+ * Class that generate remote and local query by [SearchFilterPresetModel]
  *
- * Fields order:
- * * Basics - fastest one, search goes through the fields of [RecipeEntity] itself
- * * Nutrients - slowly than Range fields but only one query to another table
- * for multiple nutrients
- * * Labels - the slowest one, has more than one query to other tables
+ * ##Local:
+ * Because of **AND** separator between subqueries if any of subquery don't match the condition,
+ * row will be denied, so it makes sense to check the fastest conditions first:
  *
- * Because of AND separator between subqueries if any of subquery don't
- * match the condition, row will be denied, so it makes sense to check the fastest
- * conditions first
+ * * **Basics** - fastest one, search goes through the fields of [RecipeDB] itself.
+ * * **Nutrients** - slowly than Range fields due to contains subquery to another table.
+ * * **Labels** - the slowest one, in addition to the subquery also contains a grouping.
  *
  * ###Example:
  * ~~~
@@ -45,6 +41,39 @@ import com.example.foodinfo.repository.model.SearchFilterPresetModel
  *         WHERE info_id IN (1, 4, 8, 9, 46, 49, 52, 53)
  *         GROUP BY recipe_id, category_id)
  *     GROUP BY recipe_id HAVING count(recipe_id) = 3)
+ * ~~~
+ *
+ * ##Remote
+ * Remote query is simply base URL with API credentials and then just each filter piece appended with
+ * **&** separator.
+ * - All special symbols will be correctly translated (e.g. space will be replaced with **'%20'**
+ * and **'+'** will be replaced with **%2B**).
+ * - Result will contain only [RecipeDB] fields without labels and nutrients.
+ *
+ * ###Example:
+ * Line breaks added for better readability
+ * ~~~
+ * https://api.edamam.com/api/recipes/v2?type=public
+ * &q=beef
+ * &app_id=f8452af5&app_key=0f6552d886aed96d8608d6be1f2fe6ae
+ * &ingr=13
+ * &diet=balanced
+ * &diet=high-protein
+ * &health=kosher
+ * &dishType=Biscuits%20and%20cookies
+ * &dishType=Bread
+ * &nutrients%5BCA%5D=50-100
+ * &nutrients%5BCHOCDF%5D=10%2B
+ * &field=uri
+ * &field=label
+ * &field=image
+ * &field=source
+ * &field=url
+ * &field=yield
+ * &field=ingredientLines
+ * &field=calories
+ * &field=totalWeight
+ * &field=totalTime
  * ~~~
  */
 class SearchFilterQuery(
@@ -193,7 +222,7 @@ class SearchFilterQuery(
         }
         ${
             searchFilterPreset.nutrients.joinToString(separator = "") { field ->
-                "&nutrients&${rangeFieldToRemoteQuery(field.tag, field.minValue, field.maxValue)}"
+                "&nutrients${rangeFieldToRemoteQuery(field.tag, field.minValue, field.maxValue)}"
             }
         }
         ${
