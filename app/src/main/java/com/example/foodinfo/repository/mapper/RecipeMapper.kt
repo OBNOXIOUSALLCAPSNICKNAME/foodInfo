@@ -53,13 +53,6 @@ fun RecipeExtendedDB.toModelExtended(): RecipeExtendedModel {
     )
 }
 
-fun RecipeNetwork.toDB(): RecipeDB {
-    throw NullPointerException() //TODO implement conversion
-}
-
-fun RecipeExtendedNetwork.toDB(attrs: RecipeAttrsDB): RecipeExtendedDB {
-    throw NullPointerException() //TODO implement conversion
-}
 
 fun RecipeAttrsNetwork.toDB(): RecipeAttrsDB {
     return RecipeAttrsDB(
@@ -67,5 +60,43 @@ fun RecipeAttrsNetwork.toDB(): RecipeAttrsDB {
         labels = this.labels.map { it.toDB() },
         categories = this.categories.map { it.toDB() },
         nutrients = this.nutrients.map { it.toDB() }
+    )
+}
+
+fun RecipeNetwork.toDB(): RecipeDB {
+    return RecipeDB(
+        ID = this.URI.replace("http://www.edamam.com/ontologies/edamam.owl#recipe_", ""),
+        source = this.source,
+        name = this.label,
+        previewURL = this.image,
+        calories = this.calories.toInt(),
+        ingredientsCount = this.ingredients.size,
+        weight = this.weight.toInt(),
+        cookingTime = this.time.toInt(),
+        servings = this.servings
+    )
+}
+
+fun RecipeExtendedNetwork.toDB(attrs: RecipeAttrsDB): RecipeExtendedDB {
+    val recipeID = this.URI.replace("http://www.edamam.com/ontologies/edamam.owl#recipe_", "")
+    val labels = this.meal.toDB(recipeID, attrs.labels) +
+            this.diet.toDB(recipeID, attrs.labels) +
+            this.dish.toDB(recipeID, attrs.labels) +
+            this.health.toDB(recipeID, attrs.labels) +
+            this.cuisine.toDB(recipeID, attrs.labels)
+
+    return RecipeExtendedDB(
+        ID = recipeID,
+        source = this.source,
+        name = this.label,
+        previewURL = this.image,
+        calories = this.calories.toInt(),
+        ingredientsCount = this.ingredients.size,
+        weight = this.weight.toInt(),
+        cookingTime = this.time.toInt(),
+        servings = this.servings.toInt(),
+        ingredients = this.ingredients.map { it.toDB(recipeID) },
+        nutrients = this.nutrients.toDB(recipeID, attrs.nutrients),
+        labels = labels
     )
 }

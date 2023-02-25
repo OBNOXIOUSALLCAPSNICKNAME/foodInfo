@@ -2,7 +2,7 @@ package com.example.foodinfo.local.dto
 
 
 open class IngredientOfRecipeDB(
-    open val ID: Int,
+    open val ID: Int = 0,
     open val recipeID: String,
     open val text: String,
     open val quantity: Float,

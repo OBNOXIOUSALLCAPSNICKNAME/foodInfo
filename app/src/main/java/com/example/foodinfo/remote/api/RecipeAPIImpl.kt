@@ -1,6 +1,9 @@
 package com.example.foodinfo.remote.api
 
-import com.example.foodinfo.remote.dto.*
+import com.example.foodinfo.remote.dto.IngredientOfRecipeNetwork
+import com.example.foodinfo.remote.dto.NutrientOfRecipeNetwork
+import com.example.foodinfo.remote.dto.RecipeExtendedNetwork
+import com.example.foodinfo.remote.dto.RecipeNetwork
 
 
 class RecipeAPIImpl : RecipeAPI() {
@@ -11,11 +14,6 @@ class RecipeAPIImpl : RecipeAPI() {
     }
 
     override fun getRecipeExtended(ID: String): RecipeExtendedNetwork {
-        // to prevent overriding local DB with empty data (replace after implementing API)
-        throw NullPointerException()
-    }
-
-    override fun getLabels(ID: String): List<LabelOfRecipeNetwork> {
         // to prevent overriding local DB with empty data (replace after implementing API)
         throw NullPointerException()
     }

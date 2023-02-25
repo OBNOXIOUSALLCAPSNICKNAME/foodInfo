@@ -1,7 +1,9 @@
 package com.example.foodinfo.repository.mapper
 
-import com.example.foodinfo.local.dto.*
-import com.example.foodinfo.remote.dto.LabelOfRecipeNetwork
+import com.example.foodinfo.local.dto.LabelOfRecipeExtendedDB
+import com.example.foodinfo.local.dto.LabelOfSearchFilterDB
+import com.example.foodinfo.local.dto.LabelOfSearchFilterExtendedDB
+import com.example.foodinfo.local.dto.LabelRecipeAttrDB
 import com.example.foodinfo.remote.dto.LabelRecipeAttrNetwork
 import com.example.foodinfo.repository.model.*
 
@@ -83,10 +85,6 @@ fun LabelRecipeAttrDB.toFilter(filterName: String): LabelOfSearchFilterDB {
 }
 
 
-fun LabelOfRecipeNetwork.toDB(): LabelOfRecipeDB {
-    throw java.lang.NullPointerException() //TODO implement conversion
-}
-
 fun LabelRecipeAttrNetwork.toDB(): LabelRecipeAttrDB {
     return LabelRecipeAttrDB(
         ID = this.ID,
@@ -96,4 +94,14 @@ fun LabelRecipeAttrNetwork.toDB(): LabelRecipeAttrDB {
         description = this.description,
         previewURL = this.previewURL
     )
+}
+
+fun List<String>.toDB(recipeID: String, attrs: List<LabelRecipeAttrDB>): List<LabelOfRecipeExtendedDB> {
+    return this.map { label ->
+        LabelOfRecipeExtendedDB(
+            recipeID = recipeID,
+            infoID = attrs.first { it.tag == label }.ID,
+            attrInfo = null
+        )
+    }
 }

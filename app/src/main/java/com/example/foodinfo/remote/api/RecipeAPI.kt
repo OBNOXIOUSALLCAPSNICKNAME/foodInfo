@@ -1,6 +1,9 @@
 package com.example.foodinfo.remote.api
 
-import com.example.foodinfo.remote.dto.*
+import com.example.foodinfo.remote.dto.IngredientOfRecipeNetwork
+import com.example.foodinfo.remote.dto.NutrientOfRecipeNetwork
+import com.example.foodinfo.remote.dto.RecipeExtendedNetwork
+import com.example.foodinfo.remote.dto.RecipeNetwork
 
 
 abstract class RecipeAPI {
@@ -8,8 +11,6 @@ abstract class RecipeAPI {
     abstract fun getRecipes(ID: String): List<RecipeNetwork>
 
     abstract fun getRecipeExtended(ID: String): RecipeExtendedNetwork?
-
-    abstract fun getLabels(ID: String): List<LabelOfRecipeNetwork>
 
     abstract fun getNutrients(ID: String): List<NutrientOfRecipeNetwork>
 
