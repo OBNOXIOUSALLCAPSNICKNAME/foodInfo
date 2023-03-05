@@ -4,7 +4,6 @@ import com.example.foodinfo.local.dto.RecipeAttrsDB
 import com.example.foodinfo.local.dto.RecipeDB
 import com.example.foodinfo.local.dto.RecipeExtendedDB
 import com.example.foodinfo.remote.dto.RecipeAttrsNetwork
-import com.example.foodinfo.remote.dto.RecipeExtendedNetwork
 import com.example.foodinfo.remote.dto.RecipeNetwork
 import com.example.foodinfo.repository.model.RecipeExtendedModel
 import com.example.foodinfo.repository.model.RecipeFavoriteModel
@@ -65,38 +64,38 @@ fun RecipeAttrsNetwork.toDB(): RecipeAttrsDB {
 
 fun RecipeNetwork.toDB(): RecipeDB {
     return RecipeDB(
-        ID = this.URI.replace("http://www.edamam.com/ontologies/edamam.owl#recipe_", ""),
-        source = this.source,
-        name = this.label,
-        previewURL = this.image,
-        calories = this.calories.toInt(),
-        ingredientsCount = this.ingredients.size,
-        weight = this.weight.toInt(),
-        cookingTime = this.time.toInt(),
-        servings = this.servings
+        ID = this.URI!!.replace("http://www.edamam.com/ontologies/edamam.owl#recipe_", ""),
+        source = this.source!!,
+        name = this.label!!,
+        previewURL = this.image!!,
+        calories = this.calories!!.toInt(),
+        ingredientsCount = this.ingredientsLines!!.size,
+        weight = this.weight!!.toInt(),
+        cookingTime = this.time!!.toInt(),
+        servings = this.servings!!.toInt()
     )
 }
 
-fun RecipeExtendedNetwork.toDB(attrs: RecipeAttrsDB): RecipeExtendedDB {
-    val recipeID = this.URI.replace("http://www.edamam.com/ontologies/edamam.owl#recipe_", "")
-    val labels = this.meal.toDB(recipeID, attrs.labels) +
-            this.diet.toDB(recipeID, attrs.labels) +
-            this.dish.toDB(recipeID, attrs.labels) +
-            this.health.toDB(recipeID, attrs.labels) +
-            this.cuisine.toDB(recipeID, attrs.labels)
+fun RecipeNetwork.toDBExtended(attrs: RecipeAttrsDB): RecipeExtendedDB {
+    val recipeID = this.URI!!.replace("http://www.edamam.com/ontologies/edamam.owl#recipe_", "")
 
     return RecipeExtendedDB(
         ID = recipeID,
-        source = this.source,
-        name = this.label,
-        previewURL = this.image,
-        calories = this.calories.toInt(),
-        ingredientsCount = this.ingredients.size,
-        weight = this.weight.toInt(),
-        cookingTime = this.time.toInt(),
-        servings = this.servings.toInt(),
-        ingredients = this.ingredients.map { it.toDB(recipeID) },
-        nutrients = this.nutrients.toDB(recipeID, attrs.nutrients),
-        labels = labels
+        source = this.source!!,
+        name = this.label!!,
+        previewURL = this.image!!,
+        calories = this.calories!!.toInt(),
+        ingredientsCount = this.ingredientsLines!!.size,
+        weight = this.weight!!.toInt(),
+        cookingTime = this.time!!.toInt(),
+        servings = this.servings!!.toInt(),
+        ingredients = this.ingredients!!.map { it.toDB(recipeID) },
+        nutrients = this.nutrients!!.toDBExtended(recipeID, attrs.nutrients),
+        labels = this.meal!!.toDB(recipeID, attrs.labels) +
+                this.diet!!.toDB(recipeID, attrs.labels) +
+                this.dish!!.toDB(recipeID, attrs.labels) +
+                this.health!!.toDB(recipeID, attrs.labels) +
+                this.cuisine!!.toDB(recipeID, attrs.labels)
+
     )
 }

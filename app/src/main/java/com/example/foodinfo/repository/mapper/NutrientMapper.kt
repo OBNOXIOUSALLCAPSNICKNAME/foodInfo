@@ -1,9 +1,6 @@
 package com.example.foodinfo.repository.mapper
 
-import com.example.foodinfo.local.dto.NutrientOfRecipeExtendedDB
-import com.example.foodinfo.local.dto.NutrientOfSearchFilterDB
-import com.example.foodinfo.local.dto.NutrientOfSearchFilterExtendedDB
-import com.example.foodinfo.local.dto.NutrientRecipeAttrDB
+import com.example.foodinfo.local.dto.*
 import com.example.foodinfo.remote.dto.NutrientOfRecipeNetwork
 import com.example.foodinfo.remote.dto.NutrientRecipeAttrNetwork
 import com.example.foodinfo.repository.model.*
@@ -139,6 +136,19 @@ fun NutrientRecipeAttrDB.toFilter(filterName: String): NutrientOfSearchFilterDB 
 
 
 fun Map<String, NutrientOfRecipeNetwork>.toDB(
+    recipeID: String,
+    attrs: List<NutrientRecipeAttrDB>
+): List<NutrientOfRecipeDB> {
+    return this.map { (tag, nutrient) ->
+        NutrientOfRecipeDB(
+            recipeID = recipeID,
+            infoID = attrs.first { it.tag == tag }.ID,
+            value = nutrient.quantity
+        )
+    }
+}
+
+fun Map<String, NutrientOfRecipeNetwork>.toDBExtended(
     recipeID: String,
     attrs: List<NutrientRecipeAttrDB>
 ): List<NutrientOfRecipeExtendedDB> {

@@ -4,6 +4,7 @@ import com.example.foodinfo.local.dto.LabelOfRecipeDB
 import com.example.foodinfo.local.dto.LabelRecipeAttrDB
 import com.example.foodinfo.local.dto.NutrientOfRecipeDB
 import com.example.foodinfo.local.dto.RecipeDB
+import com.example.foodinfo.remote.dto.RecipeNetwork
 import com.example.foodinfo.repository.model.CategoryOfFilterPresetModel
 import com.example.foodinfo.repository.model.NutrientOfFilterPresetModel
 import com.example.foodinfo.repository.model.SearchFilterPresetModel
@@ -206,15 +207,10 @@ class SearchFilterQuery(
         apiCredentials: APICredentials
     ): String {
         return """
-        https://api.edamam.com/api/recipes/v2?type=public
-        &app_id=${apiCredentials.appIDRecipes}
-        &app_key=${apiCredentials.appKeyRecipes}
+        ${BaseURL.RECIPE}
+        ${apiCredentials.recipe}
+        ${RecipeNetwork.FieldSet.BASIC}
         ${inputTextToRemoteQuery(inputText)}
-        ${
-            RemoteFields.values().joinToString(separator = "") { field ->
-                "&field=${field.tag}"
-            }
-        }
         ${
             searchFilterPreset.basics.joinToString(separator = "") { field ->
                 "&${rangeFieldToRemoteQuery(field.tag, field.minValue, field.maxValue)}"
@@ -233,18 +229,5 @@ class SearchFilterQuery(
             }
         }
         """.trimMultiline()
-    }
-
-    private enum class RemoteFields(val tag: String) {
-        URI("uri"),
-        URL("url"),
-        SOURCE("source"),
-        LABEL("label"),
-        IMAGE("image"),
-        YIELD("yield"),
-        INGREDIENT_LINES("ingredientLines"),
-        CALORIES("calories"),
-        TOTAL_WEIGHT("totalWeight"),
-        TOTAL_TIME("totalTime")
     }
 }
