@@ -207,7 +207,6 @@ class SearchFilterQuery(
         apiCredentials: APICredentials
     ): String {
         return """
-        ${BaseURL.RECIPE}
         ${apiCredentials.recipe}
         ${RecipeNetwork.FieldSet.BASIC}
         ${inputTextToRemoteQuery(inputText)}

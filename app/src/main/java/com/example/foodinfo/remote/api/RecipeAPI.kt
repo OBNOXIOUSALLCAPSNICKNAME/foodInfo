@@ -10,24 +10,39 @@ import com.example.foodinfo.utils.APICredentials
     regardless of what fields needed. By default, API will return all recipe fields, to reduce the load on
     the network, request should contain only the required fields.
  */
-abstract class RecipeAPI {
+interface RecipeAPI {
 
-    abstract fun getRecipesInit(query: String): RecipePageNetwork
+    fun getRecipesInit(query: String): RecipePageNetwork {
+        // to prevent overriding local DB with empty data (replace after implementing API)
+        throw NullPointerException()
+    }
 
-    abstract fun getRecipesNext(href: String): RecipePageNetwork
+    fun getRecipesNext(href: String): RecipePageNetwork {
+        // to prevent overriding local DB with empty data (replace after implementing API)
+        throw NullPointerException()
+    }
 
-    abstract fun getRecipeExtended(
+    fun getRecipeExtended(
         ID: String,
         apiCredentials: APICredentials = APICredentials()
-    ): RecipeHitNetwork
+    ): RecipeHitNetwork {
+        // to prevent overriding local DB with empty data (replace after implementing API)
+        throw NullPointerException()
+    }
 
-    abstract fun getNutrients(
+    fun getNutrients(
         ID: String,
         apiCredentials: APICredentials = APICredentials()
-    ): RecipeHitNetwork
+    ): RecipeHitNetwork {
+        // to prevent overriding local DB with empty data (replace after implementing API)
+        throw NullPointerException()
+    }
 
-    abstract fun getIngredients(
+    fun getIngredients(
         ID: String,
         apiCredentials: APICredentials = APICredentials()
-    ): RecipeHitNetwork
+    ): RecipeHitNetwork {
+        // to prevent overriding local DB with empty data (replace after implementing API)
+        throw NullPointerException()
+    }
 }
