@@ -217,8 +217,8 @@ abstract class BaseRepository {
     ) = flow<State<modelT>> {
         emit(State.Loading())
 
-        var localDBUpdated = false
-        var localDBUpdateError: Exception? = null
+        var remoteDataSaved = false
+        var remoteSaveError: Exception? = null
 
         combine(
             fetchLocal(localDataProvider, mapToModelDelegate),
@@ -237,11 +237,11 @@ abstract class BaseRepository {
                     )
                 }
                 is State.Success -> {
-                    if (!localDBUpdated) { // to prevent endless updateLocalDelegate calls
+                    if (!remoteDataSaved) { // to prevent endless updateLocalDelegate calls
                         try {
                             saveRemoteDelegate(remote.data!!)
                         } catch (e: Exception) {
-                            localDBUpdateError = e
+                            remoteSaveError = e
                         }
                     }
 
@@ -249,7 +249,7 @@ abstract class BaseRepository {
                         state = local,
                         onSuccess = { localData ->
                             // emit loading only if new collection is expected
-                            if (!localDBUpdated && localDBUpdateError == null) {
+                            if (!remoteDataSaved && remoteSaveError == null) {
                                 emit(State.Loading(localData))
                             } else {
                                 emit(State.Success(localData))
@@ -257,15 +257,15 @@ abstract class BaseRepository {
                         },
                         onError = { messageID, error ->
                             // emit error only if no new collection is expected
-                            if (localDBUpdateError != null) {
-                                emit(State.Error(R.string.error_unknown, localDBUpdateError!!))
-                            } else if (localDBUpdated) {
+                            if (remoteSaveError != null) {
+                                emit(State.Error(R.string.error_unknown, remoteSaveError!!))
+                            } else if (remoteDataSaved) {
                                 emit(State.Error(messageID, error))
                             }
                         }
                     )
 
-                    localDBUpdated = true
+                    remoteDataSaved = true
                 }
                 is State.Error   -> {
                     handleState(

@@ -45,7 +45,7 @@ import com.example.foodinfo.repository.model.SearchFilterPresetModel
  * ~~~
  *
  * ##Remote
- * Remote query is simply base URL with API credentials and then just each filter piece appended with
+ * Remote query is simply API credentials and then just each filter piece appended with
  * **&** separator.
  * - All special symbols will be correctly translated (e.g. space will be replaced with **'%20'**
  * and **'+'** will be replaced with **%2B**).
@@ -54,9 +54,10 @@ import com.example.foodinfo.repository.model.SearchFilterPresetModel
  * ###Example:
  * Line breaks added for better readability
  * ~~~
- * https://api.edamam.com/api/recipes/v2?type=public
+ * ?type=public
+ * &app_id=f8452af5
+ * &app_key=0f6552d886aed96d8608d6be1f2fe6ae
  * &q=beef
- * &app_id=f8452af5&app_key=0f6552d886aed96d8608d6be1f2fe6ae
  * &ingr=13
  * &diet=balanced
  * &diet=high-protein
