@@ -19,9 +19,9 @@ abstract class BaseRepository {
      * Wrapper interface that helps [getData] to properly handle different data sources
      */
     internal sealed interface DataProvider<T> {
-        data class Remote<T : Any>(val value: ApiResponse<T>) : DataProvider<T>
-        data class Local<T>(val value: T) : DataProvider<T>
-        data class LocalFlow<T>(val value: Flow<T>) : DataProvider<T>
+        data class Remote<T : Any>(val response: ApiResponse<T>) : DataProvider<T>
+        data class Local<T>(val data: T) : DataProvider<T>
+        data class LocalFlow<T>(val flow: Flow<T>) : DataProvider<T>
         object Empty : DataProvider<Unit>
     }
 
@@ -33,18 +33,18 @@ abstract class BaseRepository {
         emit(State.Loading())
 
         try {
-            when (val data = dataProvider()) {
+            when (val provider = dataProvider()) {
                 is DataProvider.Remote -> {
-                    when (data.value) {
+                    when (provider.response) {
                         is NetworkResponse.Success -> {
-                            emitData(data.value.result, mapDelegate, this::emit)
+                            emit(mapData(provider.response.result, mapDelegate))
                         }
                         else                       -> {
                             emit(
                                 State.Error(
-                                    (data.value as NetworkResponse.Error).messageID,
-                                    (data.value as NetworkResponse.Error).error,
-                                    (data.value as NetworkResponse.Error).code
+                                    (provider.response as NetworkResponse.Error).messageID,
+                                    (provider.response as NetworkResponse.Error).error,
+                                    (provider.response as NetworkResponse.Error).code
                                 )
                             )
                         }
@@ -56,7 +56,7 @@ abstract class BaseRepository {
                 else                   -> {
                     throw IllegalArgumentException(
                         """
-                            Unsupported remoteDataProvider type: ${data::class.java}.
+                            Unsupported remoteDataProvider type: ${provider::class.java}.
                             remoteDataProvider must be either 'DataProvider.Remote' or 'DataProvider.Empty'
                         """.trimMultiline()
                     )
@@ -74,19 +74,19 @@ abstract class BaseRepository {
         emit(State.Loading())
 
         try {
-            when (val data = dataProvider()) {
+            when (val provider = dataProvider()) {
                 is DataProvider.Local -> {
-                    emitData(data.value, mapDelegate, this::emit)
+                    emit(mapData(provider.data, mapDelegate))
                 }
                 is DataProvider.LocalFlow -> {
-                    data.value.collect { localData ->
-                        emitData(localData, mapDelegate, this::emit)
+                    provider.flow.collect { data ->
+                        emit(mapData(data, mapDelegate))
                     }
                 }
                 else -> {
                     throw IllegalArgumentException(
                         """
-                            Unsupported localDataProvider type: ${data::class.java}.
+                            Unsupported localDataProvider type: ${provider::class.java}.
                             localDataProvider must be either 'DataProvider.LocalFlow' or 'DataProvider.Local'
                         """.trimMultiline()
                     )
@@ -98,18 +98,17 @@ abstract class BaseRepository {
     }.flowOn(Dispatchers.IO)
 
 
-    private suspend inline fun <inT, outT> emitData(
+    private suspend inline fun <inT, outT> mapData(
         data: inT?,
-        crossinline mapDelegate: suspend (inT) -> outT,
-        crossinline emit: suspend (State<outT>) -> Unit
-    ) {
-        if (data == null || data is Unit || data is Collection<*> && data.isEmpty()) {
-            emit(State.Error(R.string.error_no_data, NoDataException()))
+        crossinline mapDelegate: suspend (inT) -> outT
+    ): State<outT> {
+        return if (data == null || data is Unit || data is Collection<*> && data.isEmpty()) {
+            State.Error(R.string.error_no_data, NoDataException())
         } else {
             try {
-                emit(State.Success(mapDelegate(data)))
+                State.Success(mapDelegate(data))
             } catch (e: Exception) {
-                emit(State.Error(R.string.error_corrupted_data, e))
+                State.Error(R.string.error_corrupted_data, e)
             }
         }
     }

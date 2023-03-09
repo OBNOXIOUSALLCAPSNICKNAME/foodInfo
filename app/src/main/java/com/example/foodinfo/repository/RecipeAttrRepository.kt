@@ -76,14 +76,14 @@ class RecipeAttrRepository @Inject constructor(
             remoteDataProvider = { DataProvider.Remote(recipeAttrAPI.getRecipeAttrs()) },
             localDataProvider = {
                 DataProvider.LocalFlow(
-                    (combine(
+                    combine(
                         recipeAttrDAO.observeBasicsAll(),
                         recipeAttrDAO.observeLabelsAll(),
                         recipeAttrDAO.observeNutrientsAll(),
                         recipeAttrDAO.observeCategoriesAll()
                     ) { basics, labels, nutrients, categories ->
                         RecipeAttrsDB(basics, labels, nutrients, categories)
-                    })
+                    }
                 )
             },
             saveRemoteDelegate = { recipeAttrDAO.addRecipeAttrs(it) },
