@@ -83,25 +83,25 @@ data class RecipeNetwork(
 
     object FieldSet {
         val BASIC: String = """
-            &${Fields.URI}
-            &${Fields.URL}
-            &${Fields.SOURCE}
-            &${Fields.LABEL}
-            &${Fields.IMAGE}
-            &${Fields.SERVINGS}
-            &${Fields.INGREDIENT_LINES}
-            &${Fields.CALORIES}
-            &${Fields.WEIGHT}
-            &${Fields.TIME}
+            &field=${Fields.URI}
+            &field=${Fields.URL}
+            &field=${Fields.SOURCE}
+            &field=${Fields.LABEL}
+            &field=${Fields.IMAGE}
+            &field=${Fields.SERVINGS}
+            &field=${Fields.INGREDIENT_LINES}
+            &field=${Fields.CALORIES}
+            &field=${Fields.WEIGHT}
+            &field=${Fields.TIME}
         """.trimMultiline()
 
         val NUTRIENTS: String = """
-            &${Fields.TOTAL_NUTRIENTS}
+            &field=${Fields.TOTAL_NUTRIENTS}
         """.trimMultiline()
 
         val INGREDIENTS: String = """
-            &${Fields.INGREDIENTS}
-            &${Fields.INGREDIENT_LINES}
+            &field=${Fields.INGREDIENTS}
+            &field=${Fields.INGREDIENT_LINES}
         """.trimMultiline()
     }
 }

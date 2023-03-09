@@ -2,6 +2,7 @@ package com.example.foodinfo.remote.api
 
 import com.example.foodinfo.remote.dto.RecipeHitNetwork
 import com.example.foodinfo.remote.dto.RecipePageNetwork
+import com.example.foodinfo.remote.response.ApiResponse
 import com.example.foodinfo.utils.APICredentials
 
 /*
@@ -12,12 +13,12 @@ import com.example.foodinfo.utils.APICredentials
  */
 interface RecipeAPI {
 
-    fun getRecipesInit(query: String): RecipePageNetwork {
+    fun getRecipesInit(query: String): ApiResponse<RecipePageNetwork> {
         // to prevent overriding local DB with empty data (replace after implementing API)
         throw NullPointerException()
     }
 
-    fun getRecipesNext(href: String): RecipePageNetwork {
+    fun getRecipesNext(href: String): ApiResponse<RecipePageNetwork> {
         // to prevent overriding local DB with empty data (replace after implementing API)
         throw NullPointerException()
     }
@@ -25,7 +26,7 @@ interface RecipeAPI {
     fun getRecipeExtended(
         ID: String,
         apiCredentials: APICredentials = APICredentials()
-    ): RecipeHitNetwork {
+    ): ApiResponse<RecipeHitNetwork> {
         // to prevent overriding local DB with empty data (replace after implementing API)
         throw NullPointerException()
     }
@@ -33,7 +34,7 @@ interface RecipeAPI {
     fun getNutrients(
         ID: String,
         apiCredentials: APICredentials = APICredentials()
-    ): RecipeHitNetwork {
+    ): ApiResponse<RecipeHitNetwork> {
         // to prevent overriding local DB with empty data (replace after implementing API)
         throw NullPointerException()
     }
@@ -41,7 +42,7 @@ interface RecipeAPI {
     fun getIngredients(
         ID: String,
         apiCredentials: APICredentials = APICredentials()
-    ): RecipeHitNetwork {
+    ): ApiResponse<RecipeHitNetwork> {
         // to prevent overriding local DB with empty data (replace after implementing API)
         throw NullPointerException()
     }

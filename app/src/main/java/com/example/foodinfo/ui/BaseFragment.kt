@@ -56,7 +56,7 @@ abstract class BaseFragment<VB : ViewBinding>(
     internal inline fun <T> observeData(
         dataFlow: Flow<State<T>>,
         useLoadingData: Boolean,
-        crossinline onError: (String, Exception) -> Unit = { _, _ -> },
+        crossinline onError: (Int, Throwable, Int) -> Unit = { _, _, _ -> },
         crossinline onStart: () -> Unit = {},
         crossinline onInitUI: suspend (T) -> Unit,
         crossinline onRefreshUI: suspend (T) -> Unit
@@ -70,7 +70,7 @@ abstract class BaseFragment<VB : ViewBinding>(
                 .collect { state ->
                     when (state) {
                         is State.Error   -> {
-                            onError(state.message!!, state.error!!)
+                            onError(state.messageID!!, state.error!!, state.errorCode!!)
                         }
                         is State.Success -> {
                             if (!isUIInitialized) {

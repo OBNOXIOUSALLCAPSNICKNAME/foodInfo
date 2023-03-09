@@ -23,7 +23,21 @@ android {
     }
 
     buildTypes {
+        getByName("debug") {
+            buildConfigField(
+                "String", "API_GITHUB", "\"https://raw.githubusercontent.com/yvo08013/SharedFiles/\""
+            )
+            buildConfigField(
+                "String", "API_EDAMAM", "\"https://api.edamam.com/api/recipes/v2/\""
+            )
+        }
         getByName("release") {
+            buildConfigField(
+                "String", "API_GITHUB", "\"https://raw.githubusercontent.com/yvo08013/SharedFiles/\""
+            )
+            buildConfigField(
+                "String", "API_EDAMAM", "\"https://api.edamam.com/api/recipes/v2/\""
+            )
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -77,7 +91,7 @@ dependencies {
     implementation(Dependencies.UI.navigationUI)
     implementation(Dependencies.UI.navigationFragment)
 
-    debugImplementation(Dependencies.Other.leakcanary)
+//    debugImplementation(Dependencies.Other.leakcanary)
     implementation(Dependencies.Other.legacySupport)
     testImplementation(Dependencies.Other.junit)
     androidTestImplementation(Dependencies.Other.junitExt)

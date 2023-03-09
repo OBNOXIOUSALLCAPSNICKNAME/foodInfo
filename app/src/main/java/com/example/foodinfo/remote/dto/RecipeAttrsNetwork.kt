@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 
 data class RecipeAttrsNetwork(
-    @SerializedName("basics")
+    @SerializedName("basic")
     val basics: List<BasicRecipeAttrNetwork>,
 
     @SerializedName("labels")

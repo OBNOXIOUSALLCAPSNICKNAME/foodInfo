@@ -31,7 +31,7 @@ fun <extraT, outT> getResolved(
                 dataFlowProvider(state.data!!)
             }
             is State.Error   -> {
-                flowOf(State.Error(state.message!!, state.error!!))
+                flowOf(State.Error(state.messageID!!, state.error!!, state.errorCode!!))
             }
             is State.Loading -> {
                 if (state.data != null) {

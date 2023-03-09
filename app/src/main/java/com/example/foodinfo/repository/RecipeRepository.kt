@@ -52,9 +52,9 @@ class RecipeRepository @Inject constructor(
         attrs: RecipeAttrsDB
     ): Flow<State<RecipeExtendedModel>> {
         return getData(
-            remoteDataProvider = { recipeAPI.getRecipeExtended(recipeID) },
-            localDataFlowProvider = { recipeDAO.getByIdExtended(recipeID) },
-            updateLocalDelegate = { recipeDAO.addRecipeExtended(it) },
+            remoteDataProvider = { DataProvider.Remote(recipeAPI.getRecipeExtended(recipeID)) },
+            localDataProvider = { DataProvider.LocalFlow(recipeDAO.getByIdExtended(recipeID)) },
+            saveRemoteDelegate = { recipeDAO.addRecipeExtended(it) },
             mapToLocalDelegate = { it.recipe.toDBExtended(attrs) },
             mapToModelDelegate = { it.toModelExtended() }
         )
@@ -65,9 +65,9 @@ class RecipeRepository @Inject constructor(
         attrs: List<NutrientRecipeAttrDB>
     ): Flow<State<List<NutrientOfRecipeModel>>> {
         return getData(
-            remoteDataProvider = { recipeAPI.getNutrients(recipeID) },
-            localDataFlowProvider = { recipeDAO.getNutrients(recipeID) },
-            updateLocalDelegate = { recipeDAO.addNutrients(it) },
+            remoteDataProvider = { DataProvider.Remote(recipeAPI.getNutrients(recipeID)) },
+            localDataProvider = { DataProvider.LocalFlow(recipeDAO.getNutrients(recipeID)) },
+            saveRemoteDelegate = { recipeDAO.addNutrients(it) },
             mapToLocalDelegate = { it.recipe.nutrients!!.toDB(recipeID, attrs) },
             mapToModelDelegate = { it.map { nutrient -> nutrient.toModel() } }
         )
@@ -75,9 +75,9 @@ class RecipeRepository @Inject constructor(
 
     fun getByIdIngredients(recipeID: String): Flow<State<List<RecipeIngredientModel>>> {
         return getData(
-            remoteDataProvider = { recipeAPI.getIngredients(recipeID) },
-            localDataFlowProvider = { recipeDAO.getIngredients(recipeID) },
-            updateLocalDelegate = { recipeDAO.addIngredients(it) },
+            remoteDataProvider = { DataProvider.Remote(recipeAPI.getIngredients(recipeID)) },
+            localDataProvider = { DataProvider.LocalFlow(recipeDAO.getIngredients(recipeID)) },
+            saveRemoteDelegate = { recipeDAO.addIngredients(it) },
             mapToLocalDelegate = { it.recipe.ingredients!!.map { ingredient -> ingredient.toDB(recipeID) } },
             mapToModelDelegate = { it.map { ingredient -> ingredient.toModel() } }
         )

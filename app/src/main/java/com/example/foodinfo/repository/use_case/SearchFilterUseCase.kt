@@ -43,7 +43,7 @@ class SearchFilterUseCase @Inject constructor(
                     emit(State.Success(query!!))
                 }
                 is State.Error   -> {
-                    emit(State.Error(state.message!!, state.error!!))
+                    emit(State.Error(state.messageID!!, state.error!!, state.errorCode!!))
                 }
                 is State.Loading -> {
                     emit(State.Loading(query))
@@ -73,7 +73,7 @@ class SearchFilterUseCase @Inject constructor(
                     emit(State.Success(query!!))
                 }
                 is State.Error   -> {
-                    emit(State.Error(state.message!!, state.error!!))
+                    emit(State.Error(state.messageID!!, state.error!!, state.errorCode!!))
                 }
                 is State.Loading -> {
                     emit(State.Loading(query))

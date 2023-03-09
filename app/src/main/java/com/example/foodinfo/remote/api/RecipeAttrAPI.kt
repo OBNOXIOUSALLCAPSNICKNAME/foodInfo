@@ -1,12 +1,12 @@
 package com.example.foodinfo.remote.api
 
 import com.example.foodinfo.remote.dto.RecipeAttrsNetwork
+import com.example.foodinfo.remote.response.ApiResponse
+import retrofit2.http.GET
 
 
 interface RecipeAttrAPI {
 
-    fun getRecipeAttrs(): RecipeAttrsNetwork {
-        // to prevent overriding local DB with empty data (replace after implementing API)
-        throw NullPointerException()
-    }
+    @GET("main/db_fields_info.json")
+    suspend fun getRecipeAttrs(): ApiResponse<RecipeAttrsNetwork>
 }

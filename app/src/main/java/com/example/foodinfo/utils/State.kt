@@ -3,18 +3,21 @@ package com.example.foodinfo.utils
 
 sealed class State<T>(
     val data: T? = null,
-    val message: String? = null,
-    val error: Exception? = null
+    val error: Throwable? = null,
+    val errorCode: Int? = null,
+    val messageID: Int? = null
 ) {
     class Loading<T>(data: T? = null) : State<T>(data)
     class Success<T>(data: T) : State<T>(data)
-    class Error<T>(message: String, error: Exception) : State<T>(message = message, error = error)
+    class Error<T>(messageID: Int, error: Throwable, errorCode: Int = -1) : State<T>(
+        messageID = messageID, errorCode = errorCode, error = error
+    )
 
 
     companion object Utils {
 
         /**
-         * - If both states are [Error], it will compare it's [message] and [error] types.
+         * - If both states are [Error], it will compare it's [messageID], [errorCode] and [error] types.
          * - If both states are [Loading] or both are [Success], it will compare it's [data].
          * - If [old] is [Success] and [new] is [Loading], it will compare it's [data] too. It helps for
          * screens that use data from [Loading] to avoid redundant UI updates because in most cases if UI
@@ -26,7 +29,9 @@ sealed class State<T>(
         fun <T> isEqual(old: State<T>, new: State<T>): Boolean {
             return when {
                 old is Error && new is Error                  -> {
-                    old.message == new.message && old.error?.javaClass == new.error?.javaClass
+                    old.errorCode == new.errorCode &&
+                            old.messageID == new.messageID &&
+                            old.error?.javaClass == new.error?.javaClass
                 }
                 (old is Loading && new is Loading)
                         || (old is Success && new is Success)

@@ -65,18 +65,20 @@ class SearchFilterRepository @Inject constructor(
         attrs: List<LabelRecipeAttrDB>
     ): Flow<State<CategoryOfSearchFilterEditModel>> {
         return getData(
-            remoteDataProvider = { },
-            localDataFlowProvider = {
-                searchFilterDAO.observeLabels(filterName).transform { labels ->
-                    val labelsToUpdate = verifyLabels(filterName, attrs, labels)
-                    if (labelsToUpdate != null) {
-                        searchFilterDAO.invalidateLabels(filterName, labelsToUpdate)
-                    } else {
-                        emit(labels)
+            remoteDataProvider = { DataProvider.Empty },
+            localDataProvider = {
+                DataProvider.LocalFlow(
+                    searchFilterDAO.observeLabels(filterName).transform { labels ->
+                        val labelsToUpdate = verifyLabels(filterName, attrs, labels)
+                        if (labelsToUpdate != null) {
+                            searchFilterDAO.invalidateLabels(filterName, labelsToUpdate)
+                        } else {
+                            emit(labels)
+                        }
                     }
-                }
+                )
             },
-            updateLocalDelegate = { },
+            saveRemoteDelegate = { },
             mapToLocalDelegate = { },
             mapToModelDelegate = { it.toModelEdit(categoryID) }
         )
@@ -87,18 +89,20 @@ class SearchFilterRepository @Inject constructor(
         attrs: List<NutrientRecipeAttrDB>
     ): Flow<State<List<NutrientOfSearchFilterEditModel>>> {
         return getData(
-            remoteDataProvider = { },
-            localDataFlowProvider = {
-                searchFilterDAO.observeNutrients(filterName).transform { nutrients ->
-                    val nutrientsToUpdate = verifyNutrients(filterName, attrs, nutrients)
-                    if (nutrientsToUpdate != null) {
-                        searchFilterDAO.invalidateNutrients(filterName, nutrientsToUpdate)
-                    } else {
-                        emit(nutrients)
+            remoteDataProvider = { DataProvider.Empty },
+            localDataProvider = {
+                DataProvider.LocalFlow(
+                    searchFilterDAO.observeNutrients(filterName).transform { nutrients ->
+                        val nutrientsToUpdate = verifyNutrients(filterName, attrs, nutrients)
+                        if (nutrientsToUpdate != null) {
+                            searchFilterDAO.invalidateNutrients(filterName, nutrientsToUpdate)
+                        } else {
+                            emit(nutrients)
+                        }
                     }
-                }
+                )
             },
-            updateLocalDelegate = { },
+            saveRemoteDelegate = { },
             mapToLocalDelegate = { },
             mapToModelDelegate = { it.toModelEdit() }
         )
@@ -123,19 +127,21 @@ class SearchFilterRepository @Inject constructor(
         attrs: RecipeAttrsDB
     ): Flow<State<SearchFilterPresetModel>> {
         return getData(
-            remoteDataProvider = { },
+            remoteDataProvider = { DataProvider.Empty },
             localDataProvider = {
                 val label = attrs.labels.first { it.ID == labelID }
-                SearchFilterPresetModel(
-                    categories = listOf(
-                        CategoryOfFilterPresetModel(
-                            tag = attrs.categories.first { it.ID == label.categoryID }.tag,
-                            labels = listOf(LabelOfFilterPresetModel(label.tag, label.ID))
+                DataProvider.Local(
+                    SearchFilterPresetModel(
+                        categories = listOf(
+                            CategoryOfFilterPresetModel(
+                                tag = attrs.categories.first { it.ID == label.categoryID }.tag,
+                                labels = listOf(LabelOfFilterPresetModel(label.tag, label.ID))
+                            )
                         )
                     )
                 )
             },
-            updateLocalDelegate = { },
+            saveRemoteDelegate = { },
             mapToLocalDelegate = { },
             mapToModelDelegate = { it }
         )
@@ -147,25 +153,27 @@ class SearchFilterRepository @Inject constructor(
         mapDelegate: (SearchFilterExtendedDB) -> T
     ): Flow<State<T>> {
         return getData(
-            remoteDataProvider = { },
-            localDataFlowProvider = {
-                searchFilterDAO.observeFilterExtended(filterName).transform { filter ->
-                    val basicsToUpdate = verifyBasics(filterName, attrs.basics, filter.basics)
-                    val labelsToUpdate = verifyLabels(filterName, attrs.labels, filter.labels)
-                    val nutrientsToUpdate = verifyNutrients(filterName, attrs.nutrients, filter.nutrients)
-                    if (listOf(basicsToUpdate, labelsToUpdate, nutrientsToUpdate).any { it != null }) {
-                        searchFilterDAO.invalidateFilter(
-                            filterName,
-                            basicsToUpdate,
-                            labelsToUpdate,
-                            nutrientsToUpdate,
-                        )
-                    } else {
-                        emit(filter)
+            remoteDataProvider = { DataProvider.Empty },
+            localDataProvider = {
+                DataProvider.LocalFlow(
+                    searchFilterDAO.observeFilterExtended(filterName).transform { filter ->
+                        val basicsToUpdate = verifyBasics(filterName, attrs.basics, filter.basics)
+                        val labelsToUpdate = verifyLabels(filterName, attrs.labels, filter.labels)
+                        val nutrientsToUpdate = verifyNutrients(filterName, attrs.nutrients, filter.nutrients)
+                        if (listOf(basicsToUpdate, labelsToUpdate, nutrientsToUpdate).any { it != null }) {
+                            searchFilterDAO.invalidateFilter(
+                                filterName,
+                                basicsToUpdate,
+                                labelsToUpdate,
+                                nutrientsToUpdate,
+                            )
+                        } else {
+                            emit(filter)
+                        }
                     }
-                }
+                )
             },
-            updateLocalDelegate = { },
+            saveRemoteDelegate = { },
             mapToLocalDelegate = { },
             mapToModelDelegate = { mapDelegate(it) }
         )
