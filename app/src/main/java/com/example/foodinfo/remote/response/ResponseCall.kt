@@ -47,7 +47,19 @@ internal class ResponseCall<S : Any, E : Any>(
                     if (errorBody != null) {
                         callback.onResponse(
                             this@ResponseCall,
-                            Response.success(NetworkResponse.ServerError(code, errorBody))
+                            Response.success(
+                                when (code) {
+                                    in SERVER_ERROR_RANGE -> {
+                                        NetworkResponse.ServerError(code, errorBody)
+                                    }
+                                    in CLIENT_ERROR_RANGE -> {
+                                        NetworkResponse.ClientError(code, body, errorBody)
+                                    }
+                                    else                  -> {
+                                        NetworkResponse.UnknownError(code)
+                                    }
+                                }
+                            )
                         )
                     } else {
                         callback.onResponse(

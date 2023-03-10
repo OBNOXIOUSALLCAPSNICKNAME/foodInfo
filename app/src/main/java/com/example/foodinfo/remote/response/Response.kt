@@ -7,8 +7,10 @@ import okhttp3.ResponseBody
 import java.io.IOException
 
 
-private const val NETWORK_ERROR_CODE = -1
-private const val UNKNOWN_ERROR_CODE = -1
+internal const val NETWORK_ERROR_CODE = -1
+internal const val UNKNOWN_ERROR_CODE = -1
+internal val CLIENT_ERROR_RANGE = 400..499
+internal val SERVER_ERROR_RANGE = 500..599
 
 sealed class NetworkResponse<out S : Any, out E : Any> {
 
