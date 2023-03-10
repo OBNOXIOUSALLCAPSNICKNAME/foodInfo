@@ -100,7 +100,7 @@ fun List<String>.toDB(recipeID: String, attrs: List<LabelRecipeAttrDB>): List<La
     return this.map { label ->
         LabelOfRecipeExtendedDB(
             recipeID = recipeID,
-            infoID = attrs.first { it.tag == label }.ID,
+            infoID = attrs.first { it.tag.lowercase() == label.lowercase() }.ID,
             attrInfo = null
         )
     }

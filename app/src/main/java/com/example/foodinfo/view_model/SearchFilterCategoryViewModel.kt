@@ -21,7 +21,6 @@ class SearchFilterCategoryViewModel @Inject constructor(
 ) : ViewModel() {
 
     var categoryID: Int = -1
-    var filterName: String = ""
 
     val category: SharedFlow<State<CategoryOfSearchFilterEditModel>> by lazy {
         searchFilterUseCase.getCategoryEdit(categoryID = categoryID).shareIn(
@@ -35,7 +34,7 @@ class SearchFilterCategoryViewModel @Inject constructor(
     }
 
     fun reset() {
-        searchFilterRepository.resetCategory(filterName, categoryID)
+        searchFilterRepository.resetCategory(categoryID)
     }
 
     fun update(id: Int, isSelected: Boolean) {

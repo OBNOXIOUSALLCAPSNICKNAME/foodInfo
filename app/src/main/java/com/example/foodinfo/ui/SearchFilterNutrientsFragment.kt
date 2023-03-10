@@ -4,7 +4,6 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.foodinfo.R
@@ -27,8 +26,6 @@ class SearchFilterNutrientsFragment : BaseFragment<FragmentSearchFilterNutrients
     private val viewModel: SearchFilterNutrientsViewModel by viewModels {
         requireActivity().appComponent.viewModelsFactory()
     }
-
-    private val args: SearchFilterNutrientsFragmentArgs by navArgs()
 
     private lateinit var recyclerAdapter: FilterNutrientFieldEditAdapter
 
@@ -59,8 +56,6 @@ class SearchFilterNutrientsFragment : BaseFragment<FragmentSearchFilterNutrients
 
 
     override fun initUI() {
-        viewModel.filterName = args.searchFilterName
-
         recyclerAdapter = FilterNutrientFieldEditAdapter(
             requireContext(),
             onHeaderClickCallback,

@@ -44,6 +44,9 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        appComponent.prefUtils.apiCredentials = APICredentialsDB.DEFAULT_NAME
+        appComponent.prefUtils.searchFilter = SearchFilterDB.DEFAULT_NAME
+
         Log.d("123", "DB loaded in ${measureTimeMillis { prepopulateDB() }}ms")
     }
 
@@ -119,9 +122,12 @@ class MainActivity : AppCompatActivity() {
             )
         )
 
+
+        dataBase.apiCredentialsDao.addCredentials(APICredentialsDB())
+
         appComponent.searchFilterRepository.createFilter(
-            filterName = SearchFilterDB.DEFAULT_NAME,
-            attrs = dataBase.recipeAttrDao.getRecipeAttrs()
+            appComponent.prefUtils.searchFilter,
+            attrs = dataBase.recipeAttrDao.getRecipeAttrs(),
         )
     }
 }

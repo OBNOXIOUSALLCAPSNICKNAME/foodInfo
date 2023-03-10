@@ -3,6 +3,7 @@ package com.example.foodinfo.remote.response
 import com.example.foodinfo.R
 import com.example.foodinfo.utils.NoInternetException
 import com.example.foodinfo.utils.UnknownException
+import okhttp3.ResponseBody
 import java.io.IOException
 
 
@@ -51,4 +52,4 @@ sealed class NetworkResponse<out S : Any, out E : Any> {
     ) : NetworkResponse<Nothing, Nothing>(), Error
 }
 
-typealias ApiResponse<S> = NetworkResponse<S, NetworkResponse.Error>
+typealias ApiResponse<S> = NetworkResponse<S, ResponseBody>

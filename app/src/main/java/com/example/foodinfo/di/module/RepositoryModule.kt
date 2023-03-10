@@ -1,9 +1,6 @@
 package com.example.foodinfo.di.module
 
-import com.example.foodinfo.local.dao.RecipeAttrDAO
-import com.example.foodinfo.local.dao.RecipeDAO
-import com.example.foodinfo.local.dao.SearchFilterDAO
-import com.example.foodinfo.local.dao.SearchHistoryDAO
+import com.example.foodinfo.local.dao.*
 import com.example.foodinfo.remote.api.RecipeAPI
 import com.example.foodinfo.remote.api.RecipeAttrAPI
 import com.example.foodinfo.repository.RecipeAttrRepository
@@ -12,6 +9,7 @@ import com.example.foodinfo.repository.SearchFilterRepository
 import com.example.foodinfo.repository.SearchHistoryRepository
 import com.example.foodinfo.repository.use_case.RecipeUseCase
 import com.example.foodinfo.repository.use_case.SearchFilterUseCase
+import com.example.foodinfo.utils.PrefUtils
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -23,18 +21,21 @@ class RepositoryModule {
     @Provides
     @Singleton
     fun provideRecipeRepository(
+        apiCredentialsDAO: APICredentialsDAO,
         recipeDAO: RecipeDAO,
-        recipeAPI: RecipeAPI
+        recipeAPI: RecipeAPI,
+        prefUtils: PrefUtils
     ): RecipeRepository {
-        return RecipeRepository(recipeDAO, recipeAPI)
+        return RecipeRepository(apiCredentialsDAO, recipeDAO, recipeAPI, prefUtils)
     }
 
     @Provides
     @Singleton
     fun provideSearchFilterRepository(
-        searchFilterDAO: SearchFilterDAO
+        searchFilterDAO: SearchFilterDAO,
+        prefUtils: PrefUtils
     ): SearchFilterRepository {
-        return SearchFilterRepository(searchFilterDAO)
+        return SearchFilterRepository(searchFilterDAO, prefUtils)
     }
 
     @Provides

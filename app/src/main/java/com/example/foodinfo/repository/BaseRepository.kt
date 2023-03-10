@@ -1,5 +1,6 @@
 package com.example.foodinfo.repository
 
+import android.util.Log
 import com.example.foodinfo.R
 import com.example.foodinfo.remote.response.ApiResponse
 import com.example.foodinfo.remote.response.NetworkResponse
@@ -268,6 +269,7 @@ abstract class BaseRepository {
                     remoteDataSaved = true
                 }
                 is State.Error   -> {
+                    Log.d("123", "error ${remote.error!!}, errorCode ${remote.errorCode!!}")
                     handleState(
                         state = local,
                         onSuccess = { localData ->

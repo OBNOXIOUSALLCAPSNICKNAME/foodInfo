@@ -5,14 +5,14 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.map
 import androidx.sqlite.db.SimpleSQLiteQuery
+import com.example.foodinfo.local.dao.APICredentialsDAO
 import com.example.foodinfo.local.dao.RecipeDAO
 import com.example.foodinfo.local.dto.NutrientRecipeAttrDB
 import com.example.foodinfo.local.dto.RecipeAttrsDB
 import com.example.foodinfo.remote.api.RecipeAPI
 import com.example.foodinfo.repository.mapper.*
 import com.example.foodinfo.repository.model.*
-import com.example.foodinfo.utils.SearchFilterQuery
-import com.example.foodinfo.utils.State
+import com.example.foodinfo.utils.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
@@ -21,8 +21,10 @@ import javax.inject.Inject
 
 
 class RecipeRepository @Inject constructor(
+    private val apiCredentialsDAO: APICredentialsDAO,
     private val recipeDAO: RecipeDAO,
     private val recipeAPI: RecipeAPI,
+    private val prefUtils: PrefUtils
 ) : BaseRepository() {
 
     fun getFavorite(): Flow<PagingData<RecipeFavoriteModel>> {
@@ -38,11 +40,20 @@ class RecipeRepository @Inject constructor(
         return recipeDAO.getFavoriteIds()
     }
 
-    fun getByFilter(query: SearchFilterQuery): Flow<PagingData<RecipeShortModel>> {
+    fun getByFilter(
+        searchFilterPreset: SearchFilterPresetModel,
+        inputText: String
+    ): Flow<PagingData<RecipeShortModel>> {
+        val query = RecipePageQuery(
+            searchFilterPreset = searchFilterPreset,
+            apiCredentials = apiCredentialsDAO.getCredentials(prefUtils.apiCredentials),
+            inputText = inputText,
+            isOffline = true
+        )
         return Pager(
             config = DB_EXPLORE_PAGER,
             pagingSourceFactory = {
-                recipeDAO.getByFilter(SimpleSQLiteQuery(query.local))
+                recipeDAO.getByFilter(SimpleSQLiteQuery(query.local.value))
             }
         ).flow.map { pagingData -> pagingData.map { it.toModelShort() } }.flowOn(Dispatchers.IO)
     }
@@ -52,7 +63,17 @@ class RecipeRepository @Inject constructor(
         attrs: RecipeAttrsDB
     ): Flow<State<RecipeExtendedModel>> {
         return getData(
-            remoteDataProvider = { DataProvider.Remote(recipeAPI.getRecipeExtended(recipeID)) },
+            remoteDataProvider = {
+                DataProvider.Remote(
+                    recipeAPI.getRecipe(
+                        EdamamRecipeURL(
+                            recipeID = "recipeID",
+                            fieldSet = FieldSet.FULL,
+                            apiCredentials = apiCredentialsDAO.getCredentials(prefUtils.apiCredentials)
+                        ).value
+                    )
+                )
+            },
             localDataProvider = { DataProvider.LocalFlow(recipeDAO.getByIdExtended(recipeID)) },
             saveRemoteDelegate = { recipeDAO.addRecipeExtended(it) },
             mapToLocalDelegate = { it.recipe.toDBExtended(attrs) },
@@ -65,7 +86,17 @@ class RecipeRepository @Inject constructor(
         attrs: List<NutrientRecipeAttrDB>
     ): Flow<State<List<NutrientOfRecipeModel>>> {
         return getData(
-            remoteDataProvider = { DataProvider.Remote(recipeAPI.getNutrients(recipeID)) },
+            remoteDataProvider = {
+                DataProvider.Remote(
+                    recipeAPI.getRecipe(
+                        EdamamRecipeURL(
+                            recipeID = recipeID,
+                            fieldSet = FieldSet.NUTRIENTS,
+                            apiCredentials = apiCredentialsDAO.getCredentials(prefUtils.apiCredentials)
+                        ).value
+                    )
+                )
+            },
             localDataProvider = { DataProvider.LocalFlow(recipeDAO.getNutrients(recipeID)) },
             saveRemoteDelegate = { recipeDAO.addNutrients(it) },
             mapToLocalDelegate = { it.recipe.nutrients!!.toDB(recipeID, attrs) },
@@ -75,7 +106,17 @@ class RecipeRepository @Inject constructor(
 
     fun getByIdIngredients(recipeID: String): Flow<State<List<RecipeIngredientModel>>> {
         return getData(
-            remoteDataProvider = { DataProvider.Remote(recipeAPI.getIngredients(recipeID)) },
+            remoteDataProvider = {
+                DataProvider.Remote(
+                    recipeAPI.getRecipe(
+                        EdamamRecipeURL(
+                            recipeID = recipeID,
+                            fieldSet = FieldSet.INGREDIENTS,
+                            apiCredentials = apiCredentialsDAO.getCredentials(prefUtils.apiCredentials)
+                        ).value
+                    )
+                )
+            },
             localDataProvider = { DataProvider.LocalFlow(recipeDAO.getIngredients(recipeID)) },
             saveRemoteDelegate = { recipeDAO.addIngredients(it) },
             mapToLocalDelegate = { it.recipe.ingredients!!.map { ingredient -> ingredient.toDB(recipeID) } },

@@ -91,8 +91,9 @@ dependencies {
     implementation(Dependencies.UI.navigationUI)
     implementation(Dependencies.UI.navigationFragment)
 
-//    debugImplementation(Dependencies.Other.leakcanary)
+    //    debugImplementation(Dependencies.Other.leakcanary)
     implementation(Dependencies.Other.legacySupport)
+    implementation(Dependencies.Other.preference)
     testImplementation(Dependencies.Other.junit)
     androidTestImplementation(Dependencies.Other.junitExt)
     androidTestImplementation(Dependencies.Other.espresso)

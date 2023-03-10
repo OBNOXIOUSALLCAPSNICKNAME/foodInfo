@@ -91,11 +91,12 @@ fun RecipeNetwork.toDBExtended(attrs: RecipeAttrsDB): RecipeExtendedDB {
         servings = this.servings!!.toInt(),
         ingredients = this.ingredients!!.map { it.toDB(recipeID) },
         nutrients = this.nutrients!!.toDBExtended(recipeID, attrs.nutrients),
-        labels = this.meal!!.toDB(recipeID, attrs.labels) +
-                this.diet!!.toDB(recipeID, attrs.labels) +
-                this.dish!!.toDB(recipeID, attrs.labels) +
-                this.health!!.toDB(recipeID, attrs.labels) +
-                this.cuisine!!.toDB(recipeID, attrs.labels)
+        labels =
+        this.meal!!.toDB(recipeID, attrs.labels) +
+        this.diet!!.toDB(recipeID, attrs.labels) +
+        this.dish!!.toDB(recipeID, attrs.labels) +
+        this.health!!.toDB(recipeID, attrs.labels) +
+        this.cuisine!!.toDB(recipeID, attrs.labels)
 
     )
 }

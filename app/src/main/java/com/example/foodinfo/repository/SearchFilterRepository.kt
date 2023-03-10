@@ -4,6 +4,7 @@ import com.example.foodinfo.local.dao.SearchFilterDAO
 import com.example.foodinfo.local.dto.*
 import com.example.foodinfo.repository.mapper.*
 import com.example.foodinfo.repository.model.*
+import com.example.foodinfo.utils.PrefUtils
 import com.example.foodinfo.utils.State
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.transform
@@ -11,11 +12,12 @@ import javax.inject.Inject
 
 
 class SearchFilterRepository @Inject constructor(
-    private val searchFilterDAO: SearchFilterDAO
+    private val searchFilterDAO: SearchFilterDAO,
+    private val prefUtils: PrefUtils
 ) : BaseRepository() {
 
-    fun resetFilter(filterName: String) {
-        val filter = searchFilterDAO.getFilterExtended(filterName)
+    fun resetFilter() {
+        val filter = searchFilterDAO.getFilterExtended(prefUtils.searchFilter)
         searchFilterDAO.updateFilter(
             filter.basics.map { it.toDefault() },
             filter.labels.map { it.toDefault() },
@@ -23,15 +25,15 @@ class SearchFilterRepository @Inject constructor(
         )
     }
 
-    fun resetNutrients(filterName: String) {
+    fun resetNutrients() {
         searchFilterDAO.updateNutrients(
-            searchFilterDAO.getNutrients(filterName).map { it.toDefault() }
+            searchFilterDAO.getNutrients(prefUtils.searchFilter).map { it.toDefault() }
         )
     }
 
-    fun resetCategory(filterName: String, categoryID: Int) {
+    fun resetCategory(categoryID: Int) {
         searchFilterDAO.updateLabels(
-            searchFilterDAO.getLabels(filterName)
+            searchFilterDAO.getLabels(prefUtils.searchFilter)
                 .filter { it.attrInfo!!.categoryID == categoryID }
                 .map { it.toDefault() }
         )
@@ -53,14 +55,13 @@ class SearchFilterRepository @Inject constructor(
     internal fun createFilter(filterName: String, attrs: RecipeAttrsDB) {
         searchFilterDAO.insertFilter(
             filterName,
-            attrs.basics.filter { it.tag != null }.map { it.toFilter(filterName) },
-            attrs.labels.map { it.toFilter(filterName) },
-            attrs.nutrients.map { it.toFilter(filterName) }
+            attrs.basics.filter { it.tag != null }.map { it.toFilter(prefUtils.searchFilter) },
+            attrs.labels.map { it.toFilter(prefUtils.searchFilter) },
+            attrs.nutrients.map { it.toFilter(prefUtils.searchFilter) }
         )
     }
 
     internal fun getCategoryEdit(
-        filterName: String,
         categoryID: Int,
         attrs: List<LabelRecipeAttrDB>
     ): Flow<State<CategoryOfSearchFilterEditModel>> {
@@ -68,10 +69,10 @@ class SearchFilterRepository @Inject constructor(
             remoteDataProvider = { DataProvider.Empty },
             localDataProvider = {
                 DataProvider.LocalFlow(
-                    searchFilterDAO.observeLabels(filterName).transform { labels ->
-                        val labelsToUpdate = verifyLabels(filterName, attrs, labels)
+                    searchFilterDAO.observeLabels(prefUtils.searchFilter).transform { labels ->
+                        val labelsToUpdate = verifyLabels(attrs, labels)
                         if (labelsToUpdate != null) {
-                            searchFilterDAO.invalidateLabels(filterName, labelsToUpdate)
+                            searchFilterDAO.invalidateLabels(prefUtils.searchFilter, labelsToUpdate)
                         } else {
                             emit(labels)
                         }
@@ -85,17 +86,16 @@ class SearchFilterRepository @Inject constructor(
     }
 
     internal fun getNutrientsEdit(
-        filterName: String,
         attrs: List<NutrientRecipeAttrDB>
     ): Flow<State<List<NutrientOfSearchFilterEditModel>>> {
         return getData(
             remoteDataProvider = { DataProvider.Empty },
             localDataProvider = {
                 DataProvider.LocalFlow(
-                    searchFilterDAO.observeNutrients(filterName).transform { nutrients ->
-                        val nutrientsToUpdate = verifyNutrients(filterName, attrs, nutrients)
+                    searchFilterDAO.observeNutrients(prefUtils.searchFilter).transform { nutrients ->
+                        val nutrientsToUpdate = verifyNutrients(attrs, nutrients)
                         if (nutrientsToUpdate != null) {
-                            searchFilterDAO.invalidateNutrients(filterName, nutrientsToUpdate)
+                            searchFilterDAO.invalidateNutrients(prefUtils.searchFilter, nutrientsToUpdate)
                         } else {
                             emit(nutrients)
                         }
@@ -108,18 +108,12 @@ class SearchFilterRepository @Inject constructor(
         )
     }
 
-    internal fun getFilterEdit(
-        filterName: String,
-        attrs: RecipeAttrsDB
-    ): Flow<State<SearchFilterEditModel>> {
-        return getFilter(filterName, attrs) { it.toModelEdit() }
+    internal fun getFilterEdit(attrs: RecipeAttrsDB): Flow<State<SearchFilterEditModel>> {
+        return getFilter(attrs) { it.toModelEdit() }
     }
 
-    internal fun getFilterPreset(
-        filterName: String,
-        attrs: RecipeAttrsDB
-    ): Flow<State<SearchFilterPresetModel>> {
-        return getFilter(filterName, attrs) { it.toModelPreset() }
+    internal fun getFilterPreset(attrs: RecipeAttrsDB): Flow<State<SearchFilterPresetModel>> {
+        return getFilter(attrs) { it.toModelPreset() }
     }
 
     internal fun getFilterPresetByLabel(
@@ -148,7 +142,6 @@ class SearchFilterRepository @Inject constructor(
     }
 
     private fun <T> getFilter(
-        filterName: String,
         attrs: RecipeAttrsDB,
         mapDelegate: (SearchFilterExtendedDB) -> T
     ): Flow<State<T>> {
@@ -156,13 +149,13 @@ class SearchFilterRepository @Inject constructor(
             remoteDataProvider = { DataProvider.Empty },
             localDataProvider = {
                 DataProvider.LocalFlow(
-                    searchFilterDAO.observeFilterExtended(filterName).transform { filter ->
-                        val basicsToUpdate = verifyBasics(filterName, attrs.basics, filter.basics)
-                        val labelsToUpdate = verifyLabels(filterName, attrs.labels, filter.labels)
-                        val nutrientsToUpdate = verifyNutrients(filterName, attrs.nutrients, filter.nutrients)
+                    searchFilterDAO.observeFilterExtended(prefUtils.searchFilter).transform { filter ->
+                        val basicsToUpdate = verifyBasics(attrs.basics, filter.basics)
+                        val labelsToUpdate = verifyLabels(attrs.labels, filter.labels)
+                        val nutrientsToUpdate = verifyNutrients(attrs.nutrients, filter.nutrients)
                         if (listOf(basicsToUpdate, labelsToUpdate, nutrientsToUpdate).any { it != null }) {
                             searchFilterDAO.invalidateFilter(
-                                filterName,
+                                prefUtils.searchFilter,
                                 basicsToUpdate,
                                 labelsToUpdate,
                                 nutrientsToUpdate,
@@ -181,13 +174,12 @@ class SearchFilterRepository @Inject constructor(
 
 
     private fun verifyBasics(
-        filterName: String,
         attrs: List<BasicRecipeAttrDB>,
         basics: List<BasicOfSearchFilterExtendedDB>
     ): List<BasicOfSearchFilterDB>? {
         val basicsMap = basics.associateBy { it.infoID }
         val basicsNew = attrs.filter { it.tag != null }.map { basicAttr ->
-            basicsMap[basicAttr.ID]?.toDBLatest() ?: basicAttr.toFilter(filterName)
+            basicsMap[basicAttr.ID]?.toDBLatest() ?: basicAttr.toFilter(prefUtils.searchFilter)
         }
         return if (basicsNew.sortedBy { it.ID } != basics.map { it.toDB() }.sortedBy { it.ID }) {
             basicsNew
@@ -197,13 +189,12 @@ class SearchFilterRepository @Inject constructor(
     }
 
     private fun verifyLabels(
-        filterName: String,
         attrs: List<LabelRecipeAttrDB>,
         labels: List<LabelOfSearchFilterExtendedDB>
     ): List<LabelOfSearchFilterDB>? {
         val labelsMap = labels.associateBy { it.infoID }
         val labelsNew = attrs.map { labelAttr ->
-            labelsMap[labelAttr.ID]?.toDB() ?: labelAttr.toFilter(filterName)
+            labelsMap[labelAttr.ID]?.toDB() ?: labelAttr.toFilter(prefUtils.searchFilter)
         }
         return if (labelsNew.sortedBy { it.ID } != labels.map { it.toDB() }.sortedBy { it.ID }) {
             labelsNew
@@ -213,13 +204,12 @@ class SearchFilterRepository @Inject constructor(
     }
 
     private fun verifyNutrients(
-        filterName: String,
         attrs: List<NutrientRecipeAttrDB>,
         nutrients: List<NutrientOfSearchFilterExtendedDB>
     ): List<NutrientOfSearchFilterDB>? {
         val nutrientsMap = nutrients.associateBy { it.infoID }
         val nutrientsNew = attrs.map { nutrientAttr ->
-            nutrientsMap[nutrientAttr.ID]?.toDBLatest() ?: nutrientAttr.toFilter(filterName)
+            nutrientsMap[nutrientAttr.ID]?.toDBLatest() ?: nutrientAttr.toFilter(prefUtils.searchFilter)
         }
         return if (nutrientsNew.sortedBy { it.ID } != nutrients.map { it.toDB() }.sortedBy { it.ID }) {
             nutrientsNew

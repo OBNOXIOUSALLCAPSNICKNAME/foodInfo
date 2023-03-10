@@ -1,6 +1,5 @@
 package com.example.foodinfo.remote.dto
 
-import com.example.foodinfo.utils.trimMultiline
 import com.google.gson.annotations.SerializedName
 
 
@@ -79,29 +78,5 @@ data class RecipeNetwork(
         const val TOTAL_NUTRIENTS = "totalNutrients"
         const val INGREDIENTS = "ingredients"
         const val INGREDIENT_LINES = "ingredientLines"
-    }
-
-    object FieldSet {
-        val BASIC: String = """
-            &field=${Fields.URI}
-            &field=${Fields.URL}
-            &field=${Fields.SOURCE}
-            &field=${Fields.LABEL}
-            &field=${Fields.IMAGE}
-            &field=${Fields.SERVINGS}
-            &field=${Fields.INGREDIENT_LINES}
-            &field=${Fields.CALORIES}
-            &field=${Fields.WEIGHT}
-            &field=${Fields.TIME}
-        """.trimMultiline()
-
-        val NUTRIENTS: String = """
-            &field=${Fields.TOTAL_NUTRIENTS}
-        """.trimMultiline()
-
-        val INGREDIENTS: String = """
-            &field=${Fields.INGREDIENTS}
-            &field=${Fields.INGREDIENT_LINES}
-        """.trimMultiline()
     }
 }

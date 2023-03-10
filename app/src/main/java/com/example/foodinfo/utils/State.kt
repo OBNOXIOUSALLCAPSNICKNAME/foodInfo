@@ -28,17 +28,17 @@ sealed class State<T>(
          */
         fun <T> isEqual(old: State<T>, new: State<T>): Boolean {
             return when {
-                old is Error && new is Error                  -> {
+                old is Error && new is Error       -> {
                     old.errorCode == new.errorCode &&
-                            old.messageID == new.messageID &&
-                            old.error?.javaClass == new.error?.javaClass
+                    old.messageID == new.messageID &&
+                    old.error?.javaClass == new.error?.javaClass
                 }
-                (old is Loading && new is Loading)
-                        || (old is Success && new is Success)
-                        || (old is Success && new is Loading) -> {
+                (old is Loading && new is Loading) ||
+                (old is Success && new is Success) ||
+                (old is Success && new is Loading) -> {
                     isEqualData(old.data, new.data)
                 }
-                else                                          -> {
+                else                               -> {
                     old.javaClass == new.javaClass
                 }
             }

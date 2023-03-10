@@ -20,10 +20,8 @@ class SearchFilterNutrientsViewModel @Inject constructor(
     private val searchFilterUseCase: SearchFilterUseCase,
 ) : ViewModel() {
 
-    var filterName: String = ""
-
     val nutrients: SharedFlow<State<List<NutrientOfSearchFilterEditModel>>> by lazy {
-        searchFilterUseCase.getNutrientsEdit(filterName).shareIn(
+        searchFilterUseCase.getNutrientsEdit().shareIn(
             viewModelScope, SharingStarted.WhileSubscribed(stopTimeoutMillis = 5000), 1
         )
     }
@@ -34,7 +32,7 @@ class SearchFilterNutrientsViewModel @Inject constructor(
     }
 
     fun reset() {
-        searchFilterRepository.resetNutrients(filterName)
+        searchFilterRepository.resetNutrients()
     }
 
     fun update(id: Int, minValue: Float?, maxValue: Float?) {

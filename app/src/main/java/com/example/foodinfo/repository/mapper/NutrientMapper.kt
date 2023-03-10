@@ -142,7 +142,7 @@ fun Map<String, NutrientOfRecipeNetwork>.toDB(
     return this.map { (tag, nutrient) ->
         NutrientOfRecipeDB(
             recipeID = recipeID,
-            infoID = attrs.first { it.tag == tag }.ID,
+            infoID = attrs.first { it.tag.lowercase() == tag.lowercase() }.ID,
             value = nutrient.quantity
         )
     }
@@ -155,7 +155,7 @@ fun Map<String, NutrientOfRecipeNetwork>.toDBExtended(
     return this.map { (tag, nutrient) ->
         NutrientOfRecipeExtendedDB(
             recipeID = recipeID,
-            infoID = attrs.first { it.tag == tag }.ID,
+            infoID = attrs.first { it.tag.lowercase() == tag.lowercase() }.ID,
             value = nutrient.quantity,
             attrInfo = null
         )

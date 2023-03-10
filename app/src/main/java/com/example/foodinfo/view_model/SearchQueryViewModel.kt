@@ -6,8 +6,8 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.example.foodinfo.repository.RecipeRepository
 import com.example.foodinfo.repository.model.RecipeShortModel
+import com.example.foodinfo.repository.model.SearchFilterPresetModel
 import com.example.foodinfo.repository.use_case.SearchFilterUseCase
-import com.example.foodinfo.utils.SearchFilterQuery
 import com.example.foodinfo.utils.State
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -21,15 +21,15 @@ class SearchQueryViewModel @Inject constructor(
 ) : ViewModel() {
 
     lateinit var inputText: String
-    lateinit var query: SearchFilterQuery
+    lateinit var query: SearchFilterPresetModel
 
-    val filterQuery: SharedFlow<State<SearchFilterQuery>> by lazy {
-        searchFilterUseCase.getSearchQuery(inputText = inputText)
+    val filterQuery: SharedFlow<State<SearchFilterPresetModel>> by lazy {
+        searchFilterUseCase.getSearchQuery()
             .shareIn(viewModelScope, SharingStarted.WhileSubscribed(stopTimeoutMillis = 5000), 1)
     }
 
     val recipes: SharedFlow<PagingData<RecipeShortModel>> by lazy {
-        recipeRepository.getByFilter(query)
+        recipeRepository.getByFilter(query, inputText)
             .cachedIn(viewModelScope)
             .shareIn(viewModelScope, SharingStarted.WhileSubscribed(stopTimeoutMillis = 5000), 1)
     }

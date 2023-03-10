@@ -34,5 +34,6 @@ object Versions {
         const val junitExt = "1.1.3"
         const val espresso = "3.4.0"
         const val leakcanary = "2.9.1"
+        const val preference = "1.1.1"
     }
 }
