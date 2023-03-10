@@ -13,28 +13,28 @@ abstract class SearchFilterDAORoom : SearchFilterDAO {
     @Transaction
     @Query(
         "SELECT * FROM ${BasicOfSearchFilterDB.TABLE_NAME} WHERE " +
-                "${BasicOfSearchFilterDB.Columns.FILTER_NAME} LIKE '%' || :filterName || '%'"
+        "${BasicOfSearchFilterDB.Columns.FILTER_NAME} LIKE '%' || :filterName || '%'"
     )
     abstract override fun getBasics(filterName: String): List<BasicOfSearchFilterExtendedPOJO>
 
     @Transaction
     @Query(
         "SELECT * FROM ${LabelOfSearchFilterDB.TABLE_NAME} WHERE " +
-                "${LabelOfSearchFilterDB.Columns.FILTER_NAME} LIKE '%' || :filterName || '%'"
+        "${LabelOfSearchFilterDB.Columns.FILTER_NAME} LIKE '%' || :filterName || '%'"
     )
     abstract override fun getLabels(filterName: String): List<LabelOfSearchFilterExtendedPOJO>
 
     @Transaction
     @Query(
         "SELECT * FROM ${NutrientOfSearchFilterDB.TABLE_NAME} WHERE " +
-                "${NutrientOfSearchFilterDB.Columns.FILTER_NAME} LIKE '%' || :filterName || '%'"
+        "${NutrientOfSearchFilterDB.Columns.FILTER_NAME} LIKE '%' || :filterName || '%'"
     )
     abstract override fun getNutrients(filterName: String): List<NutrientOfSearchFilterExtendedPOJO>
 
     @Transaction
     @Query(
         "SELECT * FROM ${SearchFilterDB.TABLE_NAME} WHERE " +
-                "${SearchFilterDB.Columns.NAME} LIKE '%' || :filterName || '%'"
+        "${SearchFilterDB.Columns.NAME} LIKE '%' || :filterName || '%'"
     )
     abstract override fun getFilterExtended(filterName: String): SearchFilterExtendedPOJO
 
@@ -42,28 +42,28 @@ abstract class SearchFilterDAORoom : SearchFilterDAO {
     @Transaction
     @Query(
         "SELECT * FROM ${BasicOfSearchFilterDB.TABLE_NAME} WHERE " +
-                "${BasicOfSearchFilterDB.Columns.FILTER_NAME} LIKE '%' || :filterName || '%'"
+        "${BasicOfSearchFilterDB.Columns.FILTER_NAME} LIKE '%' || :filterName || '%'"
     )
     abstract override fun observeBasics(filterName: String): Flow<List<BasicOfSearchFilterExtendedPOJO>>
 
     @Transaction
     @Query(
         "SELECT * FROM ${LabelOfSearchFilterDB.TABLE_NAME} WHERE " +
-                "${LabelOfSearchFilterDB.Columns.FILTER_NAME} LIKE '%' || :filterName || '%'"
+        "${LabelOfSearchFilterDB.Columns.FILTER_NAME} LIKE '%' || :filterName || '%'"
     )
     abstract override fun observeLabels(filterName: String): Flow<List<LabelOfSearchFilterExtendedPOJO>>
 
     @Transaction
     @Query(
         "SELECT * FROM ${NutrientOfSearchFilterDB.TABLE_NAME} WHERE " +
-                "${NutrientOfSearchFilterDB.Columns.FILTER_NAME} LIKE '%' || :filterName || '%'"
+        "${NutrientOfSearchFilterDB.Columns.FILTER_NAME} LIKE '%' || :filterName || '%'"
     )
     abstract override fun observeNutrients(filterName: String): Flow<List<NutrientOfSearchFilterExtendedPOJO>>
 
     @Transaction
     @Query(
         "SELECT * FROM ${SearchFilterDB.TABLE_NAME} WHERE " +
-                "${SearchFilterDB.Columns.NAME} LIKE '%' || :filterName || '%'"
+        "${SearchFilterDB.Columns.NAME} LIKE '%' || :filterName || '%'"
     )
     abstract override fun observeFilterExtended(filterName: String): Flow<SearchFilterExtendedPOJO>
 
@@ -83,24 +83,24 @@ abstract class SearchFilterDAORoom : SearchFilterDAO {
 
     @Query(
         "UPDATE ${BasicOfSearchFilterDB.TABLE_NAME} SET " +
-                "${BasicOfSearchFilterDB.Columns.MIN_VALUE} = :minValue," +
-                "${BasicOfSearchFilterDB.Columns.MAX_VALUE} = :maxValue " +
-                "WHERE ${BasicOfSearchFilterDB.Columns.ID} == :id"
+        "${BasicOfSearchFilterDB.Columns.MIN_VALUE} = :minValue," +
+        "${BasicOfSearchFilterDB.Columns.MAX_VALUE} = :maxValue " +
+        "WHERE ${BasicOfSearchFilterDB.Columns.ID} == :id"
     )
     abstract override fun updateBasic(id: Int, minValue: Float?, maxValue: Float?)
 
     @Query(
         "UPDATE ${LabelOfSearchFilterDB.TABLE_NAME} SET " +
-                "${LabelOfSearchFilterDB.Columns.IS_SELECTED} = :isSelected " +
-                "WHERE ${LabelOfSearchFilterDB.Columns.ID} == :id"
+        "${LabelOfSearchFilterDB.Columns.IS_SELECTED} = :isSelected " +
+        "WHERE ${LabelOfSearchFilterDB.Columns.ID} == :id"
     )
     abstract override fun updateLabel(id: Int, isSelected: Boolean)
 
     @Query(
         "UPDATE ${NutrientOfSearchFilterDB.TABLE_NAME} SET " +
-                "${NutrientOfSearchFilterDB.Columns.MIN_VALUE} = :minValue," +
-                "${NutrientOfSearchFilterDB.Columns.MAX_VALUE} = :maxValue " +
-                "WHERE ${NutrientOfSearchFilterDB.Columns.ID} == :id"
+        "${NutrientOfSearchFilterDB.Columns.MIN_VALUE} = :minValue," +
+        "${NutrientOfSearchFilterDB.Columns.MAX_VALUE} = :maxValue " +
+        "WHERE ${NutrientOfSearchFilterDB.Columns.ID} == :id"
     )
     abstract override fun updateNutrient(id: Int, minValue: Float?, maxValue: Float?)
 
@@ -161,7 +161,7 @@ abstract class SearchFilterDAORoom : SearchFilterDAO {
 
     @Query(
         "DELETE FROM ${BasicOfSearchFilterDB.TABLE_NAME} WHERE " +
-                "${BasicOfSearchFilterDB.Columns.FILTER_NAME} LIKE :filterName"
+        "${BasicOfSearchFilterDB.Columns.FILTER_NAME} LIKE :filterName"
     )
     abstract fun deleteBasics(filterName: String)
 
@@ -173,7 +173,7 @@ abstract class SearchFilterDAORoom : SearchFilterDAO {
 
     @Query(
         "DELETE FROM ${LabelOfSearchFilterDB.TABLE_NAME} WHERE " +
-                "${LabelOfSearchFilterDB.Columns.FILTER_NAME} LIKE :filterName"
+        "${LabelOfSearchFilterDB.Columns.FILTER_NAME} LIKE :filterName"
     )
     abstract fun deleteLabels(filterName: String)
 
@@ -185,7 +185,7 @@ abstract class SearchFilterDAORoom : SearchFilterDAO {
 
     @Query(
         "DELETE FROM ${NutrientOfSearchFilterDB.TABLE_NAME} WHERE " +
-                "${NutrientOfSearchFilterDB.Columns.FILTER_NAME} LIKE :filterName"
+        "${NutrientOfSearchFilterDB.Columns.FILTER_NAME} LIKE :filterName"
     )
     abstract fun deleteNutrients(filterName: String)
 

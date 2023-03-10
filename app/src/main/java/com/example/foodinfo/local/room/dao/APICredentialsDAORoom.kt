@@ -13,8 +13,8 @@ import com.example.foodinfo.local.room.entity.APICredentialsEntity
 abstract class APICredentialsDAORoom : APICredentialsDAO {
 
     @Query(
-        "SELECT * FROM ${APICredentialsDB.TABLE_NAME} " +
-        "WHERE ${APICredentialsDB.Columns.NAME} LIKE '%' || :name || '%' "
+        "SELECT * FROM ${APICredentialsDB.TABLE_NAME} WHERE " +
+        "${APICredentialsDB.Columns.NAME} LIKE '%' || :name || '%' "
     )
     abstract override fun getCredentials(name: String): APICredentialsEntity
 

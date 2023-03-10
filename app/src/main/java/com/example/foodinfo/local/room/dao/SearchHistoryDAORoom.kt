@@ -12,17 +12,16 @@ import com.example.foodinfo.local.room.entity.SearchInputEntity
 @Dao
 abstract class SearchHistoryDAORoom : SearchHistoryDAO {
     @Query(
-        "SELECT * FROM ${SearchInputDB.TABLE_NAME} " +
-                "WHERE ${SearchInputDB.Columns.INPUT_TEXT} " +
-                "LIKE '%' || :inputText || '%' " +
-                "ORDER BY ${SearchInputDB.Columns.DATE} DESC " +
-                "LIMIT ${SearchInputDB.LIMIT}"
+        "SELECT * FROM ${SearchInputDB.TABLE_NAME} WHERE " +
+        "${SearchInputDB.Columns.INPUT_TEXT} LIKE '%' || :inputText || '%' " +
+        "ORDER BY ${SearchInputDB.Columns.DATE} DESC " +
+        "LIMIT ${SearchInputDB.LIMIT}"
     )
     abstract override fun getHistoryLatest(inputText: String): List<SearchInputEntity>
 
     @Query(
         "SELECT * FROM ${SearchInputDB.TABLE_NAME} " +
-                "ORDER BY ${SearchInputDB.Columns.DATE}"
+        "ORDER BY ${SearchInputDB.Columns.DATE}"
     )
     abstract override fun getHistoryAll(): List<SearchInputEntity>
 
