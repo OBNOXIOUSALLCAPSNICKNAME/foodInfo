@@ -44,6 +44,29 @@ sealed class State<T>(
             }
         }
 
+        /**
+         * - If both states are [Error], it will compare it's [messageID], [errorCode] and [error] types.
+         * - If both states are [Loading] or [Success], it will compare it's [data].
+         *
+         * If both [data] are [Collection], it will be converted into [Set] to ignore items order.
+         */
+        fun <T> isEqualInsensitive(old: State<T>, new: State<T>): Boolean {
+            return when {
+                old is Error && new is Error       -> {
+                    old.errorCode == new.errorCode &&
+                    old.messageID == new.messageID &&
+                    old.error?.javaClass == new.error?.javaClass
+                }
+                (old is Loading || old is Success) &&
+                (new is Loading || new is Success) -> {
+                    isEqualData(old.data, new.data)
+                }
+                else                               -> {
+                    old.javaClass == new.javaClass
+                }
+            }
+        }
+
         fun <T> isEmptyLoading(state: State<T>): Boolean {
             return state is Loading && state.data == null
         }

@@ -5,7 +5,7 @@ import com.example.foodinfo.repository.RecipeRepository
 import com.example.foodinfo.repository.model.NutrientOfRecipeModel
 import com.example.foodinfo.repository.model.RecipeExtendedModel
 import com.example.foodinfo.utils.State
-import com.example.foodinfo.utils.getResolved
+import com.example.foodinfo.utils.getResolvedFiltered
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
@@ -16,7 +16,7 @@ class RecipeUseCase @Inject constructor(
 ) {
 
     fun getByIdExtended(recipeID: String): Flow<State<RecipeExtendedModel>> {
-        return getResolved(
+        return getResolvedFiltered(
             extraDataFlow = recipeAttrRepository.getRecipeAttrsDBLatest(),
             dataFlowProvider = { attrs ->
                 recipeRepository.getByIdExtended(recipeID, attrs)
@@ -25,7 +25,7 @@ class RecipeUseCase @Inject constructor(
     }
 
     fun getByIdNutrients(recipeID: String): Flow<State<List<NutrientOfRecipeModel>>> {
-        return getResolved(
+        return getResolvedFiltered(
             extraDataFlow = recipeAttrRepository.getNutrientsDBLatest(),
             dataFlowProvider = { attrs ->
                 recipeRepository.getByIdNutrients(recipeID, attrs)

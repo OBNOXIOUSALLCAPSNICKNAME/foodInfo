@@ -77,31 +77,47 @@ abstract class RecipeAttrDAORoom : RecipeAttrDAO {
     abstract override fun observeCategoryLabels(categoryID: Int): Flow<List<LabelRecipeAttrEntity>>
 
 
+    @Query("DELETE FROM ${BasicRecipeAttrDB.TABLE_NAME}")
+    abstract fun clearBasics()
+
     @Insert
     abstract fun addBasicsEntity(attrs: List<BasicRecipeAttrEntity>)
 
     override fun addBasics(attrs: List<BasicRecipeAttrDB>) {
+        clearBasics()
         addBasicsEntity(attrs.map { BasicRecipeAttrEntity.toEntity(it) })
     }
+
+    @Query("DELETE FROM ${LabelRecipeAttrDB.TABLE_NAME}")
+    abstract fun clearLabels()
 
     @Insert
     abstract fun addLabelsEntity(attrs: List<LabelRecipeAttrEntity>)
 
     override fun addLabels(attrs: List<LabelRecipeAttrDB>) {
+        clearLabels()
         addLabelsEntity(attrs.map { LabelRecipeAttrEntity.toEntity(it) })
     }
+
+    @Query("DELETE FROM ${NutrientRecipeAttrDB.TABLE_NAME}")
+    abstract fun clearNutrients()
 
     @Insert
     abstract fun addNutrientsEntity(attrs: List<NutrientRecipeAttrEntity>)
 
     override fun addNutrients(attrs: List<NutrientRecipeAttrDB>) {
+        clearNutrients()
         addNutrientsEntity(attrs.map { NutrientRecipeAttrEntity.toEntity(it) })
     }
+
+    @Query("DELETE FROM ${CategoryRecipeAttrDB.TABLE_NAME}")
+    abstract fun clearCategories()
 
     @Insert
     abstract fun addCategoriesEntity(attrs: List<CategoryRecipeAttrEntity>)
 
     override fun addCategories(attrs: List<CategoryRecipeAttrDB>) {
+        clearCategories()
         addCategoriesEntity(attrs.map { CategoryRecipeAttrEntity.toEntity(it) })
     }
 
