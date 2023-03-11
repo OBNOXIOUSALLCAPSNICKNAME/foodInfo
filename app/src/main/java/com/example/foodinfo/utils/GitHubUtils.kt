@@ -1,5 +1,6 @@
 package com.example.foodinfo.utils
 
+import android.util.Base64
 import com.example.foodinfo.remote.dto.RecipeAttrsNetwork
 import com.google.gson.Gson
 import com.google.gson.TypeAdapter
@@ -7,7 +8,6 @@ import com.google.gson.TypeAdapterFactory
 import com.google.gson.reflect.TypeToken
 import com.google.gson.stream.JsonReader
 import com.google.gson.stream.JsonWriter
-import java.util.*
 import javax.inject.Inject
 
 
@@ -49,7 +49,7 @@ private inline fun <T> JsonReader.decode(parseDelegate: (String) -> T) {
             // endObject() assertion must successfully complete before read() returns,
             // otherwise JsonIOException will be thrown with message: JSON document was not fully consumed
             // inspired by: https://github.com/google/gson/issues/835#issuecomment-213560446
-            decoded = String(Base64.getMimeDecoder().decode(this.nextString()))
+            decoded = String(Base64.decode(this.nextString(), Base64.NO_PADDING))
         } else {
             this.skipValue()
         }
