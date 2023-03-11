@@ -6,7 +6,6 @@ import retrofit2.http.GET
 
 
 interface RecipeAttrAPI {
-
-    @GET("main/db_fields_info.json")
+    @GET("repos/yvo08013/SharedFiles/contents/db_fields_info.json")
     suspend fun getRecipeAttrs(): ApiResponse<RecipeAttrsNetwork>
 }

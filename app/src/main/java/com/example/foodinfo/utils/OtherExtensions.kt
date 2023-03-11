@@ -8,6 +8,8 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.example.foodinfo.R
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 
 
 fun RecyclerView.restoreState(parcelable: Parcelable?) {
@@ -48,3 +50,5 @@ fun View.baseAnimation() {
 }
 
 fun String.trimMultiline() = this.trimIndent().replace(System.lineSeparator(), "")
+
+inline fun <reified T> Gson.fromString(value: String): T = fromJson(value, object : TypeToken<T>() {}.type)

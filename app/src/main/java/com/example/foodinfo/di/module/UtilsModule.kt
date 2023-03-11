@@ -4,8 +4,11 @@ import android.content.Context
 import com.example.foodinfo.utils.AssetProvider
 import com.example.foodinfo.utils.PrefUtils
 import com.example.foodinfo.utils.ResourcesProvider
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
+import javax.inject.Named
 import javax.inject.Singleton
 
 
@@ -29,4 +32,9 @@ class UtilsModule {
     fun providePrefUtils(context: Context): PrefUtils {
         return PrefUtils(context)
     }
+
+    @Provides
+    @Singleton
+    @Named("Base")
+    fun provideGson(): Gson = GsonBuilder().create()
 }

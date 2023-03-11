@@ -3,6 +3,7 @@ package com.example.foodinfo.di.module
 import com.example.foodinfo.BuildConfig
 import com.example.foodinfo.remote.api.RecipeAPI
 import com.example.foodinfo.remote.api.RecipeAttrAPI
+import com.example.foodinfo.utils.GitHubTypeAdapterFactory
 import com.example.foodinfo.remote.response.ResponseAdapterFactory
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -20,7 +21,10 @@ class RemoteModule {
     @Singleton
     @Provides
     @Named("Edamam")
-    fun provideRetrofitEdamam(gson: Gson): Retrofit {
+    fun provideRetrofitEdamam(
+        @Named("Base")
+        gson: Gson
+    ): Retrofit {
         return Retrofit.Builder()
             .baseUrl(BuildConfig.API_EDAMAM)
             .addCallAdapterFactory(ResponseAdapterFactory())
@@ -31,7 +35,10 @@ class RemoteModule {
     @Singleton
     @Provides
     @Named("GitHub")
-    fun provideRetrofitGitHub(gson: Gson): Retrofit {
+    fun provideRetrofitGitHub(
+        @Named("GitHub")
+        gson: Gson
+    ): Retrofit {
         return Retrofit.Builder()
             .baseUrl(BuildConfig.API_GITHUB)
             .addCallAdapterFactory(ResponseAdapterFactory())
@@ -51,6 +58,14 @@ class RemoteModule {
         retrofit: Retrofit
     ): RecipeAttrAPI = retrofit.create(RecipeAttrAPI::class.java)
 
+
     @Provides
-    fun provideGson(): Gson = GsonBuilder().setLenient().create()
+    @Singleton
+    @Named("GitHub")
+    fun provideGson(
+        @Named("Base")
+        baseGson: Gson
+    ): Gson = GsonBuilder()
+        .registerTypeAdapterFactory(GitHubTypeAdapterFactory(baseGson))
+        .create()
 }

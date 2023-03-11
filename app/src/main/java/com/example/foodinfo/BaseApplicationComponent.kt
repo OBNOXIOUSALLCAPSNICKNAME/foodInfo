@@ -7,8 +7,10 @@ import com.example.foodinfo.local.room.DataBase
 import com.example.foodinfo.repository.SearchFilterRepository
 import com.example.foodinfo.utils.AssetProvider
 import com.example.foodinfo.utils.PrefUtils
+import com.google.gson.Gson
 import dagger.BindsInstance
 import dagger.Component
+import javax.inject.Named
 import javax.inject.Singleton
 
 
@@ -31,8 +33,11 @@ interface BaseApplicationComponent {
 
     fun viewModelsFactory(): BaseViewModelFactory
 
+    @get:Named("Base")
+    val gson: Gson
+
     val dataBase: DataBase
-    
+
     val prefUtils: PrefUtils
 
     val assetProvider: AssetProvider
