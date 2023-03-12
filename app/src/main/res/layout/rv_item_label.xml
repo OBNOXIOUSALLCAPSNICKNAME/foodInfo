@@ -11,7 +11,7 @@
         android:id = "@+id/iv_preview"
         android:layout_width = "0dp"
         android:layout_height = "0dp"
-        android:background = "@drawable/background_secondary_bg_30"
+        android:background = "@drawable/background_outline_32"
         android:scaleType = "centerCrop"
         app:contentPadding = "@dimen/dp_30"
         app:layout_constraintDimensionRatio = "W,1:1"
