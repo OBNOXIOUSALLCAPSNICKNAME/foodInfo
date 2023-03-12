@@ -4,14 +4,14 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
-import com.example.foodinfo.local.dto.APICredentialsDB
+import com.example.foodinfo.local.dto.EdamamCredentialsDB
 
 
 @Entity(
-    tableName = APICredentialsDB.TABLE_NAME,
-    indices = [Index(value = arrayOf(APICredentialsDB.Columns.NAME), unique = true)]
+    tableName = EdamamCredentialsDB.TABLE_NAME,
+    indices = [Index(value = arrayOf(EdamamCredentialsDB.Columns.NAME), unique = true)]
 )
-data class APICredentialsEntity(
+data class EdamamCredentialsEntity(
     @PrimaryKey
     @ColumnInfo(name = Columns.NAME)
     override val name: String,
@@ -34,7 +34,7 @@ data class APICredentialsEntity(
     @ColumnInfo(name = Columns.APP_KEY_NUTRITION)
     override val appKeyNutrition: String
 
-) : APICredentialsDB(
+) : EdamamCredentialsDB(
     name = name,
     appIDFood = appIDFood,
     appIDRecipes = appIDRecipes,
@@ -44,8 +44,8 @@ data class APICredentialsEntity(
     appKeyNutrition = appKeyNutrition
 ) {
     companion object {
-        fun toEntity(item: APICredentialsDB): APICredentialsEntity {
-            return APICredentialsEntity(
+        fun toEntity(item: EdamamCredentialsDB): EdamamCredentialsEntity {
+            return EdamamCredentialsEntity(
                 name = item.name,
                 appIDFood = item.appIDFood,
                 appIDRecipes = item.appIDRecipes,

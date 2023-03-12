@@ -24,7 +24,8 @@ import com.example.foodinfo.local.room.entity.*
         NutrientRecipeAttrEntity::class,
         BasicRecipeAttrEntity::class,
         BasicOfSearchFilterEntity::class,
-        APICredentialsEntity::class,
+        EdamamCredentialsEntity::class,
+        GitHubCredentialsEntity::class,
     ]
 )
 abstract class DataBase : RoomDatabase() {

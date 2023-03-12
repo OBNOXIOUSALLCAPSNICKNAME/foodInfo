@@ -46,7 +46,7 @@ class RecipeRepository @Inject constructor(
     ): Flow<PagingData<RecipeShortModel>> {
         val query = RecipePageQuery(
             searchFilterPreset = searchFilterPreset,
-            apiCredentials = apiCredentialsDAO.getCredentials(prefUtils.apiCredentials),
+            apiCredentials = apiCredentialsDAO.getEdamam(prefUtils.edamamCredentials),
             inputText = inputText,
             isOffline = true
         )
@@ -67,9 +67,9 @@ class RecipeRepository @Inject constructor(
                 DataProvider.Remote(
                     recipeAPI.getRecipe(
                         EdamamRecipeURL(
-                            recipeID = "recipeID",
+                            recipeID = recipeID,
                             fieldSet = FieldSet.FULL,
-                            apiCredentials = apiCredentialsDAO.getCredentials(prefUtils.apiCredentials)
+                            apiCredentials = apiCredentialsDAO.getEdamam(prefUtils.edamamCredentials)
                         ).value
                     )
                 )
@@ -92,7 +92,7 @@ class RecipeRepository @Inject constructor(
                         EdamamRecipeURL(
                             recipeID = recipeID,
                             fieldSet = FieldSet.NUTRIENTS,
-                            apiCredentials = apiCredentialsDAO.getCredentials(prefUtils.apiCredentials)
+                            apiCredentials = apiCredentialsDAO.getEdamam(prefUtils.edamamCredentials)
                         ).value
                     )
                 )
@@ -112,7 +112,7 @@ class RecipeRepository @Inject constructor(
                         EdamamRecipeURL(
                             recipeID = recipeID,
                             fieldSet = FieldSet.INGREDIENTS,
-                            apiCredentials = apiCredentialsDAO.getCredentials(prefUtils.apiCredentials)
+                            apiCredentials = apiCredentialsDAO.getEdamam(prefUtils.edamamCredentials)
                         ).value
                     )
                 )

@@ -1,7 +1,7 @@
 package com.example.foodinfo.local.dto
 
 
-open class APICredentialsDB(
+open class EdamamCredentialsDB(
     open val name: String = DEFAULT_NAME,
     open val appIDFood: String = "bdd6ffae_",
     open val appIDRecipes: String = "f8452af5_",
@@ -23,6 +23,6 @@ open class APICredentialsDB(
 
     companion object {
         const val DEFAULT_NAME = "default credentials"
-        const val TABLE_NAME = "api_credentials"
+        const val TABLE_NAME = "edamam_credentials"
     }
 }

@@ -1,10 +1,15 @@
 package com.example.foodinfo.local.dao
 
-import com.example.foodinfo.local.dto.APICredentialsDB
+import com.example.foodinfo.local.dto.EdamamCredentialsDB
+import com.example.foodinfo.local.dto.GitHubCredentialsDB
 
 
 interface APICredentialsDAO {
-    fun getCredentials(name: String): APICredentialsDB
+    fun getEdamam(name: String): EdamamCredentialsDB
 
-    fun addCredentials(credentials: APICredentialsDB)
+    fun addEdamam(credentials: EdamamCredentialsDB)
+
+    fun getGitHub(name: String): GitHubCredentialsDB
+
+    fun addGitHub(credentials: GitHubCredentialsDB)
 }

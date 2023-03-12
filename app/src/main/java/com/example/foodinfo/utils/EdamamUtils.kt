@@ -37,17 +37,17 @@ enum class FieldSet(val fields: String) {
 }
 
 
-val APICredentialsDB.food: String
+val EdamamCredentialsDB.food: String
     get() {
         return "?type=public&app_id=${this.appIDFood}&app_key=${this.appKeyFood}"
     }
 
-val APICredentialsDB.recipe: String
+val EdamamCredentialsDB.recipe: String
     get() {
         return "?type=public&app_id=${this.appIDRecipes}&app_key=${this.appKeyRecipes}"
     }
 
-val APICredentialsDB.nutrition: String
+val EdamamCredentialsDB.nutrition: String
     get() {
         return "?type=public&app_id=${this.appIDNutrition}&app_key=${this.appKeyNutrition}"
     }
@@ -56,7 +56,7 @@ val APICredentialsDB.nutrition: String
 class EdamamRecipeURL(
     recipeID: String,
     fieldSet: FieldSet,
-    apiCredentials: APICredentialsDB
+    apiCredentials: EdamamCredentialsDB
 ) {
     val value: String = "$recipeID${apiCredentials.recipe}${fieldSet.fields}"
 }
@@ -97,7 +97,7 @@ class EdamamRecipeURL(
  */
 class EdamamPageURL(
     searchFilterPreset: SearchFilterPresetModel,
-    apiCredentials: APICredentialsDB,
+    apiCredentials: EdamamCredentialsDB,
     inputText: String = ""
 ) {
     val value: String = build(searchFilterPreset, inputText, apiCredentials)
@@ -127,7 +127,7 @@ class EdamamPageURL(
     private fun build(
         searchFilterPreset: SearchFilterPresetModel,
         inputText: String,
-        apiCredentials: APICredentialsDB
+        apiCredentials: EdamamCredentialsDB
     ): String {
         return """
         ${apiCredentials.recipe}
@@ -290,7 +290,7 @@ class RoomPageQuery(
  */
 class RecipePageQuery(
     searchFilterPreset: SearchFilterPresetModel,
-    apiCredentials: APICredentialsDB,
+    apiCredentials: EdamamCredentialsDB,
     inputText: String,
     isOffline: Boolean
 ) {

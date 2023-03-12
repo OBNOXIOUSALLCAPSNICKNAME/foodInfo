@@ -5,23 +5,39 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.foodinfo.local.dao.APICredentialsDAO
-import com.example.foodinfo.local.dto.APICredentialsDB
-import com.example.foodinfo.local.room.entity.APICredentialsEntity
+import com.example.foodinfo.local.dto.EdamamCredentialsDB
+import com.example.foodinfo.local.dto.GitHubCredentialsDB
+import com.example.foodinfo.local.room.entity.EdamamCredentialsEntity
+import com.example.foodinfo.local.room.entity.GitHubCredentialsEntity
 
 
 @Dao
 abstract class APICredentialsDAORoom : APICredentialsDAO {
 
     @Query(
-        "SELECT * FROM ${APICredentialsDB.TABLE_NAME} WHERE " +
-        "${APICredentialsDB.Columns.NAME} LIKE '%' || :name || '%' "
+        "SELECT * FROM ${EdamamCredentialsDB.TABLE_NAME} WHERE " +
+        "${EdamamCredentialsDB.Columns.NAME} LIKE '%' || :name || '%' "
     )
-    abstract override fun getCredentials(name: String): APICredentialsEntity
+    abstract override fun getEdamam(name: String): EdamamCredentialsEntity
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract fun addCredentialsEntity(credentials: APICredentialsEntity)
+    abstract fun addEdamamEntity(credentials: EdamamCredentialsEntity)
 
-    override fun addCredentials(credentials: APICredentialsDB) {
-        addCredentialsEntity(APICredentialsEntity.toEntity(credentials))
+    override fun addEdamam(credentials: EdamamCredentialsDB) {
+        addEdamamEntity(EdamamCredentialsEntity.toEntity(credentials))
+    }
+
+
+    @Query(
+        "SELECT * FROM ${GitHubCredentialsDB.TABLE_NAME} WHERE " +
+        "${GitHubCredentialsDB.Columns.NAME} LIKE '%' || :name || '%' "
+    )
+    abstract override fun getGitHub(name: String): GitHubCredentialsEntity
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    abstract fun addGitHubEntity(credentials: GitHubCredentialsEntity)
+
+    override fun addGitHub(credentials: GitHubCredentialsDB) {
+        addGitHubEntity(GitHubCredentialsEntity.toEntity(credentials))
     }
 }

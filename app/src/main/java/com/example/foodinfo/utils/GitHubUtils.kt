@@ -45,10 +45,12 @@ private inline fun <T> JsonReader.decode(parseDelegate: (String) -> T) {
     this.beginObject()
     while (this.hasNext()) {
         if (this.nextName() == CONTENT) {
-            // save decoded string into variable instead of calling parseDelegate() in case that
-            // endObject() assertion must successfully complete before read() returns,
-            // otherwise JsonIOException will be thrown with message: JSON document was not fully consumed
-            // inspired by: https://github.com/google/gson/issues/835#issuecomment-213560446
+            /*
+            save decoded string into variable instead of calling parseDelegate() in case that
+            endObject() assertion must successfully complete before read() returns,
+            otherwise JsonIOException will be thrown with message: JSON document was not fully consumed
+            inspired by: https://github.com/google/gson/issues/835#issuecomment-213560446
+             */
             decoded = String(Base64.decode(this.nextString(), Base64.NO_PADDING))
         } else {
             this.skipValue()

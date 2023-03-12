@@ -21,12 +21,23 @@ class RepositoryModule {
     @Provides
     @Singleton
     fun provideRecipeRepository(
-        apiCredentialsDAO: APICredentialsDAO,
+        APICredentialsDAO: APICredentialsDAO,
         recipeDAO: RecipeDAO,
         recipeAPI: RecipeAPI,
         prefUtils: PrefUtils
     ): RecipeRepository {
-        return RecipeRepository(apiCredentialsDAO, recipeDAO, recipeAPI, prefUtils)
+        return RecipeRepository(APICredentialsDAO, recipeDAO, recipeAPI, prefUtils)
+    }
+
+    @Provides
+    @Singleton
+    fun provideRecipeAttrRepository(
+        apiCredentialsDAO: APICredentialsDAO,
+        recipeAttrDAO: RecipeAttrDAO,
+        recipeAttrAPI: RecipeAttrAPI,
+        prefUtils: PrefUtils
+    ): RecipeAttrRepository {
+        return RecipeAttrRepository(apiCredentialsDAO, recipeAttrDAO, recipeAttrAPI, prefUtils)
     }
 
     @Provides
@@ -44,15 +55,6 @@ class RepositoryModule {
         searchHistoryDAO: SearchHistoryDAO
     ): SearchHistoryRepository {
         return SearchHistoryRepository(searchHistoryDAO)
-    }
-
-    @Provides
-    @Singleton
-    fun provideRecipeAttrRepository(
-        recipeAttrDAO: RecipeAttrDAO,
-        recipeAttrAPI: RecipeAttrAPI,
-    ): RecipeAttrRepository {
-        return RecipeAttrRepository(recipeAttrDAO, recipeAttrAPI)
     }
 
     @Provides

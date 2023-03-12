@@ -8,7 +8,8 @@ import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.example.foodinfo.databinding.ActivityMainBinding
-import com.example.foodinfo.local.dto.APICredentialsDB
+import com.example.foodinfo.local.dto.EdamamCredentialsDB
+import com.example.foodinfo.local.dto.GitHubCredentialsDB
 import com.example.foodinfo.local.dto.SearchFilterDB
 import com.example.foodinfo.utils.AssetsKeyWords
 import com.example.foodinfo.utils.JSONLoader
@@ -44,7 +45,8 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        appComponent.prefUtils.apiCredentials = APICredentialsDB.DEFAULT_NAME
+        appComponent.prefUtils.githubCredentials = EdamamCredentialsDB.DEFAULT_NAME
+        appComponent.prefUtils.edamamCredentials = EdamamCredentialsDB.DEFAULT_NAME
         appComponent.prefUtils.searchFilter = SearchFilterDB.DEFAULT_NAME
 
         Log.d("123", "DB loaded in ${measureTimeMillis { prepopulateDB() }}ms")
@@ -82,7 +84,7 @@ class MainActivity : AppCompatActivity() {
             gson.fromString(dbRecipe.get(AssetsKeyWords.SEARCH_HISTORY).toString())
         )
 
-        
+
         dataBase.recipeAttrDao.addLabels(
             gson.fromString(dbRecipeAttrs.get(AssetsKeyWords.LABELS).toString())
         )
@@ -100,7 +102,8 @@ class MainActivity : AppCompatActivity() {
         )
 
 
-        dataBase.apiCredentialsDao.addCredentials(APICredentialsDB())
+        dataBase.apiCredentialsDao.addEdamam(EdamamCredentialsDB())
+        dataBase.apiCredentialsDao.addGitHub(GitHubCredentialsDB())
 
         appComponent.searchFilterRepository.createFilter(
             appComponent.prefUtils.searchFilter,

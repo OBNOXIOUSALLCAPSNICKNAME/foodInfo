@@ -18,15 +18,24 @@ class PrefUtils @Inject constructor(
             field = value
         }
 
-    var apiCredentials: String = ""
-        get() = preferences.getString(API_CREDENTIALS, "") ?: ""
+    var edamamCredentials: String = ""
+        get() = preferences.getString(EDAMAM_CREDENTIALS, "") ?: ""
         set(value) {
-            preferences.edit { putString(API_CREDENTIALS, value) }
+            preferences.edit { putString(EDAMAM_CREDENTIALS, value) }
             field = value
         }
 
+    var githubCredentials: String = ""
+        get() = preferences.getString(GITHUB_CREDENTIALS, "") ?: ""
+        set(value) {
+            preferences.edit { putString(GITHUB_CREDENTIALS, value) }
+            field = value
+        }
+
+
     companion object {
         private const val SEARCH_FILTER = "SEARCH_FILTER"
-        private const val API_CREDENTIALS = "API_CREDENTIALS"
+        private const val EDAMAM_CREDENTIALS = "EDAMAM_CREDENTIALS"
+        private const val GITHUB_CREDENTIALS = "GITHUB_CREDENTIALS"
     }
 }
