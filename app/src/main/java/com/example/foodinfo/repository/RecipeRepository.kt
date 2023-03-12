@@ -7,6 +7,7 @@ import androidx.paging.map
 import androidx.sqlite.db.SimpleSQLiteQuery
 import com.example.foodinfo.local.dao.APICredentialsDAO
 import com.example.foodinfo.local.dao.RecipeDAO
+import com.example.foodinfo.local.dto.EdamamCredentialsDB
 import com.example.foodinfo.local.dto.NutrientRecipeAttrDB
 import com.example.foodinfo.local.dto.RecipeAttrsDB
 import com.example.foodinfo.remote.api.RecipeAPI
@@ -65,13 +66,7 @@ class RecipeRepository @Inject constructor(
         return getData(
             remoteDataProvider = {
                 DataProvider.Remote(
-                    recipeAPI.getRecipe(
-                        EdamamRecipeURL(
-                            recipeID = recipeID,
-                            fieldSet = FieldSet.FULL,
-                            apiCredentials = apiCredentialsDAO.getEdamam(prefUtils.edamamCredentials)
-                        ).value
-                    )
+                    recipeAPI.getRecipe(EdamamRecipeURL(recipeID, FieldSet.FULL, apiCredentials).value)
                 )
             },
             localDataProvider = { DataProvider.LocalFlow(recipeDAO.getByIdExtended(recipeID)) },
@@ -88,13 +83,7 @@ class RecipeRepository @Inject constructor(
         return getData(
             remoteDataProvider = {
                 DataProvider.Remote(
-                    recipeAPI.getRecipe(
-                        EdamamRecipeURL(
-                            recipeID = recipeID,
-                            fieldSet = FieldSet.NUTRIENTS,
-                            apiCredentials = apiCredentialsDAO.getEdamam(prefUtils.edamamCredentials)
-                        ).value
-                    )
+                    recipeAPI.getRecipe(EdamamRecipeURL(recipeID, FieldSet.NUTRIENTS, apiCredentials).value)
                 )
             },
             localDataProvider = { DataProvider.LocalFlow(recipeDAO.getNutrients(recipeID)) },
@@ -108,13 +97,7 @@ class RecipeRepository @Inject constructor(
         return getData(
             remoteDataProvider = {
                 DataProvider.Remote(
-                    recipeAPI.getRecipe(
-                        EdamamRecipeURL(
-                            recipeID = recipeID,
-                            fieldSet = FieldSet.INGREDIENTS,
-                            apiCredentials = apiCredentialsDAO.getEdamam(prefUtils.edamamCredentials)
-                        ).value
-                    )
+                    recipeAPI.getRecipe(EdamamRecipeURL(recipeID, FieldSet.INGREDIENTS, apiCredentials).value)
                 )
             },
             localDataProvider = { DataProvider.LocalFlow(recipeDAO.getIngredients(recipeID)) },
@@ -148,4 +131,7 @@ class RecipeRepository @Inject constructor(
             maxSize = 40
         )
     }
+
+    private val apiCredentials: EdamamCredentialsDB
+        get() = apiCredentialsDAO.getEdamam(prefUtils.edamamCredentials)
 }

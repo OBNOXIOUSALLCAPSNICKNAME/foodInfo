@@ -108,8 +108,5 @@ class RecipeAttrRepository @Inject constructor(
     }
 
     private val authToken: String
-        get() {
-            return GitHubCredentialsDB.TOKEN_PREFIX + apiCredentialsDAO.getGitHub(prefUtils.githubCredentials).token
-        }
-
+        get() = GitHubCredentialsDB.TOKEN_PREFIX + apiCredentialsDAO.getGitHub(prefUtils.githubCredentials).token
 }
