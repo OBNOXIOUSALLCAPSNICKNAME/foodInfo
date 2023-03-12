@@ -3,7 +3,7 @@ package com.example.foodinfo.repository.mapper
 import com.example.foodinfo.local.dto.CategoryRecipeAttrDB
 import com.example.foodinfo.local.dto.LabelOfRecipeExtendedDB
 import com.example.foodinfo.local.dto.LabelOfSearchFilterExtendedDB
-import com.example.foodinfo.local.dto.LabelRecipeAttrDB
+import com.example.foodinfo.local.dto.LabelRecipeAttrExtendedDB
 import com.example.foodinfo.remote.dto.CategoryRecipeAttrNetwork
 import com.example.foodinfo.repository.model.*
 
@@ -16,11 +16,10 @@ fun CategoryRecipeAttrDB.toModel(): CategorySearchModel {
     )
 }
 
-fun List<LabelRecipeAttrDB>.toModelSearch(): CategoryTargetSearchModel {
-    val labels = this.map { it.toModelSearch() }
+fun List<LabelRecipeAttrExtendedDB>.toModelSearch(): CategoryTargetSearchModel {
     return CategoryTargetSearchModel(
-        name = labels.first().name,
-        labels = labels
+        name = this.first().categoryInfo!!.name,
+        labels = this.map { it.toModelSearch() }
     )
 }
 
@@ -34,10 +33,10 @@ fun List<LabelOfRecipeExtendedDB>.toModelRecipe(): List<CategoryOfRecipeModel> {
 }
 
 fun List<LabelOfSearchFilterExtendedDB>.toModelEdit(categoryID: Int): CategoryOfSearchFilterEditModel {
-    val labels = this.filter { it.attrInfo!!.categoryID == categoryID }.map { it.toModelEdit() }
+    val labels = this.filter { it.attrInfo!!.categoryID == categoryID }
     return CategoryOfSearchFilterEditModel(
-        name = labels.first().name,
-        labels = labels
+        name = labels.first().attrInfo!!.categoryInfo!!.name,
+        labels = labels.map { it.toModelEdit() }
     )
 }
 

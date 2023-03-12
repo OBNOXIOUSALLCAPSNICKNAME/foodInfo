@@ -32,7 +32,7 @@ interface RecipeAttrDAO {
 
     fun observeCategoriesAll(): Flow<@JvmWildcard List<@JvmWildcard CategoryRecipeAttrDB>>
 
-    fun observeCategoryLabels(categoryID: Int): Flow<@JvmWildcard List<@JvmWildcard LabelRecipeAttrDB>>
+    fun observeCategoryLabels(categoryID: Int): Flow<@JvmWildcard List<@JvmWildcard LabelRecipeAttrExtendedDB>>
 
 
     fun addBasics(attrs: List<BasicRecipeAttrDB>)

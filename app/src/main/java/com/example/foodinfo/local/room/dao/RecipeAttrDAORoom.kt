@@ -10,6 +10,7 @@ import com.example.foodinfo.local.room.entity.BasicRecipeAttrEntity
 import com.example.foodinfo.local.room.entity.CategoryRecipeAttrEntity
 import com.example.foodinfo.local.room.entity.LabelRecipeAttrEntity
 import com.example.foodinfo.local.room.entity.NutrientRecipeAttrEntity
+import com.example.foodinfo.local.room.pojo.LabelRecipeAttrExtendedPOJO
 import kotlinx.coroutines.flow.Flow
 
 
@@ -18,19 +19,19 @@ abstract class RecipeAttrDAORoom : RecipeAttrDAO {
 
     @Query(
         "SELECT * FROM ${LabelRecipeAttrDB.TABLE_NAME} " +
-                "WHERE ${LabelRecipeAttrDB.Columns.ID} = :ID"
+        "WHERE ${LabelRecipeAttrDB.Columns.ID} = :ID"
     )
     abstract override fun getLabel(ID: Int): LabelRecipeAttrEntity
 
     @Query(
         "SELECT * FROM ${NutrientRecipeAttrDB.TABLE_NAME} " +
-                "WHERE ${NutrientRecipeAttrDB.Columns.ID} = :ID"
+        "WHERE ${NutrientRecipeAttrDB.Columns.ID} = :ID"
     )
     abstract override fun getNutrient(ID: Int): NutrientRecipeAttrEntity
 
     @Query(
         "SELECT * FROM ${CategoryRecipeAttrDB.TABLE_NAME} " +
-                "WHERE ${CategoryRecipeAttrDB.Columns.ID} = :ID"
+        "WHERE ${CategoryRecipeAttrDB.Columns.ID} = :ID"
     )
     abstract override fun getCategory(ID: Int): CategoryRecipeAttrEntity
 
@@ -72,9 +73,9 @@ abstract class RecipeAttrDAORoom : RecipeAttrDAO {
 
     @Query(
         "SELECT * FROM ${LabelRecipeAttrDB.TABLE_NAME} " +
-                "WHERE ${LabelRecipeAttrDB.Columns.CATEGORY_ID} = :categoryID"
+        "WHERE ${LabelRecipeAttrDB.Columns.CATEGORY_ID} = :categoryID"
     )
-    abstract override fun observeCategoryLabels(categoryID: Int): Flow<List<LabelRecipeAttrEntity>>
+    abstract override fun observeCategoryLabels(categoryID: Int): Flow<List<LabelRecipeAttrExtendedPOJO>>
 
 
     @Insert
