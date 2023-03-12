@@ -47,7 +47,7 @@ class RecipeRepository @Inject constructor(
     ): Flow<PagingData<RecipeShortModel>> {
         val query = RecipePageQuery(
             searchFilterPreset = searchFilterPreset,
-            apiCredentials = apiCredentialsDAO.getEdamam(prefUtils.edamamCredentials),
+            apiCredentials = apiCredentials,
             inputText = inputText,
             isOffline = true
         )

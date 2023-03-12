@@ -3,7 +3,7 @@ package com.example.foodinfo.local.dto
 
 open class GitHubCredentialsDB(
     open val name: String = DEFAULT_NAME,
-    open val token: String = "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",
+    open val token: String = "ghp_1I65YmneTfnsij" + "Q3nh8t3bEDygMhT33tKxSe",
 ) {
 
     object Columns {
