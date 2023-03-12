@@ -10,6 +10,7 @@ import com.example.foodinfo.local.room.entity.BasicRecipeAttrEntity
 import com.example.foodinfo.local.room.entity.CategoryRecipeAttrEntity
 import com.example.foodinfo.local.room.entity.LabelRecipeAttrEntity
 import com.example.foodinfo.local.room.entity.NutrientRecipeAttrEntity
+import com.example.foodinfo.local.room.pojo.LabelRecipeAttrExtendedPOJO
 import kotlinx.coroutines.flow.Flow
 
 
@@ -74,7 +75,7 @@ abstract class RecipeAttrDAORoom : RecipeAttrDAO {
         "SELECT * FROM ${LabelRecipeAttrDB.TABLE_NAME} WHERE " +
         "${LabelRecipeAttrDB.Columns.CATEGORY_ID} = :categoryID"
     )
-    abstract override fun observeCategoryLabels(categoryID: Int): Flow<List<LabelRecipeAttrEntity>>
+    abstract override fun observeCategoryLabels(categoryID: Int): Flow<List<LabelRecipeAttrExtendedPOJO>>
 
 
     @Query("DELETE FROM ${BasicRecipeAttrDB.TABLE_NAME}")

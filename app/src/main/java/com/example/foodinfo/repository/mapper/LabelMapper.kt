@@ -17,7 +17,7 @@ fun LabelRecipeAttrDB.toModelHint(): LabelHintModel {
     )
 }
 
-fun LabelRecipeAttrDB.toModelSearch(): LabelSearchModel {
+fun LabelRecipeAttrExtendedDB.toModelSearch(): LabelSearchModel {
     return LabelSearchModel(
         ID = this.ID,
         name = this.name,
