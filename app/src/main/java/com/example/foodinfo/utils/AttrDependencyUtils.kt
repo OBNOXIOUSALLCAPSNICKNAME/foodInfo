@@ -7,110 +7,62 @@ import kotlinx.coroutines.flow.*
 /**
  * Function that will help to atomically fetch data that depends on some extra data
  *
- * It will collect [extraDataFlow] and on each emission of [State] with [State.data] **!= null**
- * will invoke [dataFlowProvider] and re-emit everything from provided flow to result flow. Previous flow from
- * [dataFlowProvider] will be canceled.
+ * It will collect [extraData] and on each emission of [State] with [State.data] **!= null**
+ * will invoke [outputDataProvider] and re-emit everything from provided flow to result flow.
+ * Previous flow from [outputDataProvider] will be canceled.
  *
- * If [State.Error] was collected from [extraDataFlow], it will be emitted into result flow and
- * [dataFlowProvider] will not be called.
+ * - If [State.Error] was collected from [extraData], it will be emitted into result flow and
+ * [outputDataProvider] will not be called.
  *
- * If [State.Loading] with [State.data] **!= null** was collected from [extraDataFlow],
- * [dataFlowProvider] will be invoked but [transform] will be applied to provided flow to re-emit every
- * [State] with [State.data] **!= null** into result flow ONLY with [State.Loading].
+ * - If [State.Loading] with [State.data] **!= null** was collected from [extraData],
+ * [outputDataProvider] will be invoked but [transform] will be applied to provided flow to re-emit every
+ * [State] with [State.data] **!= null** into result flow **ONLY** as [State.Loading]. Also, if [State.Error]
+ * will be collected from provided flow, it **WILL NOT** be emitted into result flow.
  *
- * **Example**
- * ~~~
- * val flow1 = flowOf(Loading(1), Loading(2), Success(2))
- * val flow2 = flowOf(Loading("a"), Success("b"))
+ * - All repetitions of same [State.data] from [extraData] will be filtered out to avoid redundant calls of
+ * [outputDataProvider]. It may lead into situations when [State.Success] will be ignored due to [State.Loading]
+ * was previously collected with the same [State.data] (which is bad for screens that does not use data from
+ * [State.Loading]). To fix that, [getResolved] will emit latest value collected from [outputDataProvider].
  *
- * getResolved(
- *     extraDataFlow = flow1.onEach { delay(100) },
- *     dataFlowProvider = { extra -> flow2.transform { "${it}_${extra}"  } }
- * ).collect { print(it) }
- * ~~~
- * **Output**
- * ~~~
- * Loading("a_1")
- * Loading("b_1")
- * Loading("a_2")
- * Loading("b_2")
- * Loading("a_2")
- * Success("b_2")
- * ~~~
  */
 @OptIn(ExperimentalCoroutinesApi::class)
-fun <extraT, outT> getResolved(
-    extraDataFlow: Flow<State<extraT>>,
-    dataFlowProvider: (extraT) -> Flow<State<outT>>
+fun <extraT, outputT> getResolved(
+    extraData: Flow<State<extraT>>,
+    outputDataProvider: (extraT) -> Flow<State<outputT>>
 ) = flow {
     emit(State.Loading())
 
-    extraDataFlow.flatMapLatest { state ->
-        when (state) {
-            is State.Success -> {
-                dataFlowProvider(state.data!!)
-            }
-            is State.Error   -> {
-                flowOf(State.Error(state.messageID!!, state.error!!, state.errorCode!!))
-            }
+    var equalData = false
+    var lastValue: State<outputT>? = null
+
+    extraData.distinctUntilChanged { old, new ->
+        equalData = State.isEqualData(old.data, new.data)
+        State.isEqual(old, new)
+    }.flatMapLatest { extraState ->
+        when (extraState) {
             is State.Loading -> {
-                if (state.data != null) {
-                    dataFlowProvider(state.data).transform {
-                        if (it.data != null) {
-                            emit(State.Loading(it.data))
-                        } else {
-                            emit(it)
-                        }
+                if (extraState.data != null) {
+                    outputDataProvider(extraState.data).transform { resultState ->
+                        lastValue = resultState
+                        resultState.data?.let { emit(State.Loading(it)) }
                     }
                 } else {
                     flowOf(State.Loading())
                 }
             }
-        }
-    }.collect(::emit)
-}
-
-/**
- * Similar to [getResolved] but with the difference that all repetitions of same data from [extraDataFlow]
- * will be filtered out (regardless of state type) and all emissions from [dataFlowProvider]'s flow will be
- * directly re-emitted into result flow without state changing regardless of [extraDataFlow] state type.
- *
- * **Example**
- * ~~~
- * val flow1 = flowOf(Loading(1), Success(1), Loading(1), Success(2),)
- * val flow2 = flowOf(Loading("a"), Success("b"))
- *
- * getResolvedFiltered(
- *     extraDataFlow = flow1.onEach { delay(100) },
- *     dataFlowProvider = { extra -> flow2.transform { "${it}_${extra}"  } }
- * ).collect { print(it) }
- * ~~~
- * **Output**
- * ~~~
- * Loading("a_1")
- * Success("b_1")
- * Loading("a_2")
- * Success("b_2")
- * ~~~
- */
-@OptIn(ExperimentalCoroutinesApi::class)
-fun <extraT, outT> getResolvedFiltered(
-    extraDataFlow: Flow<State<extraT>>,
-    dataFlowProvider: (extraT) -> Flow<State<outT>>
-) = flow {
-    emit(State.Loading())
-
-    extraDataFlow.distinctUntilChanged(State.Utils::isEqualInsensitive).flatMapLatest { state ->
-        when (state) {
-            is State.Error                     -> {
-                flowOf(State.Error(state.messageID!!, state.error!!, state.errorCode!!))
-            }
-            is State.Success, is State.Loading -> {
-                if (state.data != null) {
-                    dataFlowProvider(state.data)
+            is State.Success -> {
+                if (equalData && lastValue != null) {
+                    if (lastValue!!.data != null) {
+                        flowOf(State.Success(lastValue!!.data!!))
+                    } else {
+                        flowOf(lastValue!!)
+                    }
                 } else {
-                    flowOf(State.Loading())
+                    outputDataProvider(extraState.data!!)
                 }
+            }
+            is State.Error   -> {
+                flowOf(State.Error(extraState.messageID!!, extraState.error!!, extraState.errorCode!!))
             }
         }
     }.collect(::emit)

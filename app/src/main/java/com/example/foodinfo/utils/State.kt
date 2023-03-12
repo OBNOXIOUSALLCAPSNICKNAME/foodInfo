@@ -71,10 +71,10 @@ sealed class State<T>(
             return state is Loading && state.data == null
         }
 
-        private fun <T> isEqualData(data1: T?, data2: T?): Boolean {
+        fun <T> isEqualData(data1: T?, data2: T?): Boolean {
             return if (data1 != null && data2 != null) {
                 if (data1 is Collection<*> && data2 is Collection<*>) {
-                    data1.toSet() == data2.toSet()
+                    data1.toSet() == data2.toSet() && data1.size == data2.size
                 } else {
                     data1.toString() == data2.toString()
                 }

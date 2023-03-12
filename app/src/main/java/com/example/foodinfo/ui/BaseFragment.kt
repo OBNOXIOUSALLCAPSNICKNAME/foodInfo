@@ -66,7 +66,9 @@ abstract class BaseFragment<VB : ViewBinding>(
                 onStart()
             dataFlow
                 .filterNot(State.Utils::isEmptyLoading)
-                .distinctUntilChanged(State.Utils::isEqual)
+                .distinctUntilChanged(
+                    if (useLoadingData) State.Utils::isEqualInsensitive else State.Utils::isEqual
+                )
                 .collect { state ->
                     when (state) {
                         is State.Error   -> {

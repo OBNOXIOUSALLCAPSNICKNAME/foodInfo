@@ -19,8 +19,8 @@ class SearchFilterUseCase @Inject constructor(
 
     fun getSearchQuery(): Flow<State<SearchFilterPresetModel>> {
         return getResolved(
-            extraDataFlow = recipeAttrRepository.getRecipeAttrsDBLatest(),
-            dataFlowProvider = { attrs ->
+            extraData = recipeAttrRepository.getRecipeAttrsDBLatest(),
+            outputDataProvider = { attrs ->
                 searchFilterRepository.getFilterPreset(attrs)
             }
         )
@@ -28,8 +28,8 @@ class SearchFilterUseCase @Inject constructor(
 
     fun getSearchQueryByLabel(labelID: Int): Flow<State<SearchFilterPresetModel>> {
         return getResolved(
-            extraDataFlow = recipeAttrRepository.getRecipeAttrsDBLatest(),
-            dataFlowProvider = { attrs ->
+            extraData = recipeAttrRepository.getRecipeAttrsDBLatest(),
+            outputDataProvider = { attrs ->
                 searchFilterRepository.getFilterPresetByLabel(labelID, attrs)
             }
         )
@@ -37,22 +37,22 @@ class SearchFilterUseCase @Inject constructor(
 
     fun getFilterEdit(): Flow<State<SearchFilterEditModel>> {
         return getResolved(
-            extraDataFlow = recipeAttrRepository.getRecipeAttrsDBLatest(),
-            dataFlowProvider = { searchFilterRepository.getFilterEdit(it) }
+            extraData = recipeAttrRepository.getRecipeAttrsDBLatest(),
+            outputDataProvider = { searchFilterRepository.getFilterEdit(it) }
         )
     }
 
     fun getCategoryEdit(categoryID: Int): Flow<State<CategoryOfSearchFilterEditModel>> {
         return getResolved(
-            extraDataFlow = recipeAttrRepository.getLabelsDBLatest(),
-            dataFlowProvider = { searchFilterRepository.getCategoryEdit(categoryID, it) }
+            extraData = recipeAttrRepository.getLabelsDBLatest(),
+            outputDataProvider = { searchFilterRepository.getCategoryEdit(categoryID, it) }
         )
     }
 
     fun getNutrientsEdit(): Flow<State<List<NutrientOfSearchFilterEditModel>>> {
         return getResolved(
-            extraDataFlow = recipeAttrRepository.getNutrientsDBLatest(),
-            dataFlowProvider = { searchFilterRepository.getNutrientsEdit(it) }
+            extraData = recipeAttrRepository.getNutrientsDBLatest(),
+            outputDataProvider = { searchFilterRepository.getNutrientsEdit(it) }
         )
     }
 }
