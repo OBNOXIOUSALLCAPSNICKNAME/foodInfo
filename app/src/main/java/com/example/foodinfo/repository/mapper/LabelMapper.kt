@@ -1,9 +1,6 @@
 package com.example.foodinfo.repository.mapper
 
-import com.example.foodinfo.local.dto.LabelOfRecipeExtendedDB
-import com.example.foodinfo.local.dto.LabelOfSearchFilterDB
-import com.example.foodinfo.local.dto.LabelOfSearchFilterExtendedDB
-import com.example.foodinfo.local.dto.LabelRecipeAttrDB
+import com.example.foodinfo.local.dto.*
 import com.example.foodinfo.remote.dto.LabelRecipeAttrNetwork
 import com.example.foodinfo.repository.model.*
 
