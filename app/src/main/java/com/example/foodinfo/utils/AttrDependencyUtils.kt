@@ -34,7 +34,7 @@ fun <extraT, outputT> getResolved(
     emit(State.Loading())
 
     var equalData = false
-    var lastValue: State<outputT>? = null
+    var lastState: State<outputT>? = null
 
     extraData.distinctUntilChanged { old, new ->
         equalData = State.isEqualData(old.data, new.data)
@@ -44,7 +44,7 @@ fun <extraT, outputT> getResolved(
             is State.Loading -> {
                 if (extraState.data != null) {
                     outputDataProvider(extraState.data).transform { resultState ->
-                        lastValue = resultState
+                        lastState = resultState
                         resultState.data?.let { emit(State.Loading(it)) }
                     }
                 } else {
@@ -52,8 +52,8 @@ fun <extraT, outputT> getResolved(
                 }
             }
             is State.Success -> {
-                if (equalData && (lastValue is State.Success || lastValue is State.Error)) {
-                    flowOf(lastValue!!)
+                if (equalData && (lastState is State.Success || lastState is State.Error)) {
+                    flowOf(lastState!!)
                 } else {
                     outputDataProvider(extraState.data!!)
                 }

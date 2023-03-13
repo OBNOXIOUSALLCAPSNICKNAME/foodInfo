@@ -71,14 +71,18 @@ sealed class State<T>(
             return state is Loading && state.data == null
         }
 
-        fun <T> isEqualData(data1: T?, data2: T?): Boolean {
-            return if (data1 != null && data2 != null) {
-                if (data1 is Collection<*> && data2 is Collection<*>) {
-                    data1.toSet() == data2.toSet() && data1.size == data2.size
-                } else {
-                    data1.toString() == data2.toString()
+        fun <T> isEqualData(old: T?, new: T?): Boolean {
+            return if (old != null && new != null) {
+                when {
+                    old is Collection<*> && new is Collection<*>   -> {
+                        old.size == new.size && old.toSet() == new.toSet()
+                    }
+                    old !is Collection<*> && new !is Collection<*> -> {
+                        old.toString() == new.toString()
+                    }
+                    else                                           -> false
                 }
-            } else data1 == null && data2 == null
+            } else false
         }
     }
 }
