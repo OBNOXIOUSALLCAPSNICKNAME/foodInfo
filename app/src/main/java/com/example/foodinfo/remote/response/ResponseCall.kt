@@ -31,7 +31,7 @@ internal class ResponseCall<S : Any, E : Any>(
                     } else {
                         callback.onResponse(
                             this@ResponseCall,
-                            Response.success(NetworkResponse.UnknownError())
+                            Response.success(NetworkResponse.UnknownError(code))
                         )
                     }
                 } else {
@@ -64,7 +64,7 @@ internal class ResponseCall<S : Any, E : Any>(
                     } else {
                         callback.onResponse(
                             this@ResponseCall,
-                            Response.success(NetworkResponse.UnknownError())
+                            Response.success(NetworkResponse.UnknownError(code))
                         )
                     }
                 }

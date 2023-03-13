@@ -7,10 +7,10 @@ import okhttp3.ResponseBody
 import java.io.IOException
 
 
-internal const val NETWORK_ERROR_CODE = -1
-internal const val UNKNOWN_ERROR_CODE = -1
 internal val CLIENT_ERROR_RANGE = 400..499
 internal val SERVER_ERROR_RANGE = 500..599
+internal const val NETWORK_ERROR_CODE = 600
+internal const val UNKNOWN_ERROR_CODE = 700
 
 sealed class NetworkResponse<out S : Any, out E : Any> {
 
@@ -30,7 +30,14 @@ sealed class NetworkResponse<out S : Any, out E : Any> {
         val errorBody: E? = null
     ) : NetworkResponse<T, E>(), Error {
         override val error = IOException("$errorBody")
-        override val messageID: Int = R.string.error_client
+        override val messageID: Int = when (code) {
+            400  -> R.string.error_client_400
+            401  -> R.string.error_client_401
+            403  -> R.string.error_client_403
+            404  -> R.string.error_client_404
+            429  -> R.string.error_client_429
+            else -> R.string.error_client
+        }
     }
 
     data class ServerError<E : Any>(

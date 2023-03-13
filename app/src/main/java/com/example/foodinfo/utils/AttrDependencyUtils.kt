@@ -22,7 +22,8 @@ import kotlinx.coroutines.flow.*
  * - All repetitions of same [State.data] from [extraData] will be filtered out to avoid redundant calls of
  * [outputDataProvider]. It may lead into situations when [State.Success] will be ignored due to [State.Loading]
  * was previously collected with the same [State.data] (which is bad for screens that does not use data from
- * [State.Loading]). To fix that, [getResolved] will emit latest value collected from [outputDataProvider].
+ * [State.Loading]). To fix that, [getResolved] will emit latest value collected from [outputDataProvider] if
+ * it was completed (e.g. [State.Error] or [State.Success]), otherwise it will call [outputDataProvider].
  *
  */
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -51,12 +52,8 @@ fun <extraT, outputT> getResolved(
                 }
             }
             is State.Success -> {
-                if (equalData && lastValue != null) {
-                    if (lastValue!!.data != null) {
-                        flowOf(State.Success(lastValue!!.data!!))
-                    } else {
-                        flowOf(lastValue!!)
-                    }
+                if (equalData && (lastValue is State.Success || lastValue is State.Error)) {
+                    flowOf(lastValue!!)
                 } else {
                     outputDataProvider(extraState.data!!)
                 }

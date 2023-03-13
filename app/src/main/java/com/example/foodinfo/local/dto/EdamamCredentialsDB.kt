@@ -3,12 +3,12 @@ package com.example.foodinfo.local.dto
 
 open class EdamamCredentialsDB(
     open val name: String = DEFAULT_NAME,
-    open val appIDFood: String = "bdd6ffae_",
-    open val appIDRecipes: String = "f8452af5_",
-    open val appIDNutrition: String = "10e0e928_",
-    open val appKeyFood: String = "d3a7dfa760ceea4112c6afe28adc2a99_",
-    open val appKeyRecipes: String = "0f6552d886aed96d8608d6be1f2fe6ae_",
-    open val appKeyNutrition: String = "906a807656e6c8ff4e4fdbfee1c80744_",
+    open val appIDFood: String = "bdd6ffae postfix",
+    open val appIDRecipes: String = "f8452af5 postfix",
+    open val appIDNutrition: String = "10e0e928 postfix",
+    open val appKeyFood: String = "d3a7dfa760ceea4112c6afe28adc2a99 postfix",
+    open val appKeyRecipes: String = "0f6552d886aed96d8608d6be1f2fe6ae postfix",
+    open val appKeyNutrition: String = "906a807656e6c8ff4e4fdbfee1c80744 postfix",
 ) {
 
     object Columns {
