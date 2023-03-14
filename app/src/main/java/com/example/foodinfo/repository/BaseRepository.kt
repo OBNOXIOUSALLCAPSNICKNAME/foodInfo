@@ -43,7 +43,7 @@ abstract class BaseRepository {
                             emit(
                                 State.Error(
                                     (provider.response as NetworkResponse.Error).messageID,
-                                    (provider.response as NetworkResponse.Error).error,
+                                    (provider.response as NetworkResponse.Error).throwable,
                                     (provider.response as NetworkResponse.Error).code
                                 )
                             )
@@ -123,7 +123,7 @@ abstract class BaseRepository {
                 onSuccess(state.data!!)
             }
             is State.Error   -> {
-                onError(state.messageID!!, state.error!!)
+                onError(state.messageID!!, state.throwable!!)
             }
             is State.Loading -> {}
         }
@@ -274,7 +274,7 @@ abstract class BaseRepository {
                             emit(State.Success(localData))
                         },
                         onError = { _, _ ->
-                            emit(State.Error(remote.messageID!!, remote.error!!))
+                            emit(State.Error(remote.messageID!!, remote.throwable!!))
                         }
                     )
                 }

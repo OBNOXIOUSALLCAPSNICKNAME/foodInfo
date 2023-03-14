@@ -10,6 +10,7 @@ import retrofit2.Converter
 import retrofit2.Response
 import java.io.IOException
 
+
 internal class ResponseCall<S : Any, E : Any>(
     private val delegate: Call<S>,
     private val errorConverter: Converter<ResponseBody, E>
@@ -20,62 +21,45 @@ internal class ResponseCall<S : Any, E : Any>(
             override fun onResponse(call: Call<S>, response: Response<S>) {
                 val body = response.body()
                 val code = response.code()
-                val error = response.errorBody()
+                val errorBody = response.errorBody()
 
-                if (response.isSuccessful) {
+                val networkResponse = if (response.isSuccessful) {
                     if (body != null) {
-                        callback.onResponse(
-                            this@ResponseCall,
-                            Response.success(NetworkResponse.Success(body))
-                        )
+                        NetworkResponse.Success(body)
                     } else {
-                        callback.onResponse(
-                            this@ResponseCall,
-                            Response.success(NetworkResponse.UnknownError(code))
-                        )
+                        NetworkResponse.UnknownError(code)
                     }
                 } else {
-                    val errorBody = when {
-                        error == null               -> null
-                        error.contentLength() == 0L -> null
-                        else                        -> try {
-                            errorConverter.convert(error)
-                        } catch (ex: Exception) {
+                    val convertedErrorBody = when {
+                        errorBody == null               -> null
+                        errorBody.contentLength() == 0L -> null
+                        else                            -> try {
+                            errorConverter.convert(errorBody)
+                        } catch (e: Exception) {
                             null
                         }
                     }
-                    if (errorBody != null) {
-                        callback.onResponse(
-                            this@ResponseCall,
-                            Response.success(
-                                when (code) {
-                                    in SERVER_ERROR_RANGE -> {
-                                        NetworkResponse.ServerError(code, errorBody)
-                                    }
-                                    in CLIENT_ERROR_RANGE -> {
-                                        NetworkResponse.ClientError(code, body, errorBody)
-                                    }
-                                    else                  -> {
-                                        NetworkResponse.UnknownError(code)
-                                    }
-                                }
-                            )
-                        )
-                    } else {
-                        callback.onResponse(
-                            this@ResponseCall,
-                            Response.success(NetworkResponse.UnknownError(code))
-                        )
+                    when (code) {
+                        in CLIENT_ERROR_RANGE -> {
+                            NetworkResponse.ClientError(code, body, convertedErrorBody)
+                        }
+                        in SERVER_ERROR_RANGE -> {
+                            NetworkResponse.ServerError(code, convertedErrorBody)
+                        }
+                        else                  -> {
+                            NetworkResponse.UnknownError(code)
+                        }
                     }
                 }
+                callback.onResponse(this@ResponseCall, Response.success(networkResponse))
             }
 
             override fun onFailure(call: Call<S>, throwable: Throwable) {
-                val response = when (throwable) {
-                    is IOException -> NetworkResponse.NetworkError(error = throwable)
-                    else           -> NetworkResponse.UnknownError(error = throwable)
+                val networkResponse = when (throwable) {
+                    is IOException -> NetworkResponse.NetworkError(throwable = throwable)
+                    else           -> NetworkResponse.UnknownError(throwable = throwable)
                 }
-                callback.onResponse(this@ResponseCall, Response.success(response))
+                callback.onResponse(this@ResponseCall, Response.success(networkResponse))
             }
         })
     }
@@ -89,7 +73,7 @@ internal class ResponseCall<S : Any, E : Any>(
     override fun cancel() = delegate.cancel()
 
     override fun execute(): Response<NetworkResponse<S, E>> {
-        throw UnsupportedOperationException("ApiResponseCall doesn't support execute")
+        throw UnsupportedOperationException("ResponseCall doesn't support execute")
     }
 
     override fun request(): Request = delegate.request()

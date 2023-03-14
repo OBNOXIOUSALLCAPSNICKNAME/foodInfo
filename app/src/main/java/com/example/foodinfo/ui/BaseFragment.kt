@@ -72,7 +72,7 @@ abstract class BaseFragment<VB : ViewBinding>(
                 .collect { state ->
                     when (state) {
                         is State.Error   -> {
-                            onError(state.messageID!!, state.error!!, state.errorCode!!)
+                            onError(state.messageID!!, state.throwable!!, state.errorCode!!)
                         }
                         is State.Success -> {
                             if (!isUIInitialized) {

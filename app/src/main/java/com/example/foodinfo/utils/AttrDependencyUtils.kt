@@ -59,7 +59,7 @@ fun <extraT, outputT> getResolved(
                 }
             }
             is State.Error   -> {
-                flowOf(State.Error(extraState.messageID!!, extraState.error!!, extraState.errorCode!!))
+                flowOf(State.Error(extraState.messageID!!, extraState.throwable!!, extraState.errorCode!!))
             }
         }
     }.collect(::emit)

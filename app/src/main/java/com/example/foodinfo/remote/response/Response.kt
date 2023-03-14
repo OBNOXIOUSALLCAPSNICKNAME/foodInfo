@@ -3,7 +3,6 @@ package com.example.foodinfo.remote.response
 import com.example.foodinfo.R
 import com.example.foodinfo.utils.NoInternetException
 import com.example.foodinfo.utils.UnknownException
-import okhttp3.ResponseBody
 import java.io.IOException
 
 
@@ -20,7 +19,7 @@ sealed class NetworkResponse<out S : Any, out E : Any> {
 
     interface Error {
         val code: Int
-        val error: Throwable
+        val throwable: Throwable
         val messageID: Int
     }
 
@@ -29,7 +28,7 @@ sealed class NetworkResponse<out S : Any, out E : Any> {
         val body: T? = null,
         val errorBody: E? = null
     ) : NetworkResponse<T, E>(), Error {
-        override val error = IOException("$errorBody")
+        override val throwable = IOException("$errorBody")
         override val messageID: Int = when (code) {
             400  -> R.string.error_client_400
             401  -> R.string.error_client_401
@@ -44,21 +43,21 @@ sealed class NetworkResponse<out S : Any, out E : Any> {
         override val code: Int,
         val errorBody: E? = null
     ) : NetworkResponse<Nothing, E>(), Error {
-        override val error = IOException("$errorBody")
+        override val throwable = IOException("$errorBody")
         override val messageID: Int = R.string.error_server
     }
 
     data class NetworkError(
         override val code: Int = NETWORK_ERROR_CODE,
-        override val error: Throwable = NoInternetException(),
+        override val throwable: Throwable = NoInternetException(),
         override val messageID: Int = R.string.error_no_internet
     ) : NetworkResponse<Nothing, Nothing>(), Error
 
     data class UnknownError(
         override val code: Int = UNKNOWN_ERROR_CODE,
-        override val error: Throwable = UnknownException(),
+        override val throwable: Throwable = UnknownException(),
         override val messageID: Int = R.string.error_unknown
     ) : NetworkResponse<Nothing, Nothing>(), Error
 }
 
-typealias ApiResponse<S> = NetworkResponse<S, ResponseBody>
+typealias ApiResponse<S> = NetworkResponse<S, Any>
