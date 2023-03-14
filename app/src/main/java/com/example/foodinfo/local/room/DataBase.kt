@@ -4,10 +4,7 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.example.foodinfo.local.room.dao.RecipeAttrDAORoom
-import com.example.foodinfo.local.room.dao.RecipeDAORoom
-import com.example.foodinfo.local.room.dao.SearchFilterDAORoom
-import com.example.foodinfo.local.room.dao.SearchHistoryDAORoom
+import com.example.foodinfo.local.room.dao.*
 import com.example.foodinfo.local.room.entity.*
 
 
@@ -27,6 +24,8 @@ import com.example.foodinfo.local.room.entity.*
         NutrientRecipeAttrEntity::class,
         BasicRecipeAttrEntity::class,
         BasicOfSearchFilterEntity::class,
+        EdamamCredentialsEntity::class,
+        GitHubCredentialsEntity::class,
     ]
 )
 abstract class DataBase : RoomDatabase() {
@@ -34,6 +33,7 @@ abstract class DataBase : RoomDatabase() {
     abstract val searchFilterDAO: SearchFilterDAORoom
     abstract val searchHistoryDAO: SearchHistoryDAORoom
     abstract val recipeAttrDao: RecipeAttrDAORoom
+    abstract val apiCredentialsDao: APICredentialsDAORoom
 
     companion object {
         private const val DB_NAME = "data_base"

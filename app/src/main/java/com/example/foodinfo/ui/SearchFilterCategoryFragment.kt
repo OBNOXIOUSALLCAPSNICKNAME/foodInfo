@@ -56,7 +56,6 @@ class SearchFilterCategoryFragment : BaseFragment<FragmentSearchFilterCategoryBi
 
     override fun initUI() {
         viewModel.categoryID = args.categoryID
-        viewModel.filterName = args.searchFilterName
 
         binding.btnBack.setOnClickListener { onBackClickListener() }
         binding.btnReset.setOnClickListener { onResetClickListener() }

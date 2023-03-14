@@ -1,20 +1,23 @@
 package com.example.foodinfo.remote.api
 
-import com.example.foodinfo.local.dto.LabelRecipeAttrExtendedDB
-import com.example.foodinfo.local.dto.NutrientRecipeAttrDB
-import com.example.foodinfo.local.dto.RecipeAttrsDB
-import com.example.foodinfo.remote.dto.*
+import com.example.foodinfo.remote.dto.RecipeHitNetwork
+import com.example.foodinfo.remote.dto.RecipePageNetwork
+import com.example.foodinfo.remote.response.ApiResponse
+import retrofit2.http.GET
+import retrofit2.http.Url
 
 
-abstract class RecipeAPI {
+interface RecipeAPI {
 
-    abstract fun getRecipes(ID: String): List<RecipeNetwork>
+    @GET
+    suspend fun getPage(
+        @Url
+        url: String
+    ): ApiResponse<RecipePageNetwork>
 
-    abstract fun getRecipeExtended(ID: String, attrs: RecipeAttrsDB): RecipeExtendedNetwork?
-
-    abstract fun getLabels(ID: String, attrs: List<LabelRecipeAttrExtendedDB>): List<LabelOfRecipeNetwork>
-
-    abstract fun getNutrients(ID: String, attrs: List<NutrientRecipeAttrDB>): List<NutrientOfRecipeNetwork>
-
-    abstract fun getIngredients(ID: String): List<IngredientOfRecipeNetwork>
+    @GET
+    suspend fun getRecipe(
+        @Url
+        url: String
+    ): ApiResponse<RecipeHitNetwork>
 }

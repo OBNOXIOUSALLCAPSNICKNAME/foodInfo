@@ -2,7 +2,6 @@ package com.example.foodinfo.view_model
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.foodinfo.local.dto.SearchFilterDB
 import com.example.foodinfo.repository.SearchFilterRepository
 import com.example.foodinfo.repository.model.SearchFilterEditModel
 import com.example.foodinfo.repository.use_case.SearchFilterUseCase
@@ -18,8 +17,6 @@ class SearchFilterViewModel @Inject constructor(
     private val searchFilterUseCase: SearchFilterUseCase,
 ) : ViewModel() {
 
-    var filterName = SearchFilterDB.DEFAULT_NAME
-
     val filter: SharedFlow<State<SearchFilterEditModel>> by lazy {
         searchFilterUseCase.getFilterEdit().shareIn(
             viewModelScope, SharingStarted.WhileSubscribed(stopTimeoutMillis = 5000), 1
@@ -28,7 +25,7 @@ class SearchFilterViewModel @Inject constructor(
 
 
     fun reset() {
-        searchFilterRepository.resetFilter(filterName)
+        searchFilterRepository.resetFilter()
     }
 
     fun update(id: Int, minValue: Float?, maxValue: Float?) {

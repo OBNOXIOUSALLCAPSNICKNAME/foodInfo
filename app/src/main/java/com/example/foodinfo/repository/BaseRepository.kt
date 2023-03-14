@@ -1,8 +1,11 @@
 package com.example.foodinfo.repository
 
-import com.example.foodinfo.utils.ErrorMessages
+import com.example.foodinfo.R
+import com.example.foodinfo.remote.response.ApiResponse
+import com.example.foodinfo.remote.response.NetworkResponse
 import com.example.foodinfo.utils.NoDataException
 import com.example.foodinfo.utils.State
+import com.example.foodinfo.utils.trimMultiline
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
@@ -12,57 +15,100 @@ import kotlinx.coroutines.flow.flowOn
 
 abstract class BaseRepository {
 
+    /**
+     * Wrapper interface that helps [getData] to properly handle different data sources
+     */
+    internal sealed interface DataProvider<T> {
+        data class Remote<T : Any>(val response: ApiResponse<T>) : DataProvider<T>
+        data class Local<T>(val data: T) : DataProvider<T>
+        data class LocalFlow<T>(val flow: Flow<T>) : DataProvider<T>
+        object Empty : DataProvider<Unit>
+    }
+
+
     private inline fun <remoteT, localInT> fetchRemote(
-        crossinline dataProvider: () -> remoteT,
+        crossinline dataProvider: suspend () -> DataProvider<remoteT>,
         crossinline mapDelegate: (remoteT) -> localInT
     ) = flow {
         emit(State.Loading())
 
         try {
-            val response = dataProvider() // TODO extract data from response
-            emitData(response, mapDelegate, this::emit)
+            when (val provider = dataProvider()) {
+                is DataProvider.Remote -> {
+                    when (provider.response) {
+                        is NetworkResponse.Success -> {
+                            emit(mapData(provider.response.result, mapDelegate))
+                        }
+                        else                       -> {
+                            emit(
+                                State.Error(
+                                    (provider.response as NetworkResponse.Error).messageID,
+                                    (provider.response as NetworkResponse.Error).throwable,
+                                    (provider.response as NetworkResponse.Error).code
+                                )
+                            )
+                        }
+                    }
+                }
+                is DataProvider.Empty  -> {
+                    emit(State.Error(R.string.error_no_data, NoDataException()))
+                }
+                else                   -> {
+                    throw IllegalArgumentException(
+                        """
+                            Unsupported remoteDataProvider type: ${provider::class.java}.
+                            remoteDataProvider must be either 'DataProvider.Remote' or 'DataProvider.Empty'
+                        """.trimMultiline()
+                    )
+                }
+            }
         } catch (e: Exception) {
-            emit(State.Error(ErrorMessages.UNKNOWN_ERROR, e))
+            emit(State.Error(R.string.error_unknown, e))
         }
     }.flowOn(Dispatchers.IO)
 
     private inline fun <localInT, modelT> fetchLocal(
-        noinline dataProvider: (() -> localInT)? = null,
-        noinline dataFlowProvider: (() -> Flow<localInT>)? = null,
+        crossinline dataProvider: suspend () -> DataProvider<localInT>,
         crossinline mapDelegate: (localInT) -> modelT
     ) = flow {
         emit(State.Loading())
 
-        if (dataProvider == null && dataFlowProvider == null)
-            throw java.lang.IllegalArgumentException()
-
         try {
-            if (dataProvider != null) {
-                val data = dataProvider()
-                emitData(data, mapDelegate, this::emit)
-            } else {
-                dataFlowProvider!!().collect { data ->
-                    emitData(data, mapDelegate, this::emit)
+            when (val provider = dataProvider()) {
+                is DataProvider.Local -> {
+                    emit(mapData(provider.data, mapDelegate))
+                }
+                is DataProvider.LocalFlow -> {
+                    provider.flow.collect { data ->
+                        emit(mapData(data, mapDelegate))
+                    }
+                }
+                else -> {
+                    throw IllegalArgumentException(
+                        """
+                            Unsupported localDataProvider type: ${provider::class.java}.
+                            localDataProvider must be either 'DataProvider.LocalFlow' or 'DataProvider.Local'
+                        """.trimMultiline()
+                    )
                 }
             }
         } catch (e: Exception) {
-            emit(State.Error(ErrorMessages.UNKNOWN_ERROR, e))
+            emit(State.Error(R.string.error_unknown, e))
         }
     }.flowOn(Dispatchers.IO)
 
 
-    private suspend inline fun <inT, outT> emitData(
+    private suspend inline fun <inT, outT> mapData(
         data: inT?,
-        crossinline mapDelegate: suspend (inT) -> outT,
-        crossinline emit: suspend (State<outT>) -> Unit
-    ) {
-        if (data == null || data is Unit || data is Collection<*> && data.isEmpty()) {
-            emit(State.Error(ErrorMessages.NO_DATA, NoDataException()))
+        crossinline mapDelegate: suspend (inT) -> outT
+    ): State<outT> {
+        return if (data == null || data is Unit || data is Collection<*> && data.isEmpty()) {
+            State.Error(R.string.error_no_data, NoDataException())
         } else {
             try {
-                emit(State.Success(mapDelegate(data)))
+                State.Success(mapDelegate(data))
             } catch (e: Exception) {
-                emit(State.Error(ErrorMessages.UNKNOWN_ERROR, e))
+                State.Error(R.string.error_corrupted_data, e)
             }
         }
     }
@@ -70,14 +116,14 @@ abstract class BaseRepository {
     private suspend inline fun <T> handleState(
         state: State<T>,
         crossinline onSuccess: suspend (T) -> Unit,
-        crossinline onError: suspend (String, Exception) -> Unit,
+        crossinline onError: suspend (Int, Throwable) -> Unit,
     ) {
         when (state) {
             is State.Success -> {
                 onSuccess(state.data!!)
             }
             is State.Error   -> {
-                onError(state.message!!, state.error!!)
+                onError(state.messageID!!, state.throwable!!)
             }
             is State.Loading -> {}
         }
@@ -86,6 +132,12 @@ abstract class BaseRepository {
 
     /**
      * ### NOTES:
+     * - [localDataProvider] must be either [DataProvider.Local] or [DataProvider.LocalFlow].
+     * Otherwise an [IllegalArgumentException] will be thrown.
+     *
+     * - [remoteDataProvider] must be either [DataProvider.Remote] or [DataProvider.Empty].
+     * Otherwise an [IllegalArgumentException] will be thrown.
+     *
      * - Screens that uses data from [State.Loading] to initialize UI should handle situations when
      * [State.Error] will be emitted after [State.Loading] with data != null (e.g. ignore error,
      * invalidate UI and show hard message, show soft message).
@@ -99,24 +151,18 @@ abstract class BaseRepository {
      * - If a potential update is expected, data will always be emitted with [State.Loading].
      * Otherwise data will be emitted with [State.Success]
      *
-     * - Local DB must pass data into [localDataFlowProvider] after each successful completion of
-     * [updateLocalDelegate] even if data hasn't changed, so [getData] can emit data into correct State
-     * (e.g. if local data was emitted with [State.Loading] and after [updateLocalDelegate] completion
-     * [localDataFlowProvider] will not provide any data due to no changes was made in local DB.
+     * - If [localDataProvider] was provided as [DataProvider.LocalFlow], it must pass data after each successful
+     * completion of [saveRemoteDelegate] even if data hasn't changed, so [getData] can emit data into
+     * correct State (e.g. if local data was emitted with [State.Loading] and after [saveRemoteDelegate]
+     * completion [localDataProvider] will not provide any data due to no changes was made in local DB.
      * In that case [State.Loading] will be the last emitted value, which can be bad for screens
      * that does not use data from [State.Loading]).
-     *
-     * - If local or remote data source will pass null or empty collection, [getData] will emit [State.Error]
-     * with [NoDataException]
      *
      * - If data collected from local or remote flow is **Unit, null or empty collection**,
      * [State.Error] will be emitted with [NoDataException].
      *
-     * - [localDataFlowProvider] and [localDataProvider] are optional, but at least one must be provided,
-     * otherwise an [IllegalArgumentException] will be thrown.
-     *
-     * - Always use [localDataFlowProvider] with [remoteDataProvider], otherwise new data
-     * after [updateLocalDelegate] will not be received
+     * - Always use [DataProvider.LocalFlow] inside [localDataProvider] with [remoteDataProvider], otherwise new data
+     * after [saveRemoteDelegate] will not be received
      *
      * ### USE CASES:
      *
@@ -126,34 +172,36 @@ abstract class BaseRepository {
      * ~~~
      * fun getSomeData(): Flow<State<SomeData>> {
      *     return getData(
-     *         remoteDataProvider = {},
-     *         localDataProvider = { dao.fetch() },
-     *         updateLocalDelegate = {},
+     *         remoteDataProvider = { DataProvider.Empty },
+     *         localDataProvider = { DataProvider.LocalFlow(dao.fetch()) },
+     *         saveRemoteDelegate = {},
      *         mapToLocalDelegate = {},
      *         mapToModelDelegate = {}
      *     )
      * }
      * ~~~
      *
-     * Also it is possible to preprocess data from [localDataFlowProvider]. Be careful and avoid cases when
+     * Also it is possible to preprocess data from [localDataProvider]. Be careful and avoid cases when
      * data was invalidated and not be followed by any changes in local data source. It may lead to infinite
      * loop or endless loading state for UI
      * ~~~
      * fun getSomeData(): Flow<State<SomeData>> {
      *     return getData(
-     *         remoteDataProvider = { api.fetch() },
+     *         remoteDataProvider = { DataProvider.Remote(api.fetch()) },
      *         localDataFlowProvider = {
-     *             dao.fetch().transform { data ->
-     *                 // In this case, UI will receive only valid data.
-     *                 val dataToUpdate = verifyData(data)
-     *                 if (dataToUpdate != null) {
-     *                     dao.update(dataToUpdate)
-     *                 } else {
-     *                     emit(data)
+     *             DataProvider.LocalFLow(
+     *                 dao.fetch().transform { data ->
+     *                     // In this case, UI will receive only valid data.
+     *                     val dataToUpdate = verifyData(data)
+     *                     if (dataToUpdate != null) {
+     *                         dao.update(dataToUpdate)
+     *                     } else {
+     *                         emit(data)
+     *                     }
      *                 }
-     *             }
+     *             )
      *         },
-     *         updateLocalDelegate = { dao.update(it) },
+     *         saveRemoteDelegate = { dao.update(it) },
      *         mapToLocalDelegate = { it.toDB() },
      *         mapToModelDelegate = { it.toModel() }
      *     )
@@ -161,20 +209,19 @@ abstract class BaseRepository {
      * ~~~
      */
     internal inline fun <modelT, localInT, localOutT, remoteT> getData(
-        crossinline remoteDataProvider: () -> remoteT,
-        noinline localDataProvider: (() -> localOutT)? = null,
-        noinline localDataFlowProvider: (() -> Flow<localOutT>)? = null,
-        crossinline updateLocalDelegate: (localInT) -> Unit,
+        crossinline localDataProvider: suspend () -> DataProvider<localOutT>,
+        crossinline remoteDataProvider: suspend () -> DataProvider<remoteT>,
+        crossinline saveRemoteDelegate: (localInT) -> Unit,
         crossinline mapToLocalDelegate: (remoteT) -> localInT,
         crossinline mapToModelDelegate: (localOutT) -> modelT,
     ) = flow<State<modelT>> {
         emit(State.Loading())
 
-        var localDBUpdated = false
-        var localDBUpdateError: Exception? = null
+        var remoteDataSaved = false
+        var remoteSaveError: Exception? = null
 
         combine(
-            fetchLocal(localDataProvider, localDataFlowProvider, mapToModelDelegate),
+            fetchLocal(localDataProvider, mapToModelDelegate),
             fetchRemote(remoteDataProvider, mapToLocalDelegate)
         ) { local, remote ->
             when (remote) {
@@ -190,11 +237,11 @@ abstract class BaseRepository {
                     )
                 }
                 is State.Success -> {
-                    if (!localDBUpdated) { // to prevent endless updateLocalDelegate calls
+                    if (!remoteDataSaved) { // to prevent endless updateLocalDelegate calls
                         try {
-                            updateLocalDelegate(remote.data!!)
+                            saveRemoteDelegate(remote.data!!)
                         } catch (e: Exception) {
-                            localDBUpdateError = e
+                            remoteSaveError = e
                         }
                     }
 
@@ -202,23 +249,23 @@ abstract class BaseRepository {
                         state = local,
                         onSuccess = { localData ->
                             // emit loading only if new collection is expected
-                            if (!localDBUpdated && localDBUpdateError == null) {
+                            if (!remoteDataSaved && remoteSaveError == null) {
                                 emit(State.Loading(localData))
                             } else {
                                 emit(State.Success(localData))
                             }
                         },
-                        onError = { message, error ->
+                        onError = { messageID, error ->
                             // emit error only if no new collection is expected
-                            if (localDBUpdateError != null) {
-                                emit(State.Error(ErrorMessages.UNKNOWN_ERROR, localDBUpdateError!!))
-                            } else if (localDBUpdated) {
-                                emit(State.Error(message, error))
+                            if (remoteSaveError != null) {
+                                emit(State.Error(R.string.error_unknown, remoteSaveError!!))
+                            } else if (remoteDataSaved) {
+                                emit(State.Error(messageID, error))
                             }
                         }
                     )
 
-                    localDBUpdated = true
+                    remoteDataSaved = true
                 }
                 is State.Error   -> {
                     handleState(
@@ -227,7 +274,7 @@ abstract class BaseRepository {
                             emit(State.Success(localData))
                         },
                         onError = { _, _ ->
-                            emit(State.Error(remote.message!!, remote.error!!))
+                            emit(State.Error(remote.messageID!!, remote.throwable!!))
                         }
                     )
                 }

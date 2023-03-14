@@ -19,6 +19,16 @@ fun IngredientOfRecipeDB.toModel(): RecipeIngredientModel {
     )
 }
 
-fun IngredientOfRecipeNetwork.toDB(): IngredientOfRecipeDB {
-    throw java.lang.NullPointerException() //TODO implement conversion
+fun IngredientOfRecipeNetwork.toDB(recipeID: String): IngredientOfRecipeDB {
+    return IngredientOfRecipeDB(
+        recipeID = recipeID,
+        text = this.text,
+        quantity = this.quantity,
+        measure = this.measure,
+        weight = this.weight,
+        food = this.food,
+        foodCategory = this.foodCategory,
+        foodID = this.foodID,
+        previewURL = this.image,
+    )
 }

@@ -23,12 +23,15 @@ android {
     }
 
     buildTypes {
+        getByName("debug") {
+            buildConfigField("String", "API_GITHUB", "\"https://api.github.com/\"")
+            buildConfigField("String", "API_EDAMAM", "\"https://api.edamam.com/api/recipes/v2/\"")
+        }
         getByName("release") {
+            buildConfigField("String", "API_GITHUB", "\"https://api.github.com/\"")
+            buildConfigField("String", "API_EDAMAM", "\"https://api.edamam.com/api/recipes/v2/\"")
             isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
     compileOptions {
@@ -77,8 +80,9 @@ dependencies {
     implementation(Dependencies.UI.navigationUI)
     implementation(Dependencies.UI.navigationFragment)
 
-    debugImplementation(Dependencies.Other.leakcanary)
+    //    debugImplementation(Dependencies.Other.leakcanary)
     implementation(Dependencies.Other.legacySupport)
+    implementation(Dependencies.Other.preference)
     testImplementation(Dependencies.Other.junit)
     androidTestImplementation(Dependencies.Other.junitExt)
     androidTestImplementation(Dependencies.Other.espresso)

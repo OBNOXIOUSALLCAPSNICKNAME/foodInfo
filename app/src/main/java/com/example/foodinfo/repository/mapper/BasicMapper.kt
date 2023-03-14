@@ -101,5 +101,14 @@ fun BasicRecipeAttrDB.toFilter(filterName: String): BasicOfSearchFilterDB {
 }
 
 fun BasicRecipeAttrNetwork.toDB(): BasicRecipeAttrDB {
-    throw java.lang.NullPointerException() //TODO implement conversion
+    return BasicRecipeAttrDB(
+        ID = this.ID,
+        tag = this.tag,
+        name = this.name,
+        columnName = this.columnName,
+        measure = this.measure,
+        rangeMin = this.rangeMin,
+        rangeMax = this.rangeMax,
+        stepSize = this.stepSize
+    )
 }

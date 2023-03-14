@@ -1,6 +1,8 @@
 package com.example.foodinfo.repository
 
+import com.example.foodinfo.local.dao.APICredentialsDAO
 import com.example.foodinfo.local.dao.RecipeAttrDAO
+import com.example.foodinfo.local.dto.GitHubCredentialsDB
 import com.example.foodinfo.local.dto.LabelRecipeAttrDB
 import com.example.foodinfo.local.dto.NutrientRecipeAttrDB
 import com.example.foodinfo.local.dto.RecipeAttrsDB
@@ -13,6 +15,7 @@ import com.example.foodinfo.repository.model.CategorySearchModel
 import com.example.foodinfo.repository.model.CategoryTargetSearchModel
 import com.example.foodinfo.repository.model.LabelHintModel
 import com.example.foodinfo.repository.model.NutrientHintModel
+import com.example.foodinfo.utils.PrefUtils
 import com.example.foodinfo.utils.State
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
@@ -20,8 +23,10 @@ import javax.inject.Inject
 
 
 class RecipeAttrRepository @Inject constructor(
+    private val apiCredentialsDAO: APICredentialsDAO,
     private val recipeAttrDAO: RecipeAttrDAO,
-    private val recipeAttrAPI: RecipeAttrAPI
+    private val recipeAttrAPI: RecipeAttrAPI,
+    private val prefUtils: PrefUtils
 ) : BaseRepository() {
     fun getNutrientHint(ID: Int): NutrientHintModel {
         return recipeAttrDAO.getNutrient(ID).toModelHint()
@@ -33,9 +38,9 @@ class RecipeAttrRepository @Inject constructor(
 
     fun getCategoryLabelsLatest(categoryID: Int): Flow<State<CategoryTargetSearchModel>> {
         return getData(
-            remoteDataProvider = { recipeAttrAPI.getRecipeAttrs() },
-            localDataFlowProvider = { recipeAttrDAO.observeCategoryLabels(categoryID) },
-            updateLocalDelegate = { recipeAttrDAO.addRecipeAttrs(it) },
+            remoteDataProvider = { DataProvider.Remote(recipeAttrAPI.getRecipeAttrs(authToken)) },
+            localDataProvider = { DataProvider.LocalFlow(recipeAttrDAO.observeCategoryLabels(categoryID)) },
+            saveRemoteDelegate = { recipeAttrDAO.addRecipeAttrs(it) },
             mapToLocalDelegate = { it.toDB() },
             mapToModelDelegate = { it.toModelSearch() }
         )
@@ -43,9 +48,9 @@ class RecipeAttrRepository @Inject constructor(
 
     fun getCategoriesLatest(): Flow<State<List<CategorySearchModel>>> {
         return getData(
-            remoteDataProvider = { recipeAttrAPI.getRecipeAttrs() },
-            localDataFlowProvider = { recipeAttrDAO.observeCategoriesAll() },
-            updateLocalDelegate = { recipeAttrDAO.addRecipeAttrs(it) },
+            remoteDataProvider = { DataProvider.Remote(recipeAttrAPI.getRecipeAttrs(authToken)) },
+            localDataProvider = { DataProvider.LocalFlow(recipeAttrDAO.observeCategoriesAll()) },
+            saveRemoteDelegate = { recipeAttrDAO.addRecipeAttrs(it) },
             mapToLocalDelegate = { it.toDB() },
             mapToModelDelegate = { it.map { label -> label.toModel() } }
         )
@@ -53,9 +58,9 @@ class RecipeAttrRepository @Inject constructor(
 
     fun getLabelsDBLatest(): Flow<State<List<LabelRecipeAttrDB>>> {
         return getData(
-            remoteDataProvider = { recipeAttrAPI.getRecipeAttrs() },
-            localDataFlowProvider = { recipeAttrDAO.observeLabelsAll() },
-            updateLocalDelegate = { recipeAttrDAO.addRecipeAttrs(it) },
+            remoteDataProvider = { DataProvider.Remote(recipeAttrAPI.getRecipeAttrs(authToken)) },
+            localDataProvider = { DataProvider.LocalFlow(recipeAttrDAO.observeLabelsAll()) },
+            saveRemoteDelegate = { recipeAttrDAO.addRecipeAttrs(it) },
             mapToLocalDelegate = { it.toDB() },
             mapToModelDelegate = { it }
         )
@@ -63,9 +68,9 @@ class RecipeAttrRepository @Inject constructor(
 
     fun getNutrientsDBLatest(): Flow<State<List<NutrientRecipeAttrDB>>> {
         return getData(
-            remoteDataProvider = { recipeAttrAPI.getRecipeAttrs() },
-            localDataFlowProvider = { recipeAttrDAO.observeNutrientsAll() },
-            updateLocalDelegate = { recipeAttrDAO.addRecipeAttrs(it) },
+            remoteDataProvider = { DataProvider.Remote(recipeAttrAPI.getRecipeAttrs(authToken)) },
+            localDataProvider = { DataProvider.LocalFlow(recipeAttrDAO.observeNutrientsAll()) },
+            saveRemoteDelegate = { recipeAttrDAO.addRecipeAttrs(it) },
             mapToLocalDelegate = { it.toDB() },
             mapToModelDelegate = { it }
         )
@@ -73,18 +78,20 @@ class RecipeAttrRepository @Inject constructor(
 
     fun getRecipeAttrsDBLatest(): Flow<State<RecipeAttrsDB>> {
         return getData(
-            remoteDataProvider = { recipeAttrAPI.getRecipeAttrs() },
-            localDataFlowProvider = {
-                combine(
-                    recipeAttrDAO.observeBasicsAll(),
-                    recipeAttrDAO.observeLabelsAll(),
-                    recipeAttrDAO.observeNutrientsAll(),
-                    recipeAttrDAO.observeCategoriesAll()
-                ) { basics, labels, nutrients, categories ->
-                    RecipeAttrsDB(basics, labels, nutrients, categories)
-                }
+            remoteDataProvider = { DataProvider.Remote(recipeAttrAPI.getRecipeAttrs(authToken)) },
+            localDataProvider = {
+                DataProvider.LocalFlow(
+                    combine(
+                        recipeAttrDAO.observeBasicsAll(),
+                        recipeAttrDAO.observeLabelsAll(),
+                        recipeAttrDAO.observeNutrientsAll(),
+                        recipeAttrDAO.observeCategoriesAll()
+                    ) { basics, labels, nutrients, categories ->
+                        RecipeAttrsDB(basics, labels, nutrients, categories)
+                    }
+                )
             },
-            updateLocalDelegate = { recipeAttrDAO.addRecipeAttrs(it) },
+            saveRemoteDelegate = { recipeAttrDAO.addRecipeAttrs(it) },
             mapToLocalDelegate = { it.toDB() },
             mapToModelDelegate = { it }
         )
@@ -92,11 +99,14 @@ class RecipeAttrRepository @Inject constructor(
 
     fun getRecipeAttrsDB(): Flow<State<RecipeAttrsDB>> {
         return getData(
-            remoteDataProvider = { },
-            localDataProvider = { recipeAttrDAO.getRecipeAttrs() },
-            updateLocalDelegate = { },
+            remoteDataProvider = { DataProvider.Empty },
+            localDataProvider = { DataProvider.Local(recipeAttrDAO.getRecipeAttrs()) },
+            saveRemoteDelegate = { },
             mapToLocalDelegate = { },
             mapToModelDelegate = { it }
         )
     }
+
+    private val authToken: String
+        get() = GitHubCredentialsDB.TOKEN_PREFIX + apiCredentialsDAO.getGitHub(prefUtils.githubCredentials).token
 }

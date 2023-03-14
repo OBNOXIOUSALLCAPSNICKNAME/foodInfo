@@ -57,5 +57,7 @@ object Dependencies {
 
         // track memory leaks
         const val leakcanary = "com.squareup.leakcanary:leakcanary-android:${Versions.Other.leakcanary}"
+
+        const val preference = "androidx.preference:preference-ktx:${Versions.Other.preference}"
     }
 }

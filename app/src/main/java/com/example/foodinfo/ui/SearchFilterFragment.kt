@@ -44,19 +44,14 @@ class SearchFilterFragment : BaseFragment<FragmentSearchFilterBinding>(
 
     private val onNutrientsEditClickListener: () -> Unit = {
         findNavController().navigate(
-            SearchFilterFragmentDirections.actionFSearchFilterToFSearchFilterNutrients(
-                viewModel.filterName
-            )
+            SearchFilterFragmentDirections.actionFSearchFilterToFSearchFilterNutrients()
         )
     }
 
 
     private val onCategoryChangedCallback: (Int) -> Unit = { categoryID ->
         findNavController().navigate(
-            SearchFilterFragmentDirections.actionFSearchFilterToFSearchFilterCategory(
-                categoryID,
-                viewModel.filterName
-            )
+            SearchFilterFragmentDirections.actionFSearchFilterToFSearchFilterCategory(categoryID)
         )
     }
 
@@ -80,8 +75,6 @@ class SearchFilterFragment : BaseFragment<FragmentSearchFilterBinding>(
 
 
     override fun initUI() {
-        binding.tvFilterName.text = viewModel.filterName
-
         binding.btnBack.setOnClickListener { onBackClickListener() }
         binding.btnReset.setOnClickListener { onResetClickListener() }
         binding.ivNutrientsEdit.setOnClickListener {
@@ -164,6 +157,7 @@ class SearchFilterFragment : BaseFragment<FragmentSearchFilterBinding>(
     }
 
     private fun initFilter(filter: SearchFilterEditModel) {
+        binding.tvFilterName.text = filter.name
         recyclerAdapterCategories.submitList(filter.categories)
         recyclerAdapterBaseFields.submitList(filter.basics)
         if (filter.nutrients.isEmpty()) {

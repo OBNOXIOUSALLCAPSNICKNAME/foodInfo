@@ -1,10 +1,7 @@
 package com.example.foodinfo.di.module
 
 import android.content.Context
-import com.example.foodinfo.local.dao.RecipeAttrDAO
-import com.example.foodinfo.local.dao.RecipeDAO
-import com.example.foodinfo.local.dao.SearchFilterDAO
-import com.example.foodinfo.local.dao.SearchHistoryDAO
+import com.example.foodinfo.local.dao.*
 import com.example.foodinfo.local.room.DataBase
 import dagger.Module
 import dagger.Provides
@@ -38,5 +35,10 @@ class RoomModule {
     @Provides
     fun provideRecipeFieldsInfoDAO(database: DataBase): RecipeAttrDAO {
         return database.recipeAttrDao
+    }
+
+    @Provides
+    fun provideAPICredentialsDAO(database: DataBase): APICredentialsDAO {
+        return database.apiCredentialsDao
     }
 }

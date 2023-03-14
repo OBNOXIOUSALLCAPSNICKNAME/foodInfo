@@ -18,20 +18,20 @@ import kotlinx.coroutines.flow.Flow
 abstract class RecipeAttrDAORoom : RecipeAttrDAO {
 
     @Query(
-        "SELECT * FROM ${LabelRecipeAttrDB.TABLE_NAME} " +
-        "WHERE ${LabelRecipeAttrDB.Columns.ID} = :ID"
+        "SELECT * FROM ${LabelRecipeAttrDB.TABLE_NAME} WHERE " +
+        "${LabelRecipeAttrDB.Columns.ID} = :ID"
     )
     abstract override fun getLabel(ID: Int): LabelRecipeAttrEntity
 
     @Query(
-        "SELECT * FROM ${NutrientRecipeAttrDB.TABLE_NAME} " +
-        "WHERE ${NutrientRecipeAttrDB.Columns.ID} = :ID"
+        "SELECT * FROM ${NutrientRecipeAttrDB.TABLE_NAME} WHERE " +
+        "${NutrientRecipeAttrDB.Columns.ID} = :ID"
     )
     abstract override fun getNutrient(ID: Int): NutrientRecipeAttrEntity
 
     @Query(
-        "SELECT * FROM ${CategoryRecipeAttrDB.TABLE_NAME} " +
-        "WHERE ${CategoryRecipeAttrDB.Columns.ID} = :ID"
+        "SELECT * FROM ${CategoryRecipeAttrDB.TABLE_NAME} WHERE " +
+        "${CategoryRecipeAttrDB.Columns.ID} = :ID"
     )
     abstract override fun getCategory(ID: Int): CategoryRecipeAttrEntity
 
@@ -72,37 +72,53 @@ abstract class RecipeAttrDAORoom : RecipeAttrDAO {
     abstract override fun observeCategoriesAll(): Flow<List<CategoryRecipeAttrEntity>>
 
     @Query(
-        "SELECT * FROM ${LabelRecipeAttrDB.TABLE_NAME} " +
-        "WHERE ${LabelRecipeAttrDB.Columns.CATEGORY_ID} = :categoryID"
+        "SELECT * FROM ${LabelRecipeAttrDB.TABLE_NAME} WHERE " +
+        "${LabelRecipeAttrDB.Columns.CATEGORY_ID} = :categoryID"
     )
     abstract override fun observeCategoryLabels(categoryID: Int): Flow<List<LabelRecipeAttrExtendedPOJO>>
 
+
+    @Query("DELETE FROM ${BasicRecipeAttrDB.TABLE_NAME}")
+    abstract fun clearBasics()
 
     @Insert
     abstract fun addBasicsEntity(attrs: List<BasicRecipeAttrEntity>)
 
     override fun addBasics(attrs: List<BasicRecipeAttrDB>) {
+        clearBasics()
         addBasicsEntity(attrs.map { BasicRecipeAttrEntity.toEntity(it) })
     }
+
+    @Query("DELETE FROM ${LabelRecipeAttrDB.TABLE_NAME}")
+    abstract fun clearLabels()
 
     @Insert
     abstract fun addLabelsEntity(attrs: List<LabelRecipeAttrEntity>)
 
     override fun addLabels(attrs: List<LabelRecipeAttrDB>) {
+        clearLabels()
         addLabelsEntity(attrs.map { LabelRecipeAttrEntity.toEntity(it) })
     }
+
+    @Query("DELETE FROM ${NutrientRecipeAttrDB.TABLE_NAME}")
+    abstract fun clearNutrients()
 
     @Insert
     abstract fun addNutrientsEntity(attrs: List<NutrientRecipeAttrEntity>)
 
     override fun addNutrients(attrs: List<NutrientRecipeAttrDB>) {
+        clearNutrients()
         addNutrientsEntity(attrs.map { NutrientRecipeAttrEntity.toEntity(it) })
     }
+
+    @Query("DELETE FROM ${CategoryRecipeAttrDB.TABLE_NAME}")
+    abstract fun clearCategories()
 
     @Insert
     abstract fun addCategoriesEntity(attrs: List<CategoryRecipeAttrEntity>)
 
     override fun addCategories(attrs: List<CategoryRecipeAttrDB>) {
+        clearCategories()
         addCategoriesEntity(attrs.map { CategoryRecipeAttrEntity.toEntity(it) })
     }
 

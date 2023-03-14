@@ -52,6 +52,18 @@
     <string name = "unspecified_text">Unspecified</string>
     <string name = "reset_text">reset</string>
 
+    <string name = "error_no_data">No data found</string>
+    <string name = "error_client">Unknown client error</string>
+    <string name = "error_client_400">Invalid API request</string>
+    <string name = "error_client_401">Invalid API credentials</string>
+    <string name = "error_client_403">Forbidden. Looks like GitHub API limit was exceeded</string>
+    <string name = "error_client_404">Data not found</string>
+    <string name = "error_client_429">Too many requests. Looks like Edamam API limit was exceeded</string>
+    <string name = "error_server">Server not responding</string>
+    <string name = "error_unknown">Something went wrong</string>
+    <string name = "error_no_internet">Please connect to the internet and try again</string>
+    <string name = "error_corrupted_data">Data is corrupted or outdated</string>
+
     <string-array name = "preview_range_slider_values">
         <item>0</item>
         <item>100</item>

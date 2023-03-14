@@ -14,14 +14,14 @@ import kotlinx.coroutines.flow.Flow
 abstract class RecipeDAORoom : RecipeDAO {
 
     @Query(
-        "SELECT * FROM ${RecipeDB.TABLE_NAME} " +
-                "WHERE ${RecipeDB.Columns.IS_FAVORITE} == 1"
+        "SELECT * FROM ${RecipeDB.TABLE_NAME} WHERE " +
+        "${RecipeDB.Columns.IS_FAVORITE} == 1"
     )
     abstract override fun getFavorite(): PagingSource<Int, RecipeEntity>
 
     @Query(
-        "SELECT ${RecipeDB.Columns.ID} FROM ${RecipeDB.TABLE_NAME} " +
-                "WHERE ${RecipeDB.Columns.IS_FAVORITE} == 1"
+        "SELECT ${RecipeDB.Columns.ID} FROM ${RecipeDB.TABLE_NAME} WHERE " +
+        "${RecipeDB.Columns.IS_FAVORITE} == 1"
     )
     abstract override fun getFavoriteIds(): List<String>
 
@@ -38,102 +38,95 @@ abstract class RecipeDAORoom : RecipeDAO {
 
     @Transaction
     @Query(
-        "SELECT * FROM ${RecipeDB.TABLE_NAME} " +
-                "WHERE ${RecipeDB.Columns.ID} " +
-                "LIKE '%' || :recipeID || '%'"
+        "SELECT * FROM ${RecipeDB.TABLE_NAME} WHERE " +
+        "${RecipeDB.Columns.ID} LIKE '%' || :recipeID || '%'"
     )
     abstract override fun getByIdExtended(recipeID: String): Flow<RecipeExtendedPOJO>
 
     @Query(
-        "SELECT * FROM ${IngredientOfRecipeDB.TABLE_NAME} " +
-                "WHERE ${IngredientOfRecipeDB.Columns.RECIPE_ID} " +
-                "LIKE '%' || :recipeID || '%'"
+        "SELECT * FROM ${IngredientOfRecipeDB.TABLE_NAME} WHERE " +
+        "${IngredientOfRecipeDB.Columns.RECIPE_ID} LIKE '%' || :recipeID || '%'"
     )
     abstract override fun getIngredients(recipeID: String): Flow<List<IngredientOfRecipeEntity>>
 
     @Transaction
     @Query(
-        "SELECT * FROM ${NutrientOfRecipeDB.TABLE_NAME} " +
-                "WHERE ${NutrientOfRecipeDB.Columns.RECIPE_ID} " +
-                "LIKE '%' || :recipeID || '%'"
+        "SELECT * FROM ${NutrientOfRecipeDB.TABLE_NAME} WHERE " +
+        "${NutrientOfRecipeDB.Columns.RECIPE_ID} LIKE '%' || :recipeID || '%'"
     )
     abstract override fun getNutrients(recipeID: String): Flow<List<NutrientOfRecipeExtendedPOJO>>
 
     @Transaction
     @Query(
-        "SELECT * FROM ${LabelOfRecipeDB.TABLE_NAME} " +
-                "WHERE ${LabelOfRecipeDB.Columns.RECIPE_ID} " +
-                "LIKE '%' || :recipeID || '%'"
+        "SELECT * FROM ${LabelOfRecipeDB.TABLE_NAME} WHERE " +
+        "${LabelOfRecipeDB.Columns.RECIPE_ID} LIKE '%' || :recipeID || '%'"
     )
     abstract override fun getLabels(recipeID: String): Flow<List<LabelOfRecipeExtendedPOJO>>
 
 
     @Query(
-        "UPDATE ${RecipeDB.TABLE_NAME} " +
-                "SET ${RecipeDB.Columns.IS_FAVORITE} = " +
-                "NOT ${RecipeDB.Columns.IS_FAVORITE} " +
-                "WHERE ${RecipeDB.Columns.ID} = :recipeID"
+        "UPDATE ${RecipeDB.TABLE_NAME} SET " +
+        "${RecipeDB.Columns.IS_FAVORITE} = NOT ${RecipeDB.Columns.IS_FAVORITE} " +
+        "WHERE ${RecipeDB.Columns.ID} = :recipeID"
     )
     abstract override fun invertFavoriteStatus(recipeID: String)
 
     @Query(
-        "UPDATE ${RecipeDB.TABLE_NAME} " +
-                "SET ${RecipeDB.Columns.IS_FAVORITE} = 0 " +
-                "WHERE ${RecipeDB.Columns.ID} IN (:recipeIDs)"
+        "UPDATE ${RecipeDB.TABLE_NAME} SET " +
+        "${RecipeDB.Columns.IS_FAVORITE} = 0 " +
+        "WHERE ${RecipeDB.Columns.ID} IN (:recipeIDs)"
     )
     abstract override fun delFromFavorite(recipeIDs: List<String>)
 
     @Query(
-        "UPDATE ${RecipeDB.TABLE_NAME} " +
-                "SET ${RecipeDB.Columns.IS_FAVORITE} = 1 " +
-                "WHERE ${RecipeDB.Columns.ID} IN (:recipeIDs)"
+        "UPDATE ${RecipeDB.TABLE_NAME} SET " +
+        "${RecipeDB.Columns.IS_FAVORITE} = 1 " +
+        "WHERE ${RecipeDB.Columns.ID} IN (:recipeIDs)"
     )
     abstract fun addToFavorite(recipeIDs: List<String>)
 
 
     @Query(
-        "SELECT ${RecipeDB.Columns.ID}, ${RecipeDB.Columns.IS_FAVORITE} " +
-                "FROM ${RecipeDB.TABLE_NAME} " +
-                "WHERE ${RecipeDB.Columns.ID} = :recipeID"
+        "SELECT ${RecipeDB.Columns.ID}, ${RecipeDB.Columns.IS_FAVORITE} FROM ${RecipeDB.TABLE_NAME} WHERE " +
+        "${RecipeDB.Columns.ID} = :recipeID"
     )
     abstract fun getFavoriteMark(recipeID: String): Boolean
 
     @MapInfo(keyColumn = RecipeDB.Columns.ID, valueColumn = RecipeDB.Columns.IS_FAVORITE)
     @Query(
-        "SELECT ${RecipeDB.Columns.ID}, ${RecipeDB.Columns.IS_FAVORITE} " +
-                "FROM ${RecipeDB.TABLE_NAME} " +
-                "WHERE ${RecipeDB.Columns.ID} IN (:recipeIDs)"
+        "SELECT ${RecipeDB.Columns.ID}, ${RecipeDB.Columns.IS_FAVORITE} FROM ${RecipeDB.TABLE_NAME} WHERE " +
+        "${RecipeDB.Columns.ID} IN (:recipeIDs)"
     )
     abstract fun getFavoriteMarks(recipeIDs: List<String>): Map<String, Boolean>
 
 
     @Query(
-        "DELETE FROM ${RecipeDB.TABLE_NAME} " +
-                "WHERE ${RecipeDB.Columns.ID} = :recipeID"
+        "DELETE FROM ${RecipeDB.TABLE_NAME} WHERE " +
+        "${RecipeDB.Columns.ID} = :recipeID"
     )
     abstract override fun removeRecipe(recipeID: String)
 
     @Query(
-        "DELETE FROM ${RecipeDB.TABLE_NAME} " +
-                "WHERE ${RecipeDB.Columns.ID} IN (:recipeIDs)"
+        "DELETE FROM ${RecipeDB.TABLE_NAME} WHERE " +
+        "${RecipeDB.Columns.ID} IN (:recipeIDs)"
     )
     abstract override fun removeRecipes(recipeIDs: List<String>)
 
     @Query(
-        "DELETE FROM ${LabelOfRecipeDB.TABLE_NAME} " +
-                "WHERE ${LabelOfRecipeDB.Columns.RECIPE_ID} IN (:recipeIDs)"
+        "DELETE FROM ${LabelOfRecipeDB.TABLE_NAME} WHERE " +
+        "${LabelOfRecipeDB.Columns.RECIPE_ID} IN (:recipeIDs)"
     )
     abstract fun removeLabels(recipeIDs: List<String>)
 
     @Query(
-        "DELETE FROM ${NutrientOfRecipeDB.TABLE_NAME} " +
-                "WHERE ${NutrientOfRecipeDB.Columns.RECIPE_ID} IN (:recipeIDs)"
+        "DELETE FROM ${NutrientOfRecipeDB.TABLE_NAME} WHERE " +
+        "${NutrientOfRecipeDB.Columns.RECIPE_ID} IN (:recipeIDs)"
     )
     abstract fun removeNutrients(recipeIDs: List<String>)
 
     @Query(
-        "DELETE FROM ${IngredientOfRecipeDB.TABLE_NAME} " +
-                "WHERE ${IngredientOfRecipeDB.Columns.RECIPE_ID} IN (:recipeIDs)"
+        "DELETE FROM ${IngredientOfRecipeDB.TABLE_NAME} WHERE " +
+        "${IngredientOfRecipeDB.Columns.RECIPE_ID} IN (:recipeIDs)"
     )
     abstract fun removeIngredients(recipeIDs: List<String>)
 

@@ -1,21 +1,20 @@
 package com.example.foodinfo.remote.api
 
-import com.example.foodinfo.remote.dto.*
+import com.example.foodinfo.remote.dto.RecipeAttrsNetwork
+import com.example.foodinfo.remote.response.ApiResponse
+import retrofit2.http.GET
+import retrofit2.http.Header
 
 
-abstract class RecipeAttrAPI {
+interface RecipeAttrAPI {
+    @GET("repos/yvo08013/SharedFiles/contents/db_fields_info.json")
+    suspend fun getRecipeAttrs(
+        @Header(AUTH_TOKEN)
+        token: String
+    ): ApiResponse<RecipeAttrsNetwork>
 
-    abstract fun getRecipeAttrs(): RecipeAttrsNetwork
 
-    abstract fun getBasics(): List<BasicRecipeAttrNetwork>
-
-    abstract fun getLabels(): List<LabelRecipeAttrNetwork>
-
-    abstract fun getCategoryLabels(categoryID: Int): List<LabelRecipeAttrNetwork>
-
-    abstract fun getNutrients(): List<NutrientRecipeAttrNetwork>
-
-    abstract fun getCategory(ID: Int): CategoryRecipeAttrNetwork
-
-    abstract fun getCategories(): List<CategoryRecipeAttrNetwork>
+    private companion object {
+        const val AUTH_TOKEN = "Authorization"
+    }
 }

@@ -4,7 +4,6 @@ import com.example.foodinfo.local.dto.RecipeAttrsDB
 import com.example.foodinfo.local.dto.RecipeDB
 import com.example.foodinfo.local.dto.RecipeExtendedDB
 import com.example.foodinfo.remote.dto.RecipeAttrsNetwork
-import com.example.foodinfo.remote.dto.RecipeExtendedNetwork
 import com.example.foodinfo.remote.dto.RecipeNetwork
 import com.example.foodinfo.repository.model.RecipeExtendedModel
 import com.example.foodinfo.repository.model.RecipeFavoriteModel
@@ -53,14 +52,51 @@ fun RecipeExtendedDB.toModelExtended(): RecipeExtendedModel {
     )
 }
 
-fun RecipeNetwork.toDB(): RecipeDB {
-    throw java.lang.NullPointerException() //TODO implement conversion
-}
-
-fun RecipeExtendedNetwork.toDB(): RecipeExtendedDB {
-    throw java.lang.NullPointerException() //TODO implement conversion
-}
 
 fun RecipeAttrsNetwork.toDB(): RecipeAttrsDB {
-    throw java.lang.NullPointerException() //TODO implement conversion
+    return RecipeAttrsDB(
+        basics = this.basics.map { it.toDB() },
+        labels = this.labels.map { it.toDB() },
+        categories = this.categories.map { it.toDB() },
+        nutrients = this.nutrients.map { it.toDB() }
+    )
+}
+
+fun RecipeNetwork.toDB(): RecipeDB {
+    return RecipeDB(
+        ID = this.URI!!.replace("http://www.edamam.com/ontologies/edamam.owl#recipe_", ""),
+        source = this.source!!,
+        name = this.label!!,
+        previewURL = this.image!!,
+        calories = this.calories!!.toInt(),
+        ingredientsCount = this.ingredientsLines!!.size,
+        weight = this.weight!!.toInt(),
+        cookingTime = this.time!!.toInt(),
+        servings = this.servings!!.toInt()
+    )
+}
+
+fun RecipeNetwork.toDBExtended(attrs: RecipeAttrsDB): RecipeExtendedDB {
+    val recipeID = this.URI!!.replace("http://www.edamam.com/ontologies/edamam.owl#recipe_", "")
+
+    return RecipeExtendedDB(
+        ID = recipeID,
+        source = this.source!!,
+        name = this.label!!,
+        previewURL = this.image!!,
+        calories = this.calories!!.toInt(),
+        ingredientsCount = this.ingredientsLines!!.size,
+        weight = this.weight!!.toInt(),
+        cookingTime = this.time!!.toInt(),
+        servings = this.servings!!.toInt(),
+        ingredients = this.ingredients!!.map { it.toDB(recipeID) },
+        nutrients = this.nutrients!!.toDBExtended(recipeID, attrs.nutrients),
+        labels =
+        this.meal!!.toDB(recipeID, attrs.labels) +
+        this.diet!!.toDB(recipeID, attrs.labels) +
+        this.dish!!.toDB(recipeID, attrs.labels) +
+        this.health!!.toDB(recipeID, attrs.labels) +
+        this.cuisine!!.toDB(recipeID, attrs.labels)
+
+    )
 }

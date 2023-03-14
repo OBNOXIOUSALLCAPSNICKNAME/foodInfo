@@ -165,26 +165,15 @@
         <argument
             android:name = "categoryID"
             app:argType = "integer" />
-        <argument
-            android:name = "searchFilterName"
-            app:argType = "string" />
     </fragment>
     <fragment
         android:id = "@+id/f_search_filter_nutrients"
         android:name = "com.example.foodinfo.ui.SearchFilterNutrientsFragment"
         android:label = "SearchFilterNutrientsFragment"
-        tools:layout = "@layout/fragment_search_filter_nutrients">
-        <argument
-            android:name = "searchFilterName"
-            app:argType = "string" />
-    </fragment>
+        tools:layout = "@layout/fragment_search_filter_nutrients" />
     <fragment
         android:id = "@+id/f_search_filter_select"
         android:name = "com.example.foodinfo.ui.SearchFilterSelectFragment"
         android:label = "SearchFilterSelectFragment"
-        tools:layout = "@layout/fragment_search_filter_select">
-        <argument
-            android:name = "searchFilterName"
-            app:argType = "string" />
-    </fragment>
+        tools:layout = "@layout/fragment_search_filter_select" />
 </navigation>

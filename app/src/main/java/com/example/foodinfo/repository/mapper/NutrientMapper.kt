@@ -135,10 +135,45 @@ fun NutrientRecipeAttrDB.toFilter(filterName: String): NutrientOfSearchFilterDB 
 }
 
 
-fun NutrientOfRecipeNetwork.toDB(): NutrientOfRecipeDB {
-    throw java.lang.NullPointerException() //TODO implement conversion
+fun Map<String, NutrientOfRecipeNetwork>.toDB(
+    recipeID: String,
+    attrs: List<NutrientRecipeAttrDB>
+): List<NutrientOfRecipeDB> {
+    return this.map { (tag, nutrient) ->
+        NutrientOfRecipeDB(
+            recipeID = recipeID,
+            infoID = attrs.first { it.tag.lowercase() == tag.lowercase() }.ID,
+            value = nutrient.quantity
+        )
+    }
+}
+
+fun Map<String, NutrientOfRecipeNetwork>.toDBExtended(
+    recipeID: String,
+    attrs: List<NutrientRecipeAttrDB>
+): List<NutrientOfRecipeExtendedDB> {
+    return this.map { (tag, nutrient) ->
+        NutrientOfRecipeExtendedDB(
+            recipeID = recipeID,
+            infoID = attrs.first { it.tag.lowercase() == tag.lowercase() }.ID,
+            value = nutrient.quantity,
+            attrInfo = null
+        )
+    }
 }
 
 fun NutrientRecipeAttrNetwork.toDB(): NutrientRecipeAttrDB {
-    throw java.lang.NullPointerException() //TODO implement conversion
+    return NutrientRecipeAttrDB(
+        ID = this.ID,
+        tag = this.tag,
+        name = this.name,
+        measure = this.measure,
+        description = this.description,
+        hasRDI = this.hasRDI,
+        previewURL = this.previewURL,
+        dailyAllowance = this.dailyAllowance,
+        stepSize = this.stepSize,
+        rangeMin = this.rangeMin,
+        rangeMax = this.rangeMax
+    )
 }
