@@ -2,6 +2,7 @@ package com.example.foodinfo.utils
 
 import android.util.Base64
 import com.example.foodinfo.remote.dto.RecipeAttrsNetwork
+import com.example.foodinfo.utils.extensions.fromString
 import com.google.gson.Gson
 import com.google.gson.TypeAdapter
 import com.google.gson.TypeAdapterFactory
@@ -13,6 +14,8 @@ import javax.inject.Inject
 
 private const val CONTENT = "content"
 
+// baseGson needs for proper work of gson.fromString(). Gson provided by create() does not know how to
+// handle RecipeAttrsNetwork fields and thus returns RecipeAttrsNetwork with empty lists.
 @Suppress("UNCHECKED_CAST")
 class GitHubTypeAdapterFactory @Inject constructor(private val baseGson: Gson) : TypeAdapterFactory {
     override fun <T : Any?> create(gson: Gson, typeToken: TypeToken<T>): TypeAdapter<T>? {

@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import com.example.foodinfo.databinding.ItemRecipeCategoryBinding
 import com.example.foodinfo.databinding.TvChipBinding
 import com.example.foodinfo.repository.model.CategoryOfRecipeModel
+import com.example.foodinfo.ui.base.BaseViewHolder
 
 
 class RecipeCategoryViewHolder(

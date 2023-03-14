@@ -1,4 +1,4 @@
-package com.example.foodinfo.ui
+package com.example.foodinfo.ui.fragment
 
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
@@ -9,17 +9,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.foodinfo.R
 import com.example.foodinfo.databinding.FragmentRecipeNutrientsBinding
 import com.example.foodinfo.ui.adapter.RecipeNutrientsAdapter
+import com.example.foodinfo.ui.base.DataObserverFragment
 import com.example.foodinfo.ui.decorator.ListItemDecoration
-import com.example.foodinfo.utils.appComponent
-import com.example.foodinfo.utils.baseAnimation
-import com.example.foodinfo.utils.showDescriptionDialog
+import com.example.foodinfo.utils.extensions.appComponent
+import com.example.foodinfo.utils.extensions.baseAnimation
+import com.example.foodinfo.utils.extensions.showDescriptionDialog
 import com.example.foodinfo.view_model.RecipeNutrientsViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 
-class RecipeNutrientsFragment : BaseFragment<FragmentRecipeNutrientsBinding>(
+class RecipeNutrientsFragment : DataObserverFragment<FragmentRecipeNutrientsBinding>(
     FragmentRecipeNutrientsBinding::inflate
 ) {
 
@@ -72,7 +73,6 @@ class RecipeNutrientsFragment : BaseFragment<FragmentRecipeNutrientsBinding>(
         binding.btnBack.setOnClickListener { onBackClickListener() }
 
         recyclerAdapter = RecipeNutrientsAdapter(
-            requireContext(),
             onGetNutrientWeight,
             onGetNutrientPercent,
             onNutrientClickListener

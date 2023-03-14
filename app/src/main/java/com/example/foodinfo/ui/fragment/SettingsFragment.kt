@@ -1,9 +1,10 @@
-package com.example.foodinfo.ui
+package com.example.foodinfo.ui.fragment
 
 import androidx.fragment.app.viewModels
 import com.example.foodinfo.R
 import com.example.foodinfo.databinding.FragmentSettingsBinding
-import com.example.foodinfo.utils.appComponent
+import com.example.foodinfo.ui.base.BaseFragment
+import com.example.foodinfo.utils.extensions.appComponent
 import com.example.foodinfo.view_model.SettingsViewModel
 
 

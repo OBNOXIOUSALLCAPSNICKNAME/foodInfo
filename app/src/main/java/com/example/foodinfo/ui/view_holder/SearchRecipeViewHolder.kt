@@ -4,8 +4,9 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.example.foodinfo.R
 import com.example.foodinfo.databinding.RvItemSearchTargetBinding
 import com.example.foodinfo.repository.model.RecipeShortModel
+import com.example.foodinfo.ui.base.BaseViewHolder
 import com.example.foodinfo.utils.glide.GlideApp
-import com.example.foodinfo.utils.setFavorite
+import com.example.foodinfo.utils.extensions.setFavorite
 
 
 class SearchRecipeViewHolder(

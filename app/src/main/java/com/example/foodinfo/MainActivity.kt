@@ -1,7 +1,6 @@
 package com.example.foodinfo
 
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.navigation.NavDestination
@@ -12,10 +11,9 @@ import com.example.foodinfo.local.dto.EdamamCredentialsDB
 import com.example.foodinfo.local.dto.GitHubCredentialsDB
 import com.example.foodinfo.local.dto.SearchFilterDB
 import com.example.foodinfo.utils.AssetsKeyWords
-import com.example.foodinfo.utils.JSONLoader
-import com.example.foodinfo.utils.appComponent
-import com.example.foodinfo.utils.fromString
-import kotlin.system.measureTimeMillis
+import com.example.foodinfo.utils.extensions.appComponent
+import com.example.foodinfo.utils.extensions.fromString
+import com.example.foodinfo.utils.extensions.openAsset
 
 
 class MainActivity : AppCompatActivity() {
@@ -49,19 +47,18 @@ class MainActivity : AppCompatActivity() {
         appComponent.prefUtils.edamamCredentials = EdamamCredentialsDB.DEFAULT_NAME
         appComponent.prefUtils.searchFilter = SearchFilterDB.DEFAULT_NAME
 
-        Log.d("123", "DB loaded in ${measureTimeMillis { prepopulateDB() }}ms")
+        prepopulateDB()
     }
 
     private fun prepopulateDB() {
         val dataBase = appComponent.dataBase
-        val jsonLoader = JSONLoader()
         val gson = appComponent.gson
 
         dataBase.clearAllTables()
 
 
-        val dbRecipe = jsonLoader.load(appComponent.assetProvider.getAsset(AssetsKeyWords.DB_RECIPES_100))
-        val dbRecipeAttrs = jsonLoader.load(appComponent.assetProvider.getAsset(AssetsKeyWords.DB_ATTRS))
+        val dbRecipe = this.applicationContext.openAsset(AssetsKeyWords.DB_RECIPES_100)
+        val dbRecipeAttrs = this.applicationContext.openAsset(AssetsKeyWords.DB_ATTRS)
 
 
         dataBase.recipeDAO.addRecipes(

@@ -1,20 +1,19 @@
-package com.example.foodinfo.ui
+package com.example.foodinfo.ui.fragment
 
-import android.os.Bundle
 import androidx.activity.OnBackPressedCallback
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavController
-import androidx.navigation.NavDestination
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.foodinfo.R
 import com.example.foodinfo.databinding.FragmentFavoriteBinding
 import com.example.foodinfo.ui.adapter.FavoriteAdapter
+import com.example.foodinfo.ui.base.BaseFragment
 import com.example.foodinfo.ui.decorator.ListItemDecoration
-import com.example.foodinfo.utils.appComponent
-import com.example.foodinfo.utils.repeatOn
+import com.example.foodinfo.utils.extensions.appComponent
+import com.example.foodinfo.utils.extensions.repeatOn
 import com.example.foodinfo.view_model.FavoriteViewModel
 import kotlinx.coroutines.flow.collectLatest
 
@@ -89,18 +88,11 @@ class FavoriteFragment : BaseFragment<FragmentFavoriteBinding>(
         }
     }
 
-    private val navigateCallback = object : NavController.OnDestinationChangedListener {
-        override fun onDestinationChanged(
-            controller: NavController,
-            destination: NavDestination,
-            arguments: Bundle?
-        ) {
-            if (destination.id == R.id.f_favorite) {
-                viewModel.setEditMode(false)
-                viewModel.unselectAll()
-            }
+    private val navigateCallback = NavController.OnDestinationChangedListener { _, destination, _ ->
+        if (destination.id == R.id.f_favorite) {
+            viewModel.setEditMode(false)
+            viewModel.unselectAll()
         }
-
     }
 
     override fun onStop() {
@@ -127,7 +119,6 @@ class FavoriteFragment : BaseFragment<FragmentFavoriteBinding>(
         requireActivity().onBackPressedDispatcher.addCallback(navigateBackCallback)
 
         recyclerAdapter = FavoriteAdapter(
-            requireContext(),
             isEditMode,
             isSelected,
             onReadyToSelect,

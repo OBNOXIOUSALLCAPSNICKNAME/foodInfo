@@ -5,6 +5,7 @@ import androidx.core.view.isVisible
 import com.example.foodinfo.databinding.RvItemFilterInputCategoryBinding
 import com.example.foodinfo.databinding.TvChipBinding
 import com.example.foodinfo.repository.model.CategoryOfSearchFilterPreviewModel
+import com.example.foodinfo.ui.base.BaseViewHolder
 
 
 class FilterCategoryViewHolder(

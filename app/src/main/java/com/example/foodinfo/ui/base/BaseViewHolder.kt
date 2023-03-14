@@ -1,4 +1,4 @@
-package com.example.foodinfo.ui.view_holder
+package com.example.foodinfo.ui.base
 
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding

@@ -22,17 +22,7 @@ class FavoriteViewModel @Inject constructor(
 
     private val selectedRecipes: HashSet<String> = hashSetOf()
 
-    // not sure about making database query every time but if simply initialize
-    // totalRecipesCount once at viewModel initialization will cause to incorrect behavior
-    // in situation when user removes a recipe from favorite in RecipeExtended screen
-    // which will cause favorite recipes table size to change and totalRecipesCount
-    // to store incorrect value
-    // there are couple ways to avoid that:
-    // use flow in getFavoriteIds (but have to store whole list of recipe ids here)
-    // make function in viewModel for updating totalRecipesCount value and call it
-    // on fragment's onStart() (but forcing View layer to care about such stuff is kinda
-    // breaking the concept of having separate ViewModel/Model layers)
-    val totalRecipesCount: Int
+    val totalRecipesCount: Int // TODO replace with GET COUNT
         get() = recipeRepository.getFavoriteIds().size
 
     val recipes: StateFlow<PagingData<RecipeFavoriteModel>> =

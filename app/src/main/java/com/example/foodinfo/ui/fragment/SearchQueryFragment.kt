@@ -1,4 +1,4 @@
-package com.example.foodinfo.ui
+package com.example.foodinfo.ui.fragment
 
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.viewModels
@@ -8,13 +8,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.foodinfo.R
 import com.example.foodinfo.databinding.FragmentSearchQueryBinding
 import com.example.foodinfo.ui.adapter.SearchRecipeAdapter
+import com.example.foodinfo.ui.base.DataObserverFragment
 import com.example.foodinfo.ui.decorator.GridItemDecoration
-import com.example.foodinfo.utils.appComponent
+import com.example.foodinfo.utils.extensions.appComponent
 import com.example.foodinfo.view_model.SearchQueryViewModel
 import kotlinx.coroutines.flow.collectLatest
 
 
-class SearchQueryFragment : BaseFragment<FragmentSearchQueryBinding>(
+class SearchQueryFragment : DataObserverFragment<FragmentSearchQueryBinding>(
     FragmentSearchQueryBinding::inflate
 ) {
 
@@ -73,7 +74,6 @@ class SearchQueryFragment : BaseFragment<FragmentSearchQueryBinding>(
         requireActivity().onBackPressedDispatcher.addCallback(navigateBackCallback)
 
         recyclerAdapter = SearchRecipeAdapter(
-            requireContext(),
             onGetTime,
             onItemClickListener,
             onFavoriteClickListener

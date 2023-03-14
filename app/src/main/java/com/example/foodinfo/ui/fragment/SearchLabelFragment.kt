@@ -1,4 +1,4 @@
-package com.example.foodinfo.ui
+package com.example.foodinfo.ui.fragment
 
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -8,9 +8,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.foodinfo.R
 import com.example.foodinfo.databinding.FragmentSearchLabelBinding
 import com.example.foodinfo.ui.adapter.SearchRecipeAdapter
+import com.example.foodinfo.ui.base.DataObserverFragment
 import com.example.foodinfo.ui.decorator.GridItemDecoration
-import com.example.foodinfo.utils.appComponent
-import com.example.foodinfo.utils.showDescriptionDialog
+import com.example.foodinfo.utils.extensions.appComponent
+import com.example.foodinfo.utils.extensions.showDescriptionDialog
 import com.example.foodinfo.view_model.SearchLabelViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
@@ -18,7 +19,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 
-class SearchLabelFragment : BaseFragment<FragmentSearchLabelBinding>(
+class SearchLabelFragment : DataObserverFragment<FragmentSearchLabelBinding>(
     FragmentSearchLabelBinding::inflate
 ) {
 
@@ -77,7 +78,6 @@ class SearchLabelFragment : BaseFragment<FragmentSearchLabelBinding>(
         binding.btnSearch.setOnClickListener { onSearchClickListener() }
 
         recyclerAdapter = SearchRecipeAdapter(
-            requireContext(),
             onGetTime,
             onItemClickListener,
             onFavoriteClickListener

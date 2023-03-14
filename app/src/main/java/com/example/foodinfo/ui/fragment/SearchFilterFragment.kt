@@ -1,4 +1,4 @@
-package com.example.foodinfo.ui
+package com.example.foodinfo.ui.fragment
 
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
@@ -11,14 +11,15 @@ import com.example.foodinfo.repository.model.SearchFilterEditModel
 import com.example.foodinfo.ui.adapter.FilterBaseFieldAdapter
 import com.example.foodinfo.ui.adapter.FilterCategoriesAdapter
 import com.example.foodinfo.ui.adapter.FilterNutrientsAdapter
+import com.example.foodinfo.ui.base.DataObserverFragment
 import com.example.foodinfo.ui.custom_view.NonScrollLinearLayoutManager
 import com.example.foodinfo.ui.decorator.ListItemDecoration
-import com.example.foodinfo.utils.appComponent
-import com.example.foodinfo.utils.baseAnimation
+import com.example.foodinfo.utils.extensions.appComponent
+import com.example.foodinfo.utils.extensions.baseAnimation
 import com.example.foodinfo.view_model.SearchFilterViewModel
 
 
-class SearchFilterFragment : BaseFragment<FragmentSearchFilterBinding>(
+class SearchFilterFragment : DataObserverFragment<FragmentSearchFilterBinding>(
     FragmentSearchFilterBinding::inflate
 ) {
 
@@ -82,7 +83,6 @@ class SearchFilterFragment : BaseFragment<FragmentSearchFilterBinding>(
         }
 
         recyclerAdapterBaseFields = FilterBaseFieldAdapter(
-            requireContext(),
             onValueChangedCallback
         )
         with(binding.rvBaseFields) {
@@ -101,7 +101,6 @@ class SearchFilterFragment : BaseFragment<FragmentSearchFilterBinding>(
         }
 
         recyclerAdapterCategories = FilterCategoriesAdapter(
-            requireContext(),
             onCategoryChangedCallback
         )
         with(binding.rvCategories) {
@@ -119,7 +118,6 @@ class SearchFilterFragment : BaseFragment<FragmentSearchFilterBinding>(
         }
 
         recyclerAdapterNutrients = FilterNutrientsAdapter(
-            requireContext(),
             getFormattedRange
         )
         with(binding.rvNutrients) {

@@ -1,4 +1,4 @@
-package com.example.foodinfo.ui
+package com.example.foodinfo.ui.fragment
 
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
@@ -8,14 +8,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.foodinfo.R
 import com.example.foodinfo.databinding.FragmentRecipeIngredientsBinding
 import com.example.foodinfo.ui.adapter.RecipeIngredientsAdapter
+import com.example.foodinfo.ui.base.DataObserverFragment
 import com.example.foodinfo.ui.decorator.ListItemDecoration
-import com.example.foodinfo.utils.appComponent
-import com.example.foodinfo.utils.baseAnimation
-import com.example.foodinfo.utils.getMeasureSpacer
+import com.example.foodinfo.utils.extensions.appComponent
+import com.example.foodinfo.utils.extensions.baseAnimation
+import com.example.foodinfo.utils.extensions.measureSpacer
 import com.example.foodinfo.view_model.RecipeIngredientsViewModel
 
 
-class RecipeIngredientsFragment : BaseFragment<FragmentRecipeIngredientsBinding>(
+class RecipeIngredientsFragment : DataObserverFragment<FragmentRecipeIngredientsBinding>(
     FragmentRecipeIngredientsBinding::inflate
 ) {
 
@@ -39,7 +40,7 @@ class RecipeIngredientsFragment : BaseFragment<FragmentRecipeIngredientsBinding>
         getString(
             R.string.float_measure_value,
             quantity,
-            getMeasureSpacer(measure),
+            measure.measureSpacer,
             measure
         )
     }
@@ -50,7 +51,6 @@ class RecipeIngredientsFragment : BaseFragment<FragmentRecipeIngredientsBinding>
         binding.btnBack.setOnClickListener { onBackClickListener() }
 
         recyclerAdapter = RecipeIngredientsAdapter(
-            requireContext(),
             onGetWeight,
             onGetQuantity
         )

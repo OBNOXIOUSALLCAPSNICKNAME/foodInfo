@@ -1,4 +1,4 @@
-package com.example.foodinfo.ui
+package com.example.foodinfo.ui.fragment
 
 import android.widget.SearchView.OnQueryTextListener
 import androidx.appcompat.widget.SearchView
@@ -8,10 +8,11 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.foodinfo.databinding.FragmentSearchInputBinding
 import com.example.foodinfo.ui.adapter.SearchInputAdapter
-import com.example.foodinfo.utils.appComponent
-import com.example.foodinfo.utils.hideKeyboard
-import com.example.foodinfo.utils.repeatOn
-import com.example.foodinfo.utils.showKeyboard
+import com.example.foodinfo.ui.base.BaseFragment
+import com.example.foodinfo.utils.extensions.appComponent
+import com.example.foodinfo.utils.extensions.hideKeyboard
+import com.example.foodinfo.utils.extensions.repeatOn
+import com.example.foodinfo.utils.extensions.showKeyboard
 import com.example.foodinfo.view_model.SearchInputViewModel
 import kotlinx.coroutines.flow.collectLatest
 
@@ -29,7 +30,7 @@ class SearchInputFragment : BaseFragment<FragmentSearchInputBinding>(
     private val onArrowClickListener: (String) -> Unit = { text ->
         with(binding) {
             etSearchInput.setQuery(text, false)
-            showKeyboard(etSearchInput)
+            showKeyboard()
         }
     }
 
@@ -78,7 +79,6 @@ class SearchInputFragment : BaseFragment<FragmentSearchInputBinding>(
 
     override fun initUI() {
         recyclerAdapter = SearchInputAdapter(
-            requireContext(),
             onArrowClickListener,
             onItemClickListener
         )
@@ -103,9 +103,7 @@ class SearchInputFragment : BaseFragment<FragmentSearchInputBinding>(
 
     override fun onResume() {
         super.onResume()
-        with(binding) {
-            showKeyboard(etSearchInput)
-        }
+        showKeyboard()
     }
 
     override fun onPause() {

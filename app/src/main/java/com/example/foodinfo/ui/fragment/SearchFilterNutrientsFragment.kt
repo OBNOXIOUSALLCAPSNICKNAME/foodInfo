@@ -1,4 +1,4 @@
-package com.example.foodinfo.ui
+package com.example.foodinfo.ui.fragment
 
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
@@ -9,17 +9,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.foodinfo.R
 import com.example.foodinfo.databinding.FragmentSearchFilterNutrientsBinding
 import com.example.foodinfo.ui.adapter.FilterNutrientFieldEditAdapter
+import com.example.foodinfo.ui.base.DataObserverFragment
 import com.example.foodinfo.ui.decorator.ListItemDecoration
-import com.example.foodinfo.utils.appComponent
-import com.example.foodinfo.utils.baseAnimation
-import com.example.foodinfo.utils.showDescriptionDialog
+import com.example.foodinfo.utils.extensions.appComponent
+import com.example.foodinfo.utils.extensions.baseAnimation
+import com.example.foodinfo.utils.extensions.showDescriptionDialog
 import com.example.foodinfo.view_model.SearchFilterNutrientsViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 
-class SearchFilterNutrientsFragment : BaseFragment<FragmentSearchFilterNutrientsBinding>(
+class SearchFilterNutrientsFragment : DataObserverFragment<FragmentSearchFilterNutrientsBinding>(
     FragmentSearchFilterNutrientsBinding::inflate
 ) {
 
@@ -57,7 +58,6 @@ class SearchFilterNutrientsFragment : BaseFragment<FragmentSearchFilterNutrients
 
     override fun initUI() {
         recyclerAdapter = FilterNutrientFieldEditAdapter(
-            requireContext(),
             onHeaderClickCallback,
             onValueChangedCallback
         )

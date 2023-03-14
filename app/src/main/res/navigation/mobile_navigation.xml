@@ -7,7 +7,7 @@
 
     <fragment
         android:id = "@+id/f_home"
-        android:name = "com.example.foodinfo.ui.HomeFragment"
+        android:name = "com.example.foodinfo.ui.fragment.HomeFragment"
         android:label = "@string/title_home"
         tools:layout = "@layout/fragment_home">
         <action
@@ -25,12 +25,12 @@
     </fragment>
     <fragment
         android:id = "@+id/f_settings"
-        android:name = "com.example.foodinfo.ui.SettingsFragment"
+        android:name = "com.example.foodinfo.ui.fragment.SettingsFragment"
         android:label = "@string/title_settings"
         tools:layout = "@layout/fragment_settings" />
     <fragment
         android:id = "@+id/f_search_input"
-        android:name = "com.example.foodinfo.ui.SearchInputFragment"
+        android:name = "com.example.foodinfo.ui.fragment.SearchInputFragment"
         android:label = "fragment_search"
         tools:layout = "@layout/fragment_search_input">
         <action
@@ -42,7 +42,7 @@
     </fragment>
     <fragment
         android:id = "@+id/f_search_query"
-        android:name = "com.example.foodinfo.ui.SearchQueryFragment"
+        android:name = "com.example.foodinfo.ui.fragment.SearchQueryFragment"
         android:label = "fragment_search_query"
         tools:layout = "@layout/fragment_search_query">
         <action
@@ -59,7 +59,7 @@
     </fragment>
     <fragment
         android:id = "@+id/f_search_filter"
-        android:name = "com.example.foodinfo.ui.SearchFilterFragment"
+        android:name = "com.example.foodinfo.ui.fragment.SearchFilterFragment"
         android:label = "fragment_search_input_filter"
         tools:layout = "@layout/fragment_search_filter">
         <action
@@ -74,7 +74,7 @@
     </fragment>
     <fragment
         android:id = "@+id/f_search_label"
-        android:name = "com.example.foodinfo.ui.SearchLabelFragment"
+        android:name = "com.example.foodinfo.ui.fragment.SearchLabelFragment"
         android:label = "fragment_search_label"
         tools:layout = "@layout/fragment_search_label">
         <action
@@ -89,7 +89,7 @@
     </fragment>
     <fragment
         android:id = "@+id/f_recipe_extended"
-        android:name = "com.example.foodinfo.ui.RecipeExtendedFragment"
+        android:name = "com.example.foodinfo.ui.fragment.RecipeExtendedFragment"
         android:label = "fragment_recipe_extended"
         tools:layout = "@layout/fragment_recipe_extended">
         <argument
@@ -104,7 +104,7 @@
     </fragment>
     <fragment
         android:id = "@+id/f_recipe_ingredients"
-        android:name = "com.example.foodinfo.ui.RecipeIngredientsFragment"
+        android:name = "com.example.foodinfo.ui.fragment.RecipeIngredientsFragment"
         android:label = "fragment_recipe_ingredients"
         tools:layout = "@layout/fragment_recipe_ingredients">
         <argument
@@ -113,7 +113,7 @@
     </fragment>
     <fragment
         android:id = "@+id/f_recipe_nutrients"
-        android:name = "com.example.foodinfo.ui.RecipeNutrientsFragment"
+        android:name = "com.example.foodinfo.ui.fragment.RecipeNutrientsFragment"
         android:label = "fragment_recipe_nutrients"
         tools:layout = "@layout/fragment_recipe_nutrients">
         <argument
@@ -122,12 +122,12 @@
     </fragment>
     <fragment
         android:id = "@+id/f_planner"
-        android:name = "com.example.foodinfo.ui.PlannerFragment"
+        android:name = "com.example.foodinfo.ui.fragment.PlannerFragment"
         android:label = "@string/title_planner"
         tools:layout = "@layout/fragment_planner" />
     <fragment
         android:id = "@+id/f_favorite"
-        android:name = "com.example.foodinfo.ui.FavoriteFragment"
+        android:name = "com.example.foodinfo.ui.fragment.FavoriteFragment"
         android:label = "@string/title_favorite"
         tools:layout = "@layout/fragment_favorite">
         <action
@@ -139,12 +139,12 @@
     </fragment>
     <fragment
         android:id = "@+id/f_favorite_sort"
-        android:name = "com.example.foodinfo.ui.FavoriteSortFragment"
+        android:name = "com.example.foodinfo.ui.fragment.FavoriteSortFragment"
         android:label = "fragment_favorite_sort"
         tools:layout = "@layout/fragment_favorite_sort" />
     <fragment
         android:id = "@+id/f_search_category"
-        android:name = "com.example.foodinfo.ui.SearchCategoryFragment"
+        android:name = "com.example.foodinfo.ui.fragment.SearchCategoryFragment"
         android:label = "fragment_search_category"
         tools:layout = "@layout/fragment_search_category">
         <argument
@@ -159,7 +159,7 @@
     </fragment>
     <fragment
         android:id = "@+id/f_search_filter_category"
-        android:name = "com.example.foodinfo.ui.SearchFilterCategoryFragment"
+        android:name = "com.example.foodinfo.ui.fragment.SearchFilterCategoryFragment"
         android:label = "SearchFilterCategoryFragment"
         tools:layout = "@layout/fragment_search_filter_category">
         <argument
@@ -168,12 +168,12 @@
     </fragment>
     <fragment
         android:id = "@+id/f_search_filter_nutrients"
-        android:name = "com.example.foodinfo.ui.SearchFilterNutrientsFragment"
+        android:name = "com.example.foodinfo.ui.fragment.SearchFilterNutrientsFragment"
         android:label = "SearchFilterNutrientsFragment"
         tools:layout = "@layout/fragment_search_filter_nutrients" />
     <fragment
         android:id = "@+id/f_search_filter_select"
-        android:name = "com.example.foodinfo.ui.SearchFilterSelectFragment"
+        android:name = "com.example.foodinfo.ui.fragment.SearchFilterSelectFragment"
         android:label = "SearchFilterSelectFragment"
         tools:layout = "@layout/fragment_search_filter_select" />
 </navigation>

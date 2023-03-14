@@ -6,9 +6,7 @@ import androidx.preference.PreferenceManager
 import javax.inject.Inject
 
 
-class PrefUtils @Inject constructor(
-    context: Context
-) {
+class PrefUtils @Inject constructor(context: Context) {
     private val preferences = PreferenceManager.getDefaultSharedPreferences(context)
 
     var searchFilter: String = ""

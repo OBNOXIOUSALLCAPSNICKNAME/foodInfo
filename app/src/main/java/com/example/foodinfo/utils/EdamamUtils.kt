@@ -5,8 +5,13 @@ import com.example.foodinfo.remote.dto.RecipeNetwork
 import com.example.foodinfo.repository.model.CategoryOfFilterPresetModel
 import com.example.foodinfo.repository.model.NutrientOfFilterPresetModel
 import com.example.foodinfo.repository.model.SearchFilterPresetModel
+import com.example.foodinfo.utils.extensions.trimMultiline
 
 
+/**
+ * Enum of Recipe fields that will tell [EdamamRecipeURL] and [EdamamPageURL] which should be included
+ * in response to filter out unnecessary content and reduce network usage.
+ */
 enum class FieldSet(val fields: String) {
     FULL(""),
     BASIC(
@@ -52,7 +57,16 @@ val EdamamCredentialsDB.nutrition: String
         return "?type=public&app_id=${this.appIDNutrition}&app_key=${this.appKeyNutrition}"
     }
 
-
+/**
+ * Remote query to Edamam API to fetch single recipe.
+ *
+ * All special symbols will be correctly translated
+ * (e.g. space will be replaced with **'%20'** and **'+'** will be replaced with **%2B**).
+ *
+ * @param recipeID ID of the recipe that should be fetched.
+ * @param fieldSet Recipe fields that should be included into result.
+ * @param apiCredentials Object that contains app ID and Key to access Edamam API.
+ */
 class EdamamRecipeURL(
     recipeID: String,
     fieldSet: FieldSet,
@@ -62,11 +76,12 @@ class EdamamRecipeURL(
 }
 
 /**
- * Remote query is simply API credentials and then just each filter piece appended with
- * **&** separator.
- * - All special symbols will be correctly translated (e.g. space will be replaced with **'%20'**
- * and **'+'** will be replaced with **%2B**).
- * - Result will contain only [RecipeDB] fields without labels and nutrients.
+ * Generates query to Edamam API to fetch paged recipes.
+ *
+ * All special symbols will be correctly translated
+ * (e.g. space will be replaced with **'%20'** and **'+'** will be replaced with **%2B**).
+ *
+ * Result will contain only fields represented in [FieldSet.BASIC].
  *
  * ###Example:
  * Line breaks added for better readability
@@ -94,6 +109,10 @@ class EdamamRecipeURL(
  * &field=totalWeight
  * &field=totalTime
  * ~~~
+ *
+ * @param searchFilterPreset Filter preset object that will be used to build query.
+ * @param inputText If specified, result will contain only those recipes which name contain provided string.
+ * @param apiCredentials Object that contains app ID and Key to access Edamam API.
  */
 class EdamamPageURL(
     searchFilterPreset: SearchFilterPresetModel,
@@ -155,12 +174,23 @@ class EdamamPageURL(
 }
 
 /**
+ * Generates query to room DB.
+ *
  * Because of **AND** separator between subqueries if any of subquery don't match the condition,
  * row will be denied, so it makes sense to check the fastest conditions first:
  *
  * * **Basics** - fastest one, search goes through the fields of [RecipeDB] itself.
  * * **Nutrients** - slowly than Range fields due to contains subquery to another table.
  * * **Labels** - the slowest one, in addition to the subquery also contains a grouping.
+ *
+ * Recipes from different queries may intersect by some of their properties (e.g. recipe with **time <= 90**
+ * may also be with **dietType** = "**low-fat**"). Without internet, it's possible to just load everything
+ * from local DB, (because the local DB will not change over time during the current session).
+ * But with internet, recipes in remote page **N** may be different from recipes in local page **N**
+ * For example, remote page **№5** will contain recipes **`[80..101]`**, but in local DB page **№5** will
+ * contain recipe **`[45, 68, .. 131]`** etc. (because they will be previously cached from another queries).
+ * This will cause the recipes to "jump" inside RecyclerView. To avoid that, set **isOffline = true** if
+ * local DB updates expected.
  *
  * ###Example:
  * ~~~
@@ -184,6 +214,9 @@ class EdamamPageURL(
  *         GROUP BY recipe_id, category_id)
  *     GROUP BY recipe_id HAVING count(recipe_id) = 3)
  * ~~~
+ * @param searchFilterPreset Filter preset object that will be used to build query.
+ * @param inputText If specified, result will contain only those recipes which name contain provided string.
+ * @param isOffline If true, the result will not contain recipes that were added/updated before the session started.
  */
 class RoomPageQuery(
     searchFilterPreset: SearchFilterPresetModel,

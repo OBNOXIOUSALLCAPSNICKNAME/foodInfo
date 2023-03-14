@@ -2,6 +2,7 @@ package com.example.foodinfo.ui.view_holder
 
 import com.example.foodinfo.databinding.RvItemFilterInputBaseFieldBinding
 import com.example.foodinfo.repository.model.BasicOfSearchFilterEditModel
+import com.example.foodinfo.ui.base.BaseViewHolder
 
 
 class FilterBaseFieldViewHolder(

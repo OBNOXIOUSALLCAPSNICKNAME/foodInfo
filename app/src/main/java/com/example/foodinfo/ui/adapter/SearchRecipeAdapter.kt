@@ -1,34 +1,27 @@
 package com.example.foodinfo.ui.adapter
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.foodinfo.databinding.RvItemSearchTargetBinding
 import com.example.foodinfo.databinding.RvItemSearchTargetPlaceholderBinding
 import com.example.foodinfo.repository.model.RecipeShortModel
 import com.example.foodinfo.ui.view_holder.SearchRecipePlaceholder
 import com.example.foodinfo.ui.view_holder.SearchRecipeViewHolder
+import com.example.foodinfo.utils.AppPageAdapter
 
 
 class SearchRecipeAdapter(
-    context: Context,
     private val onGetTime: (Int) -> String,
     private val onItemClickListener: (String) -> Unit,
     private val onFavoriteClickListener: (String) -> Unit,
-) : PagingDataAdapter<RecipeShortModel, ViewHolder>(
-    RecipeShortModel.ItemCallBack
-) {
-
-    private val layoutInflater = LayoutInflater.from(context)
-
+) : AppPageAdapter<RecipeShortModel>(RecipeShortModel.ItemCallBack) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return when (viewType) {
             ViewTypes.LOADED_VIEW.ordinal -> {
                 SearchRecipeViewHolder(
-                    RvItemSearchTargetBinding.inflate(layoutInflater, parent, false),
+                    RvItemSearchTargetBinding.inflate(LayoutInflater.from(parent.context), parent, false),
                     onGetTime,
                     onItemClickListener,
                     onFavoriteClickListener
@@ -37,9 +30,7 @@ class SearchRecipeAdapter(
             else                          -> {
                 SearchRecipePlaceholder(
                     RvItemSearchTargetPlaceholderBinding.inflate(
-                        layoutInflater,
-                        parent,
-                        false
+                        LayoutInflater.from(parent.context), parent, false
                     )
                 )
             }
@@ -47,10 +38,7 @@ class SearchRecipeAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        getItem(position)?.let { recipe ->
-            holder as SearchRecipeViewHolder
-            holder.bind(recipe)
-        }
+        getItem(position)?.let { (holder as SearchRecipeViewHolder).bind(it) }
     }
 
     override fun onBindViewHolder(
@@ -61,10 +49,7 @@ class SearchRecipeAdapter(
         if (payloads.isEmpty()) {
             super.onBindViewHolder(holder, position, payloads)
         } else {
-            getItem(position)?.let { recipe ->
-                holder as SearchRecipeViewHolder
-                holder.bind(recipe, payloads)
-            }
+            getItem(position)?.let { (holder as SearchRecipeViewHolder).bind(it) }
         }
     }
 

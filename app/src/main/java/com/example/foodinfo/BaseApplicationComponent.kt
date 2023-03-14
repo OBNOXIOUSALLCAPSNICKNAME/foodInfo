@@ -5,7 +5,6 @@ import com.example.foodinfo.di.BaseViewModelFactory
 import com.example.foodinfo.di.module.BaseApplicationModule
 import com.example.foodinfo.local.room.DataBase
 import com.example.foodinfo.repository.SearchFilterRepository
-import com.example.foodinfo.utils.AssetProvider
 import com.example.foodinfo.utils.PrefUtils
 import com.google.gson.Gson
 import dagger.BindsInstance
@@ -39,8 +38,6 @@ interface BaseApplicationComponent {
     val dataBase: DataBase
 
     val prefUtils: PrefUtils
-
-    val assetProvider: AssetProvider
 
     val searchFilterRepository: SearchFilterRepository
 }

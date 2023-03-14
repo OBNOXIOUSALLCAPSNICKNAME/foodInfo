@@ -59,5 +59,3 @@ sealed class NetworkResponse<out S : Any, out E : Any> {
         override val messageID: Int = R.string.error_unknown
     ) : NetworkResponse<Nothing, Nothing>(), Error
 }
-
-typealias ApiResponse<S> = NetworkResponse<S, Any>

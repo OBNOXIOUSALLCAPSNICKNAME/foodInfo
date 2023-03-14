@@ -1,4 +1,4 @@
-package com.example.foodinfo.ui
+package com.example.foodinfo.ui.fragment
 
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
@@ -8,16 +8,17 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.foodinfo.databinding.FragmentSearchFilterCategoryBinding
 import com.example.foodinfo.ui.adapter.FilterCategoryEditAdapter
-import com.example.foodinfo.utils.appComponent
-import com.example.foodinfo.utils.baseAnimation
-import com.example.foodinfo.utils.showDescriptionDialog
+import com.example.foodinfo.ui.base.DataObserverFragment
+import com.example.foodinfo.utils.extensions.appComponent
+import com.example.foodinfo.utils.extensions.baseAnimation
+import com.example.foodinfo.utils.extensions.showDescriptionDialog
 import com.example.foodinfo.view_model.SearchFilterCategoryViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 
-class SearchFilterCategoryFragment : BaseFragment<FragmentSearchFilterCategoryBinding>(
+class SearchFilterCategoryFragment : DataObserverFragment<FragmentSearchFilterCategoryBinding>(
     FragmentSearchFilterCategoryBinding::inflate
 ) {
     private val viewModel: SearchFilterCategoryViewModel by viewModels {
@@ -61,7 +62,6 @@ class SearchFilterCategoryFragment : BaseFragment<FragmentSearchFilterCategoryBi
         binding.btnReset.setOnClickListener { onResetClickListener() }
 
         recyclerAdapter = FilterCategoryEditAdapter(
-            requireContext(),
             onQuestionMarkClickListener,
             onItemClickListener
         )

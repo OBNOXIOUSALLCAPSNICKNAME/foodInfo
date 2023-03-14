@@ -2,7 +2,7 @@ package com.example.foodinfo.remote.api
 
 import com.example.foodinfo.remote.dto.RecipeHitNetwork
 import com.example.foodinfo.remote.dto.RecipePageNetwork
-import com.example.foodinfo.remote.response.ApiResponse
+import com.example.foodinfo.utils.ApiResponse
 import retrofit2.http.GET
 import retrofit2.http.Url
 

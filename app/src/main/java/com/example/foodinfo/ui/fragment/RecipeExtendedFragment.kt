@@ -1,4 +1,4 @@
-package com.example.foodinfo.ui
+package com.example.foodinfo.ui.fragment
 
 import androidx.core.view.forEachIndexed
 import androidx.core.view.isVisible
@@ -14,13 +14,14 @@ import com.example.foodinfo.R
 import com.example.foodinfo.databinding.FragmentRecipeExtendedBinding
 import com.example.foodinfo.repository.model.RecipeExtendedModel
 import com.example.foodinfo.ui.adapter.RecipeCategoriesAdapter
+import com.example.foodinfo.ui.base.DataObserverFragment
 import com.example.foodinfo.ui.custom_view.NonScrollLinearLayoutManager
 import com.example.foodinfo.ui.decorator.ListItemDecoration
-import com.example.foodinfo.utils.appComponent
-import com.example.foodinfo.utils.baseAnimation
+import com.example.foodinfo.utils.extensions.appComponent
+import com.example.foodinfo.utils.extensions.baseAnimation
 import com.example.foodinfo.utils.glide.GlideApp
-import com.example.foodinfo.utils.setFavorite
-import com.example.foodinfo.utils.showDescriptionDialog
+import com.example.foodinfo.utils.extensions.setFavorite
+import com.example.foodinfo.utils.extensions.showDescriptionDialog
 import com.example.foodinfo.view_model.RecipeExtendedViewModel
 import com.google.android.material.imageview.ShapeableImageView
 import kotlinx.coroutines.Dispatchers
@@ -28,7 +29,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 
-class RecipeExtendedFragment : BaseFragment<FragmentRecipeExtendedBinding>(
+class RecipeExtendedFragment : DataObserverFragment<FragmentRecipeExtendedBinding>(
     FragmentRecipeExtendedBinding::inflate
 ) {
 
@@ -83,7 +84,6 @@ class RecipeExtendedFragment : BaseFragment<FragmentRecipeExtendedBinding>(
 
     override fun initUI() {
         recyclerAdapter = RecipeCategoriesAdapter(
-            requireContext(),
             onLabelClickListener
         )
 

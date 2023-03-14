@@ -1,4 +1,4 @@
-package com.example.foodinfo.ui
+package com.example.foodinfo.ui.fragment
 
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -7,12 +7,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.foodinfo.R
 import com.example.foodinfo.databinding.FragmentHomeBinding
 import com.example.foodinfo.ui.adapter.HomeCategoriesAdapter
+import com.example.foodinfo.ui.base.DataObserverFragment
 import com.example.foodinfo.ui.decorator.ListItemDecoration
-import com.example.foodinfo.utils.appComponent
+import com.example.foodinfo.utils.extensions.appComponent
 import com.example.foodinfo.view_model.HomeViewModel
 
 
-class HomeFragment : BaseFragment<FragmentHomeBinding>(
+class HomeFragment : DataObserverFragment<FragmentHomeBinding>(
     FragmentHomeBinding::inflate
 ) {
 
@@ -37,7 +38,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
 
     override fun initUI() {
         recyclerAdapter = HomeCategoriesAdapter(
-            requireContext(),
             onItemClickListener
         )
         binding.ivSearch.setOnClickListener { onSearchClickListener() }

@@ -1,4 +1,4 @@
-package com.example.foodinfo.ui
+package com.example.foodinfo.ui.fragment
 
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
@@ -8,13 +8,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.foodinfo.R
 import com.example.foodinfo.databinding.FragmentSearchCategoryBinding
 import com.example.foodinfo.ui.adapter.SearchLabelsAdapter
+import com.example.foodinfo.ui.base.DataObserverFragment
 import com.example.foodinfo.ui.decorator.GridItemDecoration
-import com.example.foodinfo.utils.appComponent
-import com.example.foodinfo.utils.baseAnimation
+import com.example.foodinfo.utils.extensions.appComponent
+import com.example.foodinfo.utils.extensions.baseAnimation
 import com.example.foodinfo.view_model.SearchCategoryViewModel
 
 
-class SearchCategoryFragment : BaseFragment<FragmentSearchCategoryBinding>(
+class SearchCategoryFragment : DataObserverFragment<FragmentSearchCategoryBinding>(
     FragmentSearchCategoryBinding::inflate
 ) {
 
@@ -51,7 +52,6 @@ class SearchCategoryFragment : BaseFragment<FragmentSearchCategoryBinding>(
 
 
         recyclerAdapter = SearchLabelsAdapter(
-            requireContext(),
             onItemClickListener,
         )
 
