@@ -138,7 +138,7 @@ class SearchFilterFragment : DataObserverFragment<FragmentSearchFilterBinding>(
     override fun subscribeUI() {
         observeData(
             dataFlow = viewModel.filter,
-            useLoadingData = false,
+            useLoadingData = true,
             onStart = {
                 binding.svContent.isVisible = false
                 binding.pbContent.isVisible = true

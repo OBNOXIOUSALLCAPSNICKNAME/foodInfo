@@ -13,11 +13,11 @@
         android:layout_width = "wrap_content"
         android:layout_height = "wrap_content"
         android:layout_marginTop = "@dimen/dp_16"
-        android:text = "@string/protein_header"
         android:textColor = "?appSecondaryFontColor"
         app:layout_constraintEnd_toEndOf = "parent"
         app:layout_constraintStart_toStartOf = "parent"
-        app:layout_constraintTop_toTopOf = "parent" />
+        app:layout_constraintTop_toTopOf = "parent"
+        tools:text = "Protein" />
 
     <com.google.android.material.progressindicator.CircularProgressIndicator
         android:id = "@+id/progress_bar"

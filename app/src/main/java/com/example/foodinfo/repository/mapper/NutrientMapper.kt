@@ -44,14 +44,8 @@ fun NutrientOfSearchFilterExtendedDB.toDBLatest(): NutrientOfSearchFilterDB {
         ID = this.ID,
         filterName = this.filterName,
         infoID = this.infoID,
-        minValue = if (this.minValue != null) max(
-            this.minValue!!,
-            this.attrInfo!!.rangeMin
-        ) else null,
-        maxValue = if (this.maxValue != null) min(
-            this.maxValue!!,
-            this.attrInfo!!.rangeMax
-        ) else null
+        minValue = this.minValue?.let { max(it, this.attrInfo!!.rangeMin) },
+        maxValue = this.maxValue?.let { min(it, this.attrInfo!!.rangeMax) }
     )
 }
 
@@ -92,14 +86,8 @@ fun List<NutrientOfSearchFilterExtendedDB>.toModelPreset(): List<NutrientOfFilte
             NutrientOfFilterPresetModel(
                 tag = nutrient.attrInfo!!.tag,
                 infoID = nutrient.attrInfo!!.ID,
-                minValue = if (nutrient.minValue != null) max(
-                    nutrient.minValue!!,
-                    nutrient.attrInfo!!.rangeMin
-                ) else null,
-                maxValue = if (nutrient.maxValue != null) min(
-                    nutrient.maxValue!!,
-                    nutrient.attrInfo!!.rangeMax
-                ) else null
+                minValue = nutrient.minValue?.let { max(it, nutrient.attrInfo!!.rangeMin) },
+                maxValue = nutrient.maxValue?.let { min(it, nutrient.attrInfo!!.rangeMax) }
             )
         }
 }
@@ -139,10 +127,11 @@ fun Map<String, NutrientOfRecipeNetwork>.toDB(
     recipeID: String,
     attrs: List<NutrientRecipeAttrDB>
 ): List<NutrientOfRecipeDB> {
+    val attrsMap = attrs.associate { it.tag.lowercase() to it.ID }
     return this.map { (tag, nutrient) ->
         NutrientOfRecipeDB(
             recipeID = recipeID,
-            infoID = attrs.first { it.tag.lowercase() == tag.lowercase() }.ID,
+            infoID = attrsMap[tag.lowercase()]!!,
             value = nutrient.quantity
         )
     }
@@ -152,10 +141,11 @@ fun Map<String, NutrientOfRecipeNetwork>.toDBExtended(
     recipeID: String,
     attrs: List<NutrientRecipeAttrDB>
 ): List<NutrientOfRecipeExtendedDB> {
+    val attrsMap = attrs.associate { it.tag.lowercase() to it.ID }
     return this.map { (tag, nutrient) ->
         NutrientOfRecipeExtendedDB(
             recipeID = recipeID,
-            infoID = attrs.first { it.tag.lowercase() == tag.lowercase() }.ID,
+            infoID = attrsMap[tag.lowercase()]!!,
             value = nutrient.quantity,
             attrInfo = null
         )

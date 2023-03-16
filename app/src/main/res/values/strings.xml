@@ -2,27 +2,15 @@
     <string name = "app_name">FoodInfo</string>
     <string name = "title_activity_recipes">FoodInfo</string>
     <string name = "title_home">Home</string>
-    <string name = "title_explore">Search</string>
     <string name = "title_settings">Settings</string>
     <string name = "title_planner">Planner</string>
     <string name = "title_favorite">Favorite</string>
-    <string name = "text_home_recipes_header">Popular recipes</string>
     <string name = "et_search_hint">Search for recipes…</string>
-    <string name = "tv_loading_text">loading…</string>
-    <string name = "protein_header">Protein</string>
-    <string name = "fat_header">Fat</string>
-    <string name = "carbs_header">Carbs</string>
-    <string name = "calories_header">Calories</string>
     <string name = "view_all_text">view all</string>
-    <string name = "logo_text">no logo <b><u>yet</u></b> <font color = "#D27842"> :(</font></string>
-    <string name = "content_description_text">content description</string>
-    <string name = "meal_text">meal</string>
     <string name = "nutrients_text">nutrients</string>
-    <string name = "default_content_description">this is image</string>
     <string name = "ingredients_text">ingredients</string>
-
     <string name = "home_header_text">Find your best food</string>
-    <string name = "description_placeholder">Catla swordtail, lightfish eulachon spinyfin, ling sea devil-sucker snipe eel eel-goby black bass; elver olive flounder, poolfish long-whiskered catfish, finback cat shark. Southern Dolly Varden, unicorn fish snipefish whiptail gulper ghost flathead Blobfish Atlantic salmon tenuis Bigscale pomfret lemon sole.</string>
+    <string name = "default_content_description">this is image</string>
 
     <string name = "selected_value">%1$d selected</string>
     <string name = "time_value">%1$d min</string>
@@ -35,16 +23,11 @@
     <string name = "float_measure_value">%1$.1f%2$s%3$s</string>
     <string name = "rv_item_nutrient_value">%1$.1f / %2$.1f%3$s</string>
 
-    <string name = "rv_item_filter_nutrient_range">%1$.0f ─ %2$.0f %3$s</string>
-
     <string name = "TBD_screen">Feature %1$s is temporary unavailable</string>
     <string name = "servings_text">Servings</string>
     <string name = "cooking_text">Cooking</string>
     <string name = "weight_text">Weight</string>
     <string name = "favorite_recipes_text">Favorite recipes</string>
-    <string name = "selected_text">selected</string>
-    <string name = "category_text">Category</string>
-    <string name = "all_text">all</string>
     <string name = "top_recipes_text">Top recipes</string>
     <string name = "trending_text">Trending</string>
     <string name = "long_dash_text">─</string>

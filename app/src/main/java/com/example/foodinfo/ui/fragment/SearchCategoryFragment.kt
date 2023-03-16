@@ -74,7 +74,7 @@ class SearchCategoryFragment : DataObserverFragment<FragmentSearchCategoryBindin
     override fun subscribeUI() {
         observeData(
             dataFlow = viewModel.category,
-            useLoadingData = false,
+            useLoadingData = true,
             onStart = {
                 binding.rvLabels.isVisible = false
                 binding.tvHeader.isVisible = false

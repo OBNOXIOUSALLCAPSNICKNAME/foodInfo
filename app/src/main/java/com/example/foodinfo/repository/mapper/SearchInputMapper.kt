@@ -8,7 +8,7 @@ fun SearchInputDB.toModel(): SearchInputModel {
     return SearchInputModel(
         ID = this.ID,
         inputText = this.inputText,
-        date = this.date.toString() // implement proper conversion
+        date = this.date.toString() // TODO implement proper conversion
     )
 }
 
@@ -16,6 +16,6 @@ fun SearchInputModel.toDB(): SearchInputDB {
     return SearchInputDB(
         ID = this.ID,
         inputText = this.inputText,
-        date = this.date.toLong() // implement proper conversion
+        date = this.date.toLong() // TODO implement proper conversion
     )
 }

@@ -64,7 +64,7 @@ fun RecipeAttrsNetwork.toDB(): RecipeAttrsDB {
 
 fun RecipeNetwork.toDB(): RecipeDB {
     return RecipeDB(
-        ID = this.URI!!.replace("http://www.edamam.com/ontologies/edamam.owl#recipe_", ""),
+        ID = this.URI!!.replace(RecipeNetwork.RECIPE_BASE_URI, ""),
         source = this.source!!,
         name = this.label!!,
         previewURL = this.image!!,
@@ -77,7 +77,7 @@ fun RecipeNetwork.toDB(): RecipeDB {
 }
 
 fun RecipeNetwork.toDBExtended(attrs: RecipeAttrsDB): RecipeExtendedDB {
-    val recipeID = this.URI!!.replace("http://www.edamam.com/ontologies/edamam.owl#recipe_", "")
+    val recipeID = this.URI!!.replace(RecipeNetwork.RECIPE_BASE_URI, "")
 
     return RecipeExtendedDB(
         ID = recipeID,
@@ -91,12 +91,12 @@ fun RecipeNetwork.toDBExtended(attrs: RecipeAttrsDB): RecipeExtendedDB {
         servings = this.servings!!.toInt(),
         ingredients = this.ingredients!!.map { it.toDB(recipeID) },
         nutrients = this.nutrients!!.toDBExtended(recipeID, attrs.nutrients),
-        labels =
-        this.meal!!.toDB(recipeID, attrs.labels) +
-        this.diet!!.toDB(recipeID, attrs.labels) +
-        this.dish!!.toDB(recipeID, attrs.labels) +
-        this.health!!.toDB(recipeID, attrs.labels) +
-        this.cuisine!!.toDB(recipeID, attrs.labels)
-
+        labels = listOf(
+            this.meal!!,
+            this.diet!!,
+            this.dish!!,
+            this.health!!,
+            this.cuisine!!
+        ).flatten().toDBExtended(recipeID, attrs.labels)
     )
 }

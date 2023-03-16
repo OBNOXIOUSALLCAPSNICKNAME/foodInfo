@@ -4,9 +4,15 @@ import com.google.gson.annotations.SerializedName
 
 
 data class RecipeHitNetwork(
-    @SerializedName("recipe")
+    @SerializedName(Fields.RECIPE)
     val recipe: RecipeNetwork,
 
-    @SerializedName("_links")
+    @SerializedName(Fields.LINKS)
     val links: LinksNetwork
-)
+) {
+
+    object Fields {
+        const val RECIPE = "recipe"
+        const val LINKS = "_links"
+    }
+}

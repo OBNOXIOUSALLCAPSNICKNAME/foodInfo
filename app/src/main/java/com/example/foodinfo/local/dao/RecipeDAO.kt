@@ -30,20 +30,20 @@ interface RecipeDAO {
     fun delFromFavorite(recipeIDs: List<String>)
 
 
-    // removeRecipe() and removeRecipes() must also delete recipe ingredients, nutrients and labels
-    fun removeRecipe(recipeID: String)
-
-    fun removeRecipes(recipeIDs: List<String>)
-
-
     // addRecipes() and addRecipeExtended() must not lose favoriteMark status when updating
+    // addRecipes() must save labels/ingredients/nutrients when updating recipes that already in DB
     fun addRecipes(recipes: List<RecipeDB>)
 
+    /*
+        When adding recipe from server into local DB, there is no way to check whether some
+        nutrients/ingredients/labels was removed or added.
+        So, if recipe already exists in local DB, all related data had to be removed and new one inserted
+     */
     fun addRecipeExtended(recipe: RecipeExtendedDB)
 
 
     // addLabels(), addNutrients() and addIngredients()
-    // must firstly remove all labels/nutrients/ingredients for recipes that already in DB
+    // must remove all content and insert new one
     fun addLabels(labels: List<LabelOfRecipeDB>)
 
     fun addNutrients(nutrients: List<NutrientOfRecipeDB>)

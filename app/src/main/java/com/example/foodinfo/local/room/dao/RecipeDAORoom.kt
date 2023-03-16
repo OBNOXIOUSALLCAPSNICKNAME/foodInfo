@@ -101,18 +101,6 @@ abstract class RecipeDAORoom : RecipeDAO {
 
 
     @Query(
-        "DELETE FROM ${RecipeDB.TABLE_NAME} WHERE " +
-        "${RecipeDB.Columns.ID} = :recipeID"
-    )
-    abstract override fun removeRecipe(recipeID: String)
-
-    @Query(
-        "DELETE FROM ${RecipeDB.TABLE_NAME} WHERE " +
-        "${RecipeDB.Columns.ID} IN (:recipeIDs)"
-    )
-    abstract override fun removeRecipes(recipeIDs: List<String>)
-
-    @Query(
         "DELETE FROM ${LabelOfRecipeDB.TABLE_NAME} WHERE " +
         "${LabelOfRecipeDB.Columns.RECIPE_ID} IN (:recipeIDs)"
     )
@@ -131,71 +119,64 @@ abstract class RecipeDAORoom : RecipeDAO {
     abstract fun removeIngredients(recipeIDs: List<String>)
 
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract fun addRecipeEntity(recipe: RecipeEntity)
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    abstract fun addRecipesEntity(recipes: List<RecipeEntity>)
+    @Insert(onConflict = OnConflictStrategy.ABORT)
+    abstract fun insertRecipesEntity(recipes: List<RecipeEntity>)
+
+    @Update(onConflict = OnConflictStrategy.IGNORE)
+    abstract fun updateRecipesEntity(recipes: List<RecipeEntity>)
 
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    abstract fun addLabelsEntity(labels: List<LabelOfRecipeEntity>)
+    @Insert(onConflict = OnConflictStrategy.ABORT)
+    abstract fun insertLabelsEntity(labels: List<LabelOfRecipeEntity>)
 
     @Transaction
     override fun addLabels(labels: List<LabelOfRecipeDB>) {
         removeLabels(labels.map { it.recipeID }.distinct())
-        addLabelsEntity(labels.map { LabelOfRecipeEntity.toEntity(it) })
+        insertLabelsEntity(labels.map { LabelOfRecipeEntity.toEntity(it) })
     }
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    abstract fun addNutrientsEntity(nutrients: List<NutrientOfRecipeEntity>)
+    @Insert(onConflict = OnConflictStrategy.ABORT)
+    abstract fun insertNutrientsEntity(nutrients: List<NutrientOfRecipeEntity>)
 
     @Transaction
     override fun addNutrients(nutrients: List<NutrientOfRecipeDB>) {
         removeNutrients(nutrients.map { it.recipeID }.distinct())
-        addNutrientsEntity(nutrients.map { NutrientOfRecipeEntity.toEntity(it) })
+        insertNutrientsEntity(nutrients.map { NutrientOfRecipeEntity.toEntity(it) })
     }
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    abstract fun addIngredientsEntity(ingredients: List<IngredientOfRecipeEntity>)
+    @Insert(onConflict = OnConflictStrategy.ABORT)
+    abstract fun insertIngredientsEntity(ingredients: List<IngredientOfRecipeEntity>)
 
     @Transaction
     override fun addIngredients(ingredients: List<IngredientOfRecipeDB>) {
         removeIngredients(ingredients.map { it.recipeID }.distinct())
-        addIngredientsEntity(ingredients.map { IngredientOfRecipeEntity.toEntity(it) })
+        insertIngredientsEntity(ingredients.map { IngredientOfRecipeEntity.toEntity(it) })
     }
 
-    /*
-        when adding recipe from server into local DB there is way update it by id in case it's already exists,
-        but for nutrients, ingredients and labels there is no way to check whether some of them
-        was updated/removed or the new one was added on the server
-        so if recipe already exists in local DB all related data had to be removed and reinserted
-     */
     @Transaction
     override fun addRecipes(recipes: List<RecipeDB>) {
-        // save favorite marks before deleting recipes
         val favoriteMarks = getFavoriteMarks(recipes.map { it.ID })
 
-        // remove recipes that already in DB (foreign key will also delete nutrients etc.)
-        removeRecipes(favoriteMarks.keys.toList())
-
-        // inserting all recipes (assume that favoriteMark = false for all of them)
-        addRecipesEntity(recipes.map { RecipeEntity.toEntity(it) })
-
-        // change favorite mark for recipes that was marked as favorite before deleting
-        addToFavorite(recipes.filter { it.isFavorite }.map { it.ID })
+        recipes.map { RecipeEntity.toEntity(it) }.partition { it.ID in favoriteMarks.keys }
+            .also { (toUpdate, toInsert) ->
+                insertRecipesEntity(toInsert)
+                updateRecipesEntity(toUpdate)
+                addToFavorite(favoriteMarks.mapNotNull { (ID, isFavorite) -> ID.takeIf { isFavorite } })
+            }
     }
 
     @Transaction
     override fun addRecipeExtended(recipe: RecipeExtendedDB) {
         val favoriteMark = getFavoriteMark(recipe.ID)
 
-        removeRecipe(recipe.ID)
         addRecipeEntity(RecipeExtendedPOJO.toEntity(recipe))
 
-        addLabelsEntity(recipe.labels.map { LabelOfRecipeExtendedPOJO.toEntity(it) })
-        addNutrientsEntity(recipe.nutrients.map { NutrientOfRecipeExtendedPOJO.toEntity(it) })
-        addIngredientsEntity(recipe.ingredients.map { IngredientOfRecipeEntity.toEntity(it) })
+        insertLabelsEntity(recipe.labels.map { LabelOfRecipeExtendedPOJO.toEntity(it) })
+        insertNutrientsEntity(recipe.nutrients.map { NutrientOfRecipeExtendedPOJO.toEntity(it) })
+        insertIngredientsEntity(recipe.ingredients.map { IngredientOfRecipeEntity.toEntity(it) })
 
         if (favoriteMark) {
             invertFavoriteStatus(recipe.ID)

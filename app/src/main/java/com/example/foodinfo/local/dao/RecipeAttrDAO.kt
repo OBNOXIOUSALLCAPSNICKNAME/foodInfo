@@ -35,6 +35,7 @@ interface RecipeAttrDAO {
     fun observeCategoryLabels(categoryID: Int): Flow<@JvmWildcard List<@JvmWildcard LabelRecipeAttrExtendedDB>>
 
 
+    // add functions must remove all content and insert new one
     fun addBasics(attrs: List<BasicRecipeAttrDB>)
 
     fun addLabels(attrs: List<LabelRecipeAttrDB>)

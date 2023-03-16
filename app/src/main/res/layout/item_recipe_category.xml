@@ -2,6 +2,7 @@
 
 <LinearLayout xmlns:android = "http://schemas.android.com/apk/res/android"
     xmlns:app = "http://schemas.android.com/apk/res-auto"
+    xmlns:tools = "http://schemas.android.com/tools"
     android:layout_width = "match_parent"
     android:layout_height = "wrap_content"
     android:orientation = "vertical">
@@ -13,7 +14,7 @@
         android:layout_height = "wrap_content"
         android:fontFamily = "@font/app_font_regular"
         android:paddingBottom = "@dimen/dp_6"
-        android:text = "@string/meal_text" />
+        tools:text = "meal" />
 
     <com.google.android.material.chip.ChipGroup
         android:id = "@+id/cg_labels"

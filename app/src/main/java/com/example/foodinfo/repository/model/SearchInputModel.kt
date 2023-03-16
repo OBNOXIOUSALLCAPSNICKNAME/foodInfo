@@ -3,7 +3,7 @@ package com.example.foodinfo.repository.model
 import androidx.recyclerview.widget.DiffUtil
 
 
-// choose best dateTime format and lib
+// TODO choose best dateTime format and lib
 data class SearchInputModel(
     val ID: Int = 0,
     val inputText: String,

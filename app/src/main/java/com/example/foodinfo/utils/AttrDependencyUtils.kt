@@ -11,56 +11,62 @@ import kotlinx.coroutines.flow.*
  * will invoke [outputDataProvider] and re-emit everything from provided flow to result flow.
  * Previous flow from [outputDataProvider] will be canceled.
  *
+ * - All repetitions of same [State.data] from [extraData] will be filtered out to avoid redundant
+ * [outputDataProvider] calls.
+ *
  * - If [State.Error] was collected from [extraData], it will be emitted into result flow and
  * [outputDataProvider] will not be called.
  *
- * - If [State.Loading] with [State.data] **!= null** was collected from [extraData],
- * [outputDataProvider] will be invoked but [transform] will be applied to provided flow to re-emit every
- * [State] with [State.data] **!= null** into result flow **ONLY** as [State.Loading]. Also, if [State.Error]
- * will be collected from provided flow, it **WILL NOT** be emitted into result flow.
- *
- * - All repetitions of same [State.data] from [extraData] will be filtered out to avoid redundant calls of
- * [outputDataProvider]. It may lead into situations when [State.Success] will be ignored due to [State.Loading]
- * was previously collected with the same [State.data] (which is bad for screens that does not use data from
- * [State.Loading]). To fix that, [getResolved] will emit latest value collected from [outputDataProvider] if
- * it was completed (e.g. [State.Error] or [State.Success]), otherwise it will call [outputDataProvider].
+ * - If [State.Loading] with [State.data] **!= null** was collected from [extraData], result flow will
+ * transform [State.Success] into [State.Loading] provided by [outputDataProvider] and ignore [State.Error]
  *
  */
 @OptIn(ExperimentalCoroutinesApi::class)
 fun <extraT, outputT> getResolved(
     extraData: Flow<State<extraT>>,
     outputDataProvider: (extraT) -> Flow<State<outputT>>
-) = flow {
-    emit(State.Loading())
+) = channelFlow {
+    send(State.Loading())
 
+    var isLoading = true
     var equalData = false
-    var lastState: State<outputT>? = null
+    var lastResult: State<outputT>? = null
 
     extraData.distinctUntilChanged { old, new ->
+        isLoading = new is State.Loading
         equalData = State.isEqualData(old.data, new.data)
         State.isEqual(old, new)
+    }.transform { tempState ->
+        if (tempState is State.Success && equalData && lastResult != null) {
+            send(lastResult!!)
+        } else {
+            emit(tempState)
+        }
     }.flatMapLatest { extraState ->
         when (extraState) {
-            is State.Loading -> {
+            is State.Success, is State.Loading -> {
                 if (extraState.data != null) {
-                    outputDataProvider(extraState.data).transform { resultState ->
-                        lastState = resultState
-                        resultState.data?.let { emit(State.Loading(it)) }
-                    }
+                    outputDataProvider(extraState.data)
                 } else {
                     flowOf(State.Loading())
                 }
             }
-            is State.Success -> {
-                if (equalData && (lastState is State.Success || lastState is State.Error)) {
-                    flowOf(lastState!!)
-                } else {
-                    outputDataProvider(extraState.data!!)
-                }
-            }
-            is State.Error   -> {
+            is State.Error                     -> {
                 flowOf(State.Error(extraState.messageID!!, extraState.throwable!!, extraState.errorCode!!))
             }
         }
-    }.collect(::emit)
+    }.collect { resultState ->
+        lastResult = resultState
+        when {
+            isLoading && resultState is State.Success -> {
+                send(State.Loading(resultState.data))
+            }
+            isLoading && resultState is State.Error   -> {
+
+            }
+            else                                      -> {
+                send(resultState)
+            }
+        }
+    }
 }

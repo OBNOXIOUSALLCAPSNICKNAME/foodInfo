@@ -30,7 +30,7 @@ class SearchInputFragment : BaseFragment<FragmentSearchInputBinding>(
     private val onArrowClickListener: (String) -> Unit = { text ->
         with(binding) {
             etSearchInput.setQuery(text, false)
-            showKeyboard()
+            showKeyboard(binding.etSearchInput)
         }
     }
 
@@ -103,7 +103,7 @@ class SearchInputFragment : BaseFragment<FragmentSearchInputBinding>(
 
     override fun onResume() {
         super.onResume()
-        showKeyboard()
+        showKeyboard(binding.etSearchInput)
     }
 
     override fun onPause() {

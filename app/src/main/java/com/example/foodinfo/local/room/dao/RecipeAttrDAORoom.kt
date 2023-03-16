@@ -1,9 +1,6 @@
 package com.example.foodinfo.local.room.dao
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Transaction
+import androidx.room.*
 import com.example.foodinfo.local.dao.RecipeAttrDAO
 import com.example.foodinfo.local.dto.*
 import com.example.foodinfo.local.room.entity.BasicRecipeAttrEntity
@@ -81,9 +78,10 @@ abstract class RecipeAttrDAORoom : RecipeAttrDAO {
     @Query("DELETE FROM ${BasicRecipeAttrDB.TABLE_NAME}")
     abstract fun clearBasics()
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.ABORT)
     abstract fun addBasicsEntity(attrs: List<BasicRecipeAttrEntity>)
 
+    @Transaction
     override fun addBasics(attrs: List<BasicRecipeAttrDB>) {
         clearBasics()
         addBasicsEntity(attrs.map { BasicRecipeAttrEntity.toEntity(it) })
@@ -92,34 +90,37 @@ abstract class RecipeAttrDAORoom : RecipeAttrDAO {
     @Query("DELETE FROM ${LabelRecipeAttrDB.TABLE_NAME}")
     abstract fun clearLabels()
 
-    @Insert
-    abstract fun addLabelsEntity(attrs: List<LabelRecipeAttrEntity>)
+    @Insert(onConflict = OnConflictStrategy.ABORT)
+    abstract fun insertLabelsEntity(attrs: List<LabelRecipeAttrEntity>)
 
+    @Transaction
     override fun addLabels(attrs: List<LabelRecipeAttrDB>) {
         clearLabels()
-        addLabelsEntity(attrs.map { LabelRecipeAttrEntity.toEntity(it) })
+        insertLabelsEntity(attrs.map { LabelRecipeAttrEntity.toEntity(it) })
     }
 
     @Query("DELETE FROM ${NutrientRecipeAttrDB.TABLE_NAME}")
     abstract fun clearNutrients()
 
-    @Insert
-    abstract fun addNutrientsEntity(attrs: List<NutrientRecipeAttrEntity>)
+    @Insert(onConflict = OnConflictStrategy.ABORT)
+    abstract fun insertNutrientsEntity(attrs: List<NutrientRecipeAttrEntity>)
 
+    @Transaction
     override fun addNutrients(attrs: List<NutrientRecipeAttrDB>) {
         clearNutrients()
-        addNutrientsEntity(attrs.map { NutrientRecipeAttrEntity.toEntity(it) })
+        insertNutrientsEntity(attrs.map { NutrientRecipeAttrEntity.toEntity(it) })
     }
 
     @Query("DELETE FROM ${CategoryRecipeAttrDB.TABLE_NAME}")
     abstract fun clearCategories()
 
-    @Insert
-    abstract fun addCategoriesEntity(attrs: List<CategoryRecipeAttrEntity>)
+    @Insert(onConflict = OnConflictStrategy.ABORT)
+    abstract fun insertCategoriesEntity(attrs: List<CategoryRecipeAttrEntity>)
 
+    @Transaction
     override fun addCategories(attrs: List<CategoryRecipeAttrDB>) {
         clearCategories()
-        addCategoriesEntity(attrs.map { CategoryRecipeAttrEntity.toEntity(it) })
+        insertCategoriesEntity(attrs.map { CategoryRecipeAttrEntity.toEntity(it) })
     }
 
     @Transaction

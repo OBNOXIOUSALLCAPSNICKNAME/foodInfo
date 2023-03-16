@@ -38,7 +38,7 @@
             android:scrollbars = "none"
             android:textAlignment = "center"
             android:textColor = "?appSecondaryFontColor"
-            tools:text = "@string/description_placeholder" />
+            tools:text = "Description text example" />
 
     </androidx.core.widget.NestedScrollView>
 

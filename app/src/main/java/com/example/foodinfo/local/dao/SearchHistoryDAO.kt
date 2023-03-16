@@ -10,6 +10,7 @@ interface SearchHistoryDAO {
 
     fun getHistoryAll(): List<@JvmWildcard SearchInputDB>
 
+    // add functions must update content if it already in DB
     fun addHistory(searchInput: List<SearchInputDB>)
 
     fun addInput(searchInput: SearchInputDB)

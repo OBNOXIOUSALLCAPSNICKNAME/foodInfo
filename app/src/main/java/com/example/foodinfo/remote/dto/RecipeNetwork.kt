@@ -79,4 +79,8 @@ data class RecipeNetwork(
         const val INGREDIENTS = "ingredients"
         const val INGREDIENT_LINES = "ingredientLines"
     }
+
+    companion object {
+        const val RECIPE_BASE_URI = "http://www.edamam.com/ontologies/edamam.owl#recipe_"
+    }
 }

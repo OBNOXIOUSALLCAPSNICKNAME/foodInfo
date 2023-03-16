@@ -4,15 +4,23 @@ import com.google.gson.annotations.SerializedName
 
 
 data class RecipeAttrsNetwork(
-    @SerializedName("basics")
+    @SerializedName(Fields.BASICS)
     val basics: List<BasicRecipeAttrNetwork>,
 
-    @SerializedName("labels")
+    @SerializedName(Fields.LABELS)
     val labels: List<LabelRecipeAttrNetwork>,
 
-    @SerializedName("categories")
+    @SerializedName(Fields.CATEGORIES)
     val categories: List<CategoryRecipeAttrNetwork>,
 
-    @SerializedName("nutrients")
+    @SerializedName(Fields.NUTRIENTS)
     val nutrients: List<NutrientRecipeAttrNetwork>
-)
+) {
+
+    object Fields {
+        const val BASICS = "basics"
+        const val LABELS = "labels"
+        const val CATEGORIES = "categories"
+        const val NUTRIENTS = "nutrients"
+    }
+}

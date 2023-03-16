@@ -24,41 +24,40 @@ fun List<LabelRecipeAttrExtendedDB>.toModelSearch(): CategoryTargetSearchModel {
 }
 
 fun List<LabelOfRecipeExtendedDB>.toModelRecipe(): List<CategoryOfRecipeModel> {
-    return this.groupBy { label -> label.attrInfo!!.categoryInfo!!.name }.entries.map { category ->
+    return this.groupBy { it.attrInfo!!.categoryInfo!!.name }.values.map { labels ->
         CategoryOfRecipeModel(
-            name = category.key,
-            labels = category.value.map { it.toModelShort() }
+            name = labels.first().attrInfo!!.categoryInfo!!.name,
+            labels = labels.map { it.toModelShort() }
         )
     }
 }
 
 fun List<LabelOfSearchFilterExtendedDB>.toModelEdit(categoryID: Int): CategoryOfSearchFilterEditModel {
-    val labels = this.filter { it.attrInfo!!.categoryID == categoryID }
-    return CategoryOfSearchFilterEditModel(
-        name = labels.first().attrInfo!!.categoryInfo!!.name,
-        labels = labels.map { it.toModelEdit() }
-    )
+    this.filter { it.attrInfo!!.categoryID == categoryID }.also { labels ->
+        return CategoryOfSearchFilterEditModel(
+            name = labels.first().attrInfo!!.categoryInfo!!.name,
+            labels = labels.map { it.toModelEdit() }
+        )
+    }
 }
 
 fun List<LabelOfSearchFilterExtendedDB>.toModelPreview(): List<CategoryOfSearchFilterPreviewModel> {
-    return this.groupBy { label -> label.attrInfo!!.categoryID }.entries.map { category ->
+    return this.groupBy { it.attrInfo!!.categoryID }.values.map { labels ->
         CategoryOfSearchFilterPreviewModel(
-            ID = category.key,
-            name = category.value.first().attrInfo!!.categoryInfo!!.name,
-            labels = category.value.filter { it.isSelected }.map { it.toModelShort() }
+            ID = labels.first().attrInfo!!.categoryInfo!!.ID,
+            name = labels.first().attrInfo!!.categoryInfo!!.name,
+            labels = labels.filter { it.isSelected }.map { it.toModelShort() }
         )
     }
 }
 
 fun List<LabelOfSearchFilterExtendedDB>.toModelPreset(): List<CategoryOfFilterPresetModel> {
-    return this.groupBy { label -> label.attrInfo!!.categoryInfo!!.name }.entries.map { category ->
+    return this.filter { it.isSelected }.groupBy { it.attrInfo!!.categoryInfo!!.name }.values.map { labels ->
         CategoryOfFilterPresetModel(
-            tag = category.value.first().attrInfo!!.categoryInfo!!.tag,
-            labels = category.value.filter { it.isSelected }.map { label ->
-                LabelOfFilterPresetModel(label.attrInfo!!.tag, label.infoID)
-            }
+            tag = labels.first().attrInfo!!.categoryInfo!!.tag,
+            labels = labels.map { it.toModelPreset() }
         )
-    }.filter { it.labels.isNotEmpty() }
+    }
 }
 
 fun CategoryRecipeAttrNetwork.toDB(): CategoryRecipeAttrDB {

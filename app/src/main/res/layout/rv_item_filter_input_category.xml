@@ -2,6 +2,7 @@
 
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android = "http://schemas.android.com/apk/res/android"
     xmlns:app = "http://schemas.android.com/apk/res-auto"
+    xmlns:tools = "http://schemas.android.com/tools"
     android:layout_width = "match_parent"
     android:layout_height = "wrap_content">
 
@@ -12,10 +13,10 @@
         android:layout_height = "wrap_content"
         android:fontFamily = "@font/app_font_regular"
         android:includeFontPadding = "false"
-        android:text = "@string/meal_text"
         app:layout_constraintBottom_toTopOf = "@+id/cg_labels"
         app:layout_constraintStart_toStartOf = "parent"
-        app:layout_constraintTop_toTopOf = "parent" />
+        app:layout_constraintTop_toTopOf = "parent"
+        tools:text = "meal" />
 
     <ImageView
         android:id = "@+id/iv_edit"

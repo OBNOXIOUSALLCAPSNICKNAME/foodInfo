@@ -1,6 +1,7 @@
 package com.example.foodinfo.ui.fragment
 
 import androidx.activity.OnBackPressedCallback
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -97,8 +98,14 @@ class SearchQueryFragment : DataObserverFragment<FragmentSearchQueryBinding>(
         observeData(
             dataFlow = viewModel.filterQuery,
             useLoadingData = false,
+            onStart = {
+                binding.pbContent.isVisible = true
+                binding.rvRecipes.isVisible = false
+            },
             onInitUI = { query ->
                 viewModel.query = query
+                binding.pbContent.isVisible = false
+                binding.rvRecipes.isVisible = true
                 viewModel.recipes.collectLatest(recyclerAdapter::submitData)
             },
             onRefreshUI = { query ->

@@ -26,14 +26,11 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val navigationHost =
-            supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_recipes) as NavHostFragment
-        val navController = navigationHost.navController
+        val navHost = supportFragmentManager.findFragmentById(R.id.nav_host) as NavHostFragment
 
+        NavigationUI.setupWithNavController(binding.navView, navHost.navController)
 
-        NavigationUI.setupWithNavController(binding.navView, navController)
-
-        navController.addOnDestinationChangedListener { _, destination: NavDestination, _ ->
+        navHost.navController.addOnDestinationChangedListener { _, destination: NavDestination, _ ->
             when (destination.id) {
                 R.id.f_home,
                 R.id.f_favorite,

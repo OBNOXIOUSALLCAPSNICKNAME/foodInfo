@@ -5,7 +5,6 @@ import com.example.foodinfo.remote.response.NetworkResponse
 import com.example.foodinfo.utils.ApiResponse
 import com.example.foodinfo.utils.NoDataException
 import com.example.foodinfo.utils.State
-import com.example.foodinfo.utils.extensions.trimMultiline
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
@@ -29,24 +28,17 @@ abstract class BaseRepository {
     private inline fun <remoteT, localInT> fetchRemote(
         crossinline dataProvider: suspend () -> DataProvider<remoteT>,
         crossinline mapDelegate: (remoteT) -> localInT
-    ) = flow {
+    ) = flow<State<localInT>> {
         emit(State.Loading())
 
         try {
             when (val provider = dataProvider()) {
                 is DataProvider.Remote -> {
-                    when (provider.response) {
-                        is NetworkResponse.Success -> {
-                            emit(mapData(provider.response.result, mapDelegate))
-                        }
-                        else                       -> {
-                            emit(
-                                State.Error(
-                                    (provider.response as NetworkResponse.Error).messageID,
-                                    (provider.response as NetworkResponse.Error).throwable,
-                                    (provider.response as NetworkResponse.Error).code
-                                )
-                            )
+                    if (provider.response is NetworkResponse.Success) {
+                        emit(mapData(provider.response.result, mapDelegate))
+                    } else {
+                        with(provider.response as NetworkResponse.Error) {
+                            emit(State.Error(messageID, throwable, code))
                         }
                     }
                 }
@@ -55,10 +47,7 @@ abstract class BaseRepository {
                 }
                 else                   -> {
                     throw IllegalArgumentException(
-                        """
-                            Unsupported remoteDataProvider type: ${provider::class.java}.
-                            remoteDataProvider must be either 'DataProvider.Remote' or 'DataProvider.Empty'
-                        """.trimMultiline()
+                        "Unsupported remoteDataProvider type: ${provider.javaClass.simpleName}."
                     )
                 }
             }
@@ -85,10 +74,7 @@ abstract class BaseRepository {
                 }
                 else -> {
                     throw IllegalArgumentException(
-                        """
-                            Unsupported localDataProvider type: ${provider::class.java}.
-                            localDataProvider must be either 'DataProvider.LocalFlow' or 'DataProvider.Local'
-                        """.trimMultiline()
+                        "Unsupported localDataProvider type: ${provider.javaClass.simpleName}."
                     )
                 }
             }
@@ -176,7 +162,7 @@ abstract class BaseRepository {
      *         localDataProvider = { DataProvider.LocalFlow(dao.fetch()) },
      *         saveRemoteDelegate = {},
      *         mapToLocalDelegate = {},
-     *         mapToModelDelegate = {}
+     *         mapToModelDelegate = { it }
      *     )
      * }
      * ~~~
@@ -274,7 +260,7 @@ abstract class BaseRepository {
                             emit(State.Success(localData))
                         },
                         onError = { _, _ ->
-                            emit(State.Error(remote.messageID!!, remote.throwable!!))
+                            emit(State.Error(remote.messageID!!, remote.throwable!!, remote.errorCode!!))
                         }
                     )
                 }

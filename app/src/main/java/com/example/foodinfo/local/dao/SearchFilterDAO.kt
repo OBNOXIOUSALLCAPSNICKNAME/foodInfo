@@ -44,6 +44,7 @@ interface SearchFilterDAO {
     fun updateNutrients(nutrients: List<NutrientOfSearchFilterDB>)
 
 
+    // invalidate functions must remove content related with provided filterName and insert new one
     fun invalidateFilter(
         filterName: String,
         basics: List<BasicOfSearchFilterDB>? = null,

@@ -45,7 +45,7 @@ fun View.getDrawableByName(name: String): Drawable? {
 fun ImageView.setFavorite(
     isFavorite: Boolean,
     trueColor: Int = R.attr.appPrimaryColor,
-    falseColor: Int = R.attr.appMainBackgroundColor
+    falseColor: Int = R.color.main_background
 ) {
     if (isFavorite) {
         this.setColorFilter(this.context.getAttrColor(trueColor))
@@ -61,12 +61,12 @@ fun View.baseAnimation() {
 }
 
 /*
-    activity.currentFocus instead of passing view or calling view.requestFocus() because showSoftInput
-    may be called before view.requestFocus() completes and will not display the keyboard, because received
-    the wrong View, which was not focused.
+    activity.currentFocus instead of view because showSoftInput may be called before view.requestFocus()
+    completes and will not display the keyboard, because received the wrong View, which was not focused.
  */
-fun Fragment.showKeyboard() {
+fun Fragment.showKeyboard(view: View) {
     this.requireActivity().let { activity ->
+        view.requestFocus()
         ContextCompat.getSystemService(activity, InputMethodManager::class.java)?.showSoftInput(
             activity.currentFocus, InputMethodManager.SHOW_IMPLICIT
         )

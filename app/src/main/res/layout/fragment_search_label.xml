@@ -57,7 +57,7 @@
         tools:listitem = "@layout/rv_item_search_target" />
 
     <ProgressBar
-        android:id = "@+id/pb_recipes"
+        android:id = "@+id/pb_content"
         android:layout_width = "@dimen/progress_size"
         android:layout_height = "@dimen/progress_size"
         android:layout_gravity = "center"

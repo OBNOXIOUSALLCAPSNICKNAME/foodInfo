@@ -85,10 +85,9 @@ class RecipeAttrRepository @Inject constructor(
                         recipeAttrDAO.observeBasicsAll(),
                         recipeAttrDAO.observeLabelsAll(),
                         recipeAttrDAO.observeNutrientsAll(),
-                        recipeAttrDAO.observeCategoriesAll()
-                    ) { basics, labels, nutrients, categories ->
-                        RecipeAttrsDB(basics, labels, nutrients, categories)
-                    }
+                        recipeAttrDAO.observeCategoriesAll(),
+                        ::RecipeAttrsDB
+                    )
                 )
             },
             saveRemoteDelegate = { recipeAttrDAO.addRecipeAttrs(it) },

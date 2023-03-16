@@ -6,8 +6,8 @@ import com.example.foodinfo.local.dto.BasicRecipeAttrDB
 import com.example.foodinfo.remote.dto.BasicRecipeAttrNetwork
 import com.example.foodinfo.repository.model.BasicOfFilterPresetModel
 import com.example.foodinfo.repository.model.BasicOfSearchFilterEditModel
-import java.lang.Float.min
 import kotlin.math.max
+import kotlin.math.min
 
 
 fun BasicOfSearchFilterExtendedDB.toDB(): BasicOfSearchFilterDB {
@@ -25,14 +25,8 @@ fun BasicOfSearchFilterExtendedDB.toDBLatest(): BasicOfSearchFilterDB {
         ID = this.ID,
         filterName = this.filterName,
         infoID = this.infoID,
-        minValue = if (this.minValue != null) max(
-            this.minValue!!,
-            this.attrInfo!!.rangeMin
-        ) else null,
-        maxValue = if (this.maxValue != null) min(
-            this.maxValue!!,
-            this.attrInfo!!.rangeMax
-        ) else null
+        minValue = this.minValue?.let { max(it, this.attrInfo!!.rangeMin) },
+        maxValue = this.maxValue?.let { min(it, this.attrInfo!!.rangeMax) }
     )
 }
 
@@ -55,18 +49,12 @@ fun List<BasicOfSearchFilterExtendedDB>.toModelEdit(): List<BasicOfSearchFilterE
 fun List<BasicOfSearchFilterExtendedDB>.toModelPreset(): List<BasicOfFilterPresetModel> {
     return this
         .filterNot { (it.minValue == null && it.maxValue == null) || it.attrInfo!!.tag == null }
-        .map { nutrient ->
+        .map { basic ->
             BasicOfFilterPresetModel(
-                tag = nutrient.attrInfo!!.tag!!,
-                columnName = nutrient.attrInfo!!.columnName,
-                minValue = if (nutrient.minValue != null) max(
-                    nutrient.minValue!!,
-                    nutrient.attrInfo!!.rangeMin
-                ) else null,
-                maxValue = if (nutrient.maxValue != null) min(
-                    nutrient.maxValue!!,
-                    nutrient.attrInfo!!.rangeMax
-                ) else null
+                tag = basic.attrInfo!!.tag!!,
+                columnName = basic.attrInfo!!.columnName,
+                minValue = basic.minValue?.let { max(it, basic.attrInfo!!.rangeMin) },
+                maxValue = basic.maxValue?.let { min(it, basic.attrInfo!!.rangeMax) }
             )
         }
 }

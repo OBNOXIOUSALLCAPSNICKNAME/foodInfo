@@ -4,27 +4,39 @@ import com.google.gson.annotations.SerializedName
 
 
 data class BasicRecipeAttrNetwork(
-    @SerializedName("ID")
+    @SerializedName(Fields.ID)
     val ID: Int,
 
-    @SerializedName("tag")
+    @SerializedName(Fields.TAG)
     val tag: String?,
 
-    @SerializedName("name")
+    @SerializedName(Fields.NAME)
     val name: String,
 
-    @SerializedName("columnName")
+    @SerializedName(Fields.COLUMN_NAME)
     val columnName: String,
 
-    @SerializedName("measure")
+    @SerializedName(Fields.MEASURE)
     val measure: String,
 
-    @SerializedName("stepSize")
+    @SerializedName(Fields.STEP_SIZE)
     val stepSize: Float,
 
-    @SerializedName("rangeMin")
+    @SerializedName(Fields.RANGE_MIN)
     val rangeMin: Float,
 
-    @SerializedName("rangeMax")
+    @SerializedName(Fields.RANGE_MAX)
     val rangeMax: Float
-)
+) {
+
+    object Fields {
+        const val ID = "ID"
+        const val TAG = "tag"
+        const val NAME = "name"
+        const val COLUMN_NAME = "columnName"
+        const val MEASURE = "measure"
+        const val STEP_SIZE = "stepSize"
+        const val RANGE_MIN = "rangeMin"
+        const val RANGE_MAX = "rangeMax"
+    }
+}

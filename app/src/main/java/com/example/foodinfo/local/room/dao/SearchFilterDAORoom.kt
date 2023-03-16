@@ -71,13 +71,13 @@ abstract class SearchFilterDAORoom : SearchFilterDAO {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     abstract fun insertFilterEntity(filter: SearchFilterEntity): Long
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.ABORT)
     abstract fun insertBasicsEntity(baseFields: List<BasicOfSearchFilterEntity>)
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.ABORT)
     abstract fun insertLabelsEntity(labels: List<LabelOfSearchFilterEntity>)
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.ABORT)
     abstract fun insertNutrientsEntity(nutrients: List<NutrientOfSearchFilterEntity>)
 
 
@@ -116,21 +116,21 @@ abstract class SearchFilterDAORoom : SearchFilterDAO {
         updateNutrientsEntity(nutrients.map { NutrientOfSearchFilterEntity.toEntity(it) })
     }
 
-    @Update
+    @Update(onConflict = OnConflictStrategy.ABORT)
     abstract fun updateBasicsEntity(baseFields: List<BasicOfSearchFilterEntity>)
 
     override fun updateBasics(basics: List<BasicOfSearchFilterDB>) {
         updateBasicsEntity(basics.map { BasicOfSearchFilterEntity.toEntity(it) })
     }
 
-    @Update
+    @Update(onConflict = OnConflictStrategy.ABORT)
     abstract fun updateLabelsEntity(labels: List<LabelOfSearchFilterEntity>)
 
     override fun updateLabels(labels: List<LabelOfSearchFilterDB>) {
         updateLabelsEntity(labels.map { LabelOfSearchFilterEntity.toEntity(it) })
     }
 
-    @Update
+    @Update(onConflict = OnConflictStrategy.ABORT)
     abstract fun updateNutrientsEntity(nutrients: List<NutrientOfSearchFilterEntity>)
 
     override fun updateNutrients(nutrients: List<NutrientOfSearchFilterDB>) {

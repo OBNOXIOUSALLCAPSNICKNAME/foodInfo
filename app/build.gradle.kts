@@ -20,16 +20,13 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "API_GITHUB", "\"https://api.github.com/\"")
+        buildConfigField("String", "API_EDAMAM", "\"https://api.edamam.com/api/recipes/v2/\"")
     }
 
     buildTypes {
-        getByName("debug") {
-            buildConfigField("String", "API_GITHUB", "\"https://api.github.com/\"")
-            buildConfigField("String", "API_EDAMAM", "\"https://api.edamam.com/api/recipes/v2/\"")
-        }
         getByName("release") {
-            buildConfigField("String", "API_GITHUB", "\"https://api.github.com/\"")
-            buildConfigField("String", "API_EDAMAM", "\"https://api.edamam.com/api/recipes/v2/\"")
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }

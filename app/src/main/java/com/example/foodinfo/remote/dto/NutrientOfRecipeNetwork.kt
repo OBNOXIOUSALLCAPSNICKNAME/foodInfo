@@ -4,12 +4,19 @@ import com.google.gson.annotations.SerializedName
 
 
 data class NutrientOfRecipeNetwork(
-    @SerializedName("label")
+    @SerializedName(Fields.LABEL)
     val label: String,
 
-    @SerializedName("quantity")
+    @SerializedName(Fields.QUANTITY)
     val quantity: Float,
 
-    @SerializedName("unit")
+    @SerializedName(Fields.UNIT)
     val unit: String
-)
+) {
+
+    object Fields {
+        const val LABEL = "label"
+        const val QUANTITY = "quantity"
+        const val UNIT = "unit"
+    }
+}

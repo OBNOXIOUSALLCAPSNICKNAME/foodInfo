@@ -54,6 +54,13 @@ fun LabelOfSearchFilterExtendedDB.toModelShort(): LabelShortModel {
     )
 }
 
+fun LabelOfSearchFilterExtendedDB.toModelPreset(): LabelOfFilterPresetModel {
+    return LabelOfFilterPresetModel(
+        tag = this.attrInfo!!.tag,
+        infoID = this.infoID
+    )
+}
+
 
 fun LabelOfSearchFilterEditModel.toDB(filterName: String): LabelOfSearchFilterDB {
     return LabelOfSearchFilterDB(
@@ -93,11 +100,15 @@ fun LabelRecipeAttrNetwork.toDB(): LabelRecipeAttrDB {
     )
 }
 
-fun List<String>.toDB(recipeID: String, attrs: List<LabelRecipeAttrDB>): List<LabelOfRecipeExtendedDB> {
+fun List<String>.toDBExtended(
+    recipeID: String,
+    attrs: List<LabelRecipeAttrDB>
+): List<LabelOfRecipeExtendedDB> {
+    val attrsMap = attrs.associate { it.tag.lowercase() to it.ID }
     return this.map { label ->
         LabelOfRecipeExtendedDB(
             recipeID = recipeID,
-            infoID = attrs.first { it.tag.lowercase() == label.lowercase() }.ID,
+            infoID = attrsMap[label.lowercase()]!!,
             attrInfo = null
         )
     }

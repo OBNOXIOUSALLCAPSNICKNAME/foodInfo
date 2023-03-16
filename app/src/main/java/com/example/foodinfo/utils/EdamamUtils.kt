@@ -9,7 +9,7 @@ import com.example.foodinfo.utils.extensions.trimMultiline
 
 
 /**
- * Enum of Recipe fields that will tell [EdamamRecipeURL] and [EdamamPageURL] which should be included
+ * Enum of Recipe fields that will tell [EdamamRecipeURL] and [EdamamPageURL] which fields should be included
  * in response to filter out unnecessary content and reduce network usage.
  */
 enum class FieldSet(val fields: String) {
@@ -187,8 +187,8 @@ class EdamamPageURL(
  * may also be with **dietType** = "**low-fat**"). Without internet, it's possible to just load everything
  * from local DB, (because the local DB will not change over time during the current session).
  * But with internet, recipes in remote page **N** may be different from recipes in local page **N**
- * For example, remote page **№5** will contain recipes **`[80..101]`**, but in local DB page **№5** will
- * contain recipe **`[45, 68, .. 131]`** etc. (because they will be previously cached from another queries).
+ * For example, remote page **№5** will contain recipes **`[80..101]`**, but local DB page **№5** will
+ * contain recipe **`[45, 68, .. 131]`** etc. (because they was previously cached from another queries).
  * This will cause the recipes to "jump" inside RecyclerView. To avoid that, set **isOffline = true** if
  * local DB updates expected.
  *

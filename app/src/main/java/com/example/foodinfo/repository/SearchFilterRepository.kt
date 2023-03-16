@@ -124,16 +124,11 @@ class SearchFilterRepository @Inject constructor(
             remoteDataProvider = { DataProvider.Empty },
             localDataProvider = {
                 val label = attrs.labels.first { it.ID == labelID }
-                DataProvider.Local(
-                    SearchFilterPresetModel(
-                        categories = listOf(
-                            CategoryOfFilterPresetModel(
-                                tag = attrs.categories.first { it.ID == label.categoryID }.tag,
-                                labels = listOf(LabelOfFilterPresetModel(label.tag, label.ID))
-                            )
-                        )
-                    )
+                val category = CategoryOfFilterPresetModel(
+                    tag = attrs.categories.first { it.ID == label.categoryID }.tag,
+                    labels = listOf(LabelOfFilterPresetModel(label.tag, label.ID))
                 )
+                DataProvider.Local(SearchFilterPresetModel(categories = listOf(category)))
             },
             saveRemoteDelegate = { },
             mapToLocalDelegate = { },
@@ -153,7 +148,7 @@ class SearchFilterRepository @Inject constructor(
                         val basicsToUpdate = verifyBasics(attrs.basics, filter.basics)
                         val labelsToUpdate = verifyLabels(attrs.labels, filter.labels)
                         val nutrientsToUpdate = verifyNutrients(attrs.nutrients, filter.nutrients)
-                        if (listOf(basicsToUpdate, labelsToUpdate, nutrientsToUpdate).any { it != null }) {
+                        if (basicsToUpdate != null || labelsToUpdate != null || nutrientsToUpdate != null) {
                             searchFilterDAO.invalidateFilter(
                                 prefUtils.searchFilter,
                                 basicsToUpdate,
@@ -181,11 +176,7 @@ class SearchFilterRepository @Inject constructor(
         val basicsNew = attrs.filter { it.tag != null }.map { basicAttr ->
             basicsMap[basicAttr.ID]?.toDBLatest() ?: basicAttr.toFilter(prefUtils.searchFilter)
         }
-        return if (basicsNew.sortedBy { it.ID } != basics.map { it.toDB() }.sortedBy { it.ID }) {
-            basicsNew
-        } else {
-            null
-        }
+        return compare(basics.map { it.toDB() }, basicsNew)
     }
 
     private fun verifyLabels(
@@ -196,11 +187,7 @@ class SearchFilterRepository @Inject constructor(
         val labelsNew = attrs.map { labelAttr ->
             labelsMap[labelAttr.ID]?.toDB() ?: labelAttr.toFilter(prefUtils.searchFilter)
         }
-        return if (labelsNew.sortedBy { it.ID } != labels.map { it.toDB() }.sortedBy { it.ID }) {
-            labelsNew
-        } else {
-            null
-        }
+        return compare(labels.map { it.toDB() }, labelsNew)
     }
 
     private fun verifyNutrients(
@@ -211,10 +198,14 @@ class SearchFilterRepository @Inject constructor(
         val nutrientsNew = attrs.map { nutrientAttr ->
             nutrientsMap[nutrientAttr.ID]?.toDBLatest() ?: nutrientAttr.toFilter(prefUtils.searchFilter)
         }
-        return if (nutrientsNew.sortedBy { it.ID } != nutrients.map { it.toDB() }.sortedBy { it.ID }) {
-            nutrientsNew
-        } else {
+        return compare(nutrients.map { it.toDB() }, nutrientsNew)
+    }
+
+    private fun <T> compare(old: List<T>, new: List<T>): List<T>? {
+        return if (old.size == new.size && old.toSet() == new.toSet()) {
             null
+        } else {
+            new
         }
     }
 }

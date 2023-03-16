@@ -84,7 +84,7 @@ class SearchFilterNutrientsFragment : DataObserverFragment<FragmentSearchFilterN
     override fun subscribeUI() {
         observeData(
             dataFlow = viewModel.nutrients,
-            useLoadingData = false,
+            useLoadingData = true,
             onStart = {
                 binding.rvNutrients.isVisible = false
                 binding.pbContent.isVisible = true

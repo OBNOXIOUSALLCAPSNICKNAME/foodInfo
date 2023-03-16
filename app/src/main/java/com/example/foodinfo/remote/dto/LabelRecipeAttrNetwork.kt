@@ -4,21 +4,31 @@ import com.google.gson.annotations.SerializedName
 
 
 data class LabelRecipeAttrNetwork(
-    @SerializedName("ID")
+    @SerializedName(Fields.ID)
     val ID: Int,
 
-    @SerializedName("tag")
+    @SerializedName(Fields.TAG)
     val tag: String,
 
-    @SerializedName("name")
+    @SerializedName(Fields.NAME)
     val name: String,
 
-    @SerializedName("categoryID")
+    @SerializedName(Fields.CATEGORY_ID)
     val categoryID: Int,
 
-    @SerializedName("description")
+    @SerializedName(Fields.DESCRIPTION)
     val description: String,
 
-    @SerializedName("previewURL")
+    @SerializedName(Fields.PREVIEW_URL)
     val previewURL: String
-)
+) {
+
+    object Fields {
+        const val ID = "ID"
+        const val TAG = "tag"
+        const val NAME = "name"
+        const val CATEGORY_ID = "categoryID"
+        const val DESCRIPTION = "description"
+        const val PREVIEW_URL = "previewURL"
+    }
+}

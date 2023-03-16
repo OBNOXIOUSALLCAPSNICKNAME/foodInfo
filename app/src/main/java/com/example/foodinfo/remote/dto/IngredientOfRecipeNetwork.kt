@@ -4,27 +4,39 @@ import com.google.gson.annotations.SerializedName
 
 
 data class IngredientOfRecipeNetwork(
-    @SerializedName("text")
+    @SerializedName(Fields.TEXT)
     val text: String,
 
-    @SerializedName("quantity")
+    @SerializedName(Fields.QUANTITY)
     val quantity: Float,
 
-    @SerializedName("measure")
+    @SerializedName(Fields.MEASURE)
     val measure: String,
 
-    @SerializedName("food")
+    @SerializedName(Fields.FOOD)
     val food: String,
 
-    @SerializedName("weight")
+    @SerializedName(Fields.WEIGHT)
     val weight: Float,
 
-    @SerializedName("foodCategory")
+    @SerializedName(Fields.FOOD_CATEGORY)
     val foodCategory: String,
 
-    @SerializedName("foodId")
+    @SerializedName(Fields.FOOD_ID)
     val foodID: String,
 
-    @SerializedName("image")
+    @SerializedName(Fields.IMAGE)
     val image: String
-)
+) {
+
+    object Fields {
+        const val TEXT = "text"
+        const val QUANTITY = "quantity"
+        const val MEASURE = "measure"
+        const val FOOD = "food"
+        const val WEIGHT = "weight"
+        const val FOOD_CATEGORY = "foodCategory"
+        const val FOOD_ID = "foodId"
+        const val IMAGE = "image"
+    }
+}
