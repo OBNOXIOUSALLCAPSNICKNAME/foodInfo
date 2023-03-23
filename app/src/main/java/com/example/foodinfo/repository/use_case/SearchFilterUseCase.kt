@@ -17,14 +17,14 @@ class SearchFilterUseCase @Inject constructor(
     private val searchFilterRepository: SearchFilterRepository
 ) {
 
-    fun getSearchQuery(): Flow<State<SearchFilterPresetModel>> {
+    fun getPreset(): Flow<State<SearchFilterPresetModel>> {
         return getResolved(
             extraData = recipeAttrRepository.getRecipeAttrsDBLatest(),
             outputDataProvider = { searchFilterRepository.getFilterPreset(it) }
         )
     }
 
-    fun getSearchQueryByLabel(labelID: Int): Flow<State<SearchFilterPresetModel>> {
+    fun getPresetByLabel(labelID: Int): Flow<State<SearchFilterPresetModel>> {
         return getResolved(
             extraData = recipeAttrRepository.getRecipeAttrsDBLatest(),
             outputDataProvider = { searchFilterRepository.getFilterPresetByLabel(labelID, it) }

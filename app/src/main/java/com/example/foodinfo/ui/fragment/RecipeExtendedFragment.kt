@@ -19,9 +19,9 @@ import com.example.foodinfo.ui.custom_view.NonScrollLinearLayoutManager
 import com.example.foodinfo.ui.decorator.ListItemDecoration
 import com.example.foodinfo.utils.extensions.appComponent
 import com.example.foodinfo.utils.extensions.baseAnimation
-import com.example.foodinfo.utils.glide.GlideApp
 import com.example.foodinfo.utils.extensions.setFavorite
 import com.example.foodinfo.utils.extensions.showDescriptionDialog
+import com.example.foodinfo.utils.glide.GlideApp
 import com.example.foodinfo.view_model.RecipeExtendedViewModel
 import com.google.android.material.imageview.ShapeableImageView
 import kotlinx.coroutines.Dispatchers
@@ -116,14 +116,11 @@ class RecipeExtendedFragment : DataObserverFragment<FragmentRecipeExtendedBindin
                 binding.svContent.isVisible = false
                 binding.pbContent.isVisible = true
             },
-            onInitUI = { recipe ->
-                initRecipe(recipe)
+            onFinish = {
                 binding.pbContent.isVisible = false
                 binding.svContent.baseAnimation()
             },
-            onRefreshUI = { recipe ->
-                initRecipe(recipe)
-            }
+            onSuccess = ::initRecipe
         )
     }
 

@@ -75,14 +75,11 @@ class RecipeIngredientsFragment : DataObserverFragment<FragmentRecipeIngredients
                 binding.rvIngredients.isVisible = false
                 binding.pbContent.isVisible = true
             },
-            onInitUI = { ingredients ->
-                recyclerAdapter.submitList(ingredients)
+            onFinish = {
                 binding.pbContent.isVisible = false
                 binding.rvIngredients.baseAnimation()
             },
-            onRefreshUI = { ingredients ->
-                recyclerAdapter.submitList(ingredients)
-            }
+            onSuccess = recyclerAdapter::submitList
         )
     }
 }

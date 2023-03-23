@@ -28,6 +28,13 @@ class RecipeAttrRepository @Inject constructor(
     private val recipeAttrAPI: RecipeAttrAPI,
     private val prefUtils: PrefUtils
 ) : BaseRepository() {
+
+    private val authToken: String
+        get() =
+            GitHubCredentialsDB.TOKEN_PREFIX +
+            apiCredentialsDAO.getGitHub(prefUtils.githubCredentials).token
+
+
     fun getNutrientHint(ID: Int): NutrientHintModel {
         return recipeAttrDAO.getNutrient(ID).toModelHint()
     }
@@ -105,7 +112,4 @@ class RecipeAttrRepository @Inject constructor(
             mapToModelDelegate = { it }
         )
     }
-
-    private val authToken: String
-        get() = GitHubCredentialsDB.TOKEN_PREFIX + apiCredentialsDAO.getGitHub(prefUtils.githubCredentials).token
 }

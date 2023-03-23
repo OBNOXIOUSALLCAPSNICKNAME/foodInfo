@@ -70,8 +70,7 @@ class HomeFragment : DataObserverFragment<FragmentHomeBinding>(
         observeData(
             dataFlow = viewModel.categories,
             useLoadingData = true,
-            onInitUI = recyclerAdapter::submitList,
-            onRefreshUI = recyclerAdapter::submitList
+            onSuccess = recyclerAdapter::submitList,
         )
     }
 }

@@ -15,9 +15,7 @@ import com.example.foodinfo.repository.mapper.*
 import com.example.foodinfo.repository.model.*
 import com.example.foodinfo.utils.*
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
 
@@ -28,9 +26,13 @@ class RecipeRepository @Inject constructor(
     private val prefUtils: PrefUtils
 ) : BaseRepository() {
 
+    private val apiCredentials: EdamamCredentialsDB
+        get() = apiCredentialsDAO.getEdamam(prefUtils.edamamCredentials)
+
+
     fun getFavorite(): Flow<PagingData<RecipeFavoriteModel>> {
         return Pager(
-            config = DB_FAVORITE_PAGER,
+            config = AppPagingConfig.RECIPE_FAVORITE_PAGER,
             pagingSourceFactory = {
                 recipeDAO.getFavorite()
             }
@@ -43,21 +45,30 @@ class RecipeRepository @Inject constructor(
 
     fun getByFilter(
         searchFilterPreset: SearchFilterPresetModel,
-        inputText: String
-    ): Flow<PagingData<RecipeShortModel>> {
+        pagingConfig: PagingConfig,
+        inputText: String = ""
+    ) = flow {
+
+        // emit empty PagingData to be able to immediately handle loading state
+        // because RecipePageQuery building may take some time
+        emit(PagingData.empty())
+
         val query = RecipePageQuery(
             searchFilterPreset = searchFilterPreset,
             apiCredentials = apiCredentials,
             inputText = inputText,
             isOffline = true
         )
-        return Pager(
-            config = DB_EXPLORE_PAGER,
-            pagingSourceFactory = {
-                recipeDAO.getByFilter(SimpleSQLiteQuery(query.local.value))
-            }
-        ).flow.map { pagingData -> pagingData.map { it.toModelShort() } }.flowOn(Dispatchers.IO)
-    }
+        emitAll(
+            Pager(
+                config = pagingConfig,
+                pagingSourceFactory = {
+                    recipeDAO.getByFilter(SimpleSQLiteQuery(query.local.value))
+                }
+            ).flow.map { pagingData -> pagingData.map { it.toModelShort() } }
+        )
+    }.flowOn(Dispatchers.IO)
+
 
     fun getByIdExtended(
         recipeID: String,
@@ -114,24 +125,4 @@ class RecipeRepository @Inject constructor(
     fun delFromFavorite(ID: List<String>) {
         recipeDAO.delFromFavorite(ID)
     }
-
-
-    // definitely this is the wrong place to store pager configs but dunno where else
-    companion object {
-        val DB_EXPLORE_PAGER = PagingConfig(
-            pageSize = 10,
-            initialLoadSize = 20,
-            jumpThreshold = 40,
-            maxSize = 40
-        )
-        val DB_FAVORITE_PAGER = PagingConfig(
-            pageSize = 10,
-            initialLoadSize = 20,
-            jumpThreshold = 40,
-            maxSize = 40
-        )
-    }
-
-    private val apiCredentials: EdamamCredentialsDB
-        get() = apiCredentialsDAO.getEdamam(prefUtils.edamamCredentials)
 }

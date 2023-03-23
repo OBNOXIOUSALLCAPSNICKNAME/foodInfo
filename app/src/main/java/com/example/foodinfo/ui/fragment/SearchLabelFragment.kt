@@ -1,6 +1,5 @@
 package com.example.foodinfo.ui.fragment
 
-import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -15,7 +14,6 @@ import com.example.foodinfo.utils.extensions.appComponent
 import com.example.foodinfo.utils.extensions.showDescriptionDialog
 import com.example.foodinfo.view_model.SearchLabelViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -95,27 +93,17 @@ class SearchLabelFragment : DataObserverFragment<FragmentSearchLabelBinding>(
                     RecyclerView.VERTICAL
                 )
             )
+            itemAnimator = null
         }
     }
 
     override fun subscribeUI() {
-        observeData(
-            dataFlow = viewModel.filterQuery,
-            useLoadingData = false,
-            onStart = {
-                binding.pbContent.isVisible = true
-                binding.rvRecipes.isVisible = false
-            },
-            onInitUI = { query ->
-                viewModel.query = query
-                binding.pbContent.isVisible = false
-                binding.rvRecipes.isVisible = true
-                viewModel.recipes.collectLatest(recyclerAdapter::submitData)
-            },
-            onRefreshUI = { query ->
-                viewModel.query = query
-                viewModel.recipes.collectLatest(recyclerAdapter::submitData)
-            }
+        observePage(
+            useLoadingData = true,
+            dataFlow = viewModel.filterPreset,
+            pageFlow = viewModel.recipes,
+            onSuccess = viewModel::setPreset,
+            onPageCollected = recyclerAdapter::submitData
         )
     }
 }

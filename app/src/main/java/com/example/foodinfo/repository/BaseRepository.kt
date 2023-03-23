@@ -251,6 +251,7 @@ abstract class BaseRepository {
                         }
                     )
 
+                    // must be called AFTER handleState block
                     remoteDataSaved = true
                 }
                 is State.Error   -> {

@@ -89,14 +89,11 @@ class SearchFilterNutrientsFragment : DataObserverFragment<FragmentSearchFilterN
                 binding.rvNutrients.isVisible = false
                 binding.pbContent.isVisible = true
             },
-            onInitUI = { nutrients ->
-                recyclerAdapter.submitList(nutrients)
+            onFinish = {
                 binding.pbContent.isVisible = false
                 binding.rvNutrients.baseAnimation()
             },
-            onRefreshUI = { nutrients ->
-                recyclerAdapter.submitList(nutrients)
-            }
+            onSuccess = recyclerAdapter::submitList
         )
     }
 }

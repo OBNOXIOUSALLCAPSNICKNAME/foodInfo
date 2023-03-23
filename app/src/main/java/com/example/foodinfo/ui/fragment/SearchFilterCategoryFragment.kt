@@ -84,14 +84,12 @@ class SearchFilterCategoryFragment : DataObserverFragment<FragmentSearchFilterCa
                 binding.tvHeader.isVisible = false
                 binding.pbContent.isVisible = true
             },
-            onInitUI = { category ->
-                binding.tvHeader.text = category.name
-                recyclerAdapter.submitList(category.labels)
+            onFinish = {
                 binding.pbContent.isVisible = false
                 binding.tvHeader.baseAnimation()
                 binding.rvLabels.baseAnimation()
             },
-            onRefreshUI = { category ->
+            onSuccess = { category ->
                 binding.tvHeader.text = category.name
                 recyclerAdapter.submitList(category.labels)
             }

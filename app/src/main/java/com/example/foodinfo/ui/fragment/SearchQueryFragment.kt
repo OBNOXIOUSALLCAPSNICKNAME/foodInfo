@@ -1,7 +1,6 @@
 package com.example.foodinfo.ui.fragment
 
 import androidx.activity.OnBackPressedCallback
-import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -13,7 +12,6 @@ import com.example.foodinfo.ui.base.DataObserverFragment
 import com.example.foodinfo.ui.decorator.GridItemDecoration
 import com.example.foodinfo.utils.extensions.appComponent
 import com.example.foodinfo.view_model.SearchQueryViewModel
-import kotlinx.coroutines.flow.collectLatest
 
 
 class SearchQueryFragment : DataObserverFragment<FragmentSearchQueryBinding>(
@@ -91,27 +89,17 @@ class SearchQueryFragment : DataObserverFragment<FragmentSearchQueryBinding>(
                     RecyclerView.VERTICAL
                 )
             )
+            itemAnimator = null
         }
     }
 
     override fun subscribeUI() {
-        observeData(
-            dataFlow = viewModel.filterQuery,
-            useLoadingData = false,
-            onStart = {
-                binding.pbContent.isVisible = true
-                binding.rvRecipes.isVisible = false
-            },
-            onInitUI = { query ->
-                viewModel.query = query
-                binding.pbContent.isVisible = false
-                binding.rvRecipes.isVisible = true
-                viewModel.recipes.collectLatest(recyclerAdapter::submitData)
-            },
-            onRefreshUI = { query ->
-                viewModel.query = query
-                viewModel.recipes.collectLatest(recyclerAdapter::submitData)
-            }
+        observePage(
+            useLoadingData = true,
+            dataFlow = viewModel.filterPreset,
+            pageFlow = viewModel.recipes,
+            onSuccess = viewModel::setPreset,
+            onPageCollected = recyclerAdapter::submitData
         )
     }
 }

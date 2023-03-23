@@ -143,14 +143,11 @@ class SearchFilterFragment : DataObserverFragment<FragmentSearchFilterBinding>(
                 binding.svContent.isVisible = false
                 binding.pbContent.isVisible = true
             },
-            onInitUI = { filter ->
-                initFilter(filter)
+            onFinish = {
                 binding.pbContent.isVisible = false
                 binding.svContent.baseAnimation()
             },
-            onRefreshUI = { filter ->
-                initFilter(filter)
-            }
+            onSuccess = ::initFilter
         )
     }
 
