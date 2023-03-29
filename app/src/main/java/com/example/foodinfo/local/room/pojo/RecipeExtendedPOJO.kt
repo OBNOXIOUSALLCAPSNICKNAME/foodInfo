@@ -81,7 +81,7 @@ data class RecipeExtendedPOJO(
 ) {
 
     companion object {
-        fun toEntity(item: RecipeExtendedDB): RecipeEntity {
+        fun fromDB(item: RecipeExtendedDB): RecipeEntity {
             return RecipeEntity(
                 ID = item.ID,
                 source = item.source,

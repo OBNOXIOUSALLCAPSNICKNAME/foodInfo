@@ -100,16 +100,15 @@ fun LabelRecipeAttrNetwork.toDB(): LabelRecipeAttrDB {
     )
 }
 
-fun List<String>.toDBExtended(
+fun List<String>.toDB(
     recipeID: String,
     attrs: List<LabelRecipeAttrDB>
-): List<LabelOfRecipeExtendedDB> {
-    val attrsMap = attrs.associate { it.tag.lowercase() to it.ID }
+): List<LabelOfRecipeDB> {
+    val attrsMap = attrs.associate { it.name.lowercase() to it.ID }
     return this.map { label ->
-        LabelOfRecipeExtendedDB(
+        LabelOfRecipeDB(
             recipeID = recipeID,
-            infoID = attrsMap[label.lowercase()]!!,
-            attrInfo = null
+            infoID = attrsMap[label.lowercase()]!!
         )
     }
 }

@@ -12,7 +12,6 @@ import com.example.foodinfo.ui.base.DataObserverFragment
 import com.example.foodinfo.ui.decorator.ListItemDecoration
 import com.example.foodinfo.utils.extensions.appComponent
 import com.example.foodinfo.utils.extensions.baseAnimation
-import com.example.foodinfo.utils.extensions.measureSpacer
 import com.example.foodinfo.view_model.RecipeIngredientsViewModel
 
 
@@ -36,23 +35,13 @@ class RecipeIngredientsFragment : DataObserverFragment<FragmentRecipeIngredients
         getString(R.string.gram_float_value, weight)
     }
 
-    private val onGetQuantity: (Float, String) -> String = { quantity, measure ->
-        getString(
-            R.string.float_measure_value,
-            quantity,
-            measure.measureSpacer,
-            measure
-        )
-    }
-
 
     override fun initUI() {
         viewModel.recipeId = args.recipeId
         binding.btnBack.setOnClickListener { onBackClickListener() }
 
         recyclerAdapter = RecipeIngredientsAdapter(
-            onGetWeight,
-            onGetQuantity
+            onGetWeight
         )
 
         with(binding.rvIngredients) {

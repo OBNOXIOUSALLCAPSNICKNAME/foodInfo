@@ -7,7 +7,7 @@ import com.example.foodinfo.repository.SearchFilterRepository
 import com.example.foodinfo.repository.model.CategoryOfSearchFilterEditModel
 import com.example.foodinfo.repository.model.LabelHintModel
 import com.example.foodinfo.repository.use_case.SearchFilterUseCase
-import com.example.foodinfo.utils.State
+import com.example.foodinfo.repository.state_handling.State
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.shareIn

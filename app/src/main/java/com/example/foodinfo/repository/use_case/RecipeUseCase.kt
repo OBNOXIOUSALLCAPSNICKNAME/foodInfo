@@ -4,8 +4,8 @@ import com.example.foodinfo.repository.RecipeAttrRepository
 import com.example.foodinfo.repository.RecipeRepository
 import com.example.foodinfo.repository.model.NutrientOfRecipeModel
 import com.example.foodinfo.repository.model.RecipeExtendedModel
-import com.example.foodinfo.utils.State
-import com.example.foodinfo.utils.getResolved
+import com.example.foodinfo.repository.state_handling.State
+import com.example.foodinfo.repository.state_handling.getResolved
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

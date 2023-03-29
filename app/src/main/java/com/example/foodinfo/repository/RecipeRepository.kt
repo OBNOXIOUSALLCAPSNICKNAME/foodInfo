@@ -1,9 +1,6 @@
 package com.example.foodinfo.repository
 
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.PagingData
-import androidx.paging.map
+import androidx.paging.*
 import androidx.sqlite.db.SimpleSQLiteQuery
 import com.example.foodinfo.local.dao.APICredentialsDAO
 import com.example.foodinfo.local.dao.RecipeDAO
@@ -13,9 +10,14 @@ import com.example.foodinfo.local.dto.RecipeAttrsDB
 import com.example.foodinfo.remote.api.RecipeAPI
 import com.example.foodinfo.repository.mapper.*
 import com.example.foodinfo.repository.model.*
+import com.example.foodinfo.repository.state_handling.BaseRepository
+import com.example.foodinfo.repository.state_handling.DataProvider
+import com.example.foodinfo.repository.state_handling.State
 import com.example.foodinfo.utils.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.*
+import com.example.foodinfo.utils.edamam.EdamamRecipeURL
+import com.example.foodinfo.utils.edamam.FieldSet
+import com.example.foodinfo.utils.paging.*
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 
@@ -34,41 +36,39 @@ class RecipeRepository @Inject constructor(
         return Pager(
             config = AppPagingConfig.RECIPE_FAVORITE_PAGER,
             pagingSourceFactory = {
-                recipeDAO.getFavorite()
+                MapPagingSource(
+                    originalSource = recipeDAO.getFavorite(),
+                    mapperDelegate = { it.toModelFavorite() }
+                )
             }
-        ).flow.map { pagingData -> pagingData.map { it.toModelFavorite() } }.flowOn(Dispatchers.IO)
+        ).flow
     }
 
     fun getFavoriteIds(): List<String> {
         return recipeDAO.getFavoriteIds()
     }
 
+    @OptIn(ExperimentalPagingApi::class)
     fun getByFilter(
-        searchFilterPreset: SearchFilterPresetModel,
-        pagingConfig: PagingConfig,
-        inputText: String = ""
-    ) = flow {
-
-        // emit empty PagingData to be able to immediately handle loading state
-        // because RecipePageQuery building may take some time
-        emit(PagingData.empty())
-
-        val query = RecipePageQuery(
-            searchFilterPreset = searchFilterPreset,
-            apiCredentials = apiCredentials,
-            inputText = inputText,
-            isOffline = true
-        )
-        emitAll(
-            Pager(
-                config = pagingConfig,
-                pagingSourceFactory = {
-                    recipeDAO.getByFilter(SimpleSQLiteQuery(query.local.value))
-                }
-            ).flow.map { pagingData -> pagingData.map { it.toModelShort() } }
-        )
-    }.flowOn(Dispatchers.IO)
-
+        pagingHelper: PageFetchHelper,
+        pagingConfig: PagingConfig
+    ): Flow<PagingData<RecipeShortModel>> {
+        return Pager(
+            config = pagingConfig,
+            remoteMediator = EdamamRemoteMediator(
+                query = pagingHelper.remoteQuery.value,
+                remoteDataProvider = { pageURL -> recipeAPI.getPage(pageURL) },
+                saveRemoteDelegate = { recipes -> recipeDAO.addRecipes(recipes) },
+                mapToLocalDelegate = { hits -> hits.map { it.recipe.toDBSave(pagingHelper.attrs) } }
+            ),
+            pagingSourceFactory = {
+                MapPagingSource(
+                    originalSource = recipeDAO.getByFilter(SimpleSQLiteQuery(pagingHelper.localQuery.value)),
+                    mapperDelegate = { it.toModelShort() }
+                )
+            }
+        ).flow
+    }
 
     fun getByIdExtended(
         recipeID: String,
@@ -81,8 +81,8 @@ class RecipeRepository @Inject constructor(
                 )
             },
             localDataProvider = { DataProvider.LocalFlow(recipeDAO.getByIdExtended(recipeID)) },
-            saveRemoteDelegate = { recipeDAO.addRecipeExtended(it) },
-            mapToLocalDelegate = { it.recipe.toDBExtended(attrs) },
+            saveRemoteDelegate = { recipeDAO.addRecipe(it) },
+            mapToLocalDelegate = { it.recipe.toDBSave(attrs) },
             mapToModelDelegate = { it.toModelExtended() }
         )
     }
@@ -104,7 +104,7 @@ class RecipeRepository @Inject constructor(
         )
     }
 
-    fun getByIdIngredients(recipeID: String): Flow<State<List<RecipeIngredientModel>>> {
+    fun getByIdIngredients(recipeID: String): Flow<State<List<IngredientOfRecipeModel>>> {
         return getData(
             remoteDataProvider = {
                 DataProvider.Remote(

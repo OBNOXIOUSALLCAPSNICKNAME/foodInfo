@@ -137,21 +137,6 @@ fun Map<String, NutrientOfRecipeNetwork>.toDB(
     }
 }
 
-fun Map<String, NutrientOfRecipeNetwork>.toDBExtended(
-    recipeID: String,
-    attrs: List<NutrientRecipeAttrDB>
-): List<NutrientOfRecipeExtendedDB> {
-    val attrsMap = attrs.associate { it.tag.lowercase() to it.ID }
-    return this.map { (tag, nutrient) ->
-        NutrientOfRecipeExtendedDB(
-            recipeID = recipeID,
-            infoID = attrsMap[tag.lowercase()]!!,
-            value = nutrient.quantity,
-            attrInfo = null
-        )
-    }
-}
-
 fun NutrientRecipeAttrNetwork.toDB(): NutrientRecipeAttrDB {
     return NutrientRecipeAttrDB(
         ID = this.ID,

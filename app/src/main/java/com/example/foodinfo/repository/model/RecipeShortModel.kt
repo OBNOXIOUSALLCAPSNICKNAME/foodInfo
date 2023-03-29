@@ -10,29 +10,27 @@ data class RecipeShortModel(
     val servings: String,
     val cookingTime: Int,
     val ingredientsCount: String,
-    val previewURL: String,
+    val preview: EdamamImageURL,
     val isFavorite: Boolean
 ) {
 
     object ItemCallBack : DiffUtil.ItemCallback<RecipeShortModel>() {
         override fun areItemsTheSame(
             oldItem: RecipeShortModel, newItem: RecipeShortModel
-        ): Boolean {
-            return oldItem.ID == newItem.ID
-        }
+        ) =
+            oldItem.ID == newItem.ID
 
         override fun areContentsTheSame(
             oldItem: RecipeShortModel, newItem: RecipeShortModel
-        ): Boolean {
-            return oldItem.name == newItem.name &&
-                    oldItem.calories == newItem.calories &&
-                    oldItem.servings == newItem.servings &&
-                    oldItem.cookingTime == newItem.cookingTime &&
-                    oldItem.ingredientsCount == newItem.ingredientsCount &&
-                    oldItem.previewURL == newItem.previewURL &&
-                    oldItem.isFavorite == newItem.isFavorite
+        ) =
+            oldItem.name == newItem.name &&
+            oldItem.calories == newItem.calories &&
+            oldItem.servings == newItem.servings &&
+            oldItem.cookingTime == newItem.cookingTime &&
+            oldItem.ingredientsCount == newItem.ingredientsCount &&
+            oldItem.preview == newItem.preview &&
+            oldItem.isFavorite == newItem.isFavorite
 
-        }
 
         override fun getChangePayload(
             oldItem: RecipeShortModel,

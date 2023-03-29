@@ -16,17 +16,15 @@ data class NutrientHintModel(
         override fun areItemsTheSame(
             oldItem: NutrientHintModel,
             newItem: NutrientHintModel
-        ): Boolean {
-            return oldItem.ID == newItem.ID
-        }
+        ) =
+            oldItem.ID == newItem.ID
 
         override fun areContentsTheSame(
             oldItem: NutrientHintModel,
             newItem: NutrientHintModel
-        ): Boolean {
-            return oldItem.label == newItem.label &&
-                    oldItem.description == newItem.description &&
-                    oldItem.preview.content == newItem.preview.content
-        }
+        ) =
+            oldItem.label == newItem.label &&
+            oldItem.description == newItem.description &&
+            oldItem.preview.content == newItem.preview.content
     }
 }

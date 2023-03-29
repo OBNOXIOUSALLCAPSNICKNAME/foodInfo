@@ -14,15 +14,13 @@ data class LabelShortModel(
         override fun areItemsTheSame(
             oldItem: LabelShortModel,
             newItem: LabelShortModel
-        ): Boolean {
-            return oldItem.infoID == newItem.infoID
-        }
+        ) =
+            oldItem.infoID == newItem.infoID
 
         override fun areContentsTheSame(
             oldItem: LabelShortModel,
             newItem: LabelShortModel
-        ): Boolean {
-            return oldItem.name == newItem.name
-        }
+        ) =
+            oldItem.name == newItem.name
     }
 }

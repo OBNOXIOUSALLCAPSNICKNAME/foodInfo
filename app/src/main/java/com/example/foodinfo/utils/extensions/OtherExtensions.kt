@@ -1,6 +1,6 @@
 package com.example.foodinfo.utils.extensions
 
-import com.example.foodinfo.utils.State
+import com.example.foodinfo.repository.state_handling.State
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.flow.Flow

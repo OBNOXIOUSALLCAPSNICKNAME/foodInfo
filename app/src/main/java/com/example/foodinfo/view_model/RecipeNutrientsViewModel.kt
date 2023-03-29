@@ -6,7 +6,7 @@ import com.example.foodinfo.repository.RecipeAttrRepository
 import com.example.foodinfo.repository.model.NutrientHintModel
 import com.example.foodinfo.repository.model.NutrientOfRecipeModel
 import com.example.foodinfo.repository.use_case.RecipeUseCase
-import com.example.foodinfo.utils.State
+import com.example.foodinfo.repository.state_handling.State
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.shareIn

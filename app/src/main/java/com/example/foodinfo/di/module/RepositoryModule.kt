@@ -1,5 +1,6 @@
 package com.example.foodinfo.di.module
 
+import android.content.Context
 import com.example.foodinfo.local.dao.*
 import com.example.foodinfo.remote.api.RecipeAPI
 import com.example.foodinfo.remote.api.RecipeAttrAPI
@@ -69,9 +70,18 @@ class RepositoryModule {
     @Provides
     @Singleton
     fun provideSearchFilterUseCase(
+        apiCredentialsDAO: APICredentialsDAO,
         recipeAttrRepository: RecipeAttrRepository,
-        searchFilterRepository: SearchFilterRepository
+        searchFilterRepository: SearchFilterRepository,
+        prefUtils: PrefUtils,
+        context: Context
     ): SearchFilterUseCase {
-        return SearchFilterUseCase(recipeAttrRepository, searchFilterRepository)
+        return SearchFilterUseCase(
+            apiCredentialsDAO,
+            recipeAttrRepository,
+            searchFilterRepository,
+            prefUtils,
+            context
+        )
     }
 }

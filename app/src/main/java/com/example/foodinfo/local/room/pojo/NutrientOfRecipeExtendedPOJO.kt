@@ -37,7 +37,7 @@ data class NutrientOfRecipeExtendedPOJO(
 ) {
 
     companion object {
-        fun toEntity(item: NutrientOfRecipeExtendedDB): NutrientOfRecipeEntity {
+        fun fromDB(item: NutrientOfRecipeExtendedDB): NutrientOfRecipeEntity {
             return NutrientOfRecipeEntity(
                 ID = item.ID,
                 recipeID = item.recipeID,

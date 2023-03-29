@@ -44,7 +44,7 @@ data class EdamamCredentialsEntity(
     appKeyNutrition = appKeyNutrition
 ) {
     companion object {
-        fun toEntity(item: EdamamCredentialsDB): EdamamCredentialsEntity {
+        fun fromDB(item: EdamamCredentialsDB): EdamamCredentialsEntity {
             return EdamamCredentialsEntity(
                 name = item.name,
                 appIDFood = item.appIDFood,

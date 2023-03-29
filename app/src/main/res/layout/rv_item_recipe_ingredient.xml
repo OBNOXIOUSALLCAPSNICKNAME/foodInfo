@@ -36,7 +36,7 @@
         android:layout_height = "wrap_content"
         android:layout_marginStart = "@dimen/dp_20"
         android:ellipsize = "end"
-        android:maxLines = "2"
+        android:maxLines = "3"
         android:textAlignment = "textStart"
         android:textColor = "?appSecondaryFontColor"
         app:layout_constraintBottom_toBottomOf = "parent"
@@ -48,29 +48,15 @@
         tools:text = "portabello mushrooms" />
 
     <TextView
-        android:id = "@+id/tv_ingredient_value"
-        style = "@style/TextViewSmall"
-        android:layout_width = "wrap_content"
-        android:layout_height = "wrap_content"
-        android:fontFamily = "@font/app_font_bold_rounded"
-        app:layout_constraintBottom_toTopOf = "@+id/tv_ingredient_weight"
-        app:layout_constraintEnd_toEndOf = "parent"
-        app:layout_constraintStart_toEndOf = "@id/guideline"
-        app:layout_constraintTop_toTopOf = "parent"
-        app:layout_constraintVertical_chainStyle = "packed"
-        tools:text = "12 tbsp" />
-
-    <TextView
         android:id = "@+id/tv_ingredient_weight"
         style = "@style/TextViewSmall"
         android:layout_width = "wrap_content"
         android:layout_height = "wrap_content"
-        android:layout_marginTop = "@dimen/dp_10"
         android:fontFamily = "@font/app_font_bold_rounded"
         app:layout_constraintBottom_toBottomOf = "parent"
         app:layout_constraintEnd_toEndOf = "parent"
         app:layout_constraintStart_toEndOf = "@id/guideline"
-        app:layout_constraintTop_toBottomOf = "@+id/tv_ingredient_value"
+        app:layout_constraintTop_toTopOf = "parent"
         tools:text = "300g" />
 
 

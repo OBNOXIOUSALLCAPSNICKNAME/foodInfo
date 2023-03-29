@@ -14,15 +14,13 @@ data class CategoryOfRecipeModel(
         override fun areItemsTheSame(
             oldItem: CategoryOfRecipeModel,
             newItem: CategoryOfRecipeModel
-        ): Boolean {
-            return oldItem.name == newItem.name
-        }
+        ) =
+            oldItem.name == newItem.name
 
         override fun areContentsTheSame(
             oldItem: CategoryOfRecipeModel,
             newItem: CategoryOfRecipeModel
-        ): Boolean {
-            return oldItem.labels == newItem.labels
-        }
+        ) =
+            oldItem.labels == newItem.labels
     }
 }

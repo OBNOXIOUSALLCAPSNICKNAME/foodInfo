@@ -14,16 +14,14 @@ data class CategorySearchModel(
         override fun areItemsTheSame(
             oldItem: CategorySearchModel,
             newItem: CategorySearchModel
-        ): Boolean {
-            return oldItem.ID == newItem.ID
-        }
+        ) =
+            oldItem.ID == newItem.ID
 
         override fun areContentsTheSame(
             oldItem: CategorySearchModel,
             newItem: CategorySearchModel
-        ): Boolean {
-            return oldItem.name == newItem.name &&
-                    oldItem.preview.content == newItem.preview.content
-        }
+        ) =
+            oldItem.name == newItem.name &&
+            oldItem.preview.content == newItem.preview.content
     }
 }

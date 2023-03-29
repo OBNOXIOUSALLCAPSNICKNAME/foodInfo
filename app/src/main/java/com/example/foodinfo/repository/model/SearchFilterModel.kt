@@ -14,15 +14,13 @@ data class SearchFilterModel(
         override fun areItemsTheSame(
             oldItem: SearchFilterModel,
             newItem: SearchFilterModel
-        ): Boolean {
-            return oldItem.name == newItem.name
-        }
+        ) =
+            oldItem.name == newItem.name
 
         override fun areContentsTheSame(
             oldItem: SearchFilterModel,
             newItem: SearchFilterModel
-        ): Boolean {
-            return oldItem.name == newItem.name
-        }
+        ) =
+            oldItem.name == newItem.name
     }
 }

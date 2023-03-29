@@ -17,18 +17,16 @@ data class NutrientOfSearchFilterPreviewModel(
         override fun areItemsTheSame(
             oldItem: NutrientOfSearchFilterPreviewModel,
             newItem: NutrientOfSearchFilterPreviewModel
-        ): Boolean {
-            return oldItem.ID == newItem.ID
-        }
+        ) =
+            oldItem.ID == newItem.ID
 
         override fun areContentsTheSame(
             oldItem: NutrientOfSearchFilterPreviewModel,
             newItem: NutrientOfSearchFilterPreviewModel
-        ): Boolean {
-            return oldItem.name == newItem.name &&
-                    oldItem.measure == newItem.measure &&
-                    oldItem.minValue == newItem.minValue &&
-                    oldItem.maxValue == newItem.maxValue
-        }
+        ) =
+            oldItem.name == newItem.name &&
+            oldItem.measure == newItem.measure &&
+            oldItem.minValue == newItem.minValue &&
+            oldItem.maxValue == newItem.maxValue
     }
 }

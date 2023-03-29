@@ -61,7 +61,7 @@ data class NutrientRecipeAttrEntity(
 ) {
 
     companion object {
-        fun toEntity(item: NutrientRecipeAttrDB): NutrientRecipeAttrEntity {
+        fun fromDB(item: NutrientRecipeAttrDB): NutrientRecipeAttrEntity {
             return NutrientRecipeAttrEntity(
                 ID = item.ID,
                 tag = item.tag,

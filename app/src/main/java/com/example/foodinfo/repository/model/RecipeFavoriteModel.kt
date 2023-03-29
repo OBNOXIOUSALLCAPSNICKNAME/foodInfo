@@ -9,24 +9,22 @@ data class RecipeFavoriteModel(
     val calories: String,
     val source: String,
     val servings: String,
-    val previewURL: String
+    val preview: EdamamImageURL
 ) {
 
     object ItemCallBack : DiffUtil.ItemCallback<RecipeFavoriteModel>() {
         override fun areItemsTheSame(
             oldItem: RecipeFavoriteModel, newItem: RecipeFavoriteModel
-        ): Boolean {
-            return oldItem.ID == newItem.ID
-        }
+        ) =
+            oldItem.ID == newItem.ID
 
         override fun areContentsTheSame(
             oldItem: RecipeFavoriteModel, newItem: RecipeFavoriteModel
-        ): Boolean {
-            return oldItem.name == newItem.name &&
-                    oldItem.calories == newItem.calories &&
-                    oldItem.source == newItem.source &&
-                    oldItem.servings == newItem.servings &&
-                    oldItem.previewURL == newItem.previewURL
-        }
+        ) =
+            oldItem.name == newItem.name &&
+            oldItem.calories == newItem.calories &&
+            oldItem.source == newItem.source &&
+            oldItem.servings == newItem.servings &&
+            oldItem.preview == newItem.preview
     }
 }

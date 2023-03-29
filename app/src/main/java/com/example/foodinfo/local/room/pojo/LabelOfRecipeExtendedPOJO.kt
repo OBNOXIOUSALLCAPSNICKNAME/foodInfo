@@ -34,7 +34,7 @@ data class LabelOfRecipeExtendedPOJO(
 ) {
 
     companion object {
-        fun toEntity(item: LabelOfRecipeExtendedDB): LabelOfRecipeEntity {
+        fun fromDB(item: LabelOfRecipeExtendedDB): LabelOfRecipeEntity {
             return LabelOfRecipeEntity(
                 ID = item.ID,
                 recipeID = item.recipeID,

@@ -11,7 +11,7 @@ data class IngredientOfRecipeNetwork(
     val quantity: Float,
 
     @SerializedName(Fields.MEASURE)
-    val measure: String,
+    val measure: String?,
 
     @SerializedName(Fields.FOOD)
     val food: String,
@@ -20,13 +20,13 @@ data class IngredientOfRecipeNetwork(
     val weight: Float,
 
     @SerializedName(Fields.FOOD_CATEGORY)
-    val foodCategory: String,
+    val foodCategory: String?,
 
     @SerializedName(Fields.FOOD_ID)
     val foodID: String,
 
     @SerializedName(Fields.IMAGE)
-    val image: String
+    val image: String?
 ) {
 
     object Fields {

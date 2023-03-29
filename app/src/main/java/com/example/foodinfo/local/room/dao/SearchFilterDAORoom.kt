@@ -111,30 +111,30 @@ abstract class SearchFilterDAORoom : SearchFilterDAO {
         labels: List<LabelOfSearchFilterDB>,
         nutrients: List<NutrientOfSearchFilterDB>
     ) {
-        updateBasicsEntity(basics.map { BasicOfSearchFilterEntity.toEntity(it) })
-        updateLabelsEntity(labels.map { LabelOfSearchFilterEntity.toEntity(it) })
-        updateNutrientsEntity(nutrients.map { NutrientOfSearchFilterEntity.toEntity(it) })
+        updateBasicsEntity(basics.map { BasicOfSearchFilterEntity.fromDB(it) })
+        updateLabelsEntity(labels.map { LabelOfSearchFilterEntity.fromDB(it) })
+        updateNutrientsEntity(nutrients.map { NutrientOfSearchFilterEntity.fromDB(it) })
     }
 
     @Update(onConflict = OnConflictStrategy.ABORT)
     abstract fun updateBasicsEntity(baseFields: List<BasicOfSearchFilterEntity>)
 
     override fun updateBasics(basics: List<BasicOfSearchFilterDB>) {
-        updateBasicsEntity(basics.map { BasicOfSearchFilterEntity.toEntity(it) })
+        updateBasicsEntity(basics.map { BasicOfSearchFilterEntity.fromDB(it) })
     }
 
     @Update(onConflict = OnConflictStrategy.ABORT)
     abstract fun updateLabelsEntity(labels: List<LabelOfSearchFilterEntity>)
 
     override fun updateLabels(labels: List<LabelOfSearchFilterDB>) {
-        updateLabelsEntity(labels.map { LabelOfSearchFilterEntity.toEntity(it) })
+        updateLabelsEntity(labels.map { LabelOfSearchFilterEntity.fromDB(it) })
     }
 
     @Update(onConflict = OnConflictStrategy.ABORT)
     abstract fun updateNutrientsEntity(nutrients: List<NutrientOfSearchFilterEntity>)
 
     override fun updateNutrients(nutrients: List<NutrientOfSearchFilterDB>) {
-        updateNutrientsEntity(nutrients.map { NutrientOfSearchFilterEntity.toEntity(it) })
+        updateNutrientsEntity(nutrients.map { NutrientOfSearchFilterEntity.fromDB(it) })
     }
 
 
@@ -147,15 +147,15 @@ abstract class SearchFilterDAORoom : SearchFilterDAO {
     ) {
         if (basics != null) {
             deleteBasics(filterName)
-            insertBasicsEntity(basics.map { BasicOfSearchFilterEntity.toEntity(it) })
+            insertBasicsEntity(basics.map { BasicOfSearchFilterEntity.fromDB(it) })
         }
         if (labels != null) {
             deleteLabels(filterName)
-            insertLabelsEntity(labels.map { LabelOfSearchFilterEntity.toEntity(it) })
+            insertLabelsEntity(labels.map { LabelOfSearchFilterEntity.fromDB(it) })
         }
         if (nutrients != null) {
             deleteNutrients(filterName)
-            insertNutrientsEntity(nutrients.map { NutrientOfSearchFilterEntity.toEntity(it) })
+            insertNutrientsEntity(nutrients.map { NutrientOfSearchFilterEntity.fromDB(it) })
         }
     }
 
@@ -168,7 +168,7 @@ abstract class SearchFilterDAORoom : SearchFilterDAO {
     @Transaction
     override fun invalidateBasics(filterName: String, basics: List<BasicOfSearchFilterDB>) {
         deleteBasics(filterName)
-        insertBasicsEntity(basics.map { BasicOfSearchFilterEntity.toEntity(it) })
+        insertBasicsEntity(basics.map { BasicOfSearchFilterEntity.fromDB(it) })
     }
 
     @Query(
@@ -180,7 +180,7 @@ abstract class SearchFilterDAORoom : SearchFilterDAO {
     @Transaction
     override fun invalidateLabels(filterName: String, labels: List<LabelOfSearchFilterDB>) {
         deleteLabels(filterName)
-        insertLabelsEntity(labels.map { LabelOfSearchFilterEntity.toEntity(it) })
+        insertLabelsEntity(labels.map { LabelOfSearchFilterEntity.fromDB(it) })
     }
 
     @Query(
@@ -192,7 +192,7 @@ abstract class SearchFilterDAORoom : SearchFilterDAO {
     @Transaction
     override fun invalidateNutrients(filterName: String, nutrients: List<NutrientOfSearchFilterDB>) {
         deleteNutrients(filterName)
-        insertNutrientsEntity(nutrients.map { NutrientOfSearchFilterEntity.toEntity(it) })
+        insertNutrientsEntity(nutrients.map { NutrientOfSearchFilterEntity.fromDB(it) })
     }
 
 
@@ -205,9 +205,9 @@ abstract class SearchFilterDAORoom : SearchFilterDAO {
     ) {
         val success = insertFilterEntity(SearchFilterEntity(name = filterName))
         if (success > 0) {
-            insertBasicsEntity(basics.map { BasicOfSearchFilterEntity.toEntity(it) })
-            insertLabelsEntity(labels.map { LabelOfSearchFilterEntity.toEntity(it) })
-            insertNutrientsEntity(nutrients.map { NutrientOfSearchFilterEntity.toEntity(it) })
+            insertBasicsEntity(basics.map { BasicOfSearchFilterEntity.fromDB(it) })
+            insertLabelsEntity(labels.map { LabelOfSearchFilterEntity.fromDB(it) })
+            insertNutrientsEntity(nutrients.map { NutrientOfSearchFilterEntity.fromDB(it) })
         }
     }
 }

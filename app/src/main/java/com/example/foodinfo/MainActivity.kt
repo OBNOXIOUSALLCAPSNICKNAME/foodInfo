@@ -53,48 +53,11 @@ class MainActivity : AppCompatActivity() {
 
         dataBase.clearAllTables()
 
-
-        val dbRecipe = this.applicationContext.openAsset(AssetsKeyWords.DB_RECIPES_100)
-        val dbRecipeAttrs = this.applicationContext.openAsset(AssetsKeyWords.DB_ATTRS)
-
-
-        dataBase.recipeDAO.addRecipes(
-            gson.fromString(dbRecipe.get(AssetsKeyWords.RECIPES).toString())
-        )
-
-        dataBase.recipeDAO.addLabels(
-            gson.fromString(dbRecipe.get(AssetsKeyWords.LABELS).toString())
-        )
-
-        dataBase.recipeDAO.addNutrients(
-            gson.fromString(dbRecipe.get(AssetsKeyWords.NUTRIENTS).toString())
-        )
-
-        dataBase.recipeDAO.addIngredients(
-            gson.fromString(dbRecipe.get(AssetsKeyWords.INGREDIENTS).toString())
-        )
+        val assetSearchHistory = this.applicationContext.openAsset(AssetsKeyWords.SEARCH_HISTORY)
 
         dataBase.searchHistoryDAO.addHistory(
-            gson.fromString(dbRecipe.get(AssetsKeyWords.SEARCH_HISTORY).toString())
+            gson.fromString(assetSearchHistory.get(AssetsKeyWords.CONTENT).toString())
         )
-
-
-        dataBase.recipeAttrDao.addLabels(
-            gson.fromString(dbRecipeAttrs.get(AssetsKeyWords.LABELS).toString())
-        )
-
-        dataBase.recipeAttrDao.addCategories(
-            gson.fromString(dbRecipeAttrs.get(AssetsKeyWords.CATEGORIES).toString())
-        )
-
-        dataBase.recipeAttrDao.addBasics(
-            gson.fromString(dbRecipeAttrs.get(AssetsKeyWords.BASICS).toString())
-        )
-
-        dataBase.recipeAttrDao.addNutrients(
-            gson.fromString(dbRecipeAttrs.get(AssetsKeyWords.NUTRIENTS).toString())
-        )
-
 
         dataBase.apiCredentialsDao.addEdamam(EdamamCredentialsDB())
         dataBase.apiCredentialsDao.addGitHub(GitHubCredentialsDB())

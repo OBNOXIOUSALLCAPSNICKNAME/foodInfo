@@ -15,16 +15,14 @@ data class LabelSearchModel(
         override fun areItemsTheSame(
             oldItem: LabelSearchModel,
             newItem: LabelSearchModel
-        ): Boolean {
-            return oldItem.ID == newItem.ID
-        }
+        ) =
+            oldItem.ID == newItem.ID
 
         override fun areContentsTheSame(
             oldItem: LabelSearchModel,
             newItem: LabelSearchModel
-        ): Boolean {
-            return oldItem.name == newItem.name &&
-                    oldItem.preview == newItem.preview
-        }
+        ) =
+            oldItem.name == newItem.name &&
+            oldItem.preview == newItem.preview
     }
 }

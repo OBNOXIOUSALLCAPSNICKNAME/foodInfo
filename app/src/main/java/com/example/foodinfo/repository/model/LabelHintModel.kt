@@ -16,17 +16,15 @@ data class LabelHintModel(
         override fun areItemsTheSame(
             oldItem: LabelHintModel,
             newItem: LabelHintModel
-        ): Boolean {
-            return oldItem.ID == newItem.ID
-        }
+        ) =
+            oldItem.ID == newItem.ID
 
         override fun areContentsTheSame(
             oldItem: LabelHintModel,
             newItem: LabelHintModel
-        ): Boolean {
-            return oldItem.name == newItem.name &&
-                    oldItem.description == newItem.description &&
-                    oldItem.preview.content == newItem.preview.content
-        }
+        ) =
+            oldItem.name == newItem.name &&
+            oldItem.description == newItem.description &&
+            oldItem.preview.content == newItem.preview.content
     }
 }

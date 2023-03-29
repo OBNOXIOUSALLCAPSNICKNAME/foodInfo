@@ -87,10 +87,24 @@ abstract class RecipeDAORoom : RecipeDAO {
 
 
     @Query(
-        "SELECT ${RecipeDB.Columns.ID}, ${RecipeDB.Columns.IS_FAVORITE} FROM ${RecipeDB.TABLE_NAME} WHERE " +
+        "SELECT ${RecipeDB.Columns.IS_FAVORITE} FROM ${RecipeDB.TABLE_NAME} WHERE " +
         "${RecipeDB.Columns.ID} = :recipeID"
     )
     abstract fun getFavoriteMark(recipeID: String): Boolean
+
+    @Query(
+        "SELECT ${RecipeDB.Columns.LAST_UPDATE} FROM ${RecipeDB.TABLE_NAME} WHERE " +
+        "${RecipeDB.Columns.ID} = :recipeID"
+    )
+    abstract fun getLastUpdate(recipeID: String): Long
+
+    @Query(
+        "UPDATE ${RecipeDB.TABLE_NAME} SET " +
+        "${RecipeDB.Columns.LAST_UPDATE} = :value " +
+        "WHERE ${RecipeDB.Columns.ID} = :recipeID"
+    )
+    abstract fun setLastUpdate(recipeID: String, value: Long)
+
 
     @MapInfo(keyColumn = RecipeDB.Columns.ID, valueColumn = RecipeDB.Columns.IS_FAVORITE)
     @Query(
@@ -104,82 +118,88 @@ abstract class RecipeDAORoom : RecipeDAO {
         "DELETE FROM ${LabelOfRecipeDB.TABLE_NAME} WHERE " +
         "${LabelOfRecipeDB.Columns.RECIPE_ID} IN (:recipeIDs)"
     )
-    abstract fun removeLabels(recipeIDs: List<String>)
+    abstract suspend fun removeLabels(recipeIDs: List<String>)
 
     @Query(
         "DELETE FROM ${NutrientOfRecipeDB.TABLE_NAME} WHERE " +
         "${NutrientOfRecipeDB.Columns.RECIPE_ID} IN (:recipeIDs)"
     )
-    abstract fun removeNutrients(recipeIDs: List<String>)
+    abstract suspend fun removeNutrients(recipeIDs: List<String>)
 
     @Query(
         "DELETE FROM ${IngredientOfRecipeDB.TABLE_NAME} WHERE " +
         "${IngredientOfRecipeDB.Columns.RECIPE_ID} IN (:recipeIDs)"
     )
-    abstract fun removeIngredients(recipeIDs: List<String>)
+    abstract suspend fun removeIngredients(recipeIDs: List<String>)
 
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract fun addRecipeEntity(recipe: RecipeEntity)
+    abstract suspend fun addRecipeEntity(recipe: RecipeEntity)
 
     @Insert(onConflict = OnConflictStrategy.ABORT)
-    abstract fun insertRecipesEntity(recipes: List<RecipeEntity>)
+    abstract suspend fun insertRecipesEntity(recipes: List<RecipeEntity>)
 
     @Update(onConflict = OnConflictStrategy.IGNORE)
-    abstract fun updateRecipesEntity(recipes: List<RecipeEntity>)
+    abstract suspend fun updateRecipesEntity(recipes: List<RecipeEntity>)
 
 
     @Insert(onConflict = OnConflictStrategy.ABORT)
-    abstract fun insertLabelsEntity(labels: List<LabelOfRecipeEntity>)
+    abstract suspend fun insertLabelsEntity(labels: List<LabelOfRecipeEntity>)
 
     @Transaction
-    override fun addLabels(labels: List<LabelOfRecipeDB>) {
+    override suspend fun addLabels(labels: List<LabelOfRecipeDB>) {
         removeLabels(labels.map { it.recipeID }.distinct())
-        insertLabelsEntity(labels.map { LabelOfRecipeEntity.toEntity(it) })
+        insertLabelsEntity(labels.map { LabelOfRecipeEntity.fromDB(it) })
     }
 
     @Insert(onConflict = OnConflictStrategy.ABORT)
-    abstract fun insertNutrientsEntity(nutrients: List<NutrientOfRecipeEntity>)
+    abstract suspend fun insertNutrientsEntity(nutrients: List<NutrientOfRecipeEntity>)
 
     @Transaction
-    override fun addNutrients(nutrients: List<NutrientOfRecipeDB>) {
+    override suspend fun addNutrients(nutrients: List<NutrientOfRecipeDB>) {
         removeNutrients(nutrients.map { it.recipeID }.distinct())
-        insertNutrientsEntity(nutrients.map { NutrientOfRecipeEntity.toEntity(it) })
+        insertNutrientsEntity(nutrients.map { NutrientOfRecipeEntity.fromDB(it) })
     }
 
     @Insert(onConflict = OnConflictStrategy.ABORT)
-    abstract fun insertIngredientsEntity(ingredients: List<IngredientOfRecipeEntity>)
+    abstract suspend fun insertIngredientsEntity(ingredients: List<IngredientOfRecipeEntity>)
 
     @Transaction
-    override fun addIngredients(ingredients: List<IngredientOfRecipeDB>) {
+    override suspend fun addIngredients(ingredients: List<IngredientOfRecipeDB>) {
         removeIngredients(ingredients.map { it.recipeID }.distinct())
-        insertIngredientsEntity(ingredients.map { IngredientOfRecipeEntity.toEntity(it) })
+        insertIngredientsEntity(ingredients.map { IngredientOfRecipeEntity.fromDB(it) })
     }
 
     @Transaction
-    override fun addRecipes(recipes: List<RecipeDB>) {
+    override suspend fun addRecipes(recipes: List<RecipeToSaveDB>) {
         val favoriteMarks = getFavoriteMarks(recipes.map { it.ID })
 
-        recipes.map { RecipeEntity.toEntity(it) }.partition { it.ID in favoriteMarks.keys }
+        recipes.map { RecipeEntity.fromDBSave(it) }.partition { it.ID in favoriteMarks.keys }
             .also { (toUpdate, toInsert) ->
                 insertRecipesEntity(toInsert)
                 updateRecipesEntity(toUpdate)
                 addToFavorite(favoriteMarks.mapNotNull { (ID, isFavorite) -> ID.takeIf { isFavorite } })
             }
+
+        addLabels(recipes.flatMap { it.labels })
+        addNutrients(recipes.flatMap { it.nutrients })
+        addIngredients(recipes.flatMap { it.ingredients })
     }
 
     @Transaction
-    override fun addRecipeExtended(recipe: RecipeExtendedDB) {
-        val favoriteMark = getFavoriteMark(recipe.ID)
+    override suspend fun addRecipe(recipe: RecipeToSaveDB) {
+        val isFavorite = getFavoriteMark(recipe.ID)
+        val lastUpdate = getLastUpdate(recipe.ID)
 
-        addRecipeEntity(RecipeExtendedPOJO.toEntity(recipe))
+        addRecipeEntity(RecipeEntity.fromDBSave(recipe))
 
-        insertLabelsEntity(recipe.labels.map { LabelOfRecipeExtendedPOJO.toEntity(it) })
-        insertNutrientsEntity(recipe.nutrients.map { NutrientOfRecipeExtendedPOJO.toEntity(it) })
-        insertIngredientsEntity(recipe.ingredients.map { IngredientOfRecipeEntity.toEntity(it) })
+        insertLabelsEntity(recipe.labels.map { LabelOfRecipeEntity.fromDB(it) })
+        insertNutrientsEntity(recipe.nutrients.map { NutrientOfRecipeEntity.fromDB(it) })
+        insertIngredientsEntity(recipe.ingredients.map { IngredientOfRecipeEntity.fromDB(it) })
 
-        if (favoriteMark) {
+        if (isFavorite) {
             invertFavoriteStatus(recipe.ID)
         }
+        setLastUpdate(recipe.ID, lastUpdate)
     }
 }

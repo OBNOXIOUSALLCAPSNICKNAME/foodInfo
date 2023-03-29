@@ -11,8 +11,8 @@ open class RecipeExtendedDB(
     open val weight: Int,
     open val cookingTime: Int,
     open val servings: Int,
-    open val isFavorite: Boolean = false,
-    open val lastUpdate: Long = System.currentTimeMillis(),
+    open val isFavorite: Boolean,
+    open val lastUpdate: Long,
     open val ingredients: List<IngredientOfRecipeDB>,
     open val nutrients: List<NutrientOfRecipeExtendedDB>,
     open val labels: List<LabelOfRecipeExtendedDB>

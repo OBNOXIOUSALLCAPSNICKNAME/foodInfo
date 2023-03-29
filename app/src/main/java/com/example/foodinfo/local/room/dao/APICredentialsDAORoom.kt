@@ -24,7 +24,7 @@ abstract class APICredentialsDAORoom : APICredentialsDAO {
     abstract fun addEdamamEntity(credentials: EdamamCredentialsEntity)
 
     override fun addEdamam(credentials: EdamamCredentialsDB) {
-        addEdamamEntity(EdamamCredentialsEntity.toEntity(credentials))
+        addEdamamEntity(EdamamCredentialsEntity.fromDB(credentials))
     }
 
 
@@ -38,6 +38,6 @@ abstract class APICredentialsDAORoom : APICredentialsDAO {
     abstract fun addGitHubEntity(credentials: GitHubCredentialsEntity)
 
     override fun addGitHub(credentials: GitHubCredentialsDB) {
-        addGitHubEntity(GitHubCredentialsEntity.toEntity(credentials))
+        addGitHubEntity(GitHubCredentialsEntity.fromDB(credentials))
     }
 }

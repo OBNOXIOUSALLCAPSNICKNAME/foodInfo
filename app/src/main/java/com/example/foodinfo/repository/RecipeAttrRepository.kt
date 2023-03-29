@@ -15,8 +15,10 @@ import com.example.foodinfo.repository.model.CategorySearchModel
 import com.example.foodinfo.repository.model.CategoryTargetSearchModel
 import com.example.foodinfo.repository.model.LabelHintModel
 import com.example.foodinfo.repository.model.NutrientHintModel
+import com.example.foodinfo.repository.state_handling.BaseRepository
+import com.example.foodinfo.repository.state_handling.DataProvider
+import com.example.foodinfo.repository.state_handling.State
 import com.example.foodinfo.utils.PrefUtils
-import com.example.foodinfo.utils.State
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import javax.inject.Inject

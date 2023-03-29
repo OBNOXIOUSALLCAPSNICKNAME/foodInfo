@@ -1,4 +1,4 @@
-package com.example.foodinfo.utils
+package com.example.foodinfo.repository.state_handling
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
@@ -22,7 +22,7 @@ import kotlinx.coroutines.flow.*
  *
  */
 @OptIn(ExperimentalCoroutinesApi::class)
-fun <extraT, outputT> getResolved(
+internal fun <extraT, outputT> getResolved(
     extraData: Flow<State<extraT>>,
     outputDataProvider: (extraT) -> Flow<State<outputT>>
 ) = channelFlow {

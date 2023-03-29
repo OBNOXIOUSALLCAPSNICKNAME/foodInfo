@@ -9,6 +9,7 @@ import com.example.foodinfo.local.room.entity.*
 
 
 @Database(
+    exportSchema = false,
     version = 1,
     entities = [
         RecipeEntity::class,

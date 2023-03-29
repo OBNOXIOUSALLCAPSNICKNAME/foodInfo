@@ -15,7 +15,8 @@ import com.example.foodinfo.local.dto.SearchFilterDB
         parentColumns = arrayOf(SearchFilterDB.Columns.NAME),
         childColumns = arrayOf(LabelOfSearchFilterDB.Columns.FILTER_NAME),
         onUpdate = ForeignKey.CASCADE,
-        onDelete = ForeignKey.CASCADE
+        onDelete = ForeignKey.CASCADE,
+        deferred = true
     )]
 )
 data class LabelOfSearchFilterEntity(
@@ -23,7 +24,7 @@ data class LabelOfSearchFilterEntity(
     @ColumnInfo(name = Columns.ID)
     override val ID: Int = 0,
 
-    @ColumnInfo(name = Columns.FILTER_NAME)
+    @ColumnInfo(name = Columns.FILTER_NAME, index = true)
     override val filterName: String,
 
     @ColumnInfo(name = Columns.INFO_ID)
@@ -40,7 +41,7 @@ data class LabelOfSearchFilterEntity(
 ) {
 
     companion object {
-        fun toEntity(item: LabelOfSearchFilterDB): LabelOfSearchFilterEntity {
+        fun fromDB(item: LabelOfSearchFilterDB): LabelOfSearchFilterEntity {
             return LabelOfSearchFilterEntity(
                 ID = item.ID,
                 filterName = item.filterName,

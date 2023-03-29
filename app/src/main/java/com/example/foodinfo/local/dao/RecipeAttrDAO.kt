@@ -36,13 +36,13 @@ interface RecipeAttrDAO {
 
 
     // add functions must remove all content and insert new one
-    fun addBasics(attrs: List<BasicRecipeAttrDB>)
+    suspend fun addBasics(attrs: List<BasicRecipeAttrDB>)
 
-    fun addLabels(attrs: List<LabelRecipeAttrDB>)
+    suspend fun addLabels(attrs: List<LabelRecipeAttrDB>)
 
-    fun addNutrients(attrs: List<NutrientRecipeAttrDB>)
+    suspend fun addNutrients(attrs: List<NutrientRecipeAttrDB>)
 
-    fun addCategories(attrs: List<CategoryRecipeAttrDB>)
+    suspend fun addCategories(attrs: List<CategoryRecipeAttrDB>)
 
-    fun addRecipeAttrs(attrs: RecipeAttrsDB)
+    suspend fun addRecipeAttrs(attrs: RecipeAttrsDB)
 }

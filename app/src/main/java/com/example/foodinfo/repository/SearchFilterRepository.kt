@@ -4,8 +4,10 @@ import com.example.foodinfo.local.dao.SearchFilterDAO
 import com.example.foodinfo.local.dto.*
 import com.example.foodinfo.repository.mapper.*
 import com.example.foodinfo.repository.model.*
+import com.example.foodinfo.repository.state_handling.BaseRepository
+import com.example.foodinfo.repository.state_handling.DataProvider
+import com.example.foodinfo.repository.state_handling.State
 import com.example.foodinfo.utils.PrefUtils
-import com.example.foodinfo.utils.State
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.transform
 import javax.inject.Inject
@@ -109,11 +111,11 @@ class SearchFilterRepository @Inject constructor(
     }
 
     internal fun getFilterEdit(attrs: RecipeAttrsDB): Flow<State<SearchFilterEditModel>> {
-        return getFilter(attrs) { it.toModelEdit() }
+        return baseGetFilterPreset(attrs) { it.toModelEdit() }
     }
 
     internal fun getFilterPreset(attrs: RecipeAttrsDB): Flow<State<SearchFilterPresetModel>> {
-        return getFilter(attrs) { it.toModelPreset() }
+        return baseGetFilterPreset(attrs) { it.toModelPreset() }
     }
 
     internal fun getFilterPresetByLabel(
@@ -136,7 +138,7 @@ class SearchFilterRepository @Inject constructor(
         )
     }
 
-    private fun <T> getFilter(
+    private fun <T> baseGetFilterPreset(
         attrs: RecipeAttrsDB,
         mapDelegate: (SearchFilterExtendedDB) -> T
     ): Flow<State<T>> {

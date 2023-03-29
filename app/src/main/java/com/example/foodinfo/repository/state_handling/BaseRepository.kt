@@ -1,29 +1,13 @@
-package com.example.foodinfo.repository
+package com.example.foodinfo.repository.state_handling
 
 import com.example.foodinfo.R
 import com.example.foodinfo.remote.response.NetworkResponse
-import com.example.foodinfo.utils.ApiResponse
 import com.example.foodinfo.utils.NoDataException
-import com.example.foodinfo.utils.State
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
 
 
 abstract class BaseRepository {
-
-    /**
-     * Wrapper interface that helps [getData] to properly handle different data sources
-     */
-    internal sealed interface DataProvider<T> {
-        data class Remote<T : Any>(val response: ApiResponse<T>) : DataProvider<T>
-        data class Local<T>(val data: T) : DataProvider<T>
-        data class LocalFlow<T>(val flow: Flow<T>) : DataProvider<T>
-        object Empty : DataProvider<Unit>
-    }
-
 
     private inline fun <remoteT, localInT> fetchRemote(
         crossinline dataProvider: suspend () -> DataProvider<remoteT>,
@@ -54,7 +38,7 @@ abstract class BaseRepository {
         } catch (e: Exception) {
             emit(State.Error(R.string.error_unknown, e))
         }
-    }.flowOn(Dispatchers.IO)
+    }
 
     private inline fun <localInT, modelT> fetchLocal(
         crossinline dataProvider: suspend () -> DataProvider<localInT>,
@@ -81,7 +65,7 @@ abstract class BaseRepository {
         } catch (e: Exception) {
             emit(State.Error(R.string.error_unknown, e))
         }
-    }.flowOn(Dispatchers.IO)
+    }
 
 
     private suspend inline fun <inT, outT> mapData(
@@ -197,7 +181,7 @@ abstract class BaseRepository {
     internal inline fun <modelT, localInT, localOutT, remoteT> getData(
         crossinline localDataProvider: suspend () -> DataProvider<localOutT>,
         crossinline remoteDataProvider: suspend () -> DataProvider<remoteT>,
-        crossinline saveRemoteDelegate: (localInT) -> Unit,
+        crossinline saveRemoteDelegate: suspend (localInT) -> Unit,
         crossinline mapToLocalDelegate: (remoteT) -> localInT,
         crossinline mapToModelDelegate: (localOutT) -> modelT,
     ) = flow<State<modelT>> {

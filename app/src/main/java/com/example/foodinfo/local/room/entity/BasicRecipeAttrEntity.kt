@@ -49,7 +49,7 @@ data class BasicRecipeAttrEntity(
 ) {
 
     companion object {
-        fun toEntity(item: BasicRecipeAttrDB): BasicRecipeAttrEntity {
+        fun fromDB(item: BasicRecipeAttrDB): BasicRecipeAttrEntity {
             return BasicRecipeAttrEntity(
                 ID = item.ID,
                 tag = item.tag,

@@ -14,15 +14,13 @@ data class SearchInputModel(
 
         override fun areItemsTheSame(
             oldItem: SearchInputModel, newItem: SearchInputModel
-        ): Boolean {
-            return oldItem.ID == newItem.ID
-        }
+        ) =
+            oldItem.ID == newItem.ID
 
         override fun areContentsTheSame(
             oldItem: SearchInputModel, newItem: SearchInputModel
-        ): Boolean {
-            return oldItem.inputText == newItem.inputText &&
-                    oldItem.date == newItem.date
-        }
+        ) =
+            oldItem.inputText == newItem.inputText &&
+            oldItem.date == newItem.date
     }
 }

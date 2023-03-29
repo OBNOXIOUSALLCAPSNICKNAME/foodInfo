@@ -6,7 +6,7 @@ import androidx.collection.arrayMapOf
 import androidx.lifecycle.Lifecycle
 import androidx.paging.PagingData
 import androidx.viewbinding.ViewBinding
-import com.example.foodinfo.utils.State
+import com.example.foodinfo.repository.state_handling.State
 import com.example.foodinfo.utils.extensions.filterState
 import com.example.foodinfo.utils.extensions.repeatOn
 import kotlinx.coroutines.flow.Flow

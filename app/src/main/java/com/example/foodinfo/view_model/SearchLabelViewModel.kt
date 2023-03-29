@@ -7,10 +7,10 @@ import androidx.paging.cachedIn
 import com.example.foodinfo.repository.RecipeAttrRepository
 import com.example.foodinfo.repository.RecipeRepository
 import com.example.foodinfo.repository.model.LabelHintModel
-import com.example.foodinfo.repository.model.SearchFilterPresetModel
 import com.example.foodinfo.repository.use_case.SearchFilterUseCase
-import com.example.foodinfo.utils.AppPagingConfig
-import com.example.foodinfo.utils.State
+import com.example.foodinfo.utils.paging.AppPagingConfig
+import com.example.foodinfo.utils.paging.PageFetchHelper
+import com.example.foodinfo.repository.state_handling.State
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject
@@ -24,27 +24,27 @@ class SearchLabelViewModel @Inject constructor(
 
     var labelID: Int? = null
 
-    private val _filterPreset = MutableSharedFlow<SearchFilterPresetModel>(extraBufferCapacity = 1)
+    private val _pagingHelper = MutableSharedFlow<PageFetchHelper>(extraBufferCapacity = 1)
 
-    val filterPreset: SharedFlow<State<SearchFilterPresetModel>> by lazy {
-        searchFilterUseCase.getPresetByLabel(labelID!!)
+    val pagingHelper: SharedFlow<State<PageFetchHelper>> by lazy {
+        searchFilterUseCase.getHelperByLabel(labelID!!)
             .shareIn(viewModelScope, SharingStarted.Lazily, 0)
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    val recipes = _filterPreset
-        .flatMapLatest { filterPreset ->
+    val recipes = _pagingHelper
+        .flatMapLatest { pagingHelper ->
             recipeRepository.getByFilter(
-                searchFilterPreset = filterPreset,
-                pagingConfig = AppPagingConfig.RECIPE_FAVORITE_PAGER
+                pagingHelper = pagingHelper,
+                pagingConfig = AppPagingConfig.RECIPE_EXPLORE_PAGER
             )
         }
         .cachedIn(viewModelScope)
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), PagingData.empty())
 
 
-    fun setPreset(preset: SearchFilterPresetModel) {
-        _filterPreset.tryEmit(preset)
+    fun setPreset(helper: PageFetchHelper) {
+        _pagingHelper.tryEmit(helper)
     }
 
     fun invertFavoriteStatus(recipeId: String) {

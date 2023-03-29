@@ -29,5 +29,8 @@ open class IngredientOfRecipeDB(
 
     companion object {
         const val TABLE_NAME = "ingredient_of_recipe"
+        const val DEFAULT_MEASURE = "g"
+        const val DEFAULT_PREVIEW = ""
+        const val DEFAULT_CATEGORY = "food"
     }
 }

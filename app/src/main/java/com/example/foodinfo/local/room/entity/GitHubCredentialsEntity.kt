@@ -24,7 +24,7 @@ data class GitHubCredentialsEntity(
     token = token
 ) {
     companion object {
-        fun toEntity(item: GitHubCredentialsDB): GitHubCredentialsEntity {
+        fun fromDB(item: GitHubCredentialsDB): GitHubCredentialsEntity {
             return GitHubCredentialsEntity(
                 name = item.name,
                 token = item.token

@@ -14,8 +14,9 @@ import com.example.foodinfo.local.dto.RecipeDB
         entity = RecipeEntity::class,
         parentColumns = arrayOf(RecipeDB.Columns.ID),
         childColumns = arrayOf(LabelOfRecipeDB.Columns.RECIPE_ID),
-        onUpdate = ForeignKey.CASCADE,
-        onDelete = ForeignKey.CASCADE
+        onUpdate = ForeignKey.NO_ACTION,
+        onDelete = ForeignKey.CASCADE,
+        deferred = true
     )]
 )
 data class LabelOfRecipeEntity(
@@ -23,7 +24,7 @@ data class LabelOfRecipeEntity(
     @ColumnInfo(name = Columns.ID)
     override val ID: Int = 0,
 
-    @ColumnInfo(name = Columns.RECIPE_ID)
+    @ColumnInfo(name = Columns.RECIPE_ID, index = true)
     override val recipeID: String,
 
     @ColumnInfo(name = Columns.INFO_ID)
@@ -36,7 +37,7 @@ data class LabelOfRecipeEntity(
 ) {
 
     companion object {
-        fun toEntity(item: LabelOfRecipeDB): LabelOfRecipeEntity {
+        fun fromDB(item: LabelOfRecipeDB): LabelOfRecipeEntity {
             return LabelOfRecipeEntity(
                 ID = item.ID,
                 recipeID = item.recipeID,

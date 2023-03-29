@@ -16,17 +16,15 @@ data class LabelOfSearchFilterEditModel(
         override fun areItemsTheSame(
             oldItem: LabelOfSearchFilterEditModel,
             newItem: LabelOfSearchFilterEditModel
-        ): Boolean {
-            return oldItem.ID == newItem.ID
-        }
+        ) =
+            oldItem.ID == newItem.ID
 
         override fun areContentsTheSame(
             oldItem: LabelOfSearchFilterEditModel,
             newItem: LabelOfSearchFilterEditModel
-        ): Boolean {
-            return oldItem.infoID == newItem.infoID &&
-                    oldItem.name == newItem.name &&
-                    oldItem.isSelected == newItem.isSelected
-        }
+        ) =
+            oldItem.infoID == newItem.infoID &&
+            oldItem.name == newItem.name &&
+            oldItem.isSelected == newItem.isSelected
     }
 }

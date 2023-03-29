@@ -129,7 +129,7 @@ class RecipeExtendedFragment : DataObserverFragment<FragmentRecipeExtendedBindin
         with(binding) {
             tvRecipeName.text = recipe.name
             Glide.with(ivRecipePreview.context)
-                .load(recipe.previewURL)
+                .load(recipe.preview.toString())
                 .error(R.drawable.ic_no_image)
                 .placeholder(null)
                 .transition(DrawableTransitionOptions.withCrossFade())
@@ -167,7 +167,7 @@ class RecipeExtendedFragment : DataObserverFragment<FragmentRecipeExtendedBindin
 
             clIngredients.forEachIndexed { index, view ->
                 GlideApp.with(requireContext())
-                    .load(recipe.ingredients.getOrNull(index))
+                    .load(recipe.ingredientsPreviews.getOrNull(index))
                     .into(view as ShapeableImageView)
             }
 

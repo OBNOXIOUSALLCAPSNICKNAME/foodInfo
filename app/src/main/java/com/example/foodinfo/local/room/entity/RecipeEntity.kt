@@ -5,6 +5,7 @@ import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
 import com.example.foodinfo.local.dto.RecipeDB
+import com.example.foodinfo.local.dto.RecipeToSaveDB
 
 
 @Entity(
@@ -61,7 +62,7 @@ data class RecipeEntity(
 ) {
 
     companion object {
-        fun toEntity(item: RecipeDB): RecipeEntity {
+        fun fromDB(item: RecipeDB): RecipeEntity {
             return RecipeEntity(
                 ID = item.ID,
                 source = item.source,
@@ -74,6 +75,22 @@ data class RecipeEntity(
                 servings = item.servings,
                 isFavorite = item.isFavorite,
                 lastUpdate = item.lastUpdate
+            )
+        }
+
+        fun fromDBSave(item: RecipeToSaveDB): RecipeEntity {
+            return RecipeEntity(
+                ID = item.ID,
+                source = item.source,
+                name = item.name,
+                previewURL = item.previewURL,
+                calories = item.calories,
+                ingredientsCount = item.ingredientsCount,
+                weight = item.weight,
+                cookingTime = item.cookingTime,
+                servings = item.servings,
+                isFavorite = false,
+                lastUpdate = System.currentTimeMillis()
             )
         }
     }

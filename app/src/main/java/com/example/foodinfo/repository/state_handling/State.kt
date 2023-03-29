@@ -1,6 +1,4 @@
-package com.example.foodinfo.utils
-
-import com.example.foodinfo.utils.State.Utils.toString
+package com.example.foodinfo.repository.state_handling
 
 
 sealed class State<T>(
@@ -73,7 +71,12 @@ sealed class State<T>(
 
         /**
          * - If **T** is [Collection], data will be compared ignoring item's order.
-         * - If **T** is not [Collection], data will be compared by their [toString] values.
+         * - If **T** is not [Collection], data will be compared by [equals].
+         *
+         * Be careful using [isEqualData] without overriding [equals] as it may lead to unexpected behavior.
+         * For example, removing and re-inserting same data into local DB with auto generated primary key
+         * or having image URL with dynamic access token may lead to [isEqualData] returns false even if
+         * logically data are same.
          */
         fun <T> isEqualData(old: T?, new: T?): Boolean {
             return if (old != null && new != null) {
@@ -82,7 +85,7 @@ sealed class State<T>(
                         old.size == new.size && old.toSet() == new.toSet()
                     }
                     old !is Collection<*> && new !is Collection<*> -> {
-                        old.toString() == new.toString()
+                        old == new
                     }
                     else                                           -> false
                 }

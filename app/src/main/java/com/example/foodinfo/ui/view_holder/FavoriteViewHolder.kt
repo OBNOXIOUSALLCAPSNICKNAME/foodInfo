@@ -22,7 +22,7 @@ class FavoriteViewHolder(
         binding.tvServingsValue.text = item.servings
         binding.tvCaloriesValue.text = item.calories
         GlideApp.with(binding.ivPreview.context)
-            .load(item.previewURL)
+            .load(item.preview.toString())
             .error(R.drawable.ic_no_image)
             .placeholder(null)
             .transition(DrawableTransitionOptions.withCrossFade())

@@ -21,22 +21,20 @@ data class NutrientOfSearchFilterEditModel(
         override fun areItemsTheSame(
             oldItem: NutrientOfSearchFilterEditModel,
             newItem: NutrientOfSearchFilterEditModel
-        ): Boolean {
-            return oldItem.ID == newItem.ID
-        }
+        ) =
+            oldItem.ID == newItem.ID
 
         override fun areContentsTheSame(
             oldItem: NutrientOfSearchFilterEditModel,
             newItem: NutrientOfSearchFilterEditModel
-        ): Boolean {
-            return oldItem.name == newItem.name &&
-                    oldItem.infoID == newItem.infoID &&
-                    oldItem.measure == newItem.measure &&
-                    oldItem.stepSize == newItem.stepSize &&
-                    oldItem.rangeMin == newItem.rangeMin &&
-                    oldItem.rangeMax == newItem.rangeMax &&
-                    oldItem.minValue == newItem.minValue &&
-                    oldItem.maxValue == newItem.maxValue
-        }
+        ) =
+            oldItem.name == newItem.name &&
+            oldItem.infoID == newItem.infoID &&
+            oldItem.measure == newItem.measure &&
+            oldItem.stepSize == newItem.stepSize &&
+            oldItem.rangeMin == newItem.rangeMin &&
+            oldItem.rangeMax == newItem.rangeMax &&
+            oldItem.minValue == newItem.minValue &&
+            oldItem.maxValue == newItem.maxValue
     }
 }

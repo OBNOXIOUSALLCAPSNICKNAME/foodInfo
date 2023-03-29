@@ -7,7 +7,7 @@ import com.example.foodinfo.repository.RecipeRepository
 import com.example.foodinfo.repository.model.LabelHintModel
 import com.example.foodinfo.repository.model.RecipeExtendedModel
 import com.example.foodinfo.repository.use_case.RecipeUseCase
-import com.example.foodinfo.utils.State
+import com.example.foodinfo.repository.state_handling.State
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.shareIn

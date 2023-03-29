@@ -96,9 +96,9 @@ class SearchQueryFragment : DataObserverFragment<FragmentSearchQueryBinding>(
     override fun subscribeUI() {
         observePage(
             useLoadingData = true,
-            dataFlow = viewModel.filterPreset,
+            dataFlow = viewModel.pagingHelper,
             pageFlow = viewModel.recipes,
-            onSuccess = viewModel::setPreset,
+            onSuccess = viewModel::setHelper,
             onPageCollected = recyclerAdapter::submitData
         )
     }

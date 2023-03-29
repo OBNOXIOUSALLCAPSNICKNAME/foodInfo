@@ -100,7 +100,7 @@ class SearchLabelFragment : DataObserverFragment<FragmentSearchLabelBinding>(
     override fun subscribeUI() {
         observePage(
             useLoadingData = true,
-            dataFlow = viewModel.filterPreset,
+            dataFlow = viewModel.pagingHelper,
             pageFlow = viewModel.recipes,
             onSuccess = viewModel::setPreset,
             onPageCollected = recyclerAdapter::submitData
