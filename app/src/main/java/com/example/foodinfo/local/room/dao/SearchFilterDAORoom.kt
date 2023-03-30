@@ -69,16 +69,16 @@ abstract class SearchFilterDAORoom : SearchFilterDAO {
 
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    abstract fun insertFilterEntity(filter: SearchFilterEntity): Long
+    abstract suspend fun insertFilterEntity(filter: SearchFilterEntity): Long
 
     @Insert(onConflict = OnConflictStrategy.ABORT)
-    abstract fun insertBasicsEntity(baseFields: List<BasicOfSearchFilterEntity>)
+    abstract suspend fun insertBasicsEntity(baseFields: List<BasicOfSearchFilterEntity>)
 
     @Insert(onConflict = OnConflictStrategy.ABORT)
-    abstract fun insertLabelsEntity(labels: List<LabelOfSearchFilterEntity>)
+    abstract suspend fun insertLabelsEntity(labels: List<LabelOfSearchFilterEntity>)
 
     @Insert(onConflict = OnConflictStrategy.ABORT)
-    abstract fun insertNutrientsEntity(nutrients: List<NutrientOfSearchFilterEntity>)
+    abstract suspend fun insertNutrientsEntity(nutrients: List<NutrientOfSearchFilterEntity>)
 
 
     @Query(
@@ -139,7 +139,7 @@ abstract class SearchFilterDAORoom : SearchFilterDAO {
 
 
     @Transaction
-    override fun invalidateFilter(
+    override suspend fun invalidateFilter(
         filterName: String,
         basics: List<BasicOfSearchFilterDB>?,
         labels: List<LabelOfSearchFilterDB>?,
@@ -166,7 +166,7 @@ abstract class SearchFilterDAORoom : SearchFilterDAO {
     abstract fun deleteBasics(filterName: String)
 
     @Transaction
-    override fun invalidateBasics(filterName: String, basics: List<BasicOfSearchFilterDB>) {
+    override suspend fun invalidateBasics(filterName: String, basics: List<BasicOfSearchFilterDB>) {
         deleteBasics(filterName)
         insertBasicsEntity(basics.map { BasicOfSearchFilterEntity.fromDB(it) })
     }
@@ -178,7 +178,7 @@ abstract class SearchFilterDAORoom : SearchFilterDAO {
     abstract fun deleteLabels(filterName: String)
 
     @Transaction
-    override fun invalidateLabels(filterName: String, labels: List<LabelOfSearchFilterDB>) {
+    override suspend fun invalidateLabels(filterName: String, labels: List<LabelOfSearchFilterDB>) {
         deleteLabels(filterName)
         insertLabelsEntity(labels.map { LabelOfSearchFilterEntity.fromDB(it) })
     }
@@ -190,24 +190,13 @@ abstract class SearchFilterDAORoom : SearchFilterDAO {
     abstract fun deleteNutrients(filterName: String)
 
     @Transaction
-    override fun invalidateNutrients(filterName: String, nutrients: List<NutrientOfSearchFilterDB>) {
+    override suspend fun invalidateNutrients(filterName: String, nutrients: List<NutrientOfSearchFilterDB>) {
         deleteNutrients(filterName)
         insertNutrientsEntity(nutrients.map { NutrientOfSearchFilterEntity.fromDB(it) })
     }
 
 
-    @Transaction
-    override fun insertFilter(
-        filterName: String,
-        basics: List<BasicOfSearchFilterDB>,
-        labels: List<LabelOfSearchFilterDB>,
-        nutrients: List<NutrientOfSearchFilterDB>
-    ) {
-        val success = insertFilterEntity(SearchFilterEntity(name = filterName))
-        if (success > 0) {
-            insertBasicsEntity(basics.map { BasicOfSearchFilterEntity.fromDB(it) })
-            insertLabelsEntity(labels.map { LabelOfSearchFilterEntity.fromDB(it) })
-            insertNutrientsEntity(nutrients.map { NutrientOfSearchFilterEntity.fromDB(it) })
-        }
+    override suspend fun initializeEmptyFilter(filterName: String) {
+        insertFilterEntity(SearchFilterEntity(name = filterName))
     }
 }

@@ -54,15 +54,6 @@ class SearchFilterRepository @Inject constructor(
     }
 
 
-    internal fun createFilter(filterName: String, attrs: RecipeAttrsDB) {
-        searchFilterDAO.insertFilter(
-            filterName,
-            attrs.basics.filter { it.tag != null }.map { it.toFilter(prefUtils.searchFilter) },
-            attrs.labels.map { it.toFilter(prefUtils.searchFilter) },
-            attrs.nutrients.map { it.toFilter(prefUtils.searchFilter) }
-        )
-    }
-
     internal fun getCategoryEdit(
         categoryID: Int,
         attrs: List<LabelRecipeAttrDB>

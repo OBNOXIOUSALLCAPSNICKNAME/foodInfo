@@ -17,7 +17,7 @@
 
     <style name = "SearchView">
         <item name = "android:textSize">@dimen/text_20</item>
-        <item name = "android:textColor">?appMainFontColor</item>
+        <item name = "android:editTextColor">?appMainFontColor</item>
         <item name = "android:textColorHint">@color/divider</item>
         <item name = "android:fontFamily">@font/app_font_regular</item>
     </style>
@@ -116,6 +116,10 @@
         <item name = "android:paddingStart">@dimen/screen_horizontal_margin</item>
         <item name = "android:paddingTop">@dimen/dp_20</item>
         <item name = "android:paddingBottom">@dimen/dp_20</item>
+    </style>
+
+    <style name = "ActivityAnimation" parent = "@android:style/Animation.Activity">
+        <item name = "android:activityOpenEnterAnimation">@anim/activity_transition</item>
     </style>
 
 </resources>

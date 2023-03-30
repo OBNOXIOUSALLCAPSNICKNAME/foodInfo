@@ -20,10 +20,10 @@ abstract class APICredentialsDAORoom : APICredentialsDAO {
     )
     abstract override fun getEdamam(name: String): EdamamCredentialsEntity
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract fun addEdamamEntity(credentials: EdamamCredentialsEntity)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    abstract suspend fun addEdamamEntity(credentials: EdamamCredentialsEntity)
 
-    override fun addEdamam(credentials: EdamamCredentialsDB) {
+    override suspend fun addEdamam(credentials: EdamamCredentialsDB) {
         addEdamamEntity(EdamamCredentialsEntity.fromDB(credentials))
     }
 
@@ -34,10 +34,10 @@ abstract class APICredentialsDAORoom : APICredentialsDAO {
     )
     abstract override fun getGitHub(name: String): GitHubCredentialsEntity
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract fun addGitHubEntity(credentials: GitHubCredentialsEntity)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    abstract suspend fun addGitHubEntity(credentials: GitHubCredentialsEntity)
 
-    override fun addGitHub(credentials: GitHubCredentialsDB) {
+    override suspend fun addGitHub(credentials: GitHubCredentialsDB) {
         addGitHubEntity(GitHubCredentialsEntity.fromDB(credentials))
     }
 }

@@ -45,25 +45,19 @@ interface SearchFilterDAO {
 
 
     // invalidate functions must remove content related with provided filterName and insert new one
-    fun invalidateFilter(
+    suspend fun invalidateFilter(
         filterName: String,
         basics: List<BasicOfSearchFilterDB>? = null,
         labels: List<LabelOfSearchFilterDB>? = null,
         nutrients: List<NutrientOfSearchFilterDB>? = null
     )
 
-    fun invalidateBasics(filterName: String, basics: List<BasicOfSearchFilterDB>)
+    suspend fun invalidateBasics(filterName: String, basics: List<BasicOfSearchFilterDB>)
 
-    fun invalidateLabels(filterName: String, labels: List<LabelOfSearchFilterDB>)
+    suspend fun invalidateLabels(filterName: String, labels: List<LabelOfSearchFilterDB>)
 
-    fun invalidateNutrients(filterName: String, nutrients: List<NutrientOfSearchFilterDB>)
+    suspend fun invalidateNutrients(filterName: String, nutrients: List<NutrientOfSearchFilterDB>)
 
 
-    // DO NOT INSERT if filter already exists
-    fun insertFilter(
-        filterName: String,
-        basics: List<BasicOfSearchFilterDB>,
-        labels: List<LabelOfSearchFilterDB>,
-        nutrients: List<NutrientOfSearchFilterDB>
-    )
+    suspend fun initializeEmptyFilter(filterName: String)
 }

@@ -2,6 +2,7 @@ package com.example.foodinfo.repository.state_handling
 
 import com.example.foodinfo.R
 import com.example.foodinfo.remote.response.NetworkResponse
+import com.example.foodinfo.utils.ErrorCodes
 import com.example.foodinfo.utils.NoDataException
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
@@ -19,7 +20,7 @@ abstract class BaseRepository {
             when (val provider = dataProvider()) {
                 is DataProvider.Remote -> {
                     if (provider.response is NetworkResponse.Success) {
-                        emit(mapData(provider.response.result, mapDelegate))
+                        emit(mapData(provider.response.result, ErrorCodes.STATE_REMOTE_MAPPING, mapDelegate))
                     } else {
                         with(provider.response as NetworkResponse.Error) {
                             emit(State.Error(messageID, throwable, code))
@@ -27,7 +28,7 @@ abstract class BaseRepository {
                     }
                 }
                 is DataProvider.Empty  -> {
-                    emit(State.Error(R.string.error_no_data, NoDataException()))
+                    emit(State.Error(R.string.error_no_data, NoDataException(), ErrorCodes.STATE_NO_DATA))
                 }
                 else                   -> {
                     throw IllegalArgumentException(
@@ -36,7 +37,7 @@ abstract class BaseRepository {
                 }
             }
         } catch (e: Exception) {
-            emit(State.Error(R.string.error_unknown, e))
+            emit(State.Error(R.string.error_unknown, e, ErrorCodes.STATE_REMOTE_UNKNOWN))
         }
     }
 
@@ -49,11 +50,11 @@ abstract class BaseRepository {
         try {
             when (val provider = dataProvider()) {
                 is DataProvider.Local -> {
-                    emit(mapData(provider.data, mapDelegate))
+                    emit(mapData(provider.data, ErrorCodes.STATE_LOCAL_MAPPING, mapDelegate))
                 }
                 is DataProvider.LocalFlow -> {
                     provider.flow.collect { data ->
-                        emit(mapData(data, mapDelegate))
+                        emit(mapData(data, ErrorCodes.STATE_LOCAL_MAPPING, mapDelegate))
                     }
                 }
                 else -> {
@@ -63,22 +64,23 @@ abstract class BaseRepository {
                 }
             }
         } catch (e: Exception) {
-            emit(State.Error(R.string.error_unknown, e))
+            emit(State.Error(R.string.error_unknown, e, ErrorCodes.STATE_LOCAL_UNKNOWN))
         }
     }
 
 
     private suspend inline fun <inT, outT> mapData(
         data: inT?,
+        code: Int,
         crossinline mapDelegate: suspend (inT) -> outT
     ): State<outT> {
         return if (data == null || data is Unit || data is Collection<*> && data.isEmpty()) {
-            State.Error(R.string.error_no_data, NoDataException())
+            State.Error(R.string.error_no_data, NoDataException(), ErrorCodes.STATE_NO_DATA)
         } else {
             try {
                 State.Success(mapDelegate(data))
             } catch (e: Exception) {
-                State.Error(R.string.error_corrupted_data, e)
+                State.Error(R.string.error_corrupted_data, e, code)
             }
         }
     }
@@ -86,14 +88,14 @@ abstract class BaseRepository {
     private suspend inline fun <T> handleState(
         state: State<T>,
         crossinline onSuccess: suspend (T) -> Unit,
-        crossinline onError: suspend (Int, Throwable) -> Unit,
+        crossinline onError: suspend (Int, Throwable, Int) -> Unit,
     ) {
         when (state) {
             is State.Success -> {
                 onSuccess(state.data!!)
             }
             is State.Error   -> {
-                onError(state.messageID!!, state.throwable!!)
+                onError(state.messageID!!, state.throwable!!, state.errorCode!!)
             }
             is State.Loading -> {}
         }
@@ -201,7 +203,7 @@ abstract class BaseRepository {
                         onSuccess = { localData ->
                             emit(State.Loading(localData))
                         },
-                        onError = { _, _ ->
+                        onError = { _, _, _ ->
                             // ignore errors, wait until remote data fetched
                         }
                     )
@@ -225,12 +227,18 @@ abstract class BaseRepository {
                                 emit(State.Success(localData))
                             }
                         },
-                        onError = { messageID, error ->
+                        onError = { messageID, error, errorCode ->
                             // emit error only if no new collection is expected
                             if (remoteSaveError != null) {
-                                emit(State.Error(R.string.error_unknown, remoteSaveError!!))
+                                emit(
+                                    State.Error(
+                                        R.string.error_unknown,
+                                        remoteSaveError!!,
+                                        ErrorCodes.STATE_REMOTE_SAVE
+                                    )
+                                )
                             } else if (remoteDataSaved) {
-                                emit(State.Error(messageID, error))
+                                emit(State.Error(messageID, error, errorCode))
                             }
                         }
                     )
@@ -244,7 +252,7 @@ abstract class BaseRepository {
                         onSuccess = { localData ->
                             emit(State.Success(localData))
                         },
-                        onError = { _, _ ->
+                        onError = { _, _, _ ->
                             emit(State.Error(remote.messageID!!, remote.throwable!!, remote.errorCode!!))
                         }
                     )

@@ -9,7 +9,7 @@ sealed class State<T>(
 ) {
     class Loading<T>(data: T? = null) : State<T>(data)
     class Success<T>(data: T) : State<T>(data)
-    class Error<T>(messageID: Int, throwable: Throwable, errorCode: Int = -1) : State<T>(
+    class Error<T>(messageID: Int, throwable: Throwable, errorCode: Int) : State<T>(
         messageID = messageID, errorCode = errorCode, throwable = throwable
     )
 

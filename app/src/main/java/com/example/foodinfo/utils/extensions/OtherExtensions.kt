@@ -23,3 +23,5 @@ inline fun <reified T> Gson.fromString(value: String): T = fromJson(value, objec
 fun <T> Flow<State<T>>.filterState(useLoadingData: Boolean) = this
     .filterNot(State.Utils::isEmptyLoading)
     .distinctUntilChanged(if (useLoadingData) State.Utils::isEqualInsensitive else State.Utils::isEqual)
+
+fun Float.toPercent(total: Float) = if (total == 0f) 100 else (this * 100 / total).toInt()

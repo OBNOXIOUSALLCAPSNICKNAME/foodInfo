@@ -18,10 +18,14 @@
         android:theme = "@style/appTheme"
         tools:targetApi = "31">
         <activity
-            android:name = ".MainActivity"
+            android:name = ".ui.activity.MainActivity"
             android:exported = "true"
-            android:label = "@string/title_activity_recipes"
-            android:screenOrientation = "portrait">
+            android:label = "@string/title_activity_main"
+            android:screenOrientation = "portrait" />
+        <activity
+            android:name = ".ui.activity.InitializationActivity"
+            android:exported = "true"
+            android:label = "@string/title_activity_load">
             <intent-filter>
                 <action android:name = "android.intent.action.MAIN" />
                 <category android:name = "android.intent.category.LAUNCHER" />

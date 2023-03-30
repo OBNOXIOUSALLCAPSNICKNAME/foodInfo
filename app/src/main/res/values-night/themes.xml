@@ -1,11 +1,9 @@
 <resources>
 
-    <style name = "appTheme" parent = "Theme.MaterialComponents.Light.NoActionBar">
-        <item name = "android:windowNoTitle">true</item>
-        <item name = "android:windowActionBar">false</item>
+    <style name = "appTheme" parent = "Theme.MaterialComponents.DayNight.NoActionBar">
         <item name = "android:windowFullscreen">true</item>
-        <item name = "android:windowContentOverlay">@null</item>
-        <item name = "android:windowBackground">@color/main_background_dark</item>
+
+        <item name = "android:windowAnimationStyle">@style/ActivityAnimation</item>
 
         <item name = "colorAccent">@color/primary_dark</item>
 

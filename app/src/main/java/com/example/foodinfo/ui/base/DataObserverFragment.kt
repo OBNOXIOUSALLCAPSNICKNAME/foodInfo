@@ -1,5 +1,6 @@
 package com.example.foodinfo.ui.base
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.collection.arrayMapOf
@@ -9,6 +10,7 @@ import androidx.viewbinding.ViewBinding
 import com.example.foodinfo.repository.state_handling.State
 import com.example.foodinfo.utils.extensions.filterState
 import com.example.foodinfo.utils.extensions.repeatOn
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
 
@@ -37,8 +39,8 @@ abstract class DataObserverFragment<VB : ViewBinding>(
      * loading spinner/placeholders.
      * @param onFinish Called after first [onSuccess]. Usage example: hide loading spinner/placeholders and
      * start animation for initialized UI.
-     * @param onError Called if [State.Error] was collected. Usage example: show error placeholder if UI was
-     * not yet initialized or show snackbar if UI already initialized.
+     * @param onError Called if [State.Error] was collected. Default is [baseErrorHandler]. Usage example:
+     * show error placeholder if UI was not yet initialized or show snackbar if UI already initialized.
      * @param onSuccess Called each time when [State] with [State.data] **!= null** was collected.
      * Usage example: initialize UI.
      */
@@ -46,7 +48,7 @@ abstract class DataObserverFragment<VB : ViewBinding>(
         dataFlow: Flow<State<T>>,
         uiPartID: Int = 0,
         useLoadingData: Boolean,
-        crossinline onError: (Int, Throwable, Int) -> Unit = { _, _, _ -> },
+        crossinline onError: (Int, Throwable, Int) -> Unit = ::baseErrorHandler,
         crossinline onStart: () -> Unit = {},
         crossinline onFinish: () -> Unit = {},
         crossinline onSuccess: suspend (T) -> Unit
@@ -120,8 +122,8 @@ abstract class DataObserverFragment<VB : ViewBinding>(
      * @param pageFlow Flow of paged data to observe.
      * @param useLoadingData When true, if [State.Loading] will be collected with [State.data] **!= null**,
      * [onSuccess] will be called.
-     * @param onError Called if [State.Error] was collected. Usage example: show error placeholder if UI was
-     * not yet initialized or show snackbar if UI already initialized.
+     * @param onError Called if [State.Error] was collected. Default is [baseErrorHandler]. Usage example:
+     * show error placeholder if UI was not yet initialized or show snackbar if UI already initialized.
      * @param onSuccess Called each time when [State] with [State.data] **!= null** was collected from [dataFlow].
      * @param onPageCollected Called each time when [PagingData] was collected from [pageFlow].
      *
@@ -130,7 +132,7 @@ abstract class DataObserverFragment<VB : ViewBinding>(
         dataFlow: Flow<State<T>>,
         pageFlow: Flow<PagingData<R>>,
         useLoadingData: Boolean,
-        crossinline onError: (Int, Throwable, Int) -> Unit = { _, _, _ -> },
+        crossinline onError: (Int, Throwable, Int) -> Unit = ::baseErrorHandler,
         crossinline onSuccess: suspend (T) -> Unit,
         crossinline onPageCollected: suspend (PagingData<R>) -> Unit,
     ) {
@@ -151,5 +153,13 @@ abstract class DataObserverFragment<VB : ViewBinding>(
                 onPageCollected(page)
             }
         }
+    }
+
+    /**
+     * Logs error code, throwable and error message with tag "state" and shows SnackBar with error code
+     */
+    private fun baseErrorHandler(messageID: Int, throwable: Throwable, errorCode: Int) {
+        Log.d("state", "code: $errorCode message: ${this.getString(messageID)}", throwable)
+        Snackbar.make(this.binding.root, errorCode.toString(), Snackbar.LENGTH_SHORT).show()
     }
 }

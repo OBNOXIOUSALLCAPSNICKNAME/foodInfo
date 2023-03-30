@@ -4,6 +4,7 @@ import com.example.foodinfo.local.dto.*
 import com.example.foodinfo.remote.dto.NutrientOfRecipeNetwork
 import com.example.foodinfo.remote.dto.NutrientRecipeAttrNetwork
 import com.example.foodinfo.repository.model.*
+import com.example.foodinfo.utils.extensions.toPercent
 import kotlin.math.max
 import kotlin.math.min
 
@@ -25,7 +26,7 @@ fun NutrientOfRecipeExtendedDB.toModel(): NutrientOfRecipeModel {
         measure = this.attrInfo!!.measure,
         totalWeight = this.value,
         dailyWeight = this.attrInfo!!.dailyAllowance,
-        dailyPercent = (this.value * 100 / this.attrInfo!!.dailyAllowance).toInt()
+        dailyPercent = this.value.toPercent(this.attrInfo!!.dailyAllowance)
     )
 }
 

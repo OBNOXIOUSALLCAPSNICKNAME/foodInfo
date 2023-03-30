@@ -168,6 +168,7 @@ class RecipeExtendedFragment : DataObserverFragment<FragmentRecipeExtendedBindin
             clIngredients.forEachIndexed { index, view ->
                 GlideApp.with(requireContext())
                     .load(recipe.ingredientsPreviews.getOrNull(index))
+                    .error(R.drawable.ic_no_image)
                     .into(view as ShapeableImageView)
             }
 

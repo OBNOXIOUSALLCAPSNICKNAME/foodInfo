@@ -49,7 +49,9 @@ abstract class DataBase : RoomDatabase() {
                     context.applicationContext,
                     DataBase::class.java,
                     DB_NAME
-                ).allowMainThreadQueries().build()
+                )
+                    .allowMainThreadQueries() // TODO replace after refactoring all DAO
+                    .build()
             return dataBase
         }
     }

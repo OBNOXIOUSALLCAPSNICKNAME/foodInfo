@@ -10,7 +10,7 @@ interface APICredentialsDAO {
     fun getGitHub(name: String): GitHubCredentialsDB
 
     // add functions must update content if it already in DB
-    fun addEdamam(credentials: EdamamCredentialsDB)
+    suspend fun addEdamam(credentials: EdamamCredentialsDB)
 
-    fun addGitHub(credentials: GitHubCredentialsDB)
+    suspend fun addGitHub(credentials: GitHubCredentialsDB)
 }

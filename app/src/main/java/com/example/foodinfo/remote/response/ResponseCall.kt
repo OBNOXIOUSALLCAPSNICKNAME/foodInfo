@@ -1,6 +1,7 @@
 package com.example.foodinfo.remote.response
 
 
+import com.example.foodinfo.utils.ErrorCodes
 import okhttp3.Request
 import okhttp3.ResponseBody
 import okio.Timeout
@@ -40,13 +41,13 @@ internal class ResponseCall<S : Any, E : Any>(
                         }
                     }
                     when (code) {
-                        in CLIENT_ERROR_RANGE -> {
+                        in ErrorCodes.CLIENT_RANGE -> {
                             NetworkResponse.ClientError(code, body, convertedErrorBody)
                         }
-                        in SERVER_ERROR_RANGE -> {
+                        in ErrorCodes.SERVER_RANGE -> {
                             NetworkResponse.ServerError(code, convertedErrorBody)
                         }
-                        else                  -> {
+                        else                       -> {
                             NetworkResponse.UnknownError(code)
                         }
                     }
