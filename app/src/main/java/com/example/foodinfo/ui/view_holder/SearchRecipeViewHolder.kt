@@ -11,7 +11,6 @@ import com.example.foodinfo.utils.glide.GlideApp
 
 class SearchRecipeViewHolder(
     private val binding: RvItemSearchTargetBinding,
-    private val onGetTime: (Int) -> String,
     onItemClickListener: (String) -> Unit,
     onFavoriteClickListener: (String) -> Unit,
 ) : BaseViewHolder<RvItemSearchTargetBinding, RecipeShortModel>(binding) {
@@ -30,7 +29,7 @@ class SearchRecipeViewHolder(
     override fun bind(newItem: RecipeShortModel) {
         super.bind(newItem)
         binding.tvName.text = item.name
-        binding.tvTimeValue.text = onGetTime.invoke(item.cookingTime)
+        binding.tvTimeValue.text = item.cookingTime.toString()
         binding.tvServingsValue.text = item.servings
         binding.tvCaloriesValue.text = item.calories
         GlideApp.with(binding.ivPreview.context)

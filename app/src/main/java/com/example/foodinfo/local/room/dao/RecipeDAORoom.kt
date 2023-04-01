@@ -149,7 +149,7 @@ abstract class RecipeDAORoom : RecipeDAO {
     @Transaction
     override suspend fun addLabels(labels: List<LabelOfRecipeDB>) {
         removeLabels(labels.map { it.recipeID }.distinct())
-        insertLabelsEntity(labels.map { LabelOfRecipeEntity.fromDB(it) })
+        insertLabelsEntity(labels.map { LabelOfRecipeEntity(it) })
     }
 
     @Insert(onConflict = OnConflictStrategy.ABORT)
@@ -158,7 +158,7 @@ abstract class RecipeDAORoom : RecipeDAO {
     @Transaction
     override suspend fun addNutrients(nutrients: List<NutrientOfRecipeDB>) {
         removeNutrients(nutrients.map { it.recipeID }.distinct())
-        insertNutrientsEntity(nutrients.map { NutrientOfRecipeEntity.fromDB(it) })
+        insertNutrientsEntity(nutrients.map { NutrientOfRecipeEntity(it) })
     }
 
     @Insert(onConflict = OnConflictStrategy.ABORT)
@@ -167,14 +167,14 @@ abstract class RecipeDAORoom : RecipeDAO {
     @Transaction
     override suspend fun addIngredients(ingredients: List<IngredientOfRecipeDB>) {
         removeIngredients(ingredients.map { it.recipeID }.distinct())
-        insertIngredientsEntity(ingredients.map { IngredientOfRecipeEntity.fromDB(it) })
+        insertIngredientsEntity(ingredients.map { IngredientOfRecipeEntity(it) })
     }
 
     @Transaction
     override suspend fun addRecipes(recipes: List<RecipeToSaveDB>) {
         val favoriteMarks = getFavoriteMarks(recipes.map { it.ID })
 
-        recipes.map { RecipeEntity.fromDBSave(it) }.partition { it.ID in favoriteMarks.keys }
+        recipes.map { RecipeEntity(it) }.partition { it.ID in favoriteMarks.keys }
             .also { (toUpdate, toInsert) ->
                 insertRecipesEntity(toInsert)
                 updateRecipesEntity(toUpdate)
@@ -191,11 +191,11 @@ abstract class RecipeDAORoom : RecipeDAO {
         val isFavorite = getFavoriteMark(recipe.ID)
         val lastUpdate = getLastUpdate(recipe.ID)
 
-        addRecipeEntity(RecipeEntity.fromDBSave(recipe))
+        addRecipeEntity(RecipeEntity(recipe))
 
-        insertLabelsEntity(recipe.labels.map { LabelOfRecipeEntity.fromDB(it) })
-        insertNutrientsEntity(recipe.nutrients.map { NutrientOfRecipeEntity.fromDB(it) })
-        insertIngredientsEntity(recipe.ingredients.map { IngredientOfRecipeEntity.fromDB(it) })
+        insertLabelsEntity(recipe.labels.map { LabelOfRecipeEntity(it) })
+        insertNutrientsEntity(recipe.nutrients.map { NutrientOfRecipeEntity(it) })
+        insertIngredientsEntity(recipe.ingredients.map { IngredientOfRecipeEntity(it) })
 
         if (isFavorite) {
             invertFavoriteStatus(recipe.ID)

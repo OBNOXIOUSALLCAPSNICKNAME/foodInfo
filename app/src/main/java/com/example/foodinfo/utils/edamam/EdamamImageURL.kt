@@ -1,4 +1,4 @@
-package com.example.foodinfo.repository.model
+package com.example.foodinfo.utils.edamam
 
 
 /**
@@ -18,8 +18,9 @@ data class EdamamImageURL(
 
     override fun toString() = "$baseURL?$token"
 
+
     companion object {
-        fun fromString(value: String): EdamamImageURL {
+        operator fun invoke(value: String): EdamamImageURL {
             value.split("?").also { url ->
                 return EdamamImageURL(url[0], url[1])
             }

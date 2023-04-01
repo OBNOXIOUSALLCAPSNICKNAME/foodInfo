@@ -6,10 +6,11 @@ import com.example.foodinfo.local.dto.RecipeExtendedDB
 import com.example.foodinfo.local.dto.RecipeToSaveDB
 import com.example.foodinfo.remote.dto.RecipeAttrsNetwork
 import com.example.foodinfo.remote.dto.RecipeNetwork
-import com.example.foodinfo.repository.model.EdamamImageURL
 import com.example.foodinfo.repository.model.RecipeExtendedModel
 import com.example.foodinfo.repository.model.RecipeFavoriteModel
 import com.example.foodinfo.repository.model.RecipeShortModel
+import com.example.foodinfo.utils.edamam.CookingTime
+import com.example.foodinfo.utils.edamam.EdamamImageURL
 
 
 fun RecipeDB.toModelShort(): RecipeShortModel {
@@ -18,9 +19,9 @@ fun RecipeDB.toModelShort(): RecipeShortModel {
         name = this.name,
         calories = this.calories.toString(),
         servings = this.servings.toString(),
-        cookingTime = this.cookingTime,
+        cookingTime = CookingTime(this.cookingTime),
         ingredientsCount = this.ingredientsCount.toString(),
-        preview = EdamamImageURL.fromString(this.previewURL),
+        preview = EdamamImageURL(this.previewURL),
         isFavorite = this.isFavorite
     )
 }
@@ -32,7 +33,7 @@ fun RecipeDB.toModelFavorite(): RecipeFavoriteModel {
         source = this.source,
         calories = this.calories.toString(),
         servings = this.servings.toString(),
-        preview = EdamamImageURL.fromString(this.previewURL)
+        preview = EdamamImageURL(this.previewURL)
     )
 }
 
@@ -41,9 +42,9 @@ fun RecipeExtendedDB.toModelExtended(): RecipeExtendedModel {
         ID = this.ID,
         name = this.name,
         weight = this.weight,
-        cookingTime = this.cookingTime,
+        cookingTime = CookingTime(this.cookingTime),
         servings = this.servings,
-        preview = EdamamImageURL.fromString(this.previewURL),
+        preview = EdamamImageURL(this.previewURL),
         isFavorite = this.isFavorite,
         ingredientsPreviews = this.ingredients.map { it.previewURL },
         categories = this.labels.toModelRecipe(),

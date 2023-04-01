@@ -33,7 +33,7 @@ data class CategoryRecipeAttrEntity(
 ) {
 
     companion object {
-        fun fromDB(item: CategoryRecipeAttrDB): CategoryRecipeAttrEntity {
+        operator fun invoke(item: CategoryRecipeAttrDB): CategoryRecipeAttrEntity {
             return CategoryRecipeAttrEntity(
                 ID = item.ID,
                 tag = item.tag,

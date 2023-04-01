@@ -14,7 +14,6 @@
     <string name = "default_content_description">this is image</string>
 
     <string name = "selected_value">%1$d selected</string>
-    <string name = "time_value">%1$d min</string>
     <string name = "serving_value">%1$d ppl</string>
     <string name = "percent_value">%1$d%%</string>
     <string name = "float_value">%1$.1f</string>

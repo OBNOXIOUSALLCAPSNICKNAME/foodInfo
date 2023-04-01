@@ -52,10 +52,6 @@ class SearchQueryFragment : DataObserverFragment<FragmentSearchQueryBinding>(
         }
     }
 
-    private val onGetTime: (Int) -> String = { time ->
-        getString(R.string.time_value, time)
-    }
-
 
     override fun onStop() {
         navigateBackCallback.remove()
@@ -73,7 +69,6 @@ class SearchQueryFragment : DataObserverFragment<FragmentSearchQueryBinding>(
         requireActivity().onBackPressedDispatcher.addCallback(navigateBackCallback)
 
         recyclerAdapter = SearchRecipeAdapter(
-            onGetTime,
             onItemClickListener,
             onFavoriteClickListener
         )

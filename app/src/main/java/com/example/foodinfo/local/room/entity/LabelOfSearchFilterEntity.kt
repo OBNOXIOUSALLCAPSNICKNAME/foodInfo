@@ -41,7 +41,7 @@ data class LabelOfSearchFilterEntity(
 ) {
 
     companion object {
-        fun fromDB(item: LabelOfSearchFilterDB): LabelOfSearchFilterEntity {
+        operator fun invoke(item: LabelOfSearchFilterDB): LabelOfSearchFilterEntity {
             return LabelOfSearchFilterEntity(
                 ID = item.ID,
                 filterName = item.filterName,

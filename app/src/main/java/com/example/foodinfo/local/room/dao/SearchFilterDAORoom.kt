@@ -111,30 +111,30 @@ abstract class SearchFilterDAORoom : SearchFilterDAO {
         labels: List<LabelOfSearchFilterDB>,
         nutrients: List<NutrientOfSearchFilterDB>
     ) {
-        updateBasicsEntity(basics.map { BasicOfSearchFilterEntity.fromDB(it) })
-        updateLabelsEntity(labels.map { LabelOfSearchFilterEntity.fromDB(it) })
-        updateNutrientsEntity(nutrients.map { NutrientOfSearchFilterEntity.fromDB(it) })
+        updateBasicsEntity(basics.map { BasicOfSearchFilterEntity(it) })
+        updateLabelsEntity(labels.map { LabelOfSearchFilterEntity(it) })
+        updateNutrientsEntity(nutrients.map { NutrientOfSearchFilterEntity(it) })
     }
 
     @Update(onConflict = OnConflictStrategy.ABORT)
     abstract fun updateBasicsEntity(baseFields: List<BasicOfSearchFilterEntity>)
 
     override fun updateBasics(basics: List<BasicOfSearchFilterDB>) {
-        updateBasicsEntity(basics.map { BasicOfSearchFilterEntity.fromDB(it) })
+        updateBasicsEntity(basics.map { BasicOfSearchFilterEntity(it) })
     }
 
     @Update(onConflict = OnConflictStrategy.ABORT)
     abstract fun updateLabelsEntity(labels: List<LabelOfSearchFilterEntity>)
 
     override fun updateLabels(labels: List<LabelOfSearchFilterDB>) {
-        updateLabelsEntity(labels.map { LabelOfSearchFilterEntity.fromDB(it) })
+        updateLabelsEntity(labels.map { LabelOfSearchFilterEntity(it) })
     }
 
     @Update(onConflict = OnConflictStrategy.ABORT)
     abstract fun updateNutrientsEntity(nutrients: List<NutrientOfSearchFilterEntity>)
 
     override fun updateNutrients(nutrients: List<NutrientOfSearchFilterDB>) {
-        updateNutrientsEntity(nutrients.map { NutrientOfSearchFilterEntity.fromDB(it) })
+        updateNutrientsEntity(nutrients.map { NutrientOfSearchFilterEntity(it) })
     }
 
 
@@ -147,15 +147,15 @@ abstract class SearchFilterDAORoom : SearchFilterDAO {
     ) {
         if (basics != null) {
             deleteBasics(filterName)
-            insertBasicsEntity(basics.map { BasicOfSearchFilterEntity.fromDB(it) })
+            insertBasicsEntity(basics.map { BasicOfSearchFilterEntity(it) })
         }
         if (labels != null) {
             deleteLabels(filterName)
-            insertLabelsEntity(labels.map { LabelOfSearchFilterEntity.fromDB(it) })
+            insertLabelsEntity(labels.map { LabelOfSearchFilterEntity(it) })
         }
         if (nutrients != null) {
             deleteNutrients(filterName)
-            insertNutrientsEntity(nutrients.map { NutrientOfSearchFilterEntity.fromDB(it) })
+            insertNutrientsEntity(nutrients.map { NutrientOfSearchFilterEntity(it) })
         }
     }
 
@@ -168,7 +168,7 @@ abstract class SearchFilterDAORoom : SearchFilterDAO {
     @Transaction
     override suspend fun invalidateBasics(filterName: String, basics: List<BasicOfSearchFilterDB>) {
         deleteBasics(filterName)
-        insertBasicsEntity(basics.map { BasicOfSearchFilterEntity.fromDB(it) })
+        insertBasicsEntity(basics.map { BasicOfSearchFilterEntity(it) })
     }
 
     @Query(
@@ -180,7 +180,7 @@ abstract class SearchFilterDAORoom : SearchFilterDAO {
     @Transaction
     override suspend fun invalidateLabels(filterName: String, labels: List<LabelOfSearchFilterDB>) {
         deleteLabels(filterName)
-        insertLabelsEntity(labels.map { LabelOfSearchFilterEntity.fromDB(it) })
+        insertLabelsEntity(labels.map { LabelOfSearchFilterEntity(it) })
     }
 
     @Query(
@@ -192,7 +192,7 @@ abstract class SearchFilterDAORoom : SearchFilterDAO {
     @Transaction
     override suspend fun invalidateNutrients(filterName: String, nutrients: List<NutrientOfSearchFilterDB>) {
         deleteNutrients(filterName)
-        insertNutrientsEntity(nutrients.map { NutrientOfSearchFilterEntity.fromDB(it) })
+        insertNutrientsEntity(nutrients.map { NutrientOfSearchFilterEntity(it) })
     }
 
 

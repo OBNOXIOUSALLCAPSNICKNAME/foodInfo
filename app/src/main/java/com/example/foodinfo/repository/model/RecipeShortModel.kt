@@ -1,6 +1,8 @@
 package com.example.foodinfo.repository.model
 
 import androidx.recyclerview.widget.DiffUtil
+import com.example.foodinfo.utils.edamam.CookingTime
+import com.example.foodinfo.utils.edamam.EdamamImageURL
 
 
 data class RecipeShortModel(
@@ -8,7 +10,7 @@ data class RecipeShortModel(
     val name: String,
     val calories: String,
     val servings: String,
-    val cookingTime: Int,
+    val cookingTime: CookingTime,
     val ingredientsCount: String,
     val preview: EdamamImageURL,
     val isFavorite: Boolean

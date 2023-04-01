@@ -5,7 +5,6 @@ import androidx.room.Relation
 import com.example.foodinfo.local.dto.NutrientOfRecipeDB
 import com.example.foodinfo.local.dto.NutrientOfRecipeExtendedDB
 import com.example.foodinfo.local.dto.NutrientRecipeAttrDB
-import com.example.foodinfo.local.room.entity.NutrientOfRecipeEntity
 import com.example.foodinfo.local.room.entity.NutrientRecipeAttrEntity
 
 
@@ -34,16 +33,4 @@ data class NutrientOfRecipeExtendedPOJO(
     infoID = infoID,
     value = value,
     attrInfo = attrInfo
-) {
-
-    companion object {
-        fun fromDB(item: NutrientOfRecipeExtendedDB): NutrientOfRecipeEntity {
-            return NutrientOfRecipeEntity(
-                ID = item.ID,
-                recipeID = item.recipeID,
-                infoID = item.infoID,
-                value = item.value
-            )
-        }
-    }
-}
+)

@@ -12,7 +12,6 @@ import com.example.foodinfo.utils.AppPageAdapter
 
 
 class SearchRecipeAdapter(
-    private val onGetTime: (Int) -> String,
     private val onItemClickListener: (String) -> Unit,
     private val onFavoriteClickListener: (String) -> Unit,
 ) : AppPageAdapter<RecipeShortModel>(RecipeShortModel.ItemCallBack) {
@@ -22,7 +21,6 @@ class SearchRecipeAdapter(
             ViewTypes.LOADED_VIEW.ordinal -> {
                 SearchRecipeViewHolder(
                     RvItemSearchTargetBinding.inflate(LayoutInflater.from(parent.context), parent, false),
-                    onGetTime,
                     onItemClickListener,
                     onFavoriteClickListener
                 )
@@ -49,7 +47,7 @@ class SearchRecipeAdapter(
         if (payloads.isEmpty()) {
             super.onBindViewHolder(holder, position, payloads)
         } else {
-            getItem(position)?.let { (holder as SearchRecipeViewHolder).bind(it) }
+            getItem(position)?.let { (holder as SearchRecipeViewHolder).bind(it, payloads) }
         }
     }
 

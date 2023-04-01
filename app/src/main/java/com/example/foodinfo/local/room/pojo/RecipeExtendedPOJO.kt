@@ -6,7 +6,6 @@ import com.example.foodinfo.local.dto.*
 import com.example.foodinfo.local.room.entity.IngredientOfRecipeEntity
 import com.example.foodinfo.local.room.entity.LabelOfRecipeEntity
 import com.example.foodinfo.local.room.entity.NutrientOfRecipeEntity
-import com.example.foodinfo.local.room.entity.RecipeEntity
 
 
 data class RecipeExtendedPOJO(
@@ -78,23 +77,4 @@ data class RecipeExtendedPOJO(
     ingredients = ingredients,
     nutrients = nutrients,
     labels = labels
-) {
-
-    companion object {
-        fun fromDB(item: RecipeExtendedDB): RecipeEntity {
-            return RecipeEntity(
-                ID = item.ID,
-                source = item.source,
-                name = item.name,
-                previewURL = item.previewURL,
-                calories = item.calories,
-                ingredientsCount = item.ingredientsCount,
-                weight = item.weight,
-                cookingTime = item.cookingTime,
-                servings = item.servings,
-                isFavorite = item.isFavorite,
-                lastUpdate = item.lastUpdate
-            )
-        }
-    }
-}
+)

@@ -37,7 +37,7 @@ data class LabelOfRecipeEntity(
 ) {
 
     companion object {
-        fun fromDB(item: LabelOfRecipeDB): LabelOfRecipeEntity {
+        operator fun invoke(item: LabelOfRecipeDB): LabelOfRecipeEntity {
             return LabelOfRecipeEntity(
                 ID = item.ID,
                 recipeID = item.recipeID,

@@ -30,13 +30,13 @@ abstract class SearchHistoryDAORoom : SearchHistoryDAO {
     abstract fun addInputEntity(searchInput: List<SearchInputEntity>)
 
     override fun addHistory(searchInput: List<SearchInputDB>) {
-        addInputEntity(searchInput.map { SearchInputEntity.fromDB(it) })
+        addInputEntity(searchInput.map { SearchInputEntity(it) })
     }
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract fun addInputEntity(searchInput: SearchInputEntity)
 
     override fun addInput(searchInput: SearchInputDB) {
-        addInputEntity(SearchInputEntity.fromDB(searchInput))
+        addInputEntity(SearchInputEntity(searchInput))
     }
 }

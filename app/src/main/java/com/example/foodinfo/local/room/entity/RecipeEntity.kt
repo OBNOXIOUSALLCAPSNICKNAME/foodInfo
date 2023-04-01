@@ -62,7 +62,7 @@ data class RecipeEntity(
 ) {
 
     companion object {
-        fun fromDB(item: RecipeDB): RecipeEntity {
+        operator fun invoke(item: RecipeDB): RecipeEntity {
             return RecipeEntity(
                 ID = item.ID,
                 source = item.source,
@@ -78,7 +78,7 @@ data class RecipeEntity(
             )
         }
 
-        fun fromDBSave(item: RecipeToSaveDB): RecipeEntity {
+        operator fun invoke(item: RecipeToSaveDB): RecipeEntity {
             return RecipeEntity(
                 ID = item.ID,
                 source = item.source,

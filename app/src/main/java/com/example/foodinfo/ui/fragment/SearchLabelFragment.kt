@@ -63,10 +63,6 @@ class SearchLabelFragment : DataObserverFragment<FragmentSearchLabelBinding>(
         viewModel.invertFavoriteStatus(id)
     }
 
-    private val onGetTime: (Int) -> String = { time ->
-        getString(R.string.time_value, time)
-    }
-
 
     override fun initUI() {
         viewModel.labelID = args.labelID
@@ -77,7 +73,6 @@ class SearchLabelFragment : DataObserverFragment<FragmentSearchLabelBinding>(
         binding.btnSearch.setOnClickListener { onSearchClickListener() }
 
         recyclerAdapter = SearchRecipeAdapter(
-            onGetTime,
             onItemClickListener,
             onFavoriteClickListener
         )

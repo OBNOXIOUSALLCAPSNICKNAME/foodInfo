@@ -1,11 +1,14 @@
 package com.example.foodinfo.repository.model
 
+import com.example.foodinfo.utils.edamam.CookingTime
+import com.example.foodinfo.utils.edamam.EdamamImageURL
+
 
 data class RecipeExtendedModel(
     val ID: String,
     val name: String,
     val weight: Int,
-    val cookingTime: Int,
+    val cookingTime: CookingTime,
     val servings: Int,
     val preview: EdamamImageURL,
     val isFavorite: Boolean,

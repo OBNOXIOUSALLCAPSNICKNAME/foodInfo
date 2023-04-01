@@ -1,7 +1,8 @@
 package com.example.foodinfo.ui.fragment
 
-import androidx.core.view.forEachIndexed
+import androidx.core.view.get
 import androidx.core.view.isVisible
+import androidx.core.view.size
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -27,6 +28,7 @@ import com.google.android.material.imageview.ShapeableImageView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlin.math.min
 
 
 class RecipeExtendedFragment : DataObserverFragment<FragmentRecipeExtendedBinding>(
@@ -137,7 +139,7 @@ class RecipeExtendedFragment : DataObserverFragment<FragmentRecipeExtendedBindin
 
             tvServingsValue.text = getString(R.string.serving_value, recipe.servings)
             tvWeightValue.text = getString(R.string.gram_int_value, recipe.weight)
-            tvTimeValue.text = getString(R.string.time_value, recipe.cookingTime)
+            tvTimeValue.text = recipe.cookingTime.toString()
 
             btnFavorite.setFavorite(recipe.isFavorite, falseColor = R.attr.appMainFontColor)
 
@@ -165,11 +167,12 @@ class RecipeExtendedFragment : DataObserverFragment<FragmentRecipeExtendedBindin
                 iFat.progressBar.progress = dailyPercent
             }
 
-            clIngredients.forEachIndexed { index, view ->
+
+            for (index in 0 until min(clIngredients.size, recipe.ingredientsPreviews.size)) {
                 GlideApp.with(requireContext())
-                    .load(recipe.ingredientsPreviews.getOrNull(index))
+                    .load(recipe.ingredientsPreviews[index])
                     .error(R.drawable.ic_no_image)
-                    .into(view as ShapeableImageView)
+                    .into(clIngredients[index] as ShapeableImageView)
             }
 
             recyclerAdapter.submitList(recipe.categories)

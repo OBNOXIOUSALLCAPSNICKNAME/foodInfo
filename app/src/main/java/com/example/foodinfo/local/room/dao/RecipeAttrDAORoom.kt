@@ -85,7 +85,7 @@ abstract class RecipeAttrDAORoom : RecipeAttrDAO {
     @Transaction
     override suspend fun addBasics(attrs: List<BasicRecipeAttrDB>) {
         clearBasics()
-        addBasicsEntity(attrs.map { BasicRecipeAttrEntity.fromDB(it) })
+        addBasicsEntity(attrs.map { BasicRecipeAttrEntity(it) })
     }
 
     @Query("DELETE FROM ${LabelRecipeAttrDB.TABLE_NAME}")
@@ -97,7 +97,7 @@ abstract class RecipeAttrDAORoom : RecipeAttrDAO {
     @Transaction
     override suspend fun addLabels(attrs: List<LabelRecipeAttrDB>) {
         clearLabels()
-        insertLabelsEntity(attrs.map { LabelRecipeAttrEntity.fromDB(it) })
+        insertLabelsEntity(attrs.map { LabelRecipeAttrEntity(it) })
     }
 
     @Query("DELETE FROM ${NutrientRecipeAttrDB.TABLE_NAME}")
@@ -109,7 +109,7 @@ abstract class RecipeAttrDAORoom : RecipeAttrDAO {
     @Transaction
     override suspend fun addNutrients(attrs: List<NutrientRecipeAttrDB>) {
         clearNutrients()
-        insertNutrientsEntity(attrs.map { NutrientRecipeAttrEntity.fromDB(it) })
+        insertNutrientsEntity(attrs.map { NutrientRecipeAttrEntity(it) })
     }
 
     @Query("DELETE FROM ${CategoryRecipeAttrDB.TABLE_NAME}")
@@ -121,7 +121,7 @@ abstract class RecipeAttrDAORoom : RecipeAttrDAO {
     @Transaction
     override suspend fun addCategories(attrs: List<CategoryRecipeAttrDB>) {
         clearCategories()
-        insertCategoriesEntity(attrs.map { CategoryRecipeAttrEntity.fromDB(it) })
+        insertCategoriesEntity(attrs.map { CategoryRecipeAttrEntity(it) })
     }
 
     @Transaction
