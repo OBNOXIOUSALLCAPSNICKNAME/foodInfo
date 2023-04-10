@@ -11,7 +11,7 @@ import com.example.foodinfo.utils.AppListAdapter
 
 class HomeCategoriesAdapter(
     private val onItemClickListener: (Int) -> Unit
-) : AppListAdapter<CategorySearchModel>(CategorySearchModel.ItemCallBack) {
+) : AppListAdapter<CategorySearchModel>(HomeCategoriesViewHolder.ItemCallBack) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return HomeCategoriesViewHolder(

@@ -11,7 +11,7 @@ import com.example.foodinfo.utils.AppListAdapter
 
 class RecipeIngredientsAdapter(
     private val onGetWeight: (Float) -> String
-) : AppListAdapter<IngredientOfRecipeModel>(IngredientOfRecipeModel.ItemCallBack) {
+) : AppListAdapter<IngredientOfRecipeModel>(IngredientsViewHolder.ItemCallBack) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return IngredientsViewHolder(

@@ -11,7 +11,7 @@ import com.example.foodinfo.utils.AppListAdapter
 
 class RecipeCategoriesAdapter(
     private val onLabelClickListener: (Int) -> Unit
-) : AppListAdapter<CategoryOfRecipeModel>(CategoryOfRecipeModel.ItemCallBack) {
+) : AppListAdapter<CategoryOfRecipeModel>(RecipeCategoryViewHolder.ItemCallBack) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return RecipeCategoryViewHolder(

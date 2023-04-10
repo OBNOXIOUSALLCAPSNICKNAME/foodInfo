@@ -12,7 +12,7 @@ import com.example.foodinfo.utils.AppListAdapter
 class FilterNutrientFieldEditAdapter(
     private val onHeaderClickCallback: (Int) -> Unit,
     private val onValueChangedCallback: (Int, Float?, Float?) -> Unit
-) : AppListAdapter<NutrientOfSearchFilterEditModel>(NutrientOfSearchFilterEditModel.ItemCallBack) {
+) : AppListAdapter<NutrientOfSearchFilterEditModel>(FilterNutrientFieldEditViewHolder.ItemCallBack) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return FilterNutrientFieldEditViewHolder(

@@ -1,6 +1,7 @@
 package com.example.foodinfo.ui.view_holder
 
 import android.view.LayoutInflater
+import androidx.recyclerview.widget.DiffUtil
 import com.example.foodinfo.databinding.ItemRecipeCategoryBinding
 import com.example.foodinfo.databinding.TvChipBinding
 import com.example.foodinfo.repository.model.CategoryOfRecipeModel
@@ -25,5 +26,20 @@ class RecipeCategoryViewHolder(
                 }
             )
         }
+    }
+
+
+    object ItemCallBack : DiffUtil.ItemCallback<CategoryOfRecipeModel>() {
+        override fun areItemsTheSame(
+            oldItem: CategoryOfRecipeModel,
+            newItem: CategoryOfRecipeModel
+        ) =
+            oldItem.name == newItem.name
+
+        override fun areContentsTheSame(
+            oldItem: CategoryOfRecipeModel,
+            newItem: CategoryOfRecipeModel
+        ) =
+            oldItem.labels == newItem.labels
     }
 }

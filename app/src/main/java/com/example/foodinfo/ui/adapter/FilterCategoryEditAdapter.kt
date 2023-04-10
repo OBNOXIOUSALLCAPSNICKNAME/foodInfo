@@ -12,7 +12,7 @@ import com.example.foodinfo.utils.AppListAdapter
 class FilterCategoryEditAdapter(
     private val onQuestionMarkClickListener: (Int) -> Unit,
     private val onItemClickListener: (Int, Boolean) -> Unit
-) : AppListAdapter<LabelOfSearchFilterEditModel>(LabelOfSearchFilterEditModel.ItemCallBack) {
+) : AppListAdapter<LabelOfSearchFilterEditModel>(FilterCategoryEditViewHolder.ItemCallBack) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return FilterCategoryEditViewHolder(

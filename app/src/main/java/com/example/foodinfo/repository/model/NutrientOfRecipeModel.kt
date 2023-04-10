@@ -1,7 +1,5 @@
 package com.example.foodinfo.repository.model
 
-import androidx.recyclerview.widget.DiffUtil
-
 
 data class NutrientOfRecipeModel(
     val ID: Int,
@@ -12,27 +10,6 @@ data class NutrientOfRecipeModel(
     val dailyWeight: Float,
     val dailyPercent: Int,
 ) {
-
-    object ItemCallBack :
-        DiffUtil.ItemCallback<NutrientOfRecipeModel>() {
-
-        override fun areItemsTheSame(
-            oldItem: NutrientOfRecipeModel,
-            newItem: NutrientOfRecipeModel
-        ) =
-            oldItem.ID == newItem.ID
-
-        override fun areContentsTheSame(
-            oldItem: NutrientOfRecipeModel,
-            newItem: NutrientOfRecipeModel
-        ) =
-            oldItem.infoID == newItem.infoID &&
-            oldItem.name == newItem.name &&
-            oldItem.measure == newItem.measure &&
-            oldItem.totalWeight == newItem.totalWeight &&
-            oldItem.dailyWeight == newItem.dailyWeight &&
-            oldItem.dailyPercent == newItem.dailyPercent
-    }
 
     override fun equals(other: Any?) =
         other is NutrientOfRecipeModel &&

@@ -23,7 +23,14 @@ abstract class RecipeDAORoom : RecipeDAO {
         "SELECT ${RecipeDB.Columns.ID} FROM ${RecipeDB.TABLE_NAME} WHERE " +
         "${RecipeDB.Columns.IS_FAVORITE} == 1"
     )
-    abstract override fun getFavoriteIds(): List<String>
+    abstract override suspend fun getFavoriteIds(): List<String>
+
+
+    @Query(
+        "SELECT COUNT(${RecipeDB.Columns.ID}) FROM ${RecipeDB.TABLE_NAME} WHERE " +
+        "${RecipeDB.Columns.IS_FAVORITE} == 1"
+    )
+    abstract override fun getFavoriteCount(): Flow<Int>
 
     @Transaction
     @RawQuery(
@@ -76,7 +83,7 @@ abstract class RecipeDAORoom : RecipeDAO {
         "${RecipeDB.Columns.IS_FAVORITE} = 0 " +
         "WHERE ${RecipeDB.Columns.ID} IN (:recipeIDs)"
     )
-    abstract override fun delFromFavorite(recipeIDs: List<String>)
+    abstract override suspend fun delFromFavorite(recipeIDs: List<String>)
 
     @Query(
         "UPDATE ${RecipeDB.TABLE_NAME} SET " +

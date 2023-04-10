@@ -14,7 +14,7 @@ import com.example.foodinfo.utils.AppPageAdapter
 class SearchRecipeAdapter(
     private val onItemClickListener: (String) -> Unit,
     private val onFavoriteClickListener: (String) -> Unit,
-) : AppPageAdapter<RecipeShortModel>(RecipeShortModel.ItemCallBack) {
+) : AppPageAdapter<RecipeShortModel>(SearchRecipeViewHolder.ItemCallBack) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return when (viewType) {

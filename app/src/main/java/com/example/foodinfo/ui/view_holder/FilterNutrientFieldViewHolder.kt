@@ -1,5 +1,6 @@
 package com.example.foodinfo.ui.view_holder
 
+import androidx.recyclerview.widget.DiffUtil
 import com.example.foodinfo.databinding.RvItemFilterInputNutrientsBinding
 import com.example.foodinfo.repository.model.NutrientOfSearchFilterPreviewModel
 import com.example.foodinfo.ui.base.BaseViewHolder
@@ -21,5 +22,23 @@ class FilterNutrientFieldViewHolder(
                 item.measure
             )
         }
+    }
+
+
+    object ItemCallBack : DiffUtil.ItemCallback<NutrientOfSearchFilterPreviewModel>() {
+        override fun areItemsTheSame(
+            oldItem: NutrientOfSearchFilterPreviewModel,
+            newItem: NutrientOfSearchFilterPreviewModel
+        ) =
+            oldItem.ID == newItem.ID
+
+        override fun areContentsTheSame(
+            oldItem: NutrientOfSearchFilterPreviewModel,
+            newItem: NutrientOfSearchFilterPreviewModel
+        ) =
+            oldItem.name == newItem.name &&
+            oldItem.measure == newItem.measure &&
+            oldItem.minValue == newItem.minValue &&
+            oldItem.maxValue == newItem.maxValue
     }
 }

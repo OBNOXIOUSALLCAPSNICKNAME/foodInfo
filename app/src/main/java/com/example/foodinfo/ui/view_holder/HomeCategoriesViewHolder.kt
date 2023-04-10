@@ -1,5 +1,6 @@
 package com.example.foodinfo.ui.view_holder
 
+import androidx.recyclerview.widget.DiffUtil
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.foodinfo.R
 import com.example.foodinfo.databinding.RvItemCategoryBinding
@@ -28,5 +29,21 @@ class HomeCategoriesViewHolder(
             .diskCacheStrategy(DiskCacheStrategy.NONE)
             .error(R.drawable.ic_no_image)
             .into(binding.ivPreview)
+    }
+
+
+    object ItemCallBack : DiffUtil.ItemCallback<CategorySearchModel>() {
+        override fun areItemsTheSame(
+            oldItem: CategorySearchModel,
+            newItem: CategorySearchModel
+        ) =
+            oldItem.ID == newItem.ID
+
+        override fun areContentsTheSame(
+            oldItem: CategorySearchModel,
+            newItem: CategorySearchModel
+        ) =
+            oldItem.name == newItem.name &&
+            oldItem.preview.content == newItem.preview.content
     }
 }

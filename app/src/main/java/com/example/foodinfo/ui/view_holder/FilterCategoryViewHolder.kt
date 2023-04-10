@@ -2,6 +2,7 @@ package com.example.foodinfo.ui.view_holder
 
 import android.view.LayoutInflater
 import androidx.core.view.isVisible
+import androidx.recyclerview.widget.DiffUtil
 import com.example.foodinfo.databinding.RvItemFilterInputCategoryBinding
 import com.example.foodinfo.databinding.TvChipBinding
 import com.example.foodinfo.repository.model.CategoryOfSearchFilterPreviewModel
@@ -36,5 +37,21 @@ class FilterCategoryViewHolder(
                 )
             }
         }
+    }
+
+
+    object ItemCallBack : DiffUtil.ItemCallback<CategoryOfSearchFilterPreviewModel>() {
+        override fun areItemsTheSame(
+            oldItem: CategoryOfSearchFilterPreviewModel,
+            newItem: CategoryOfSearchFilterPreviewModel
+        ) =
+            oldItem.ID == newItem.ID
+
+        override fun areContentsTheSame(
+            oldItem: CategoryOfSearchFilterPreviewModel,
+            newItem: CategoryOfSearchFilterPreviewModel
+        ) =
+            oldItem.name == newItem.name &&
+            oldItem.labels == newItem.labels
     }
 }

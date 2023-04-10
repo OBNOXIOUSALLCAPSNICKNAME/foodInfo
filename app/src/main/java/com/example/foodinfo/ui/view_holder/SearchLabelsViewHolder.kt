@@ -1,5 +1,6 @@
 package com.example.foodinfo.ui.view_holder
 
+import androidx.recyclerview.widget.DiffUtil
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.example.foodinfo.R
 import com.example.foodinfo.databinding.RvItemLabelBinding
@@ -29,5 +30,21 @@ class SearchLabelsViewHolder(
             .placeholder(null)
             .transition(DrawableTransitionOptions.withCrossFade())
             .into(binding.ivPreview)
+    }
+
+
+    object ItemCallBack : DiffUtil.ItemCallback<LabelSearchModel>() {
+        override fun areItemsTheSame(
+            oldItem: LabelSearchModel,
+            newItem: LabelSearchModel
+        ) =
+            oldItem.ID == newItem.ID
+
+        override fun areContentsTheSame(
+            oldItem: LabelSearchModel,
+            newItem: LabelSearchModel
+        ) =
+            oldItem.name == newItem.name &&
+            oldItem.preview == newItem.preview
     }
 }

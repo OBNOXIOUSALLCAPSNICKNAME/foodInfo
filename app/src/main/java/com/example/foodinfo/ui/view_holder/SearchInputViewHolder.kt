@@ -1,5 +1,6 @@
 package com.example.foodinfo.ui.view_holder
 
+import androidx.recyclerview.widget.DiffUtil
 import com.example.foodinfo.databinding.RvItemSearchInputBinding
 import com.example.foodinfo.repository.model.SearchInputModel
 import com.example.foodinfo.ui.base.BaseViewHolder
@@ -23,5 +24,21 @@ class SearchInputViewHolder(
     override fun bind(newItem: SearchInputModel) {
         super.bind(newItem)
         binding.tvSearchInput.text = item.inputText
+    }
+
+
+    object ItemCallBack : DiffUtil.ItemCallback<SearchInputModel>() {
+        override fun areItemsTheSame(
+            oldItem: SearchInputModel,
+            newItem: SearchInputModel
+        ) =
+            oldItem.ID == newItem.ID
+
+        override fun areContentsTheSame(
+            oldItem: SearchInputModel,
+            newItem: SearchInputModel
+        ) =
+            oldItem.inputText == newItem.inputText &&
+            oldItem.date == newItem.date
     }
 }

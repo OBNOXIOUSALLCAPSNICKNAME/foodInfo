@@ -12,7 +12,7 @@ import com.example.foodinfo.utils.AppListAdapter
 class SearchInputAdapter(
     private val onArrowClickListener: (String) -> Unit,
     private val onItemClickListener: (String) -> Unit
-) : AppListAdapter<SearchInputModel>(SearchInputModel.ItemCallBack) {
+) : AppListAdapter<SearchInputModel>(SearchInputViewHolder.ItemCallBack) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return SearchInputViewHolder(

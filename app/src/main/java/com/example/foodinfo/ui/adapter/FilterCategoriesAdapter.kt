@@ -11,7 +11,7 @@ import com.example.foodinfo.utils.AppListAdapter
 
 class FilterCategoriesAdapter(
     private val onLabelClickListener: (Int) -> Unit
-) : AppListAdapter<CategoryOfSearchFilterPreviewModel>(CategoryOfSearchFilterPreviewModel.ItemCallBack) {
+) : AppListAdapter<CategoryOfSearchFilterPreviewModel>(FilterCategoryViewHolder.ItemCallBack) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return FilterCategoryViewHolder(

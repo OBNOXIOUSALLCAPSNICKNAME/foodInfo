@@ -11,7 +11,7 @@ import com.example.foodinfo.utils.AppListAdapter
 
 class SearchLabelsAdapter(
     private val onItemClickListener: (Int) -> Unit,
-) : AppListAdapter<LabelSearchModel>(LabelSearchModel.ItemCallBack) {
+) : AppListAdapter<LabelSearchModel>(SearchLabelsViewHolder.ItemCallBack) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return SearchLabelsViewHolder(

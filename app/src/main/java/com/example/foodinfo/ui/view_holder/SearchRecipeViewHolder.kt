@@ -1,5 +1,6 @@
 package com.example.foodinfo.ui.view_holder
 
+import androidx.recyclerview.widget.DiffUtil
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.example.foodinfo.R
 import com.example.foodinfo.databinding.RvItemSearchTargetBinding
@@ -44,5 +45,35 @@ class SearchRecipeViewHolder(
     override fun bind(newItem: RecipeShortModel, payloads: List<Any>) {
         super.bind(newItem, payloads)
         binding.btnFavorite.setFavorite(item.isFavorite)
+    }
+
+
+    object ItemCallBack : DiffUtil.ItemCallback<RecipeShortModel>() {
+        override fun areItemsTheSame(
+            oldItem: RecipeShortModel,
+            newItem: RecipeShortModel
+        ) =
+            oldItem.ID == newItem.ID
+
+        override fun areContentsTheSame(
+            oldItem: RecipeShortModel,
+            newItem: RecipeShortModel
+        ) =
+            oldItem.name == newItem.name &&
+            oldItem.calories == newItem.calories &&
+            oldItem.servings == newItem.servings &&
+            oldItem.cookingTime == newItem.cookingTime &&
+            oldItem.ingredientsCount == newItem.ingredientsCount &&
+            oldItem.preview == newItem.preview &&
+            oldItem.isFavorite == newItem.isFavorite
+
+
+        override fun getChangePayload(
+            oldItem: RecipeShortModel,
+            newItem: RecipeShortModel
+        ): Any? {
+            if (oldItem.isFavorite != newItem.isFavorite) return newItem.isFavorite
+            return super.getChangePayload(oldItem, newItem)
+        }
     }
 }

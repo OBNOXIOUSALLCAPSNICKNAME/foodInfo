@@ -1,5 +1,6 @@
 package com.example.foodinfo.ui.view_holder
 
+import androidx.recyclerview.widget.DiffUtil
 import com.example.foodinfo.databinding.RvItemFilterInputCategoryEditBinding
 import com.example.foodinfo.repository.model.LabelOfSearchFilterEditModel
 import com.example.foodinfo.ui.base.BaseViewHolder
@@ -24,5 +25,22 @@ class FilterCategoryEditViewHolder(
             tvHeader.text = item.name
             cbChecked.isChecked = item.isSelected
         }
+    }
+
+
+    object ItemCallBack : DiffUtil.ItemCallback<LabelOfSearchFilterEditModel>() {
+        override fun areItemsTheSame(
+            oldItem: LabelOfSearchFilterEditModel,
+            newItem: LabelOfSearchFilterEditModel
+        ) =
+            oldItem.ID == newItem.ID
+
+        override fun areContentsTheSame(
+            oldItem: LabelOfSearchFilterEditModel,
+            newItem: LabelOfSearchFilterEditModel
+        ) =
+            oldItem.infoID == newItem.infoID &&
+            oldItem.name == newItem.name &&
+            oldItem.isSelected == newItem.isSelected
     }
 }

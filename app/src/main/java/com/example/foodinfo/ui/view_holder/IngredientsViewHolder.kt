@@ -1,5 +1,6 @@
 package com.example.foodinfo.ui.view_holder
 
+import androidx.recyclerview.widget.DiffUtil
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.example.foodinfo.R
 import com.example.foodinfo.databinding.RvItemRecipeIngredientBinding
@@ -23,5 +24,24 @@ class IngredientsViewHolder(
             .placeholder(null)
             .transition(DrawableTransitionOptions.withCrossFade())
             .into(binding.ivIngredientPreview)
+    }
+
+
+    object ItemCallBack : DiffUtil.ItemCallback<IngredientOfRecipeModel>() {
+        override fun areItemsTheSame(
+            oldItem: IngredientOfRecipeModel,
+            newItem: IngredientOfRecipeModel
+        ) =
+            oldItem.ID == newItem.ID
+
+        override fun areContentsTheSame(
+            oldItem: IngredientOfRecipeModel,
+            newItem: IngredientOfRecipeModel
+        ) =
+            oldItem.text == newItem.text &&
+            oldItem.measure == newItem.measure &&
+            oldItem.quantity == newItem.quantity &&
+            oldItem.weight == newItem.weight &&
+            oldItem.previewURL == newItem.previewURL
     }
 }

@@ -11,7 +11,7 @@ import com.example.foodinfo.utils.AppListAdapter
 
 class FilterBaseFieldAdapter(
     private val onValueChangedCallback: (Int, Float?, Float?) -> Unit
-) : AppListAdapter<BasicOfSearchFilterEditModel>(BasicOfSearchFilterEditModel.ItemCallBack) {
+) : AppListAdapter<BasicOfSearchFilterEditModel>(FilterBaseFieldViewHolder.ItemCallBack) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return FilterBaseFieldViewHolder(

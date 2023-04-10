@@ -44,8 +44,12 @@ class RecipeRepository @Inject constructor(
         ).flow
     }
 
-    fun getFavoriteIds(): List<String> {
-        return recipeDAO.getFavoriteIds()
+    suspend fun getFavoriteIds(): Set<String> {
+        return recipeDAO.getFavoriteIds().toSet()
+    }
+
+    fun getFavoriteCount(): Flow<Int> {
+        return recipeDAO.getFavoriteCount()
     }
 
     @OptIn(ExperimentalPagingApi::class)
@@ -122,7 +126,7 @@ class RecipeRepository @Inject constructor(
         recipeDAO.invertFavoriteStatus(ID)
     }
 
-    fun delFromFavorite(ID: List<String>) {
+    suspend fun delFromFavorite(ID: List<String>) {
         recipeDAO.delFromFavorite(ID)
     }
 }

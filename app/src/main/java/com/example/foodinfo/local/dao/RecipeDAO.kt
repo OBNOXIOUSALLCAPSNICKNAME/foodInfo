@@ -23,11 +23,13 @@ interface RecipeDAO {
     fun getLabels(recipeID: String): Flow<@JvmWildcard List<@JvmWildcard LabelOfRecipeExtendedDB>>
 
 
-    fun getFavoriteIds(): List<String>
+    suspend fun getFavoriteIds(): List<String>
+
+    fun getFavoriteCount(): Flow<Int>
 
     fun invertFavoriteStatus(recipeID: String)
 
-    fun delFromFavorite(recipeIDs: List<String>)
+    suspend fun delFromFavorite(recipeIDs: List<String>)
 
 
     // addRecipes() must not lose favoriteMark status when updating

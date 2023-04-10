@@ -11,7 +11,7 @@ import com.example.foodinfo.utils.AppListAdapter
 
 class FilterNutrientsAdapter(
     private val getFormattedRange: (Float?, Float?, String) -> String
-) : AppListAdapter<NutrientOfSearchFilterPreviewModel>(NutrientOfSearchFilterPreviewModel.ItemCallBack) {
+) : AppListAdapter<NutrientOfSearchFilterPreviewModel>(FilterNutrientFieldViewHolder.ItemCallBack) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return FilterNutrientFieldViewHolder(

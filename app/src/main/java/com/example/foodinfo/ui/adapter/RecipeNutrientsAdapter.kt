@@ -13,7 +13,7 @@ class RecipeNutrientsAdapter(
     private val onGetNutrientWeight: (Float, Float, String) -> String,
     private val onGetNutrientPercent: (Int) -> String,
     private val onNutrientClickListener: (Int) -> Unit,
-) : AppListAdapter<NutrientOfRecipeModel>(NutrientOfRecipeModel.ItemCallBack) {
+) : AppListAdapter<NutrientOfRecipeModel>(NutrientsViewHolder.ItemCallBack) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return NutrientsViewHolder(
