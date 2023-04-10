@@ -1,4 +1,4 @@
-package com.example.foodinfo.repository.model
+package com.example.foodinfo.utils.glide.svg
 
 import com.example.foodinfo.utils.glide.GlideModule
 

@@ -1,21 +1,21 @@
 package com.example.foodinfo.ui.fragment
 
 import androidx.core.view.isVisible
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
 import com.example.foodinfo.R
 import com.example.foodinfo.databinding.FragmentSearchCategoryBinding
 import com.example.foodinfo.ui.adapter.SearchLabelsAdapter
-import com.example.foodinfo.ui.base.DataObserverFragment
+import com.example.foodinfo.ui.base.BaseFragment
 import com.example.foodinfo.ui.decorator.GridItemDecoration
-import com.example.foodinfo.utils.extensions.appComponent
+import com.example.foodinfo.utils.extensions.appViewModels
 import com.example.foodinfo.utils.extensions.baseAnimation
+import com.example.foodinfo.utils.extensions.observeState
 import com.example.foodinfo.view_model.SearchCategoryViewModel
 
 
-class SearchCategoryFragment : DataObserverFragment<FragmentSearchCategoryBinding>(
+class SearchCategoryFragment : BaseFragment<FragmentSearchCategoryBinding>(
     FragmentSearchCategoryBinding::inflate
 ) {
 
@@ -23,9 +23,7 @@ class SearchCategoryFragment : DataObserverFragment<FragmentSearchCategoryBindin
 
     private lateinit var recyclerAdapter: SearchLabelsAdapter
 
-    private val viewModel: SearchCategoryViewModel by viewModels {
-        requireActivity().appComponent.viewModelsFactory()
-    }
+    private val viewModel: SearchCategoryViewModel by appViewModels()
 
     private val onBackClickListener: () -> Unit = {
         findNavController().navigateUp()
@@ -72,7 +70,7 @@ class SearchCategoryFragment : DataObserverFragment<FragmentSearchCategoryBindin
     }
 
     override fun subscribeUI() {
-        observeData(
+        observeState(
             dataFlow = viewModel.category,
             useLoadingData = true,
             onStart = {

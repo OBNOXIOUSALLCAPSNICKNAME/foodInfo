@@ -1,25 +1,23 @@
 package com.example.foodinfo.ui.fragment
 
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.foodinfo.R
 import com.example.foodinfo.databinding.FragmentHomeBinding
 import com.example.foodinfo.ui.adapter.HomeCategoriesAdapter
-import com.example.foodinfo.ui.base.DataObserverFragment
+import com.example.foodinfo.ui.base.BaseFragment
 import com.example.foodinfo.ui.decorator.ListItemDecoration
-import com.example.foodinfo.utils.extensions.appComponent
+import com.example.foodinfo.utils.extensions.appViewModels
+import com.example.foodinfo.utils.extensions.observeState
 import com.example.foodinfo.view_model.HomeViewModel
 
 
-class HomeFragment : DataObserverFragment<FragmentHomeBinding>(
+class HomeFragment : BaseFragment<FragmentHomeBinding>(
     FragmentHomeBinding::inflate
 ) {
 
-    private val viewModel: HomeViewModel by viewModels {
-        requireActivity().appComponent.viewModelsFactory()
-    }
+    private val viewModel: HomeViewModel by appViewModels()
 
     private lateinit var recyclerAdapter: HomeCategoriesAdapter
 
@@ -67,7 +65,7 @@ class HomeFragment : DataObserverFragment<FragmentHomeBinding>(
     }
 
     override fun subscribeUI() {
-        observeData(
+        observeState(
             dataFlow = viewModel.categories,
             useLoadingData = true,
             onSuccess = recyclerAdapter::submitList,

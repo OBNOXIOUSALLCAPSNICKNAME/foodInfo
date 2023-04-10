@@ -5,12 +5,15 @@ import com.example.foodinfo.local.dao.APICredentialsDAO
 import com.example.foodinfo.local.dto.RecipeAttrsDB
 import com.example.foodinfo.repository.RecipeAttrRepository
 import com.example.foodinfo.repository.SearchFilterRepository
-import com.example.foodinfo.repository.model.*
+import com.example.foodinfo.repository.model.CategoryOfSearchFilterEditModel
+import com.example.foodinfo.repository.model.NutrientOfSearchFilterEditModel
+import com.example.foodinfo.repository.model.SearchFilterEditModel
+import com.example.foodinfo.repository.model.SearchFilterPresetModel
 import com.example.foodinfo.repository.state_handling.State
 import com.example.foodinfo.repository.state_handling.getResolved
-import com.example.foodinfo.utils.*
-import com.example.foodinfo.utils.extensions.hasInternet
+import com.example.foodinfo.utils.PrefUtils
 import com.example.foodinfo.utils.edamam.FieldSet
+import com.example.foodinfo.utils.extensions.hasInternet
 import com.example.foodinfo.utils.paging.PageFetchHelper
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.transform
@@ -35,15 +38,16 @@ class SearchFilterUseCase @Inject constructor(
                 filterPresetProvider(attrs).transform { state ->
                     val helper = state.data?.let { pagingHelperProvider(attrs, it) }
                     when (state) {
-                        is State.Error   -> emit(
-                            State.Error(
+                        is State.Failure -> emit(
+                            State.Failure(
                                 state.messageID!!,
                                 state.throwable!!,
                                 state.errorCode!!
                             )
                         )
                         is State.Success -> emit(State.Success(helper!!))
-                        is State.Loading -> emit(State.Loading(helper))
+                        is State.Loading -> emit(State.Loading(helper!!))
+                        is State.Initial -> emit(State.Initial())
                     }
                 }
             }

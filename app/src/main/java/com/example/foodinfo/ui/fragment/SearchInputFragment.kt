@@ -2,16 +2,15 @@ package com.example.foodinfo.ui.fragment
 
 import android.widget.SearchView.OnQueryTextListener
 import androidx.appcompat.widget.SearchView
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.foodinfo.databinding.FragmentSearchInputBinding
 import com.example.foodinfo.ui.adapter.SearchInputAdapter
 import com.example.foodinfo.ui.base.BaseFragment
-import com.example.foodinfo.utils.extensions.appComponent
+import com.example.foodinfo.utils.extensions.appViewModels
 import com.example.foodinfo.utils.extensions.hideKeyboard
-import com.example.foodinfo.utils.extensions.repeatOn
+import com.example.foodinfo.utils.extensions.observe
 import com.example.foodinfo.utils.extensions.showKeyboard
 import com.example.foodinfo.view_model.SearchInputViewModel
 import kotlinx.coroutines.flow.collectLatest
@@ -21,9 +20,7 @@ class SearchInputFragment : BaseFragment<FragmentSearchInputBinding>(
     FragmentSearchInputBinding::inflate
 ) {
 
-    private val viewModel: SearchInputViewModel by viewModels {
-        requireActivity().appComponent.viewModelsFactory()
-    }
+    private val viewModel: SearchInputViewModel by appViewModels()
 
     private lateinit var recyclerAdapter: SearchInputAdapter
 
@@ -95,7 +92,7 @@ class SearchInputFragment : BaseFragment<FragmentSearchInputBinding>(
     }
 
     override fun subscribeUI() {
-        repeatOn(Lifecycle.State.STARTED) {
+        observe(Lifecycle.State.STARTED) {
             viewModel.searchHistory.collectLatest(recyclerAdapter::submitList)
         }
     }

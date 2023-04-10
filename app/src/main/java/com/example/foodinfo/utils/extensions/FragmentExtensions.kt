@@ -1,64 +1,18 @@
 package com.example.foodinfo.utils.extensions
 
-import android.graphics.drawable.Drawable
-import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.ImageView
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
-import androidx.recyclerview.widget.RecyclerView
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModel
 import com.example.foodinfo.R
 import com.example.foodinfo.databinding.DialogDescriptionBinding
-import com.example.foodinfo.repository.model.SVGModel
 import com.example.foodinfo.utils.glide.GlideApp
+import com.example.foodinfo.utils.glide.svg.SVGModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import kotlinx.coroutines.launch
 
-
-fun RecyclerView.restoreState(parcelable: Parcelable?) {
-    parcelable ?: return
-    layoutManager?.onRestoreInstanceState(parcelable)
-}
-
-fun RecyclerView.getState(): Parcelable? {
-    return this.layoutManager?.onSaveInstanceState()
-}
-
-// AppCompatResources because on API < 24 have bad scale quality
-fun View.getDrawableByName(name: String): Drawable? {
-    val resourceId = context.resources.getIdentifier(
-        name, "drawable", context.packageName
-    )
-    if (resourceId != 0) {
-        return AppCompatResources.getDrawable(context, resourceId)
-    }
-    return null
-}
-
-fun ImageView.setFavorite(
-    isFavorite: Boolean,
-    trueColor: Int = R.attr.appPrimaryColor,
-    falseColor: Int = R.color.main_background
-) {
-    if (isFavorite) {
-        this.setColorFilter(this.context.getAttrColor(trueColor))
-    } else {
-        this.setColorFilter(this.context.getAttrColor(falseColor))
-    }
-}
-
-fun View.baseAnimation() {
-    isVisible = true
-    alpha = 0f
-    animate().alpha(1f).setDuration(100).setListener(null)
-}
 
 /*
     activity.currentFocus instead of view because showSoftInput may be called before view.requestFocus()
@@ -109,19 +63,6 @@ fun Fragment.showDescriptionDialog(
     }.show()
 }
 
-/**
- * Create coroutine with [Fragment.getViewLifecycleOwner] scope and launch [repeatOnLifecycle] with provided
- * [state] and [runnable]
- *
- * This extension helps to avoid boilerplate code.
- */
-inline fun Fragment.repeatOn(
-    state: Lifecycle.State,
-    crossinline runnable: suspend () -> Unit
-) {
-    viewLifecycleOwner.lifecycleScope.launch {
-        viewLifecycleOwner.lifecycle.repeatOnLifecycle(state) {
-            runnable.invoke()
-        }
-    }
+inline fun <reified VM : ViewModel> Fragment.appViewModels() = viewModels<VM> {
+    requireActivity().appComponent.viewModelsFactory()
 }

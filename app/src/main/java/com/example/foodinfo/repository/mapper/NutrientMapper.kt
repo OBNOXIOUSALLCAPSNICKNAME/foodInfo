@@ -5,6 +5,7 @@ import com.example.foodinfo.remote.dto.NutrientOfRecipeNetwork
 import com.example.foodinfo.remote.dto.NutrientRecipeAttrNetwork
 import com.example.foodinfo.repository.model.*
 import com.example.foodinfo.utils.extensions.toPercent
+import com.example.foodinfo.utils.glide.svg.SVGModel
 import kotlin.math.max
 import kotlin.math.min
 

@@ -3,7 +3,6 @@ package com.example.foodinfo.utils.glide.svg
 import com.bumptech.glide.Priority
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.data.DataFetcher
-import com.example.foodinfo.repository.model.SVGModel
 
 class SVGFetcher(private var svg: SVGModel) : DataFetcher<SVGModel> {
     override fun loadData(

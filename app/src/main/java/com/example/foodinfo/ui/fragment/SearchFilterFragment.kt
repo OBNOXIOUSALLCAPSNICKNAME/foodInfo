@@ -1,7 +1,6 @@
 package com.example.foodinfo.ui.fragment
 
 import androidx.core.view.isVisible
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -11,21 +10,20 @@ import com.example.foodinfo.repository.model.SearchFilterEditModel
 import com.example.foodinfo.ui.adapter.FilterBaseFieldAdapter
 import com.example.foodinfo.ui.adapter.FilterCategoriesAdapter
 import com.example.foodinfo.ui.adapter.FilterNutrientsAdapter
-import com.example.foodinfo.ui.base.DataObserverFragment
+import com.example.foodinfo.ui.base.BaseFragment
 import com.example.foodinfo.ui.custom_view.NonScrollLinearLayoutManager
 import com.example.foodinfo.ui.decorator.ListItemDecoration
-import com.example.foodinfo.utils.extensions.appComponent
+import com.example.foodinfo.utils.extensions.appViewModels
 import com.example.foodinfo.utils.extensions.baseAnimation
+import com.example.foodinfo.utils.extensions.observeState
 import com.example.foodinfo.view_model.SearchFilterViewModel
 
 
-class SearchFilterFragment : DataObserverFragment<FragmentSearchFilterBinding>(
+class SearchFilterFragment : BaseFragment<FragmentSearchFilterBinding>(
     FragmentSearchFilterBinding::inflate
 ) {
 
-    private val viewModel: SearchFilterViewModel by viewModels {
-        requireActivity().appComponent.viewModelsFactory()
-    }
+    private val viewModel: SearchFilterViewModel by appViewModels()
 
     private lateinit var recyclerAdapterBaseFields: FilterBaseFieldAdapter
     private lateinit var recyclerAdapterCategories: FilterCategoriesAdapter
@@ -136,7 +134,7 @@ class SearchFilterFragment : DataObserverFragment<FragmentSearchFilterBinding>(
     }
 
     override fun subscribeUI() {
-        observeData(
+        observeState(
             dataFlow = viewModel.filter,
             useLoadingData = true,
             onStart = {

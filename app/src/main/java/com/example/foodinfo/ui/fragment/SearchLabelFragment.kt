@@ -1,6 +1,5 @@
 package com.example.foodinfo.ui.fragment
 
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -8,9 +7,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.foodinfo.R
 import com.example.foodinfo.databinding.FragmentSearchLabelBinding
 import com.example.foodinfo.ui.adapter.SearchRecipeAdapter
-import com.example.foodinfo.ui.base.DataObserverFragment
+import com.example.foodinfo.ui.base.BaseFragment
 import com.example.foodinfo.ui.decorator.GridItemDecoration
-import com.example.foodinfo.utils.extensions.appComponent
+import com.example.foodinfo.utils.extensions.appViewModels
+import com.example.foodinfo.utils.extensions.observePages
 import com.example.foodinfo.utils.extensions.showDescriptionDialog
 import com.example.foodinfo.view_model.SearchLabelViewModel
 import kotlinx.coroutines.Dispatchers
@@ -18,7 +18,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 
-class SearchLabelFragment : DataObserverFragment<FragmentSearchLabelBinding>(
+class SearchLabelFragment : BaseFragment<FragmentSearchLabelBinding>(
     FragmentSearchLabelBinding::inflate
 ) {
 
@@ -26,9 +26,7 @@ class SearchLabelFragment : DataObserverFragment<FragmentSearchLabelBinding>(
 
     private lateinit var recyclerAdapter: SearchRecipeAdapter
 
-    private val viewModel: SearchLabelViewModel by viewModels {
-        requireActivity().appComponent.viewModelsFactory()
-    }
+    private val viewModel: SearchLabelViewModel by appViewModels()
 
     private val onBackClickListener: () -> Unit = {
         findNavController().navigateUp()
@@ -93,7 +91,7 @@ class SearchLabelFragment : DataObserverFragment<FragmentSearchLabelBinding>(
     }
 
     override fun subscribeUI() {
-        observePage(
+        observePages(
             useLoadingData = true,
             dataFlow = viewModel.pagingHelper,
             pageFlow = viewModel.recipes,

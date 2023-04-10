@@ -1,6 +1,7 @@
 package com.example.foodinfo.repository.model
 
 import androidx.recyclerview.widget.DiffUtil
+import com.example.foodinfo.utils.glide.svg.SVGModel
 
 
 data class CategorySearchModel(

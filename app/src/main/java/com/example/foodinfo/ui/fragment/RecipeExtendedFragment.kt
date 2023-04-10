@@ -15,13 +15,10 @@ import com.example.foodinfo.R
 import com.example.foodinfo.databinding.FragmentRecipeExtendedBinding
 import com.example.foodinfo.repository.model.RecipeExtendedModel
 import com.example.foodinfo.ui.adapter.RecipeCategoriesAdapter
-import com.example.foodinfo.ui.base.DataObserverFragment
+import com.example.foodinfo.ui.base.BaseFragment
 import com.example.foodinfo.ui.custom_view.NonScrollLinearLayoutManager
 import com.example.foodinfo.ui.decorator.ListItemDecoration
-import com.example.foodinfo.utils.extensions.appComponent
-import com.example.foodinfo.utils.extensions.baseAnimation
-import com.example.foodinfo.utils.extensions.setFavorite
-import com.example.foodinfo.utils.extensions.showDescriptionDialog
+import com.example.foodinfo.utils.extensions.*
 import com.example.foodinfo.utils.glide.GlideApp
 import com.example.foodinfo.view_model.RecipeExtendedViewModel
 import com.google.android.material.imageview.ShapeableImageView
@@ -31,15 +28,13 @@ import kotlinx.coroutines.withContext
 import kotlin.math.min
 
 
-class RecipeExtendedFragment : DataObserverFragment<FragmentRecipeExtendedBinding>(
+class RecipeExtendedFragment : BaseFragment<FragmentRecipeExtendedBinding>(
     FragmentRecipeExtendedBinding::inflate
 ) {
 
     private val args: RecipeExtendedFragmentArgs by navArgs()
 
-    private val viewModel: RecipeExtendedViewModel by viewModels {
-        requireActivity().appComponent.viewModelsFactory()
-    }
+    private val viewModel: RecipeExtendedViewModel by appViewModels()
 
     private lateinit var recyclerAdapter: RecipeCategoriesAdapter
 
@@ -111,7 +106,7 @@ class RecipeExtendedFragment : DataObserverFragment<FragmentRecipeExtendedBindin
     }
 
     override fun subscribeUI() {
-        observeData(
+        observeState(
             dataFlow = viewModel.recipe,
             useLoadingData = true,
             onStart = {

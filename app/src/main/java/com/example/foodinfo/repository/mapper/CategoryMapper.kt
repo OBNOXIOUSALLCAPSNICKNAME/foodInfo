@@ -6,6 +6,7 @@ import com.example.foodinfo.local.dto.LabelOfSearchFilterExtendedDB
 import com.example.foodinfo.local.dto.LabelRecipeAttrExtendedDB
 import com.example.foodinfo.remote.dto.CategoryRecipeAttrNetwork
 import com.example.foodinfo.repository.model.*
+import com.example.foodinfo.utils.glide.svg.SVGModel
 
 
 fun CategoryRecipeAttrDB.toModel(): CategorySearchModel {

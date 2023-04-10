@@ -2,7 +2,6 @@ package com.example.foodinfo.ui.fragment
 
 import androidx.activity.OnBackPressedCallback
 import androidx.core.view.isVisible
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
@@ -12,8 +11,8 @@ import com.example.foodinfo.databinding.FragmentFavoriteBinding
 import com.example.foodinfo.ui.adapter.FavoriteAdapter
 import com.example.foodinfo.ui.base.BaseFragment
 import com.example.foodinfo.ui.decorator.ListItemDecoration
-import com.example.foodinfo.utils.extensions.appComponent
-import com.example.foodinfo.utils.extensions.repeatOn
+import com.example.foodinfo.utils.extensions.appViewModels
+import com.example.foodinfo.utils.extensions.observe
 import com.example.foodinfo.view_model.FavoriteViewModel
 import kotlinx.coroutines.flow.collectLatest
 
@@ -22,9 +21,7 @@ class FavoriteFragment : BaseFragment<FragmentFavoriteBinding>(
     FragmentFavoriteBinding::inflate
 ) {
 
-    private val viewModel: FavoriteViewModel by viewModels {
-        requireActivity().appComponent.viewModelsFactory()
-    }
+    private val viewModel: FavoriteViewModel by appViewModels()
 
     private lateinit var recyclerAdapter: FavoriteAdapter
 
@@ -57,14 +54,6 @@ class FavoriteFragment : BaseFragment<FragmentFavoriteBinding>(
         recyclerAdapter.notifyDataSetChanged()
     }
 
-    private val isSelected: (String) -> Boolean = { id ->
-        viewModel.isSelected(id)
-    }
-
-    private val isEditMode: () -> Boolean = {
-        viewModel.isEditMode.value
-    }
-
 
     private val onReadyToSelect: (String) -> Unit = { id ->
         viewModel.updateSelectStatus(id)
@@ -95,11 +84,11 @@ class FavoriteFragment : BaseFragment<FragmentFavoriteBinding>(
         }
     }
 
-    override fun onStop() {
+    override fun onDestroyView() {
         // removing all callbacks to prevent memory leaks
         findNavController().removeOnDestinationChangedListener(navigateCallback)
         navigateBackCallback.remove()
-        super.onStop()
+        super.onDestroyView()
     }
 
 
@@ -108,19 +97,14 @@ class FavoriteFragment : BaseFragment<FragmentFavoriteBinding>(
             btnDelete.setOnClickListener { onDeleteClickListener() }
             btnSort.setOnClickListener { onSortClickListener() }
             cbSelectAll.setOnClickListener { onSelectAllClickListener() }
-
-            tvHeader.setOnLongClickListener {
-                viewModel.setEditMode(true)
-                true
-            }
         }
 
         findNavController().addOnDestinationChangedListener(navigateCallback)
         requireActivity().onBackPressedDispatcher.addCallback(navigateBackCallback)
 
         recyclerAdapter = FavoriteAdapter(
-            isEditMode,
-            isSelected,
+            viewModel.isEditMode::value,
+            viewModel::isSelected,
             onReadyToSelect,
             onReadyToNavigate,
             onHoldClickListener
@@ -139,16 +123,16 @@ class FavoriteFragment : BaseFragment<FragmentFavoriteBinding>(
     }
 
     override fun subscribeUI() {
-        repeatOn(Lifecycle.State.STARTED) {
+        observe(Lifecycle.State.STARTED) {
             viewModel.recipes.collectLatest(recyclerAdapter::submitData)
         }
-        repeatOn(Lifecycle.State.STARTED) {
+        observe(Lifecycle.State.STARTED) {
             viewModel.isEditMode.collectLatest { isSelected ->
                 binding.llBaseMenu.isVisible = !isSelected
                 binding.llEditMenu.isVisible = isSelected
             }
         }
-        repeatOn(Lifecycle.State.STARTED) {
+        observe(Lifecycle.State.STARTED) {
             viewModel.selectedCount.collectLatest { count ->
                 binding.tvSelectedCount.text = getString(
                     R.string.selected_value,

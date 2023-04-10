@@ -1,10 +1,9 @@
 package com.example.foodinfo.ui.fragment
 
-import androidx.fragment.app.viewModels
 import com.example.foodinfo.R
 import com.example.foodinfo.databinding.FragmentSearchFilterSelectBinding
 import com.example.foodinfo.ui.base.BaseFragment
-import com.example.foodinfo.utils.extensions.appComponent
+import com.example.foodinfo.utils.extensions.appViewModels
 import com.example.foodinfo.view_model.SearchFilterSelectViewModel
 
 
@@ -12,9 +11,7 @@ class SearchFilterSelectFragment : BaseFragment<FragmentSearchFilterSelectBindin
     FragmentSearchFilterSelectBinding::inflate
 ) {
 
-    private val viewModel: SearchFilterSelectViewModel by viewModels {
-        requireActivity().appComponent.viewModelsFactory()
-    }
+    private val viewModel: SearchFilterSelectViewModel by appViewModels()
 
 
     override fun initUI() {

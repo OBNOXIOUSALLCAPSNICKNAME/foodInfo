@@ -3,6 +3,7 @@ package com.example.foodinfo.repository.mapper
 import com.example.foodinfo.local.dto.*
 import com.example.foodinfo.remote.dto.LabelRecipeAttrNetwork
 import com.example.foodinfo.repository.model.*
+import com.example.foodinfo.utils.glide.svg.SVGModel
 
 
 fun LabelRecipeAttrDB.toModelHint(): LabelHintModel {

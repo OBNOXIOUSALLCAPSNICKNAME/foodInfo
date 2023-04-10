@@ -6,7 +6,6 @@ import com.bumptech.glide.load.engine.Resource
 import com.bumptech.glide.load.resource.SimpleResource
 import com.caverock.androidsvg.SVG
 import com.caverock.androidsvg.SVGParseException
-import com.example.foodinfo.repository.model.SVGModel
 import java.io.IOException
 
 class SVGLocalDecoder : ResourceDecoder<SVGModel, SVG> {

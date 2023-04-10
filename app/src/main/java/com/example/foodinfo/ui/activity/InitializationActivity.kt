@@ -12,9 +12,9 @@ import com.example.foodinfo.utils.extensions.appComponent
 import com.example.foodinfo.utils.extensions.fromString
 import com.example.foodinfo.utils.extensions.openAsset
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 class InitializationActivity : BaseActivity<ActivityInitializationBinding>(
@@ -24,10 +24,9 @@ class InitializationActivity : BaseActivity<ActivityInitializationBinding>(
         super.onCreate(savedInstanceState)
 
         lifecycleScope.launch {
-            val result = async(Dispatchers.IO) {
+            withContext(Dispatchers.IO) {
                 prepopulateDB()
             }
-            result.await()
             startActivity(Intent(this@InitializationActivity, MainActivity::class.java))
             finish()
         }

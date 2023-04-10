@@ -1,7 +1,6 @@
 package com.example.foodinfo.ui.fragment
 
 import androidx.core.view.isVisible
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -9,10 +8,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.foodinfo.R
 import com.example.foodinfo.databinding.FragmentRecipeNutrientsBinding
 import com.example.foodinfo.ui.adapter.RecipeNutrientsAdapter
-import com.example.foodinfo.ui.base.DataObserverFragment
+import com.example.foodinfo.ui.base.BaseFragment
 import com.example.foodinfo.ui.decorator.ListItemDecoration
-import com.example.foodinfo.utils.extensions.appComponent
+import com.example.foodinfo.utils.extensions.appViewModels
 import com.example.foodinfo.utils.extensions.baseAnimation
+import com.example.foodinfo.utils.extensions.observeState
 import com.example.foodinfo.utils.extensions.showDescriptionDialog
 import com.example.foodinfo.view_model.RecipeNutrientsViewModel
 import kotlinx.coroutines.Dispatchers
@@ -20,7 +20,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 
-class RecipeNutrientsFragment : DataObserverFragment<FragmentRecipeNutrientsBinding>(
+class RecipeNutrientsFragment : BaseFragment<FragmentRecipeNutrientsBinding>(
     FragmentRecipeNutrientsBinding::inflate
 ) {
 
@@ -28,9 +28,7 @@ class RecipeNutrientsFragment : DataObserverFragment<FragmentRecipeNutrientsBind
 
     private lateinit var recyclerAdapter: RecipeNutrientsAdapter
 
-    private val viewModel: RecipeNutrientsViewModel by viewModels {
-        requireActivity().appComponent.viewModelsFactory()
-    }
+    private val viewModel: RecipeNutrientsViewModel by appViewModels()
 
     private val onBackClickListener: () -> Unit = {
         findNavController().navigateUp()
@@ -91,7 +89,7 @@ class RecipeNutrientsFragment : DataObserverFragment<FragmentRecipeNutrientsBind
     }
 
     override fun subscribeUI() {
-        observeData(
+        observeState(
             dataFlow = viewModel.nutrients,
             useLoadingData = true,
             onStart = {

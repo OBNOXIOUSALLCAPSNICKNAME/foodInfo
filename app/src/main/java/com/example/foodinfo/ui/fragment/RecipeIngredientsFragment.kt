@@ -1,21 +1,21 @@
 package com.example.foodinfo.ui.fragment
 
 import androidx.core.view.isVisible
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
 import com.example.foodinfo.R
 import com.example.foodinfo.databinding.FragmentRecipeIngredientsBinding
 import com.example.foodinfo.ui.adapter.RecipeIngredientsAdapter
-import com.example.foodinfo.ui.base.DataObserverFragment
+import com.example.foodinfo.ui.base.BaseFragment
 import com.example.foodinfo.ui.decorator.ListItemDecoration
-import com.example.foodinfo.utils.extensions.appComponent
+import com.example.foodinfo.utils.extensions.appViewModels
 import com.example.foodinfo.utils.extensions.baseAnimation
+import com.example.foodinfo.utils.extensions.observeState
 import com.example.foodinfo.view_model.RecipeIngredientsViewModel
 
 
-class RecipeIngredientsFragment : DataObserverFragment<FragmentRecipeIngredientsBinding>(
+class RecipeIngredientsFragment : BaseFragment<FragmentRecipeIngredientsBinding>(
     FragmentRecipeIngredientsBinding::inflate
 ) {
 
@@ -23,9 +23,7 @@ class RecipeIngredientsFragment : DataObserverFragment<FragmentRecipeIngredients
 
     private lateinit var recyclerAdapter: RecipeIngredientsAdapter
 
-    private val viewModel: RecipeIngredientsViewModel by viewModels {
-        requireActivity().appComponent.viewModelsFactory()
-    }
+    private val viewModel: RecipeIngredientsViewModel by appViewModels()
 
     private val onBackClickListener: () -> Unit = {
         findNavController().navigateUp()
@@ -57,7 +55,7 @@ class RecipeIngredientsFragment : DataObserverFragment<FragmentRecipeIngredients
     }
 
     override fun subscribeUI() {
-        observeData(
+        observeState(
             dataFlow = viewModel.ingredients,
             useLoadingData = true,
             onStart = {

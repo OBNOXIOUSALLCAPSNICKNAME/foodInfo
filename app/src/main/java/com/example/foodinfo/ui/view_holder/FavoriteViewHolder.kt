@@ -36,7 +36,7 @@ class FavoriteViewHolder(
 
 
     private fun setSelected() {
-        if (isSelected.invoke(item.ID)) {
+        if (isSelected(item.ID)) {
             binding.clItem.background = AppCompatResources.getDrawable(
                 binding.clItem.context,
                 R.drawable.background_item_favorite_selected

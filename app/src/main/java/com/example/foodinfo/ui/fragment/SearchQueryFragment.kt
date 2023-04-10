@@ -1,28 +1,26 @@
 package com.example.foodinfo.ui.fragment
 
 import androidx.activity.OnBackPressedCallback
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
 import com.example.foodinfo.R
 import com.example.foodinfo.databinding.FragmentSearchQueryBinding
 import com.example.foodinfo.ui.adapter.SearchRecipeAdapter
-import com.example.foodinfo.ui.base.DataObserverFragment
+import com.example.foodinfo.ui.base.BaseFragment
 import com.example.foodinfo.ui.decorator.GridItemDecoration
-import com.example.foodinfo.utils.extensions.appComponent
+import com.example.foodinfo.utils.extensions.appViewModels
+import com.example.foodinfo.utils.extensions.observePages
 import com.example.foodinfo.view_model.SearchQueryViewModel
 
 
-class SearchQueryFragment : DataObserverFragment<FragmentSearchQueryBinding>(
+class SearchQueryFragment : BaseFragment<FragmentSearchQueryBinding>(
     FragmentSearchQueryBinding::inflate
 ) {
 
     private val args: SearchQueryFragmentArgs by navArgs()
 
-    private val viewModel: SearchQueryViewModel by viewModels {
-        requireActivity().appComponent.viewModelsFactory()
-    }
+    private val viewModel: SearchQueryViewModel by appViewModels()
 
     private lateinit var recyclerAdapter: SearchRecipeAdapter
 
@@ -89,7 +87,7 @@ class SearchQueryFragment : DataObserverFragment<FragmentSearchQueryBinding>(
     }
 
     override fun subscribeUI() {
-        observePage(
+        observePages(
             useLoadingData = true,
             dataFlow = viewModel.pagingHelper,
             pageFlow = viewModel.recipes,
