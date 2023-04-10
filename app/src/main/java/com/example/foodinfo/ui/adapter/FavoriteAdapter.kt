@@ -7,42 +7,24 @@ import com.example.foodinfo.databinding.RvItemBookmarkBinding
 import com.example.foodinfo.repository.model.RecipeFavoriteModel
 import com.example.foodinfo.ui.view_holder.FavoriteViewHolder
 import com.example.foodinfo.utils.AppPageAdapter
+import com.example.foodinfo.utils.view_model.Selectable
 
 
 class FavoriteAdapter(
-    private val isEditMode: () -> Boolean,
-    private val isSelected: (String) -> Boolean,
-    private val onReadyToSelect: (String) -> Unit,
-    private val onReadyToNavigate: (String) -> Unit,
-    private val onHoldClickListener: (String) -> Unit
-) : AppPageAdapter<RecipeFavoriteModel>(RecipeFavoriteModel.ItemCallBack) {
+    private val onItemHoldListener: (RecipeFavoriteModel) -> Unit,
+    private val onItemClickListener: (RecipeFavoriteModel) -> Unit
+) : AppPageAdapter<Selectable<RecipeFavoriteModel>>(FavoriteViewHolder.ItemCallBack) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return FavoriteViewHolder(
             RvItemBookmarkBinding.inflate(LayoutInflater.from(parent.context), parent, false),
-            isSelected
+            onItemHoldListener,
+            onItemClickListener
         )
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        getItem(position)?.let { recipe ->
-            (holder as FavoriteViewHolder).also { holder ->
-                holder.bind(recipe)
-                holder.binding.clItem.setOnClickListener {
-                    if (isEditMode.invoke()) {
-                        onReadyToSelect.invoke(recipe.ID)
-                        this.notifyItemChanged(holder.bindingAdapterPosition, listOf(true))
-                    } else {
-                        onReadyToNavigate.invoke(recipe.ID)
-                    }
-                }
-                holder.binding.clItem.setOnLongClickListener {
-                    onHoldClickListener(recipe.ID)
-                    this.notifyItemChanged(holder.bindingAdapterPosition, listOf(true))
-                    true
-                }
-            }
-        }
+        getItem(position)?.let { (holder as FavoriteViewHolder).bind(it) }
     }
 
     override fun onBindViewHolder(
