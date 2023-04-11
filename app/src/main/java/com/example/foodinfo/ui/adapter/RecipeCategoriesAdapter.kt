@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.foodinfo.databinding.ItemRecipeCategoryBinding
-import com.example.foodinfo.repository.model.CategoryOfRecipeModel
+import com.example.foodinfo.domain.model.CategoryOfRecipeModel
 import com.example.foodinfo.ui.view_holder.RecipeCategoryViewHolder
 import com.example.foodinfo.utils.AppListAdapter
 

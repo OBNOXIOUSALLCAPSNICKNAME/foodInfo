@@ -2,10 +2,11 @@ package com.example.foodinfo.view_model
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.foodinfo.repository.SearchHistoryRepository
-import com.example.foodinfo.repository.model.SearchInputModel
+import com.example.foodinfo.domain.repository.SearchHistoryRepository
+import com.example.foodinfo.domain.model.SearchInputModel
+import com.example.foodinfo.utils.CoroutineLauncher
+import com.example.foodinfo.utils.LaunchStrategy
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -20,7 +21,13 @@ class SearchInputViewModel @Inject constructor(
     private val searchHistoryRepository: SearchHistoryRepository
 ) : ViewModel() {
 
-    private var job: Job? = null
+    private val addCoroutine = CoroutineLauncher(
+        viewModelScope, Dispatchers.IO, LaunchStrategy.IGNORE
+    )
+
+    private val updateCoroutine = CoroutineLauncher(
+        viewModelScope, Dispatchers.IO, LaunchStrategy.CANCEL
+    )
 
     private val _searchHistory = MutableSharedFlow<List<SearchInputModel>>(
         replay = 1,
@@ -43,13 +50,14 @@ class SearchInputViewModel @Inject constructor(
 
 
     fun updateSearchHistory(inputText: String = "") {
-        job?.cancel()
-        job = viewModelScope.launch(Dispatchers.IO) {
+        updateCoroutine.launch {
             _searchHistory.emit(searchHistoryRepository.getHistoryLatest(inputText))
         }
     }
 
     fun addToHistory(inputText: String) {
-        searchHistoryRepository.addInput(SearchInputModel(inputText = inputText))
+        addCoroutine.launch {
+            searchHistoryRepository.addInput(SearchInputModel(inputText = inputText))
+        }
     }
 }

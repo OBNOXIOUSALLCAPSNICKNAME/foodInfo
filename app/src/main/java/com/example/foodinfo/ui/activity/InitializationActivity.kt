@@ -4,13 +4,14 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.lifecycle.lifecycleScope
 import com.example.foodinfo.databinding.ActivityInitializationBinding
-import com.example.foodinfo.local.dto.EdamamCredentialsDB
-import com.example.foodinfo.local.dto.GitHubCredentialsDB
+import com.example.foodinfo.local.model.EdamamCredentialsDB
+import com.example.foodinfo.local.model.GitHubCredentialsDB
+import com.example.foodinfo.local.room.model.entity.EdamamCredentialsEntity
+import com.example.foodinfo.local.room.model.entity.GitHubCredentialsEntity
+import com.example.foodinfo.local.room.model.entity.SearchFilterEntity
+import com.example.foodinfo.local.room.model.entity.SearchInputEntity
 import com.example.foodinfo.ui.base.BaseActivity
-import com.example.foodinfo.utils.AssetsKeyWords
 import com.example.foodinfo.utils.extensions.appComponent
-import com.example.foodinfo.utils.extensions.fromString
-import com.example.foodinfo.utils.extensions.openAsset
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -38,17 +39,22 @@ class InitializationActivity : BaseActivity<ActivityInitializationBinding>(
         appComponent.dataBase.apply {
 
             searchHistoryDAO.addHistory(
-                appComponent.gson.fromString(
-                    this@InitializationActivity.applicationContext.openAsset(AssetsKeyWords.SEARCH_HISTORY)
-                        .get(AssetsKeyWords.CONTENT)
-                        .toString()
+                listOf(
+                    SearchInputEntity(inputText = "beer"),
+                    SearchInputEntity(inputText = "meal"),
+                    SearchInputEntity(inputText = "fast dinner"),
+                    SearchInputEntity(inputText = "healthy drinks"),
+                    SearchInputEntity(inputText = "fresh meat"),
+                    SearchInputEntity(inputText = "fresh drinks"),
+                    SearchInputEntity(inputText = "beef"),
+                    SearchInputEntity(inputText = "boiled beef")
                 )
             )
 
-            apiCredentialsDao.addEdamam(EdamamCredentialsDB())
-            apiCredentialsDao.addGitHub(GitHubCredentialsDB())
+            apiCredentialsDAO.addEdamam(EdamamCredentialsEntity(EdamamCredentialsDB()))
+            apiCredentialsDAO.addGitHub(GitHubCredentialsEntity(GitHubCredentialsDB()))
 
-            searchFilterDAO.initializeEmptyFilter(appComponent.prefUtils.searchFilter)
+            searchFilterDAO.insertFilter(SearchFilterEntity(appComponent.prefUtils.searchFilter))
         }
     }
 }

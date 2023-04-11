@@ -2,12 +2,15 @@ package com.example.foodinfo.view_model
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.foodinfo.repository.RecipeAttrRepository
-import com.example.foodinfo.repository.RecipeRepository
-import com.example.foodinfo.repository.model.LabelHintModel
-import com.example.foodinfo.repository.model.RecipeExtendedModel
-import com.example.foodinfo.repository.use_case.RecipeUseCase
-import com.example.foodinfo.repository.state_handling.State
+import com.example.foodinfo.domain.repository.RecipeAttrRepository
+import com.example.foodinfo.domain.repository.RecipeRepository
+import com.example.foodinfo.domain.model.LabelHintModel
+import com.example.foodinfo.domain.model.RecipeExtendedModel
+import com.example.foodinfo.domain.state.State
+import com.example.foodinfo.domain.use_case.RecipeUseCase
+import com.example.foodinfo.utils.CoroutineLauncher
+import com.example.foodinfo.utils.LaunchStrategy
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.shareIn
@@ -18,8 +21,11 @@ class RecipeExtendedViewModel @Inject constructor(
     private val recipeUseCase: RecipeUseCase,
     private val recipeRepository: RecipeRepository,
     private val recipeAttrRepository: RecipeAttrRepository
-) :
-    ViewModel() {
+) : ViewModel() {
+
+    private val invertCoroutine = CoroutineLauncher(
+        viewModelScope, Dispatchers.IO, LaunchStrategy.IGNORE
+    )
 
     var recipeId: String = ""
 
@@ -29,11 +35,13 @@ class RecipeExtendedViewModel @Inject constructor(
         )
     }
 
-    fun getLabel(ID: Int): LabelHintModel {
+    suspend fun getLabel(ID: Int): LabelHintModel {
         return recipeAttrRepository.getLabelHint(ID)
     }
 
     fun invertFavoriteStatus() {
-        recipeRepository.invertFavoriteStatus(recipeId)
+        invertCoroutine.launch {
+            recipeRepository.invertFavoriteStatus(recipeId)
+        }
     }
 }

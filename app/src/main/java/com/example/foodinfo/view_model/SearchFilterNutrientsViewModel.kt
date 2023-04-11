@@ -2,12 +2,15 @@ package com.example.foodinfo.view_model
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.foodinfo.repository.RecipeAttrRepository
-import com.example.foodinfo.repository.SearchFilterRepository
-import com.example.foodinfo.repository.model.NutrientHintModel
-import com.example.foodinfo.repository.model.NutrientOfSearchFilterEditModel
-import com.example.foodinfo.repository.use_case.SearchFilterUseCase
-import com.example.foodinfo.repository.state_handling.State
+import com.example.foodinfo.domain.repository.RecipeAttrRepository
+import com.example.foodinfo.domain.repository.SearchFilterRepository
+import com.example.foodinfo.domain.model.NutrientHintModel
+import com.example.foodinfo.domain.model.NutrientOfSearchFilterEditModel
+import com.example.foodinfo.domain.state.State
+import com.example.foodinfo.domain.use_case.SearchFilterUseCase
+import com.example.foodinfo.utils.CoroutineLauncher
+import com.example.foodinfo.utils.LaunchStrategy
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.shareIn
@@ -20,6 +23,14 @@ class SearchFilterNutrientsViewModel @Inject constructor(
     private val searchFilterUseCase: SearchFilterUseCase,
 ) : ViewModel() {
 
+    private val resetCoroutine = CoroutineLauncher(
+        viewModelScope, Dispatchers.IO, LaunchStrategy.IGNORE
+    )
+
+    private val updateCoroutine = CoroutineLauncher(
+        viewModelScope, Dispatchers.IO, LaunchStrategy.IGNORE
+    )
+
     val nutrients: SharedFlow<State<List<NutrientOfSearchFilterEditModel>>> by lazy {
         searchFilterUseCase.getNutrientsEdit().shareIn(
             viewModelScope, SharingStarted.WhileSubscribed(stopTimeoutMillis = 5000), 1
@@ -27,15 +38,19 @@ class SearchFilterNutrientsViewModel @Inject constructor(
     }
 
 
-    fun getNutrient(ID: Int): NutrientHintModel {
+    suspend fun getNutrient(ID: Int): NutrientHintModel {
         return recipeAttrRepository.getNutrientHint(ID)
     }
 
     fun reset() {
-        searchFilterRepository.resetNutrients()
+        resetCoroutine.launch {
+            searchFilterRepository.resetNutrients()
+        }
     }
 
     fun update(id: Int, minValue: Float?, maxValue: Float?) {
-        searchFilterRepository.updateNutrient(id, minValue, maxValue)
+        updateCoroutine.launch {
+            searchFilterRepository.updateNutrient(id, minValue, maxValue)
+        }
     }
 }

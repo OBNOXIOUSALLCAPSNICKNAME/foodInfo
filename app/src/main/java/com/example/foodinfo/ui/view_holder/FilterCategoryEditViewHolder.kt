@@ -2,7 +2,7 @@ package com.example.foodinfo.ui.view_holder
 
 import androidx.recyclerview.widget.DiffUtil
 import com.example.foodinfo.databinding.RvItemFilterInputCategoryEditBinding
-import com.example.foodinfo.repository.model.LabelOfSearchFilterEditModel
+import com.example.foodinfo.domain.model.LabelOfSearchFilterEditModel
 import com.example.foodinfo.ui.base.BaseViewHolder
 
 

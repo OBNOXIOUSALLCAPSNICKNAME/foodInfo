@@ -2,7 +2,7 @@ package com.example.foodinfo.ui.view_holder
 
 import androidx.recyclerview.widget.DiffUtil
 import com.example.foodinfo.databinding.RvItemRecipeNutrientBinding
-import com.example.foodinfo.repository.model.NutrientOfRecipeModel
+import com.example.foodinfo.domain.model.NutrientOfRecipeModel
 import com.example.foodinfo.ui.base.BaseViewHolder
 
 

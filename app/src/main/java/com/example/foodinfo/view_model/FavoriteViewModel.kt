@@ -2,7 +2,7 @@ package com.example.foodinfo.view_model
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.foodinfo.repository.RecipeRepository
+import com.example.foodinfo.domain.repository.RecipeRepository
 import com.example.foodinfo.utils.CoroutineLauncher
 import com.example.foodinfo.utils.LaunchStrategy
 import com.example.foodinfo.utils.view_model.SelectManager

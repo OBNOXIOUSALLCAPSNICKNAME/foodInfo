@@ -1,7 +1,7 @@
 package com.example.foodinfo.utils.paging
 
-import com.example.foodinfo.local.dto.EdamamCredentialsDB
-import com.example.foodinfo.repository.model.SearchFilterPresetModel
+import com.example.foodinfo.local.model.EdamamCredentialsDB
+import com.example.foodinfo.domain.model.SearchFilterPresetModel
 import com.example.foodinfo.utils.edamam.FieldSet
 import com.example.foodinfo.utils.edamam.recipe
 import com.example.foodinfo.utils.extensions.trimMultiline

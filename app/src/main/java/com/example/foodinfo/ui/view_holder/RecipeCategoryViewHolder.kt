@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import androidx.recyclerview.widget.DiffUtil
 import com.example.foodinfo.databinding.ItemRecipeCategoryBinding
 import com.example.foodinfo.databinding.TvChipBinding
-import com.example.foodinfo.repository.model.CategoryOfRecipeModel
+import com.example.foodinfo.domain.model.CategoryOfRecipeModel
 import com.example.foodinfo.ui.base.BaseViewHolder
 
 

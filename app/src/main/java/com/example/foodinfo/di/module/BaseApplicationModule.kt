@@ -11,8 +11,10 @@ import dagger.android.AndroidInjectionModule
         RepositoryModule::class,
         ViewModelModule::class,
         ContextModule::class,
+        LocalSourceModule::class,
         RoomModule::class,
-        RemoteModule::class,
+        RemoteSourceModule::class,
+        RetrofitModule::class,
         AndroidInjectionModule::class
     ]
 )

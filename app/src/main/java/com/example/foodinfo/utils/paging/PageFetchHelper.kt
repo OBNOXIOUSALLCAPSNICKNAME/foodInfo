@@ -1,8 +1,8 @@
 package com.example.foodinfo.utils.paging
 
-import com.example.foodinfo.local.dto.EdamamCredentialsDB
-import com.example.foodinfo.local.dto.RecipeAttrsDB
-import com.example.foodinfo.repository.model.SearchFilterPresetModel
+import com.example.foodinfo.local.model.EdamamCredentialsDB
+import com.example.foodinfo.local.model.RecipeAttrsDB
+import com.example.foodinfo.domain.model.SearchFilterPresetModel
 import com.example.foodinfo.utils.edamam.FieldSet
 
 

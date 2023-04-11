@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.foodinfo.databinding.RvItemSearchInputBinding
-import com.example.foodinfo.repository.model.SearchInputModel
+import com.example.foodinfo.domain.model.SearchInputModel
 import com.example.foodinfo.ui.view_holder.SearchInputViewHolder
 import com.example.foodinfo.utils.AppListAdapter
 

@@ -5,7 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.foodinfo.local.room.dao.*
-import com.example.foodinfo.local.room.entity.*
+import com.example.foodinfo.local.room.model.entity.*
 
 
 @Database(
@@ -30,11 +30,11 @@ import com.example.foodinfo.local.room.entity.*
     ]
 )
 abstract class DataBase : RoomDatabase() {
-    abstract val recipeDAO: RecipeDAORoom
-    abstract val searchFilterDAO: SearchFilterDAORoom
-    abstract val searchHistoryDAO: SearchHistoryDAORoom
-    abstract val recipeAttrDao: RecipeAttrDAORoom
-    abstract val apiCredentialsDao: APICredentialsDAORoom
+    abstract val recipeDAO: RecipeDAO
+    abstract val searchFilterDAO: SearchFilterDAO
+    abstract val searchHistoryDAO: SearchHistoryDAO
+    abstract val recipeAttrDAO: RecipeAttrDAO
+    abstract val apiCredentialsDAO: APICredentialsDAO
 
     companion object {
         private const val DB_NAME = "data_base"
@@ -49,9 +49,7 @@ abstract class DataBase : RoomDatabase() {
                     context.applicationContext,
                     DataBase::class.java,
                     DB_NAME
-                )
-                    .allowMainThreadQueries() // TODO replace after refactoring all DAO
-                    .build()
+                ).build()
             return dataBase
         }
     }

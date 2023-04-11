@@ -1,7 +1,7 @@
 package com.example.foodinfo.utils.edamam
 
-import com.example.foodinfo.local.dto.EdamamCredentialsDB
-import com.example.foodinfo.remote.dto.RecipeNetwork
+import com.example.foodinfo.local.model.EdamamCredentialsDB
+import com.example.foodinfo.remote.model.RecipeNetwork
 import com.example.foodinfo.utils.extensions.trimMultiline
 import com.example.foodinfo.utils.paging.EdamamPageURL
 

@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.foodinfo.databinding.RvItemSearchTargetBinding
 import com.example.foodinfo.databinding.RvItemSearchTargetPlaceholderBinding
-import com.example.foodinfo.repository.model.RecipeShortModel
+import com.example.foodinfo.domain.model.RecipeShortModel
 import com.example.foodinfo.ui.view_holder.SearchRecipePlaceholder
 import com.example.foodinfo.ui.view_holder.SearchRecipeViewHolder
 import com.example.foodinfo.utils.AppPageAdapter

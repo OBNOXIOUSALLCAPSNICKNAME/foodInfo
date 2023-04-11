@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.foodinfo.databinding.RvItemBookmarkBinding
-import com.example.foodinfo.repository.model.RecipeFavoriteModel
+import com.example.foodinfo.domain.model.RecipeFavoriteModel
 import com.example.foodinfo.ui.view_holder.FavoriteViewHolder
 import com.example.foodinfo.utils.AppPageAdapter
 import com.example.foodinfo.utils.view_model.Selectable

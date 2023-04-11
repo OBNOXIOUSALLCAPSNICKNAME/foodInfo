@@ -1,12 +1,12 @@
 package com.example.foodinfo.utils.paging
 
-import com.example.foodinfo.local.dto.LabelOfRecipeDB
-import com.example.foodinfo.local.dto.LabelRecipeAttrDB
-import com.example.foodinfo.local.dto.NutrientOfRecipeDB
-import com.example.foodinfo.local.dto.RecipeDB
-import com.example.foodinfo.repository.model.CategoryOfFilterPresetModel
-import com.example.foodinfo.repository.model.NutrientOfFilterPresetModel
-import com.example.foodinfo.repository.model.SearchFilterPresetModel
+import com.example.foodinfo.local.model.LabelOfRecipeDB
+import com.example.foodinfo.local.model.LabelRecipeAttrDB
+import com.example.foodinfo.local.model.NutrientOfRecipeDB
+import com.example.foodinfo.local.model.RecipeDB
+import com.example.foodinfo.domain.model.CategoryOfFilterPresetModel
+import com.example.foodinfo.domain.model.NutrientOfFilterPresetModel
+import com.example.foodinfo.domain.model.SearchFilterPresetModel
 import com.example.foodinfo.utils.extensions.trimMultiline
 
 

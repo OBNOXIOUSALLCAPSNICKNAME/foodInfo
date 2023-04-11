@@ -1,6 +1,6 @@
 package com.example.foodinfo.utils.edamam
 
-import com.example.foodinfo.local.dto.EdamamCredentialsDB
+import com.example.foodinfo.local.model.EdamamCredentialsDB
 
 
 /**

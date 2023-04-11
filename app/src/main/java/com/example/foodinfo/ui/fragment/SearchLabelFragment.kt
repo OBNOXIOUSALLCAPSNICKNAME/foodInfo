@@ -65,7 +65,6 @@ class SearchLabelFragment : BaseFragment<FragmentSearchLabelBinding>(
     override fun initUI() {
         viewModel.labelID = args.labelID
 
-        binding.tvLabel.text = viewModel.getLabel(args.labelID).name
         binding.tvLabel.setOnClickListener { onHeaderClickListener() }
         binding.btnBack.setOnClickListener { onBackClickListener() }
         binding.btnSearch.setOnClickListener { onSearchClickListener() }
@@ -98,5 +97,8 @@ class SearchLabelFragment : BaseFragment<FragmentSearchLabelBinding>(
             onSuccess = viewModel::setPreset,
             onPageCollected = recyclerAdapter::submitData
         )
+        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
+            binding.tvLabel.text = viewModel.getLabel(args.labelID).name
+        }
     }
 }

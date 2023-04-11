@@ -2,9 +2,9 @@ package com.example.foodinfo.view_model
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.foodinfo.repository.RecipeRepository
-import com.example.foodinfo.repository.model.IngredientOfRecipeModel
-import com.example.foodinfo.repository.state_handling.State
+import com.example.foodinfo.domain.repository.RecipeRepository
+import com.example.foodinfo.domain.model.IngredientOfRecipeModel
+import com.example.foodinfo.domain.state.State
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.shareIn

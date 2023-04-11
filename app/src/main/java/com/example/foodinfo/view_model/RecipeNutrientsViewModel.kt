@@ -2,11 +2,11 @@ package com.example.foodinfo.view_model
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.foodinfo.repository.RecipeAttrRepository
-import com.example.foodinfo.repository.model.NutrientHintModel
-import com.example.foodinfo.repository.model.NutrientOfRecipeModel
-import com.example.foodinfo.repository.use_case.RecipeUseCase
-import com.example.foodinfo.repository.state_handling.State
+import com.example.foodinfo.domain.repository.RecipeAttrRepository
+import com.example.foodinfo.domain.model.NutrientHintModel
+import com.example.foodinfo.domain.model.NutrientOfRecipeModel
+import com.example.foodinfo.domain.state.State
+import com.example.foodinfo.domain.use_case.RecipeUseCase
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.shareIn
@@ -27,7 +27,7 @@ class RecipeNutrientsViewModel @Inject constructor(
         )
     }
 
-    fun getNutrient(ID: Int): NutrientHintModel {
+    suspend fun getNutrient(ID: Int): NutrientHintModel {
         return recipeAttrRepository.getNutrientHint(ID)
     }
 }

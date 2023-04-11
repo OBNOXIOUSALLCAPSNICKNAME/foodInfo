@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.foodinfo.R
 import com.example.foodinfo.databinding.FragmentSearchFilterBinding
-import com.example.foodinfo.repository.model.SearchFilterEditModel
+import com.example.foodinfo.domain.model.SearchFilterEditModel
 import com.example.foodinfo.ui.adapter.FilterBaseFieldAdapter
 import com.example.foodinfo.ui.adapter.FilterCategoriesAdapter
 import com.example.foodinfo.ui.adapter.FilterNutrientsAdapter

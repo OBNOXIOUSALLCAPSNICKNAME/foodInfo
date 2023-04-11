@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.foodinfo.databinding.RvItemFilterInputNutrientsBinding
-import com.example.foodinfo.repository.model.NutrientOfSearchFilterPreviewModel
+import com.example.foodinfo.domain.model.NutrientOfSearchFilterPreviewModel
 import com.example.foodinfo.ui.view_holder.FilterNutrientFieldViewHolder
 import com.example.foodinfo.utils.AppListAdapter
 

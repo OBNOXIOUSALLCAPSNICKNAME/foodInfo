@@ -4,11 +4,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.example.foodinfo.repository.RecipeRepository
-import com.example.foodinfo.repository.use_case.SearchFilterUseCase
+import com.example.foodinfo.domain.repository.RecipeRepository
+import com.example.foodinfo.domain.state.State
+import com.example.foodinfo.domain.use_case.SearchFilterUseCase
+import com.example.foodinfo.utils.CoroutineLauncher
+import com.example.foodinfo.utils.LaunchStrategy
 import com.example.foodinfo.utils.paging.AppPagingConfig
 import com.example.foodinfo.utils.paging.PageFetchHelper
-import com.example.foodinfo.repository.state_handling.State
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject
@@ -18,6 +21,10 @@ class SearchQueryViewModel @Inject constructor(
     private val recipeRepository: RecipeRepository,
     private val searchFilterUseCase: SearchFilterUseCase
 ) : ViewModel() {
+
+    private val invertCoroutine = CoroutineLauncher(
+        viewModelScope, Dispatchers.IO, LaunchStrategy.IGNORE
+    )
 
     var inputText: String? = null
 
@@ -45,6 +52,8 @@ class SearchQueryViewModel @Inject constructor(
     }
 
     fun invertFavoriteStatus(recipeId: String) {
-        recipeRepository.invertFavoriteStatus(recipeId)
+        invertCoroutine.launch {
+            recipeRepository.invertFavoriteStatus(recipeId)
+        }
     }
 }

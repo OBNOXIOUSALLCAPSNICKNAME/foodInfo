@@ -4,7 +4,7 @@ import androidx.recyclerview.widget.DiffUtil
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.example.foodinfo.R
 import com.example.foodinfo.databinding.RvItemRecipeIngredientBinding
-import com.example.foodinfo.repository.model.IngredientOfRecipeModel
+import com.example.foodinfo.domain.model.IngredientOfRecipeModel
 import com.example.foodinfo.ui.base.BaseViewHolder
 import com.example.foodinfo.utils.glide.GlideApp
 

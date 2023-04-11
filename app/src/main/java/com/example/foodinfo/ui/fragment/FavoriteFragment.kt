@@ -8,7 +8,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.foodinfo.R
 import com.example.foodinfo.databinding.FragmentFavoriteBinding
-import com.example.foodinfo.repository.model.RecipeFavoriteModel
+import com.example.foodinfo.domain.model.RecipeFavoriteModel
 import com.example.foodinfo.ui.adapter.FavoriteAdapter
 import com.example.foodinfo.ui.base.BaseFragment
 import com.example.foodinfo.ui.decorator.ListItemDecoration

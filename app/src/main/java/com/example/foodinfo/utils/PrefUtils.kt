@@ -3,9 +3,9 @@ package com.example.foodinfo.utils
 import android.content.Context
 import androidx.core.content.edit
 import androidx.preference.PreferenceManager
-import com.example.foodinfo.local.dto.EdamamCredentialsDB
-import com.example.foodinfo.local.dto.GitHubCredentialsDB
-import com.example.foodinfo.local.dto.SearchFilterDB
+import com.example.foodinfo.local.model.EdamamCredentialsDB
+import com.example.foodinfo.local.model.GitHubCredentialsDB
+import com.example.foodinfo.local.model.SearchFilterDB
 import javax.inject.Inject
 
 

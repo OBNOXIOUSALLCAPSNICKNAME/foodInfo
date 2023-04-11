@@ -4,9 +4,9 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
-import com.example.foodinfo.remote.dto.RecipeHitNetwork
-import com.example.foodinfo.remote.dto.RecipePageNetwork
-import com.example.foodinfo.remote.response.NetworkResponse
+import com.example.foodinfo.remote.model.RecipeHitNetwork
+import com.example.foodinfo.remote.model.RecipePageNetwork
+import com.example.foodinfo.remote.NetworkResponse
 import com.example.foodinfo.utils.ApiResponse
 import com.example.foodinfo.utils.edamam.EdamamInfo
 import kotlin.math.ceil

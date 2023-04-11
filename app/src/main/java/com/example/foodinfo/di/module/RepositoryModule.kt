@@ -1,15 +1,15 @@
 package com.example.foodinfo.di.module
 
 import android.content.Context
-import com.example.foodinfo.local.dao.*
-import com.example.foodinfo.remote.api.RecipeAPI
-import com.example.foodinfo.remote.api.RecipeAttrAPI
-import com.example.foodinfo.repository.RecipeAttrRepository
-import com.example.foodinfo.repository.RecipeRepository
-import com.example.foodinfo.repository.SearchFilterRepository
-import com.example.foodinfo.repository.SearchHistoryRepository
-import com.example.foodinfo.repository.use_case.RecipeUseCase
-import com.example.foodinfo.repository.use_case.SearchFilterUseCase
+import com.example.foodinfo.local.data_source.*
+import com.example.foodinfo.remote.data_source.RecipeAttrRemoteSource
+import com.example.foodinfo.remote.data_source.RecipeRemoteSource
+import com.example.foodinfo.domain.repository.RecipeAttrRepository
+import com.example.foodinfo.domain.repository.RecipeRepository
+import com.example.foodinfo.domain.repository.SearchFilterRepository
+import com.example.foodinfo.domain.repository.SearchHistoryRepository
+import com.example.foodinfo.domain.use_case.RecipeUseCase
+import com.example.foodinfo.domain.use_case.SearchFilterUseCase
 import com.example.foodinfo.utils.PrefUtils
 import dagger.Module
 import dagger.Provides
@@ -22,40 +22,40 @@ class RepositoryModule {
     @Provides
     @Singleton
     fun provideRecipeRepository(
-        APICredentialsDAO: APICredentialsDAO,
-        recipeDAO: RecipeDAO,
-        recipeAPI: RecipeAPI,
+        apiCredentialsLocal: APICredentialsLocalSource,
+        recipeLocal: RecipeLocalSource,
+        recipeRemote: RecipeRemoteSource,
         prefUtils: PrefUtils
     ): RecipeRepository {
-        return RecipeRepository(APICredentialsDAO, recipeDAO, recipeAPI, prefUtils)
+        return RecipeRepository(apiCredentialsLocal, recipeLocal, recipeRemote, prefUtils)
     }
 
     @Provides
     @Singleton
     fun provideRecipeAttrRepository(
-        apiCredentialsDAO: APICredentialsDAO,
-        recipeAttrDAO: RecipeAttrDAO,
-        recipeAttrAPI: RecipeAttrAPI,
+        apiCredentialsLocal: APICredentialsLocalSource,
+        recipeAttrLocal: RecipeAttrLocalSource,
+        recipeAttrRemote: RecipeAttrRemoteSource,
         prefUtils: PrefUtils
     ): RecipeAttrRepository {
-        return RecipeAttrRepository(apiCredentialsDAO, recipeAttrDAO, recipeAttrAPI, prefUtils)
+        return RecipeAttrRepository(apiCredentialsLocal, recipeAttrLocal, recipeAttrRemote, prefUtils)
     }
 
     @Provides
     @Singleton
     fun provideSearchFilterRepository(
-        searchFilterDAO: SearchFilterDAO,
+        searchFilterLocal: SearchFilterLocalSource,
         prefUtils: PrefUtils
     ): SearchFilterRepository {
-        return SearchFilterRepository(searchFilterDAO, prefUtils)
+        return SearchFilterRepository(searchFilterLocal, prefUtils)
     }
 
     @Provides
     @Singleton
     fun provideSearchInputRepository(
-        searchHistoryDAO: SearchHistoryDAO
+        searchHistoryLocal: SearchHistoryLocalSource
     ): SearchHistoryRepository {
-        return SearchHistoryRepository(searchHistoryDAO)
+        return SearchHistoryRepository(searchHistoryLocal)
     }
 
     @Provides
@@ -70,14 +70,14 @@ class RepositoryModule {
     @Provides
     @Singleton
     fun provideSearchFilterUseCase(
-        apiCredentialsDAO: APICredentialsDAO,
+        apiCredentialsLocal: APICredentialsLocalSource,
         recipeAttrRepository: RecipeAttrRepository,
         searchFilterRepository: SearchFilterRepository,
         prefUtils: PrefUtils,
         context: Context
     ): SearchFilterUseCase {
         return SearchFilterUseCase(
-            apiCredentialsDAO,
+            apiCredentialsLocal,
             recipeAttrRepository,
             searchFilterRepository,
             prefUtils,

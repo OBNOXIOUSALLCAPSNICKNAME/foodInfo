@@ -3,7 +3,6 @@ package com.example.foodinfo.ui.fragment
 import androidx.core.view.get
 import androidx.core.view.isVisible
 import androidx.core.view.size
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -13,7 +12,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.example.foodinfo.R
 import com.example.foodinfo.databinding.FragmentRecipeExtendedBinding
-import com.example.foodinfo.repository.model.RecipeExtendedModel
+import com.example.foodinfo.domain.model.RecipeExtendedModel
 import com.example.foodinfo.ui.adapter.RecipeCategoriesAdapter
 import com.example.foodinfo.ui.base.BaseFragment
 import com.example.foodinfo.ui.custom_view.NonScrollLinearLayoutManager
