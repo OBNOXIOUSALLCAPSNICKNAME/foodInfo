@@ -2,6 +2,7 @@ package com.example.foodinfo.domain.state
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.transform
 
 
 sealed class State<T>(
@@ -52,6 +53,17 @@ sealed class State<T>(
                 this.distinctUntilChanged(Utils::isEqualInsensitive)
             } else {
                 this.distinctUntilChanged(Utils::isEqual)
+            }
+        }
+
+        inline fun <T, R> Flow<State<T>>.transformData(
+            crossinline transform: suspend (T) -> R
+        ): Flow<State<R>> = this.transform { state ->
+            when (state) {
+                is Initial -> emit(Initial())
+                is Failure -> emit(Failure(state.messageID!!, state.throwable!!, state.errorCode!!))
+                is Loading -> emit(Loading(transform(state.data!!)))
+                is Success -> emit(Success(transform(state.data!!)))
             }
         }
 
