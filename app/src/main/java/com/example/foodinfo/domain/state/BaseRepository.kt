@@ -11,28 +11,28 @@ import kotlinx.coroutines.flow.flow
 abstract class BaseRepository {
 
     private inline fun <remoteT, localInT> fetchRemote(
-        crossinline dataProvider: suspend () -> DataProvider<remoteT>,
+        crossinline dataProvider: suspend () -> DataSource<remoteT>,
         crossinline mapDelegate: (remoteT) -> localInT
     ) = flow<State<localInT>> {
         emit(State.Initial())
 
         try {
-            when (val provider = dataProvider()) {
-                is DataProvider.Remote -> {
-                    if (provider.response is NetworkResponse.Success) {
-                        emit(mapData(provider.response.result, ErrorCodes.STATE_REMOTE_MAPPING, mapDelegate))
+            when (val source = dataProvider()) {
+                is DataSource.Remote -> {
+                    if (source.response is NetworkResponse.Success) {
+                        emit(mapData(source.response.result, ErrorCodes.STATE_REMOTE_MAPPING, mapDelegate))
                     } else {
-                        with(provider.response as NetworkResponse.Error) {
+                        with(source.response as NetworkResponse.Error) {
                             emit(State.Failure(messageID, throwable, code))
                         }
                     }
                 }
-                is DataProvider.Empty  -> {
+                is DataSource.Empty  -> {
                     emit(State.Failure(R.string.error_no_data, NoDataException(), ErrorCodes.STATE_NO_DATA))
                 }
-                else                   -> {
+                else                 -> {
                     throw IllegalArgumentException(
-                        "Unsupported remoteDataProvider type: ${provider.javaClass.simpleName}."
+                        "Unsupported remoteDataProvider type: ${source.javaClass.simpleName}."
                     )
                 }
             }
@@ -42,24 +42,24 @@ abstract class BaseRepository {
     }
 
     private inline fun <localInT, modelT> fetchLocal(
-        crossinline dataProvider: suspend () -> DataProvider<localInT>,
+        crossinline dataProvider: suspend () -> DataSource<localInT>,
         crossinline mapDelegate: (localInT) -> modelT
     ) = flow {
         emit(State.Initial())
 
         try {
-            when (val provider = dataProvider()) {
-                is DataProvider.Local     -> {
-                    emit(mapData(provider.data, ErrorCodes.STATE_LOCAL_MAPPING, mapDelegate))
+            when (val source = dataProvider()) {
+                is DataSource.Local     -> {
+                    emit(mapData(source.data, ErrorCodes.STATE_LOCAL_MAPPING, mapDelegate))
                 }
-                is DataProvider.LocalFlow -> {
-                    provider.flow.collect { data ->
+                is DataSource.LocalFlow -> {
+                    source.flow.collect { data ->
                         emit(mapData(data, ErrorCodes.STATE_LOCAL_MAPPING, mapDelegate))
                     }
                 }
-                else                      -> {
+                else                    -> {
                     throw IllegalArgumentException(
-                        "Unsupported localDataProvider type: ${provider.javaClass.simpleName}."
+                        "Unsupported localDataProvider type: ${source.javaClass.simpleName}."
                     )
                 }
             }
@@ -105,10 +105,10 @@ abstract class BaseRepository {
 
 
     /**
-     * - [localDataProvider] must be either [DataProvider.Local] or [DataProvider.LocalFlow].
+     * - [localDataProvider] must be either [DataSource.Local] or [DataSource.LocalFlow].
      * Otherwise an [IllegalArgumentException] will be thrown.
      *
-     * - [remoteDataProvider] must be either [DataProvider.Remote] or [DataProvider.Empty].
+     * - [remoteDataProvider] must be either [DataSource.Remote] or [DataSource.Empty].
      * Otherwise an [IllegalArgumentException] will be thrown.
      *
      * - Screens that uses data from [State.Loading] to initialize UI should handle situations when
@@ -124,7 +124,7 @@ abstract class BaseRepository {
      * - If a potential update is expected, data will always be emitted with [State.Loading].
      * Otherwise data will be emitted with [State.Success]
      *
-     * - If [localDataProvider] was provided as [DataProvider.LocalFlow], it must pass data after each
+     * - If [localDataProvider] was provided as [DataSource.LocalFlow], it must pass data after each
      * successful completion of [saveRemoteDelegate] even if data hasn't changed, so [getData] can emit data
      * into correct State (e.g. if local data was emitted with [State.Loading] and after [saveRemoteDelegate]
      * completion [localDataProvider] will not provide any data due to no changes was made in local DB.
@@ -134,7 +134,7 @@ abstract class BaseRepository {
      * - If data collected from local or remote flow is **Unit, null or empty collection**,
      * [State.Failure] will be emitted with [NoDataException].
      *
-     * - Always use [DataProvider.LocalFlow] inside [localDataProvider] with [remoteDataProvider], otherwise
+     * - Always use [DataSource.LocalFlow] inside [localDataProvider] with [remoteDataProvider], otherwise
      * new data after [saveRemoteDelegate] will not be received
      *
      * ### USE CASES:
@@ -182,8 +182,8 @@ abstract class BaseRepository {
      * ~~~
      */
     internal inline fun <modelT, localInT, localOutT, remoteT> getData(
-        crossinline localDataProvider: suspend () -> DataProvider<localOutT>,
-        crossinline remoteDataProvider: suspend () -> DataProvider<remoteT>,
+        crossinline localDataProvider: suspend () -> DataSource<localOutT>,
+        crossinline remoteDataProvider: suspend () -> DataSource<remoteT>,
         crossinline saveRemoteDelegate: suspend (localInT) -> Unit,
         crossinline mapToLocalDelegate: (remoteT) -> localInT,
         crossinline mapToModelDelegate: (localOutT) -> modelT,

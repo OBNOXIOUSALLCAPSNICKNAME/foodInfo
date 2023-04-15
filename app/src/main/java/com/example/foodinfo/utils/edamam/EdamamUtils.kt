@@ -1,15 +1,21 @@
 package com.example.foodinfo.utils.edamam
 
-import com.example.foodinfo.local.model.EdamamCredentialsDB
 import com.example.foodinfo.remote.model.RecipeNetwork
+import com.example.foodinfo.remote.retrofit.EdamamPageURL
+import com.example.foodinfo.remote.retrofit.EdamamRecipeURL
 import com.example.foodinfo.utils.extensions.trimMultiline
-import com.example.foodinfo.utils.paging.EdamamPageURL
 
 
 object EdamamInfo {
     const val PAGE_SIZE = 20
     const val THROTTLING_CALLS = 10
     const val THROTTLING_TIMER = 60
+    const val RECIPE_TYPE_FIELD = "type"
+    const val RECIPE_TYPE_PUBLIC = "public"
+    const val RECIPE_TYPE_USER = "user"
+    const val RECIPE_TYPE_ANY = "any"
+    const val APP_KEY_FIELD = "app_key"
+    const val APP_ID_FIELD = "app_id"
 }
 
 /**
@@ -63,20 +69,3 @@ enum class FieldSet(val fields: String) {
         """.trimMultiline()
     )
 }
-
-
-val EdamamCredentialsDB.food: String
-    get() {
-        return "?type=public&app_id=${this.appIDFood}&app_key=${this.appKeyFood}"
-    }
-
-val EdamamCredentialsDB.recipe: String
-    get() {
-        return "?type=public&app_id=${this.appIDRecipes}&app_key=${this.appKeyRecipes}"
-    }
-
-val EdamamCredentialsDB.nutrition: String
-    get() {
-        return "?type=public&app_id=${this.appIDNutrition}&app_key=${this.appKeyNutrition}"
-    }
-

@@ -1,9 +1,10 @@
 package com.example.foodinfo.local.room.data_source
 
 import androidx.paging.PagingSource
-import androidx.sqlite.db.SupportSQLiteQuery
+import com.example.foodinfo.domain.model.SearchFilterPresetModel
 import com.example.foodinfo.local.data_source.RecipeLocalSource
 import com.example.foodinfo.local.model.*
+import com.example.foodinfo.local.room.RoomPageQuery
 import com.example.foodinfo.local.room.dao.RecipeDAO
 import com.example.foodinfo.local.room.model.entity.IngredientOfRecipeEntity
 import com.example.foodinfo.local.room.model.entity.LabelOfRecipeEntity
@@ -20,8 +21,12 @@ class RecipeRoomSource @Inject constructor(
         return recipeDAO.getFavorite()
     }
 
-    override fun getByFilter(query: SupportSQLiteQuery): PagingSource<Int, out RecipeDB> {
-        return recipeDAO.getByFilter(query)
+    override fun getByFilter(
+        filterPreset: SearchFilterPresetModel,
+        inputText: String,
+        isOnline: Boolean
+    ): PagingSource<Int, out RecipeDB> {
+        return recipeDAO.getByFilter(RoomPageQuery.build(filterPreset, inputText, isOnline))
     }
 
     override fun getByIdExtended(recipeID: String): Flow<RecipeExtendedDB> {

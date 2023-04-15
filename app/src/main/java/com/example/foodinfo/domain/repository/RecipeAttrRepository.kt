@@ -16,7 +16,7 @@ import com.example.foodinfo.domain.model.CategoryTargetSearchModel
 import com.example.foodinfo.domain.model.LabelHintModel
 import com.example.foodinfo.domain.model.NutrientHintModel
 import com.example.foodinfo.domain.state.BaseRepository
-import com.example.foodinfo.domain.state.DataProvider
+import com.example.foodinfo.domain.state.DataSource
 import com.example.foodinfo.domain.state.State
 import com.example.foodinfo.utils.PrefUtils
 import kotlinx.coroutines.flow.Flow
@@ -41,8 +41,8 @@ class RecipeAttrRepository @Inject constructor(
 
     fun getCategoryLabelsLatest(categoryID: Int): Flow<State<CategoryTargetSearchModel>> {
         return getData(
-            remoteDataProvider = { DataProvider.Remote(recipeAttrRemote.getRecipeAttrs(getToken())) },
-            localDataProvider = { DataProvider.LocalFlow(recipeAttrLocal.observeCategoryLabels(categoryID)) },
+            remoteDataProvider = { DataSource.Remote(recipeAttrRemote.getRecipeAttrs(getToken())) },
+            localDataProvider = { DataSource.LocalFlow(recipeAttrLocal.observeCategoryLabels(categoryID)) },
             saveRemoteDelegate = { recipeAttrLocal.addRecipeAttrs(it) },
             mapToLocalDelegate = { it.toDB() },
             mapToModelDelegate = { it.toModelSearch() }
@@ -51,8 +51,8 @@ class RecipeAttrRepository @Inject constructor(
 
     fun getCategoriesLatest(): Flow<State<List<CategorySearchModel>>> {
         return getData(
-            remoteDataProvider = { DataProvider.Remote(recipeAttrRemote.getRecipeAttrs(getToken())) },
-            localDataProvider = { DataProvider.LocalFlow(recipeAttrLocal.observeCategoriesAll()) },
+            remoteDataProvider = { DataSource.Remote(recipeAttrRemote.getRecipeAttrs(getToken())) },
+            localDataProvider = { DataSource.LocalFlow(recipeAttrLocal.observeCategoriesAll()) },
             saveRemoteDelegate = { recipeAttrLocal.addRecipeAttrs(it) },
             mapToLocalDelegate = { it.toDB() },
             mapToModelDelegate = { it.map { label -> label.toModel() } }
@@ -61,8 +61,8 @@ class RecipeAttrRepository @Inject constructor(
 
     fun getLabelsDBLatest(): Flow<State<List<LabelRecipeAttrDB>>> {
         return getData(
-            remoteDataProvider = { DataProvider.Remote(recipeAttrRemote.getRecipeAttrs(getToken())) },
-            localDataProvider = { DataProvider.LocalFlow(recipeAttrLocal.observeLabelsAll()) },
+            remoteDataProvider = { DataSource.Remote(recipeAttrRemote.getRecipeAttrs(getToken())) },
+            localDataProvider = { DataSource.LocalFlow(recipeAttrLocal.observeLabelsAll()) },
             saveRemoteDelegate = { recipeAttrLocal.addRecipeAttrs(it) },
             mapToLocalDelegate = { it.toDB() },
             mapToModelDelegate = { it }
@@ -71,8 +71,8 @@ class RecipeAttrRepository @Inject constructor(
 
     fun getNutrientsDBLatest(): Flow<State<List<NutrientRecipeAttrDB>>> {
         return getData(
-            remoteDataProvider = { DataProvider.Remote(recipeAttrRemote.getRecipeAttrs(getToken())) },
-            localDataProvider = { DataProvider.LocalFlow(recipeAttrLocal.observeNutrientsAll()) },
+            remoteDataProvider = { DataSource.Remote(recipeAttrRemote.getRecipeAttrs(getToken())) },
+            localDataProvider = { DataSource.LocalFlow(recipeAttrLocal.observeNutrientsAll()) },
             saveRemoteDelegate = { recipeAttrLocal.addRecipeAttrs(it) },
             mapToLocalDelegate = { it.toDB() },
             mapToModelDelegate = { it }
@@ -81,9 +81,9 @@ class RecipeAttrRepository @Inject constructor(
 
     fun getRecipeAttrsDBLatest(): Flow<State<RecipeAttrsDB>> {
         return getData(
-            remoteDataProvider = { DataProvider.Remote(recipeAttrRemote.getRecipeAttrs(getToken())) },
+            remoteDataProvider = { DataSource.Remote(recipeAttrRemote.getRecipeAttrs(getToken())) },
             localDataProvider = {
-                DataProvider.LocalFlow(
+                DataSource.LocalFlow(
                     combine(
                         recipeAttrLocal.observeBasicsAll(),
                         recipeAttrLocal.observeLabelsAll(),

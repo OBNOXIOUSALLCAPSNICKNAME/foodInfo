@@ -1,12 +1,12 @@
 package com.example.foodinfo.domain.repository
 
-import com.example.foodinfo.local.data_source.SearchFilterLocalSource
-import com.example.foodinfo.local.model.*
 import com.example.foodinfo.domain.mapper.*
 import com.example.foodinfo.domain.model.*
 import com.example.foodinfo.domain.state.BaseRepository
-import com.example.foodinfo.domain.state.DataProvider
+import com.example.foodinfo.domain.state.DataSource
 import com.example.foodinfo.domain.state.State
+import com.example.foodinfo.local.data_source.SearchFilterLocalSource
+import com.example.foodinfo.local.model.*
 import com.example.foodinfo.utils.PrefUtils
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.transform
@@ -59,9 +59,9 @@ class SearchFilterRepository @Inject constructor(
         attrs: List<LabelRecipeAttrDB>
     ): Flow<State<CategoryOfSearchFilterEditModel>> {
         return getData(
-            remoteDataProvider = { DataProvider.Empty },
+            remoteDataProvider = { DataSource.Empty },
             localDataProvider = {
-                DataProvider.LocalFlow(
+                DataSource.LocalFlow(
                     searchFilterLocal.observeLabels(prefUtils.searchFilter).transform { labels ->
                         val labelsToUpdate = verifyLabels(attrs, labels)
                         if (labelsToUpdate != null) {
@@ -82,9 +82,9 @@ class SearchFilterRepository @Inject constructor(
         attrs: List<NutrientRecipeAttrDB>
     ): Flow<State<List<NutrientOfSearchFilterEditModel>>> {
         return getData(
-            remoteDataProvider = { DataProvider.Empty },
+            remoteDataProvider = { DataSource.Empty },
             localDataProvider = {
-                DataProvider.LocalFlow(
+                DataSource.LocalFlow(
                     searchFilterLocal.observeNutrients(prefUtils.searchFilter).transform { nutrients ->
                         val nutrientsToUpdate = verifyNutrients(attrs, nutrients)
                         if (nutrientsToUpdate != null) {
@@ -102,26 +102,26 @@ class SearchFilterRepository @Inject constructor(
     }
 
     internal fun getFilterEdit(attrs: RecipeAttrsDB): Flow<State<SearchFilterEditModel>> {
-        return baseGetFilterPreset(attrs) { it.toModelEdit() }
+        return baseGetFilter(attrs) { it.toModelEdit() }
     }
 
     internal fun getFilterPreset(attrs: RecipeAttrsDB): Flow<State<SearchFilterPresetModel>> {
-        return baseGetFilterPreset(attrs) { it.toModelPreset() }
+        return baseGetFilter(attrs) { it.toModelPreset() }
     }
 
-    internal fun getFilterPresetByLabel(
+    internal fun getFilterPreset(
+        attrs: RecipeAttrsDB,
         labelID: Int,
-        attrs: RecipeAttrsDB
     ): Flow<State<SearchFilterPresetModel>> {
         return getData(
-            remoteDataProvider = { DataProvider.Empty },
+            remoteDataProvider = { DataSource.Empty },
             localDataProvider = {
                 val label = attrs.labels.first { it.ID == labelID }
                 val category = CategoryOfFilterPresetModel(
                     tag = attrs.categories.first { it.ID == label.categoryID }.tag,
                     labels = listOf(LabelOfFilterPresetModel(label.tag, label.ID))
                 )
-                DataProvider.Local(SearchFilterPresetModel(categories = listOf(category)))
+                DataSource.Local(SearchFilterPresetModel(categories = listOf(category)))
             },
             saveRemoteDelegate = { },
             mapToLocalDelegate = { },
@@ -129,14 +129,14 @@ class SearchFilterRepository @Inject constructor(
         )
     }
 
-    private fun <T> baseGetFilterPreset(
+    private fun <T> baseGetFilter(
         attrs: RecipeAttrsDB,
         mapDelegate: (SearchFilterExtendedDB) -> T
     ): Flow<State<T>> {
         return getData(
-            remoteDataProvider = { DataProvider.Empty },
+            remoteDataProvider = { DataSource.Empty },
             localDataProvider = {
-                DataProvider.LocalFlow(
+                DataSource.LocalFlow(
                     searchFilterLocal.observeFilterExtended(prefUtils.searchFilter).transform { filter ->
                         val basicsToUpdate = verifyBasics(attrs.basics, filter.basics)
                         val labelsToUpdate = verifyLabels(attrs.labels, filter.labels)

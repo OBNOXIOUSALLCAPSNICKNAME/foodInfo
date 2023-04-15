@@ -31,7 +31,7 @@ class SearchQueryViewModel @Inject constructor(
     private val _pagingHelper = MutableSharedFlow<PageFetchHelper>(extraBufferCapacity = 1)
 
     val pagingHelper: SharedFlow<State<PageFetchHelper>> by lazy {
-        searchFilterUseCase.getHelper(inputText!!)
+        searchFilterUseCase.getHelper()
             .shareIn(viewModelScope, SharingStarted.Lazily, 0)
     }
 
@@ -40,7 +40,8 @@ class SearchQueryViewModel @Inject constructor(
         .flatMapLatest { pageFetchHelper ->
             recipeRepository.getByFilter(
                 pagingHelper = pageFetchHelper,
-                pagingConfig = AppPagingConfig.RECIPE_EXPLORE_PAGER
+                pagingConfig = AppPagingConfig.RECIPE_EXPLORE_PAGER,
+                inputText = inputText!!
             )
         }
         .cachedIn(viewModelScope)

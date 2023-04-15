@@ -1,7 +1,7 @@
 package com.example.foodinfo.local.data_source
 
 import androidx.paging.PagingSource
-import androidx.sqlite.db.SupportSQLiteQuery
+import com.example.foodinfo.domain.model.SearchFilterPresetModel
 import com.example.foodinfo.local.model.*
 import kotlinx.coroutines.flow.Flow
 
@@ -10,7 +10,11 @@ interface RecipeLocalSource {
 
     fun getFavorite(): PagingSource<Int, out RecipeDB>
 
-    fun getByFilter(query: SupportSQLiteQuery): PagingSource<Int, out RecipeDB>
+    fun getByFilter(
+        filterPreset: SearchFilterPresetModel,
+        inputText: String,
+        isOnline: Boolean
+    ): PagingSource<Int, out RecipeDB>
 
 
     fun getByIdExtended(recipeID: String): Flow<RecipeExtendedDB>

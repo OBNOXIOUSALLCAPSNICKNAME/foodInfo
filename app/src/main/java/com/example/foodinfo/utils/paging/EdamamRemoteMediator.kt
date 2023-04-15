@@ -4,9 +4,9 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
+import com.example.foodinfo.remote.NetworkResponse
 import com.example.foodinfo.remote.model.RecipeHitNetwork
 import com.example.foodinfo.remote.model.RecipePageNetwork
-import com.example.foodinfo.remote.NetworkResponse
 import com.example.foodinfo.utils.ApiResponse
 import com.example.foodinfo.utils.edamam.EdamamInfo
 import kotlin.math.ceil
@@ -14,19 +14,18 @@ import kotlin.math.ceil
 
 @OptIn(ExperimentalPagingApi::class)
 class EdamamRemoteMediator<localInT : Any, localOutT : Any, Key : Any>(
-    private val query: String,
     private val remoteDataProvider: suspend (String) -> ApiResponse<RecipePageNetwork>,
     private val mapToLocalDelegate: suspend (List<RecipeHitNetwork>) -> List<localInT>,
     private val saveRemoteDelegate: suspend (List<localInT>) -> Unit,
 ) : RemoteMediator<Key, localOutT>() {
 
-    private var nextPageQuery: String? = query
+    private var nextPageQuery: String? = ""
     private var loadPageCount: Int = 0
 
     override suspend fun load(loadType: LoadType, state: PagingState<Key, localOutT>): MediatorResult {
         when (loadType) {
             LoadType.REFRESH -> {
-                nextPageQuery = query
+                nextPageQuery = ""
                 loadPageCount = state.config.initialLoadSize.toPageCount()
             }
             LoadType.PREPEND -> {

@@ -1,18 +1,18 @@
-package com.example.foodinfo.utils.paging
+package com.example.foodinfo.local.room
 
+import androidx.sqlite.db.SimpleSQLiteQuery
+import com.example.foodinfo.domain.model.CategoryOfFilterPresetModel
+import com.example.foodinfo.domain.model.NutrientOfFilterPresetModel
+import com.example.foodinfo.domain.model.SearchFilterPresetModel
 import com.example.foodinfo.local.model.LabelOfRecipeDB
 import com.example.foodinfo.local.model.LabelRecipeAttrDB
 import com.example.foodinfo.local.model.NutrientOfRecipeDB
 import com.example.foodinfo.local.model.RecipeDB
-import com.example.foodinfo.domain.model.CategoryOfFilterPresetModel
-import com.example.foodinfo.domain.model.NutrientOfFilterPresetModel
-import com.example.foodinfo.domain.model.SearchFilterPresetModel
+import com.example.foodinfo.local.room.RoomPageQuery.build
 import com.example.foodinfo.utils.extensions.trimMultiline
 
 
 /**
- * Generates query to room DB.
- *
  * Because of **AND** separator between subqueries if any of subquery don't match the condition,
  * row will be denied, so it makes sense to check the fastest conditions first:
  *
@@ -26,8 +26,8 @@ import com.example.foodinfo.utils.extensions.trimMultiline
  * But with internet, recipes in remote page **N** may be different from recipes in local page **N**
  * For example, remote page **№5** will contain recipes **`[80..101]`**, but local DB page **№5** will
  * contain recipe **`[45, 68, .. 131]`** etc. (because they was previously cached from another queries).
- * This will cause the recipes to "jump" inside RecyclerView. To avoid that, set **isOffline = true** if
- * local DB updates expected.
+ * This will cause the recipes to "jump" inside RecyclerView. To avoid that, set **isOffline = true**
+ * for [build] if local DB updates expected.
  *
  * ###Example:
  * ~~~
@@ -52,20 +52,8 @@ import com.example.foodinfo.utils.extensions.trimMultiline
  *     GROUP BY recipe_id HAVING count(recipe_id) = 3)
  * ORDER BY last_update ASC
  * ~~~
- * @param searchFilterPreset Filter preset object that will be used to build query.
- * @param inputText If specified, result will contain only those recipes which name contain provided string.
- * @param isOnline If true, the result will not contain recipes that were added/updated before the session
- * started and sorted by [RecipeDB.lastUpdate] **ASC** to prevent list "jumps" while scrolling. Otherwise will
- * return all recipes matching the query ordered by [RecipeDB.lastUpdate] **DESC** to show most actual cached
- * recipes.
  */
-class RoomPageQuery(
-    searchFilterPreset: SearchFilterPresetModel,
-    inputText: String = "",
-    isOnline: Boolean
-) {
-    val value: String = build(searchFilterPreset, inputText, isOnline)
-
+internal object RoomPageQuery {
     private fun labelsToLocalQuery(categories: List<CategoryOfFilterPresetModel>): String {
         val labels = categories.flatMap { it.labels }.map { it.infoID }
         return if (labels.isEmpty()) {
@@ -144,35 +132,49 @@ class RoomPageQuery(
         }
     }
 
-    private fun build(
-        searchFilterPreset: SearchFilterPresetModel,
+    /**
+     * Generates query to room DB.
+     *
+     * @param filterPreset Filter preset object that will be used to build query.
+     * @param inputText If specified, result will contain only those recipes which name contain provided string.
+     * @param isOnline If true, the result will not contain recipes that were added/updated before the session
+     * started and sorted by [RecipeDB.lastUpdate] **ASC** to prevent list "jumps" while scrolling. Otherwise will
+     * return all recipes matching the query ordered by [RecipeDB.lastUpdate] **DESC** to show most actual cached
+     * recipes.
+     */
+    fun build(
+        filterPreset: SearchFilterPresetModel,
         inputText: String,
         isOnline: Boolean
-    ): String {
+    ): SimpleSQLiteQuery {
         val subQueryList = arrayListOf<String>()
         subQueryList.add(inputTextToLocalQuery(inputText))
         subQueryList.add(setLastUpdated(isOnline))
-        subQueryList.addAll(searchFilterPreset.basics.map { field ->
+        subQueryList.addAll(filterPreset.basics.map { field ->
             rangeFieldToLocalQuery(field.columnName, field.minValue, field.maxValue)
         })
-        subQueryList.add(nutrientsToLocalQuery(searchFilterPreset.nutrients))
-        subQueryList.add(labelsToLocalQuery(searchFilterPreset.categories))
+        subQueryList.add(nutrientsToLocalQuery(filterPreset.nutrients))
+        subQueryList.add(labelsToLocalQuery(filterPreset.categories))
         subQueryList.removeAll(setOf(""))
 
         return if (subQueryList.size == 0) {
-            "SELECT * FROM ${
-                RecipeDB.TABLE_NAME
-            } ${
-                setOrder(isOnline)
-            }"
+            SimpleSQLiteQuery(
+                "SELECT * FROM ${
+                    RecipeDB.TABLE_NAME
+                } ${
+                    setOrder(isOnline)
+                }"
+            )
         } else {
-            "SELECT * FROM ${
-                RecipeDB.TABLE_NAME
-            } WHERE ${
-                subQueryList.joinToString(" AND ")
-            } ${
-                setOrder(isOnline)
-            }"
+            SimpleSQLiteQuery(
+                "SELECT * FROM ${
+                    RecipeDB.TABLE_NAME
+                } WHERE ${
+                    subQueryList.joinToString(" AND ")
+                } ${
+                    setOrder(isOnline)
+                }"
+            )
         }
     }
 }

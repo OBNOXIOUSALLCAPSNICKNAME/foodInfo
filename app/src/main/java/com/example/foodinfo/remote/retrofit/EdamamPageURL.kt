@@ -1,19 +1,15 @@
-package com.example.foodinfo.utils.paging
+package com.example.foodinfo.remote.retrofit
 
-import com.example.foodinfo.local.model.EdamamCredentialsDB
 import com.example.foodinfo.domain.model.SearchFilterPresetModel
+import com.example.foodinfo.local.model.EdamamCredentialsDB
+import com.example.foodinfo.utils.edamam.EdamamInfo
 import com.example.foodinfo.utils.edamam.FieldSet
-import com.example.foodinfo.utils.edamam.recipe
 import com.example.foodinfo.utils.extensions.trimMultiline
 
 
 /**
- * Generates query to Edamam API to fetch paged recipes.
- *
  * All special symbols will be correctly translated
  * (e.g. space will be replaced with **'%20'** and **'+'** will be replaced with **%2B**).
- *
- * Result will contain all fields represented in [FieldSet.FULL] to be able to perform query from local DB.
  *
  * ###Example:
  * Line breaks added for better readability
@@ -38,19 +34,8 @@ import com.example.foodinfo.utils.extensions.trimMultiline
  * &field=yield
  * ...
  * ~~~
- *
- * @param searchFilterPreset Filter preset object that will be used to build query.
- * @param inputText If specified, result will contain only those recipes which name contain provided string.
- * @param apiCredentials Object that contains app ID and Key to access Edamam API.
  */
-class EdamamPageURL(
-    searchFilterPreset: SearchFilterPresetModel,
-    apiCredentials: EdamamCredentialsDB,
-    fieldSet: FieldSet,
-    inputText: String = ""
-) {
-    val value: String = build(searchFilterPreset, apiCredentials, fieldSet, inputText)
-
+internal object EdamamPageURL {
     private fun rangeFieldToRemoteQuery(tag: String, minValue: Float?, maxValue: Float?): String {
         return when {
             minValue == null -> {
@@ -73,28 +58,38 @@ class EdamamPageURL(
         }
     }
 
-    private fun build(
-        searchFilterPreset: SearchFilterPresetModel,
+    /**
+     * Generates query to Edamam API to fetch paged recipes.
+     *
+     * @param apiCredentials Object that contains app ID and Key to access Edamam API.
+     * @param filterPreset Filter preset object that will be used to build query.
+     * @param inputText If specified, result will contain only those recipes which name contain provided string.
+     * @param fieldSet Declares which recipe fields should be included into response.
+     */
+    fun build(
         apiCredentials: EdamamCredentialsDB,
-        fieldSet: FieldSet,
+        filterPreset: SearchFilterPresetModel,
         inputText: String,
+        fieldSet: FieldSet
     ): String {
         return """
-        ${apiCredentials.recipe}
+        ?${EdamamInfo.APP_ID_FIELD}=${apiCredentials.appIDRecipes}
+        &${EdamamInfo.APP_KEY_FIELD}=${apiCredentials.appKeyRecipes}
+        &${EdamamInfo.RECIPE_TYPE_FIELD}=${EdamamInfo.RECIPE_TYPE_PUBLIC}
         ${fieldSet.fields}
         ${inputTextToRemoteQuery(inputText)}
         ${
-            searchFilterPreset.basics.joinToString(separator = "") { field ->
+            filterPreset.basics.joinToString(separator = "") { field ->
                 "&${rangeFieldToRemoteQuery(field.tag, field.minValue, field.maxValue)}"
             }
         }
         ${
-            searchFilterPreset.nutrients.joinToString(separator = "") { field ->
+            filterPreset.nutrients.joinToString(separator = "") { field ->
                 "&nutrients${rangeFieldToRemoteQuery(field.tag, field.minValue, field.maxValue)}"
             }
         }
         ${
-            searchFilterPreset.categories.flatMap { category ->
+            filterPreset.categories.flatMap { category ->
                 category.labels.map { category.tag to it.tag.replace(" ", "%20") }
             }.joinToString(separator = "") { (category, label) ->
                 "&$category=$label"

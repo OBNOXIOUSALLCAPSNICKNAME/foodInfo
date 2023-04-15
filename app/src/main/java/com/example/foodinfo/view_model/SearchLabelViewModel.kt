@@ -4,9 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import com.example.foodinfo.domain.model.LabelHintModel
 import com.example.foodinfo.domain.repository.RecipeAttrRepository
 import com.example.foodinfo.domain.repository.RecipeRepository
-import com.example.foodinfo.domain.model.LabelHintModel
 import com.example.foodinfo.domain.state.State
 import com.example.foodinfo.domain.use_case.SearchFilterUseCase
 import com.example.foodinfo.utils.CoroutineLauncher
@@ -34,7 +34,7 @@ class SearchLabelViewModel @Inject constructor(
     private val _pagingHelper = MutableSharedFlow<PageFetchHelper>(extraBufferCapacity = 1)
 
     val pagingHelper: SharedFlow<State<PageFetchHelper>> by lazy {
-        searchFilterUseCase.getHelperByLabel(labelID!!)
+        searchFilterUseCase.getHelper(labelID!!)
             .shareIn(viewModelScope, SharingStarted.Lazily, 0)
     }
 
