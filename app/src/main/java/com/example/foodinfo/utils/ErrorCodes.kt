@@ -19,5 +19,6 @@ object ErrorCodes {
     const val STATE_LOCAL_MAPPING = 802
     const val STATE_REMOTE_UNKNOWN = 803
     const val STATE_REMOTE_MAPPING = 804
-    const val STATE_REMOTE_SAVE = 805
+    const val STATE_TRANSFORM_FAIL = 805
+    const val STATE_REMOTE_SAVE = 806
 }

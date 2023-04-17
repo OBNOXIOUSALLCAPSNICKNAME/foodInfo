@@ -2,10 +2,10 @@ package com.example.foodinfo.view_model
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.foodinfo.domain.repository.RecipeAttrRepository
-import com.example.foodinfo.domain.repository.SearchFilterRepository
 import com.example.foodinfo.domain.model.CategoryOfSearchFilterEditModel
 import com.example.foodinfo.domain.model.LabelHintModel
+import com.example.foodinfo.domain.repository.RecipeAttrRepository
+import com.example.foodinfo.domain.repository.SearchFilterRepository
 import com.example.foodinfo.domain.state.State
 import com.example.foodinfo.domain.use_case.SearchFilterUseCase
 import com.example.foodinfo.utils.CoroutineLauncher

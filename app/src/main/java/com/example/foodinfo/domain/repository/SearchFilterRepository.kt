@@ -1,7 +1,10 @@
 package com.example.foodinfo.domain.repository
 
 import com.example.foodinfo.domain.mapper.*
-import com.example.foodinfo.domain.model.*
+import com.example.foodinfo.domain.model.CategoryOfSearchFilterEditModel
+import com.example.foodinfo.domain.model.NutrientOfSearchFilterEditModel
+import com.example.foodinfo.domain.model.SearchFilterEditModel
+import com.example.foodinfo.domain.model.SearchFilterPresetModel
 import com.example.foodinfo.domain.state.BaseRepository
 import com.example.foodinfo.domain.state.DataSource
 import com.example.foodinfo.domain.state.State
@@ -19,26 +22,15 @@ class SearchFilterRepository @Inject constructor(
 ) : BaseRepository() {
 
     suspend fun resetFilter() {
-        val filter = searchFilterLocal.getFilterExtended(prefUtils.searchFilter)
-        searchFilterLocal.updateFilter(
-            filter.basics.map { it.toDefault() },
-            filter.labels.map { it.toDefault() },
-            filter.nutrients.map { it.toDefault() }
-        )
+        searchFilterLocal.resetFilter(prefUtils.searchFilter)
     }
 
     suspend fun resetNutrients() {
-        searchFilterLocal.updateNutrients(
-            searchFilterLocal.getNutrients(prefUtils.searchFilter).map { it.toDefault() }
-        )
+        searchFilterLocal.resetNutrients(prefUtils.searchFilter)
     }
 
     suspend fun resetCategory(categoryID: Int) {
-        searchFilterLocal.updateLabels(
-            searchFilterLocal.getLabels(prefUtils.searchFilter)
-                .filter { it.attrInfo!!.categoryID == categoryID }
-                .map { it.toDefault() }
-        )
+        searchFilterLocal.resetCategory(prefUtils.searchFilter, categoryID)
     }
 
     suspend fun updateBasic(id: Int, minValue: Float?, maxValue: Float?) {
@@ -109,20 +101,10 @@ class SearchFilterRepository @Inject constructor(
         return baseGetFilter(attrs) { it.toModelPreset() }
     }
 
-    internal fun getFilterPreset(
-        attrs: RecipeAttrsDB,
-        labelID: Int,
-    ): Flow<State<SearchFilterPresetModel>> {
+    internal fun getFilterPreset(attrs: RecipeAttrsDB, labelID: Int): Flow<State<SearchFilterPresetModel>> {
         return getData(
             remoteDataProvider = { DataSource.Empty },
-            localDataProvider = {
-                val label = attrs.labels.first { it.ID == labelID }
-                val category = CategoryOfFilterPresetModel(
-                    tag = attrs.categories.first { it.ID == label.categoryID }.tag,
-                    labels = listOf(LabelOfFilterPresetModel(label.tag, label.ID))
-                )
-                DataSource.Local(SearchFilterPresetModel(categories = listOf(category)))
-            },
+            localDataProvider = { DataSource.Local(SearchFilterPresetModel(attrs, labelID)) },
             saveRemoteDelegate = { },
             mapToLocalDelegate = { },
             mapToModelDelegate = { it }

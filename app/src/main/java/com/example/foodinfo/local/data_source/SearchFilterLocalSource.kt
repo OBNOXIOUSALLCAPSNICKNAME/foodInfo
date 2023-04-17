@@ -31,19 +31,6 @@ interface SearchFilterLocalSource {
     suspend fun updateNutrient(id: Int, minValue: Float?, maxValue: Float?)
 
 
-    suspend fun updateFilter(
-        basics: List<BasicOfSearchFilterDB>,
-        labels: List<LabelOfSearchFilterDB>,
-        nutrients: List<NutrientOfSearchFilterDB>
-    )
-
-    suspend fun updateBasics(basics: List<BasicOfSearchFilterDB>)
-
-    suspend fun updateLabels(labels: List<LabelOfSearchFilterDB>)
-
-    suspend fun updateNutrients(nutrients: List<NutrientOfSearchFilterDB>)
-
-
     // invalidate functions must remove content related with provided filterName and insert new one
     suspend fun invalidateFilter(
         filterName: String,
@@ -60,4 +47,11 @@ interface SearchFilterLocalSource {
 
 
     suspend fun initializeEmptyFilter(filterName: String)
+
+
+    suspend fun resetCategory(filterName: String, categoryID: Int)
+
+    suspend fun resetNutrients(filterName: String)
+
+    suspend fun resetFilter(filterName: String)
 }

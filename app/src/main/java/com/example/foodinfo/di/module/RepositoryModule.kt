@@ -1,15 +1,15 @@
 package com.example.foodinfo.di.module
 
 import android.content.Context
-import com.example.foodinfo.local.data_source.*
-import com.example.foodinfo.remote.data_source.RecipeAttrRemoteSource
-import com.example.foodinfo.remote.data_source.RecipeRemoteSource
 import com.example.foodinfo.domain.repository.RecipeAttrRepository
 import com.example.foodinfo.domain.repository.RecipeRepository
 import com.example.foodinfo.domain.repository.SearchFilterRepository
 import com.example.foodinfo.domain.repository.SearchHistoryRepository
 import com.example.foodinfo.domain.use_case.RecipeUseCase
 import com.example.foodinfo.domain.use_case.SearchFilterUseCase
+import com.example.foodinfo.local.data_source.*
+import com.example.foodinfo.remote.data_source.RecipeAttrRemoteSource
+import com.example.foodinfo.remote.data_source.RecipeRemoteSource
 import com.example.foodinfo.utils.PrefUtils
 import dagger.Module
 import dagger.Provides
@@ -70,17 +70,13 @@ class RepositoryModule {
     @Provides
     @Singleton
     fun provideSearchFilterUseCase(
-        apiCredentialsLocal: APICredentialsLocalSource,
         recipeAttrRepository: RecipeAttrRepository,
         searchFilterRepository: SearchFilterRepository,
-        prefUtils: PrefUtils,
         context: Context
     ): SearchFilterUseCase {
         return SearchFilterUseCase(
-            apiCredentialsLocal,
             recipeAttrRepository,
             searchFilterRepository,
-            prefUtils,
             context
         )
     }

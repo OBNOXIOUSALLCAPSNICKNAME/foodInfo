@@ -161,10 +161,10 @@ inline fun Fragment.observe(
 }
 
 /**
- * Logs error code, throwable and error message with tag "state" and shows SnackBar with error code
+ * Logs error code, throwable and error message with [State.LOG_TAG] and shows SnackBar with error code
  */
 fun Fragment.logStateError(messageID: Int, throwable: Throwable, errorCode: Int) {
-    Log.d("state", "code: $errorCode message: ${getString(messageID)}", throwable)
+    Log.d(State.LOG_TAG, "code: $errorCode message: ${getString(messageID)}", throwable)
     view?.let { view ->
         Snackbar.make(view, errorCode.toString(), Snackbar.LENGTH_SHORT).show()
     }

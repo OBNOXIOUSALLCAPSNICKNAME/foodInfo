@@ -111,24 +111,48 @@ interface SearchFilterDAO {
 
 
     @Transaction
-    suspend fun updateFilter(
-        basics: List<BasicOfSearchFilterEntity>,
-        labels: List<LabelOfSearchFilterEntity>,
-        nutrients: List<NutrientOfSearchFilterEntity>
-    ) {
-        updateBasics(basics)
-        updateLabels(labels)
-        updateNutrients(nutrients)
+    suspend fun resetFilter(filterName: String) {
+        resetBasics(filterName)
+        resetLabels(filterName)
+        resetNutrients(filterName)
     }
 
-    @Update(onConflict = OnConflictStrategy.ABORT)
-    suspend fun updateBasics(baseFields: List<BasicOfSearchFilterEntity>)
+    @Query(
+        "UPDATE ${BasicOfSearchFilterDB.TABLE_NAME} SET " +
+        "${BasicOfSearchFilterDB.Columns.MIN_VALUE} = NULL, " +
+        "${BasicOfSearchFilterDB.Columns.MAX_VALUE} = NULL WHERE " +
+        "${BasicOfSearchFilterDB.Columns.FILTER_NAME} LIKE '%' || :filterName || '%'"
+    )
+    suspend fun resetBasics(filterName: String)
 
-    @Update(onConflict = OnConflictStrategy.ABORT)
-    suspend fun updateLabels(labels: List<LabelOfSearchFilterEntity>)
+    @Query(
+        "UPDATE ${LabelOfSearchFilterDB.TABLE_NAME} SET " +
+        "${LabelOfSearchFilterDB.Columns.IS_SELECTED} = 0 WHERE " +
+        "${LabelOfSearchFilterDB.Columns.FILTER_NAME} LIKE '%' || :filterName || '%'"
+    )
+    suspend fun resetLabels(filterName: String)
 
-    @Update(onConflict = OnConflictStrategy.ABORT)
-    suspend fun updateNutrients(nutrients: List<NutrientOfSearchFilterEntity>)
+    @Query(
+        "UPDATE ${LabelOfSearchFilterDB.TABLE_NAME} SET " +
+        "${LabelOfSearchFilterDB.Columns.IS_SELECTED} = 0 WHERE " +
+        "${LabelOfSearchFilterDB.Columns.ID} IN (SELECT " +
+        "${LabelOfSearchFilterDB.TABLE_NAME}.${LabelOfSearchFilterDB.Columns.ID} FROM " +
+        "${LabelOfSearchFilterDB.TABLE_NAME} INNER JOIN ${LabelRecipeAttrDB.TABLE_NAME} ON " +
+        "${LabelOfSearchFilterDB.Columns.INFO_ID} = " +
+        "${LabelRecipeAttrDB.TABLE_NAME}.${LabelRecipeAttrDB.Columns.ID} WHERE " +
+        "${LabelOfSearchFilterDB.Columns.FILTER_NAME} LIKE '%' || :filterName || '%' AND " +
+        "${LabelOfSearchFilterDB.Columns.IS_SELECTED} == 1 AND " +
+        "${LabelRecipeAttrDB.Columns.CATEGORY_ID} == :categoryID)"
+    )
+    suspend fun resetCategory(filterName: String, categoryID: Int)
+
+    @Query(
+        "UPDATE ${NutrientOfSearchFilterDB.TABLE_NAME} SET " +
+        "${NutrientOfSearchFilterDB.Columns.MIN_VALUE} = NULL, " +
+        "${NutrientOfSearchFilterDB.Columns.MAX_VALUE} = NULL WHERE " +
+        "${NutrientOfSearchFilterDB.Columns.FILTER_NAME} LIKE '%' || :filterName || '%'"
+    )
+    suspend fun resetNutrients(filterName: String)
 
 
     @Transaction

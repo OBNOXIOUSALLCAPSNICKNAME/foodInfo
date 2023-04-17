@@ -1,9 +1,9 @@
 package com.example.foodinfo.domain.mapper
 
+import com.example.foodinfo.domain.model.*
 import com.example.foodinfo.local.model.*
 import com.example.foodinfo.remote.model.NutrientOfRecipeNetwork
 import com.example.foodinfo.remote.model.NutrientRecipeAttrNetwork
-import com.example.foodinfo.domain.model.*
 import com.example.foodinfo.utils.extensions.toPercent
 import com.example.foodinfo.utils.glide.svg.SVGModel
 import kotlin.math.max
@@ -102,16 +102,6 @@ fun NutrientOfSearchFilterEditModel.toDB(filterName: String): NutrientOfSearchFi
         filterName = filterName,
         minValue = this.minValue,
         maxValue = this.maxValue
-    )
-}
-
-fun NutrientOfSearchFilterExtendedDB.toDefault(): NutrientOfSearchFilterDB {
-    return NutrientOfSearchFilterDB(
-        ID = this.ID,
-        filterName = this.filterName,
-        infoID = this.infoID,
-        minValue = null,
-        maxValue = null
     )
 }
 

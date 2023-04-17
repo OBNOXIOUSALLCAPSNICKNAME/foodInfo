@@ -1,5 +1,8 @@
 package com.example.foodinfo.domain.state
 
+import android.util.Log
+import com.example.foodinfo.R
+import com.example.foodinfo.utils.ErrorCodes
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.transform
@@ -25,7 +28,7 @@ sealed class State<T>(
 
     /**
      * Means that data was loaded successfully. This state is final meaning that there will be no subsequent
-     * state emissions unless data storage manipulations is expected outside of the flow that
+     * state emissions unless data source updates is expected outside of the flow that
      * provided this state.
      */
     class Success<T>(data: T) : State<T>(data)
@@ -34,7 +37,7 @@ sealed class State<T>(
      * Means that an error occurred while trying to load data. Contains error itself,
      * short message that describes error and error code (e.g. **4xx** for client errors, **5xx** for server
      * and **8xx** for app-specific operations such as data mapping). This state is final meaning that there
-     * will be no subsequent emissions of states unless data storage manipulations is expected outside of the
+     * will be no subsequent emissions of states unless data source updates is expected outside of the
      * flow that provided this state.
      */
     class Failure<T>(messageID: Int, throwable: Throwable, errorCode: Int) : State<T>(
@@ -43,6 +46,7 @@ sealed class State<T>(
 
 
     companion object Utils {
+        const val LOG_TAG = "state"
 
         /**
          * @param useLoadingData If true - return flow where all subsequent repetitions of the same value
@@ -56,14 +60,32 @@ sealed class State<T>(
             }
         }
 
-        inline fun <T, R> Flow<State<T>>.transformData(
-            crossinline transform: suspend (T) -> R
-        ): Flow<State<R>> = this.transform { state ->
+        /**
+         * Transforms flow of **State`<inT>`** into flow of **State`<outT>`** without losing State type,
+         * applying provided [transform] if [data] **!= null**.
+         *
+         * * If an error occurs inside [transform] for [Success], [Failure] will be emitted into result flow
+         * with [ErrorCodes.STATE_TRANSFORM_FAIL] error code.
+         *
+         * * If an error occurs inside [transform] for [Loading], the error will logged with [LOG_TAG] and
+         * nothing will be emitted in order not to violate the contract "[Failure] is the final state".
+         */
+        inline fun <inT, outT> Flow<State<inT>>.transformData(
+            crossinline transform: suspend (inT) -> outT
+        ): Flow<State<outT>> = this.transform { state ->
             when (state) {
                 is Initial -> emit(Initial())
                 is Failure -> emit(Failure(state.messageID!!, state.throwable!!, state.errorCode!!))
-                is Loading -> emit(Loading(transform(state.data!!)))
-                is Success -> emit(Success(transform(state.data!!)))
+                is Loading -> try {
+                    emit(Loading(transform(state.data!!)))
+                } catch (e: Exception) {
+                    Log.d(LOG_TAG, "An error occurred during State transformation.", e)
+                }
+                is Success -> try {
+                    emit(Success(transform(state.data!!)))
+                } catch (e: Exception) {
+                    emit(Failure(R.string.error_corrupted_data, e, ErrorCodes.STATE_TRANSFORM_FAIL))
+                }
             }
         }
 

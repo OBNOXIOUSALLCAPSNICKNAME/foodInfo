@@ -1,8 +1,8 @@
 package com.example.foodinfo.domain.mapper
 
+import com.example.foodinfo.domain.model.*
 import com.example.foodinfo.local.model.*
 import com.example.foodinfo.remote.model.LabelRecipeAttrNetwork
-import com.example.foodinfo.domain.model.*
 import com.example.foodinfo.utils.glide.svg.SVGModel
 
 
@@ -69,15 +69,6 @@ fun LabelOfSearchFilterEditModel.toDB(filterName: String): LabelOfSearchFilterDB
         filterName = filterName,
         infoID = this.infoID,
         isSelected = this.isSelected
-    )
-}
-
-fun LabelOfSearchFilterExtendedDB.toDefault(): LabelOfSearchFilterDB {
-    return LabelOfSearchFilterDB(
-        ID = this.ID,
-        filterName = this.filterName,
-        infoID = this.infoID,
-        isSelected = false
     )
 }
 

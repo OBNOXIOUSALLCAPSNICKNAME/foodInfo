@@ -58,30 +58,6 @@ class SearchFilterRoomSource @Inject constructor(
         searchFilterDAO.updateNutrient(id, minValue, maxValue)
     }
 
-    override suspend fun updateFilter(
-        basics: List<BasicOfSearchFilterDB>,
-        labels: List<LabelOfSearchFilterDB>,
-        nutrients: List<NutrientOfSearchFilterDB>
-    ) {
-        searchFilterDAO.updateFilter(
-            basics = basics.map(BasicOfSearchFilterEntity::invoke),
-            labels = labels.map(LabelOfSearchFilterEntity::invoke),
-            nutrients = nutrients.map(NutrientOfSearchFilterEntity::invoke)
-        )
-    }
-
-    override suspend fun updateBasics(basics: List<BasicOfSearchFilterDB>) {
-        searchFilterDAO.updateBasics(basics.map(BasicOfSearchFilterEntity::invoke))
-    }
-
-    override suspend fun updateLabels(labels: List<LabelOfSearchFilterDB>) {
-        searchFilterDAO.updateLabels(labels.map(LabelOfSearchFilterEntity::invoke))
-    }
-
-    override suspend fun updateNutrients(nutrients: List<NutrientOfSearchFilterDB>) {
-        searchFilterDAO.updateNutrients(nutrients.map(NutrientOfSearchFilterEntity::invoke))
-    }
-
     override suspend fun invalidateFilter(
         filterName: String,
         basics: List<BasicOfSearchFilterDB>?,
@@ -110,5 +86,18 @@ class SearchFilterRoomSource @Inject constructor(
 
     override suspend fun initializeEmptyFilter(filterName: String) {
         searchFilterDAO.insertFilter(SearchFilterEntity(filterName))
+    }
+
+
+    override suspend fun resetCategory(filterName: String, categoryID: Int) {
+        searchFilterDAO.resetCategory(filterName, categoryID)
+    }
+
+    override suspend fun resetNutrients(filterName: String) {
+        searchFilterDAO.resetNutrients(filterName)
+    }
+
+    override suspend fun resetFilter(filterName: String) {
+        searchFilterDAO.resetFilter(filterName)
     }
 }

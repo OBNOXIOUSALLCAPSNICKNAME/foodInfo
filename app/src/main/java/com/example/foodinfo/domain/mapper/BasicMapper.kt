@@ -1,11 +1,11 @@
 package com.example.foodinfo.domain.mapper
 
+import com.example.foodinfo.domain.model.BasicOfFilterPresetModel
+import com.example.foodinfo.domain.model.BasicOfSearchFilterEditModel
 import com.example.foodinfo.local.model.BasicOfSearchFilterDB
 import com.example.foodinfo.local.model.BasicOfSearchFilterExtendedDB
 import com.example.foodinfo.local.model.BasicRecipeAttrDB
 import com.example.foodinfo.remote.model.BasicRecipeAttrNetwork
-import com.example.foodinfo.domain.model.BasicOfFilterPresetModel
-import com.example.foodinfo.domain.model.BasicOfSearchFilterEditModel
 import kotlin.math.max
 import kotlin.math.min
 
@@ -66,16 +66,6 @@ fun BasicOfSearchFilterEditModel.toDB(filterName: String): BasicOfSearchFilterDB
         filterName = filterName,
         minValue = this.minValue,
         maxValue = this.maxValue
-    )
-}
-
-fun BasicOfSearchFilterExtendedDB.toDefault(): BasicOfSearchFilterDB {
-    return BasicOfSearchFilterDB(
-        ID = this.ID,
-        filterName = this.filterName,
-        infoID = this.infoID,
-        minValue = null,
-        maxValue = null
     )
 }
 
