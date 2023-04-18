@@ -1,10 +1,10 @@
 package com.example.foodinfo.di.module
 
 import com.example.foodinfo.BuildConfig
-import com.example.foodinfo.remote.retrofit.GitHubTypeAdapterFactory
-import com.example.foodinfo.remote.retrofit.api.RecipeAPI
-import com.example.foodinfo.remote.retrofit.api.RecipeAttrAPI
-import com.example.foodinfo.remote.retrofit.response_adapter.ResponseAdapterFactory
+import com.example.foodinfo.data.remote.retrofit.GitHubTypeAdapterFactory
+import com.example.foodinfo.data.remote.retrofit.api.RecipeAPI
+import com.example.foodinfo.data.remote.retrofit.api.RecipeAttrAPI
+import com.example.foodinfo.data.remote.retrofit.response_adapter.ResponseAdapterFactory
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import dagger.Module
