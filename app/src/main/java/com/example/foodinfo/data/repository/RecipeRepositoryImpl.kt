@@ -5,17 +5,14 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.example.foodinfo.data.local.data_source.RecipeLocalSource
+import com.example.foodinfo.data.local.model.IngredientOfRecipeDB
+import com.example.foodinfo.data.local.model.NutrientOfRecipeExtendedDB
+import com.example.foodinfo.data.local.model.RecipeDB
+import com.example.foodinfo.data.local.model.RecipeExtendedDB
 import com.example.foodinfo.data.mapper.*
 import com.example.foodinfo.data.remote.data_source.RecipeRemoteSource
 import com.example.foodinfo.domain.State
 import com.example.foodinfo.domain.model.*
-import com.example.foodinfo.domain.model.IngredientOfRecipe
-import com.example.foodinfo.domain.model.NutrientOfRecipe
-import com.example.foodinfo.domain.model.Recipe
-import com.example.foodinfo.domain.model.RecipeExtended
-import com.example.foodinfo.domain.model.NutrientRecipeAttr
-import com.example.foodinfo.domain.model.RecipeAttrs
-import com.example.foodinfo.domain.model.SearchFilterPreset
 import com.example.foodinfo.domain.repository.RecipeRepository
 import com.example.foodinfo.utils.*
 import com.example.foodinfo.utils.edamam.FieldSet
@@ -35,7 +32,7 @@ class RecipeRepositoryImpl @Inject constructor(
             pagingSourceFactory = {
                 MapPagingSource(
                     originalSource = recipeLocal.getFavorite(),
-                    mapperDelegate = { it.toModel() }
+                    mapperDelegate = RecipeDB::toModel
                 )
             }
         ).flow
@@ -73,8 +70,10 @@ class RecipeRepositoryImpl @Inject constructor(
                         recipeRemote.getNextPage(pageURL)
                     }
                 },
-                saveRemoteDelegate = { recipes -> recipeLocal.addRecipes(recipes) },
-                mapToLocalDelegate = { hits -> hits.map { it.recipe.toDBSave(recipeAttrs) } }
+                saveRemoteDelegate = recipeLocal::addRecipes,
+                mapToLocalDelegate = { recipeHits ->
+                    recipeHits.map { recipeHit -> recipeHit.recipe.toDBSave(recipeAttrs) }
+                }
             ),
             pagingSourceFactory = {
                 MapPagingSource(
@@ -83,7 +82,7 @@ class RecipeRepositoryImpl @Inject constructor(
                         inputText = inputText,
                         isOnline = isOnline
                     ),
-                    mapperDelegate = { it.toModel() }
+                    mapperDelegate = RecipeDB::toModel
                 )
             }
         ).flow
@@ -99,9 +98,9 @@ class RecipeRepositoryImpl @Inject constructor(
                 DataSource.Remote(recipeRemote.getRecipe(apiCredentials, FieldSet.FULL, recipeID))
             },
             localDataProvider = { DataSource.LocalFlow(recipeLocal.getByIdExtended(recipeID)) },
-            saveRemoteDelegate = { recipeLocal.addRecipe(it) },
-            mapToLocalDelegate = { it.recipe.toDBSave(attrs) },
-            mapToModelDelegate = { it.toModelExtended() }
+            saveRemoteDelegate = recipeLocal::addRecipe,
+            mapToLocalDelegate = { recipeHit -> recipeHit.recipe.toDBSave(attrs) },
+            mapToModelDelegate = RecipeExtendedDB::toModelExtended
         )
     }
 
@@ -115,9 +114,9 @@ class RecipeRepositoryImpl @Inject constructor(
                 DataSource.Remote(recipeRemote.getRecipe(apiCredentials, FieldSet.NUTRIENTS, recipeID))
             },
             localDataProvider = { DataSource.LocalFlow(recipeLocal.getNutrients(recipeID)) },
-            saveRemoteDelegate = { recipeLocal.addNutrients(it) },
-            mapToLocalDelegate = { it.recipe.nutrients!!.toDB(recipeID, attrs) },
-            mapToModelDelegate = { it.map { nutrient -> nutrient.toModel() } }
+            saveRemoteDelegate = recipeLocal::addNutrients,
+            mapToLocalDelegate = { recipeHit -> recipeHit.recipe.nutrients!!.toDB(recipeID, attrs) },
+            mapToModelDelegate = { nutrients -> nutrients.map(NutrientOfRecipeExtendedDB::toModel) }
         )
     }
 
@@ -130,9 +129,11 @@ class RecipeRepositoryImpl @Inject constructor(
                 DataSource.Remote(recipeRemote.getRecipe(apiCredentials, FieldSet.INGREDIENTS, recipeID))
             },
             localDataProvider = { DataSource.LocalFlow(recipeLocal.getIngredients(recipeID)) },
-            saveRemoteDelegate = { recipeLocal.addIngredients(it) },
-            mapToLocalDelegate = { it.recipe.ingredients!!.map { ingredient -> ingredient.toDB(recipeID) } },
-            mapToModelDelegate = { it.map { ingredient -> ingredient.toModel() } }
+            saveRemoteDelegate = recipeLocal::addIngredients,
+            mapToLocalDelegate = { recipeHit ->
+                recipeHit.recipe.ingredients!!.map { ingredient -> ingredient.toDB(recipeID) }
+            },
+            mapToModelDelegate = { ingredients -> ingredients.map(IngredientOfRecipeDB::toModel) }
         )
     }
 

@@ -1,14 +1,10 @@
 package com.example.foodinfo.data.mapper
 
-import com.example.foodinfo.data.local.model.RecipeAttrsDB
-import com.example.foodinfo.data.local.model.RecipeDB
-import com.example.foodinfo.data.local.model.RecipeExtendedDB
-import com.example.foodinfo.data.local.model.RecipeToSaveDB
-import com.example.foodinfo.data.remote.model.RecipeAttrsNetwork
-import com.example.foodinfo.data.remote.model.RecipeNetwork
+import com.example.foodinfo.data.local.model.*
+import com.example.foodinfo.data.remote.model.*
 import com.example.foodinfo.domain.model.Recipe
-import com.example.foodinfo.domain.model.RecipeExtended
 import com.example.foodinfo.domain.model.RecipeAttrs
+import com.example.foodinfo.domain.model.RecipeExtended
 
 
 fun RecipeDB.toModel(): Recipe {
@@ -34,29 +30,29 @@ fun RecipeExtendedDB.toModelExtended(): RecipeExtended {
         isFavorite = this.isFavorite,
         ingredientsPreviews = this.ingredients.map { it.previewURL },
         categories = this.labels.toRecipeCategories(),
-        energy = this.nutrients.findLast { it.infoID == 1 }!!.toModel(),
-        protein = this.nutrients.findLast { it.infoID == 12 }!!.toModel(),
-        carb = this.nutrients.findLast { it.infoID == 7 }!!.toModel(),
-        fat = this.nutrients.findLast { it.infoID == 2 }!!.toModel()
+        energy = this.nutrients.find { it.infoID == 1 }!!.toModel(),
+        protein = this.nutrients.find { it.infoID == 12 }!!.toModel(),
+        carb = this.nutrients.find { it.infoID == 7 }!!.toModel(),
+        fat = this.nutrients.find { it.infoID == 2 }!!.toModel()
     )
 }
 
 
 fun RecipeAttrsNetwork.toDB(): RecipeAttrsDB {
     return RecipeAttrsDB(
-        basics = this.basics.map { it.toDB() },
-        labels = this.labels.map { it.toDB() },
-        categories = this.categories.map { it.toDB() },
-        nutrients = this.nutrients.map { it.toDB() }
+        basics = this.basics.map(BasicRecipeAttrNetwork::toDB),
+        labels = this.labels.map(LabelRecipeAttrNetwork::toDB),
+        categories = this.categories.map(CategoryRecipeAttrNetwork::toDB),
+        nutrients = this.nutrients.map(NutrientRecipeAttrNetwork::toDB)
     )
 }
 
 fun RecipeAttrsDB.toModel(): RecipeAttrs {
     return RecipeAttrs(
-        basics = this.basics.map { it.toModel() },
-        labels = this.labels.map { it.toModel() },
-        nutrients = this.nutrients.map { it.toModel() },
-        categories = this.categories.map { it.toModel() }
+        basics = this.basics.map(BasicRecipeAttrDB::toModel),
+        labels = this.labels.map(LabelRecipeAttrDB::toModel),
+        nutrients = this.nutrients.map(NutrientRecipeAttrDB::toModel),
+        categories = this.categories.map(CategoryRecipeAttrDB::toModel),
     )
 }
 

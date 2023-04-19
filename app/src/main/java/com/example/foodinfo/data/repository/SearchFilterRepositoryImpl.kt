@@ -85,7 +85,7 @@ class SearchFilterRepositoryImpl @Inject constructor(
             },
             saveRemoteDelegate = { },
             mapToLocalDelegate = { },
-            mapToModelDelegate = { it.toModel() }
+            mapToModelDelegate = List<NutrientOfSearchFilterExtendedDB>::toModel
         )
     }
 
@@ -96,7 +96,7 @@ class SearchFilterRepositoryImpl @Inject constructor(
             localDataProvider = { DataSource.LocalFlow(observeFilter(attrs)) },
             saveRemoteDelegate = { },
             mapToLocalDelegate = { },
-            mapToModelDelegate = { it.toModel() }
+            mapToModelDelegate = SearchFilterExtendedDB::toModel
         )
     }
 
@@ -106,7 +106,7 @@ class SearchFilterRepositoryImpl @Inject constructor(
             localDataProvider = { DataSource.LocalFlow(observeFilter(attrs)) },
             saveRemoteDelegate = { },
             mapToLocalDelegate = { },
-            mapToModelDelegate = { it.toModelPreset() }
+            mapToModelDelegate = SearchFilterExtendedDB::toModelPreset
         )
     }
 
@@ -147,7 +147,7 @@ class SearchFilterRepositoryImpl @Inject constructor(
         val basicsNew = attrs.filter { it.tag != null }.map { basicAttr ->
             basicsMap[basicAttr.ID]?.toDBLatest() ?: basicAttr.toFilter(prefUtils.searchFilter)
         }
-        return compare(basics.map { it.toDB() }, basicsNew)
+        return compare(basics.map(BasicOfSearchFilterExtendedDB::toDB), basicsNew)
     }
 
     private fun verifyLabels(
@@ -158,7 +158,7 @@ class SearchFilterRepositoryImpl @Inject constructor(
         val labelsNew = attrs.map { labelAttr ->
             labelsMap[labelAttr.ID]?.toDB() ?: labelAttr.toFilter(prefUtils.searchFilter)
         }
-        return compare(labels.map { it.toDB() }, labelsNew)
+        return compare(labels.map(LabelOfSearchFilterExtendedDB::toDB), labelsNew)
     }
 
     private fun verifyNutrients(
@@ -169,7 +169,7 @@ class SearchFilterRepositoryImpl @Inject constructor(
         val nutrientsNew = attrs.map { nutrientAttr ->
             nutrientsMap[nutrientAttr.ID]?.toDBLatest() ?: nutrientAttr.toFilter(prefUtils.searchFilter)
         }
-        return compare(nutrients.map { it.toDB() }, nutrientsNew)
+        return compare(nutrients.map(NutrientOfSearchFilterExtendedDB::toDB), nutrientsNew)
     }
 
     private fun <T> compare(old: List<T>, new: List<T>): List<T>? {

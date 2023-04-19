@@ -5,9 +5,9 @@ import com.example.foodinfo.data.local.model.LabelOfRecipeExtendedDB
 import com.example.foodinfo.data.local.model.LabelOfSearchFilterExtendedDB
 import com.example.foodinfo.data.remote.model.CategoryRecipeAttrNetwork
 import com.example.foodinfo.domain.model.CategoryOfRecipe
-import com.example.foodinfo.domain.model.CategoryRecipeAttr
 import com.example.foodinfo.domain.model.CategoryOfSearchFilter
 import com.example.foodinfo.domain.model.CategoryOfSearchFilterPreset
+import com.example.foodinfo.domain.model.CategoryRecipeAttr
 
 
 fun List<LabelOfRecipeExtendedDB>.toRecipeCategories(): List<CategoryOfRecipe> {
@@ -24,7 +24,7 @@ fun List<LabelOfSearchFilterExtendedDB>.toModel(categoryID: Int): CategoryOfSear
         return CategoryOfSearchFilter(
             tag = labels.first().attrInfo!!.categoryInfo!!.tag,
             name = labels.first().attrInfo!!.categoryInfo!!.name,
-            labels = labels.map { it.toModel() }
+            labels = labels.map(LabelOfSearchFilterExtendedDB::toModel)
         )
     }
 }
@@ -34,7 +34,7 @@ fun List<LabelOfSearchFilterExtendedDB>.toModel(): List<CategoryOfSearchFilter> 
         CategoryOfSearchFilter(
             tag = labels.first().attrInfo!!.categoryInfo!!.tag,
             name = labels.first().attrInfo!!.categoryInfo!!.name,
-            labels = labels.map { it.toModel() }
+            labels = labels.map(LabelOfSearchFilterExtendedDB::toModel)
         )
     }
 }
@@ -43,7 +43,7 @@ fun List<LabelOfSearchFilterExtendedDB>.toModelPreset(): List<CategoryOfSearchFi
     return this.filter { it.isSelected }.groupBy { it.attrInfo!!.categoryInfo!!.name }.values.map { labels ->
         CategoryOfSearchFilterPreset(
             tag = labels.first().attrInfo!!.categoryInfo!!.tag,
-            labels = labels.map { it.toModelPreset() }
+            labels = labels.map(LabelOfSearchFilterExtendedDB::toModelPreset)
         )
     }
 }

@@ -1,11 +1,15 @@
 package com.example.foodinfo.data.repository
 
 import com.example.foodinfo.data.local.data_source.RecipeAttrLocalSource
+import com.example.foodinfo.data.local.model.CategoryRecipeAttrDB
+import com.example.foodinfo.data.local.model.LabelRecipeAttrDB
+import com.example.foodinfo.data.local.model.NutrientRecipeAttrDB
 import com.example.foodinfo.data.local.model.RecipeAttrsDB
 import com.example.foodinfo.data.mapper.toDB
 import com.example.foodinfo.data.mapper.toModel
 import com.example.foodinfo.data.mapper.toModelHint
 import com.example.foodinfo.data.remote.data_source.RecipeAttrRemoteSource
+import com.example.foodinfo.data.remote.model.RecipeAttrsNetwork
 import com.example.foodinfo.domain.State
 import com.example.foodinfo.domain.model.*
 import com.example.foodinfo.domain.repository.RecipeAttrRepository
@@ -41,9 +45,9 @@ class RecipeAttrRepositoryImpl @Inject constructor(
                     )
                 )
             },
-            saveRemoteDelegate = { recipeAttrLocal.addRecipeAttrs(it) },
-            mapToLocalDelegate = { it.toDB() },
-            mapToModelDelegate = { it.toModel() }
+            saveRemoteDelegate = recipeAttrLocal::addRecipeAttrs,
+            mapToLocalDelegate = RecipeAttrsNetwork::toDB,
+            mapToModelDelegate = RecipeAttrsDB::toModel
         )
     }
 
@@ -51,9 +55,9 @@ class RecipeAttrRepositoryImpl @Inject constructor(
         return getData(
             remoteDataProvider = { DataSource.Remote(recipeAttrRemote.getRecipeAttrs(apiCredentials)) },
             localDataProvider = { DataSource.LocalFlow(recipeAttrLocal.observeLabels()) },
-            saveRemoteDelegate = { recipeAttrLocal.addRecipeAttrs(it) },
-            mapToLocalDelegate = { it.toDB() },
-            mapToModelDelegate = { it.map { label -> label.toModel() } }
+            saveRemoteDelegate = recipeAttrLocal::addRecipeAttrs,
+            mapToLocalDelegate = RecipeAttrsNetwork::toDB,
+            mapToModelDelegate = { labels -> labels.map(LabelRecipeAttrDB::toModel) }
         )
     }
 
@@ -61,9 +65,9 @@ class RecipeAttrRepositoryImpl @Inject constructor(
         return getData(
             remoteDataProvider = { DataSource.Remote(recipeAttrRemote.getRecipeAttrs(apiCredentials)) },
             localDataProvider = { DataSource.LocalFlow(recipeAttrLocal.observeNutrients()) },
-            saveRemoteDelegate = { recipeAttrLocal.addRecipeAttrs(it) },
-            mapToLocalDelegate = { it.toDB() },
-            mapToModelDelegate = { it.map { nutrient -> nutrient.toModel() } }
+            saveRemoteDelegate = recipeAttrLocal::addRecipeAttrs,
+            mapToLocalDelegate = RecipeAttrsNetwork::toDB,
+            mapToModelDelegate = { nutrients -> nutrients.map(NutrientRecipeAttrDB::toModel) }
         )
     }
 
@@ -71,9 +75,9 @@ class RecipeAttrRepositoryImpl @Inject constructor(
         return getData(
             remoteDataProvider = { DataSource.Remote(recipeAttrRemote.getRecipeAttrs(apiCredentials)) },
             localDataProvider = { DataSource.LocalFlow(recipeAttrLocal.observeCategories()) },
-            saveRemoteDelegate = { recipeAttrLocal.addRecipeAttrs(it) },
-            mapToLocalDelegate = { it.toDB() },
-            mapToModelDelegate = { it.map { label -> label.toModel() } }
+            saveRemoteDelegate = recipeAttrLocal::addRecipeAttrs,
+            mapToLocalDelegate = RecipeAttrsNetwork::toDB,
+            mapToModelDelegate = { categories -> categories.map(CategoryRecipeAttrDB::toModel) }
         )
     }
 
@@ -84,9 +88,9 @@ class RecipeAttrRepositoryImpl @Inject constructor(
         return getData(
             remoteDataProvider = { DataSource.Remote(recipeAttrRemote.getRecipeAttrs(apiCredentials)) },
             localDataProvider = { DataSource.LocalFlow(recipeAttrLocal.observeCategoryLabels(categoryID)) },
-            saveRemoteDelegate = { recipeAttrLocal.addRecipeAttrs(it) },
-            mapToLocalDelegate = { it.toDB() },
-            mapToModelDelegate = { it.map { label -> label.toModel() } }
+            saveRemoteDelegate = recipeAttrLocal::addRecipeAttrs,
+            mapToLocalDelegate = RecipeAttrsNetwork::toDB,
+            mapToModelDelegate = { labels -> labels.map(LabelRecipeAttrDB::toModel) }
         )
     }
 }

@@ -88,8 +88,8 @@ sealed class State<T>(
         }
 
         /**
-         * Immediately emits [State.Initial] and then re-emits everything from [provider]'s flow into result flow
-         * using [emitAll]. [State.Initial] from [provider]'s flow will be filtered out to make sure that UI
+         * Immediately emits [Initial] and then re-emits everything from [provider]'s flow into result flow
+         * using [emitAll]. [Initial] from [provider]'s flow will be filtered out to make sure that UI
          * will receive it only once.
          *
          * This function is useful when it's take some time for [provider] to produce flow.

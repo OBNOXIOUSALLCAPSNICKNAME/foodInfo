@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.flow
 abstract class BaseRepository {
 
     /**
-     * Wrapper interface that helps [BaseRepository.getData] to properly handle different data sources
+     * Wrapper interface that helps [getData] to properly handle different data sources
      */
     internal sealed interface DataSource<T> {
         data class Remote<T : Any>(val response: ApiResponse<T>) : DataSource<T>
