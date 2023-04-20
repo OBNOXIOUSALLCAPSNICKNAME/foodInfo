@@ -10,11 +10,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 
 
-class SelectManager<Model : Any, Key>(
+class SelectManager<Key, Model : Selectable<Key>>(
     scope: CoroutineScope,
     dataSource: Flow<PagingData<Model>>,
     totalCount: Flow<Int>,
-    private val getItemKey: (Model) -> Key,
     private val getAllKeys: suspend () -> Set<Key>
 ) {
 
@@ -31,7 +30,7 @@ class SelectManager<Model : Any, Key>(
 
     val modeState = combine(totalCount, selectedCount, editModeState, ::toModeState)
 
-    val data = combine(dataSource.cachedIn(scope), selectedCount, ::toSelectable)
+    val data = combine(dataSource.cachedIn(scope), selectedCount, ::setSelected)
         .stateIn(scope, SharingStarted.Lazily, PagingData.empty())
 
     var isSelectMode: Boolean
@@ -45,10 +44,10 @@ class SelectManager<Model : Any, Key>(
 
 
     fun toggleItem(item: Model) {
-        if (getItemKey(item) in selectedItems) {
-            selectedItems.remove(getItemKey(item))
+        if (item.ID in selectedItems) {
+            selectedItems.remove(item.ID)
         } else {
-            selectedItems.add(getItemKey(item))
+            selectedItems.add(item.ID)
         }
         selectedCount.value = selectedItems.size
     }
@@ -76,12 +75,10 @@ class SelectManager<Model : Any, Key>(
     }
 
     @Suppress("UNUSED_PARAMETER")
-    private fun toSelectable(pagingData: PagingData<Model>, count: Int): PagingData<Selectable<Model>> {
+    private fun setSelected(pagingData: PagingData<Model>, count: Int): PagingData<Model> {
         return pagingData.map { item ->
-            Selectable(
-                model = item,
-                isSelected = getItemKey(item) in selectedItems
-            )
+            item.isSelected = item.ID in selectedItems
+            item
         }
     }
 

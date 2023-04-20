@@ -1,7 +1,7 @@
 package com.example.foodinfo.utils.view_model
 
 
-data class Selectable<T>(
-    val model: T,
+interface Selectable<Key> {
+    val ID: Key
     var isSelected: Boolean
-)
+}
