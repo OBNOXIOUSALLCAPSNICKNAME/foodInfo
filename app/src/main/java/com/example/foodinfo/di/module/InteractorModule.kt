@@ -1,5 +1,6 @@
 package com.example.foodinfo.di.module
 
+import android.content.Context
 import com.example.foodinfo.domain.interactor.RecipeInteractor
 import com.example.foodinfo.domain.interactor.RecipeMetadataInteractor
 import com.example.foodinfo.domain.interactor.SearchFilterInteractor
@@ -50,11 +51,13 @@ class InteractorModule {
     @Singleton
     fun provideSearchFilterInteractor(
         searchFilterRepository: SearchFilterRepository,
-        recipeMetadataInteractor: RecipeMetadataInteractor
+        recipeMetadataInteractor: RecipeMetadataInteractor,
+        context: Context,
     ): SearchFilterInteractor {
         return SearchFilterInteractor(
             searchFilterRepository,
-            recipeMetadataInteractor
+            recipeMetadataInteractor,
+            context
         )
     }
 }

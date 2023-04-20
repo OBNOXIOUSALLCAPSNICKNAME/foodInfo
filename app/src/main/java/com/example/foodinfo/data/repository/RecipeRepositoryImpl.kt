@@ -2,7 +2,6 @@ package com.example.foodinfo.data.repository
 
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
-import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.example.foodinfo.data.local.data_source.RecipeLocalSource
 import com.example.foodinfo.data.local.model.IngredientOfRecipeDB
@@ -48,21 +47,17 @@ class RecipeRepositoryImpl @Inject constructor(
     @OptIn(ExperimentalPagingApi::class)
     override fun getByFilter(
         apiCredentials: EdamamCredentials,
-        recipeMetadata: RecipeMetadata,
-        filterPreset: SearchFilterPreset,
-        pagingConfig: PagingConfig,
-        inputText: String,
-        isOnline: Boolean
+        pagingHelper: PagingHelper
     ): Flow<PagingData<Recipe>> {
         return Pager(
-            config = pagingConfig,
+            config = pagingHelper.pagingConfig,
             remoteMediator = EdamamRemoteMediator(
                 remoteDataProvider = { pageURL ->
                     if (pageURL == "") {
                         recipeRemote.getInitPage(
                             apiCredentials = apiCredentials,
-                            filterPreset = filterPreset,
-                            inputText = inputText,
+                            filterPreset = pagingHelper.filterPreset,
+                            inputText = pagingHelper.inputText,
                         )
                     } else {
                         recipeRemote.getNextPage(pageURL)
@@ -70,15 +65,15 @@ class RecipeRepositoryImpl @Inject constructor(
                 },
                 saveRemoteDelegate = recipeLocal::addRecipes,
                 mapToLocalDelegate = { recipeHits ->
-                    recipeHits.map { recipeHit -> recipeHit.recipe.toDBSave(recipeMetadata) }
+                    recipeHits.map { recipeHit -> recipeHit.recipe.toDBSave(pagingHelper.recipeMetadata) }
                 }
             ),
             pagingSourceFactory = {
                 MapPagingSource(
                     originalSource = recipeLocal.getByFilter(
-                        filterPreset = filterPreset,
-                        inputText = inputText,
-                        isOnline = isOnline
+                        filterPreset = pagingHelper.filterPreset,
+                        inputText = pagingHelper.inputText,
+                        isOnline = pagingHelper.isOnline
                     ),
                     mapperDelegate = RecipeDB::toModel
                 )

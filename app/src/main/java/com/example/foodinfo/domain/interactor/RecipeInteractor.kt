@@ -1,6 +1,5 @@
 package com.example.foodinfo.domain.interactor
 
-import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.example.foodinfo.domain.State
 import com.example.foodinfo.domain.State.Utils.suspendFlowProvider
@@ -56,21 +55,11 @@ class RecipeInteractor @Inject constructor(
         }
     }
 
-    fun getByFilter(
-        recipeMetadata: RecipeMetadata,
-        filterPreset: SearchFilterPreset,
-        pagingConfig: PagingConfig,
-        inputText: String = "",
-        isOnline: Boolean
-    ): Flow<PagingData<Recipe>> = flow {
+    fun getByFilter(pagingHelper: PagingHelper): Flow<PagingData<Recipe>> = flow {
         emitAll(
             recipeRepository.getByFilter(
-                apiCredentialsRepository.getEdamam(prefUtils.edamamCredentials),
-                recipeMetadata,
-                filterPreset,
-                pagingConfig,
-                inputText,
-                isOnline
+                apiCredentials = apiCredentialsRepository.getEdamam(prefUtils.edamamCredentials),
+                pagingHelper = pagingHelper
             )
         )
     }

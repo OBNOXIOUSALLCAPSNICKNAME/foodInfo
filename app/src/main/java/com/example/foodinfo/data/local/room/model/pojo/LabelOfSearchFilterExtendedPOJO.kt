@@ -3,9 +3,9 @@ package com.example.foodinfo.data.local.room.model.pojo
 import androidx.room.ColumnInfo
 import androidx.room.Relation
 import com.example.foodinfo.data.local.model.LabelOfRecipeDB
+import com.example.foodinfo.data.local.model.LabelOfRecipeMetadataDB
 import com.example.foodinfo.data.local.model.LabelOfSearchFilterDB
 import com.example.foodinfo.data.local.model.LabelOfSearchFilterExtendedDB
-import com.example.foodinfo.data.local.model.LabelOfRecipeMetadataDB
 import com.example.foodinfo.data.local.room.model.entity.LabelOfRecipeMetadataEntity
 
 

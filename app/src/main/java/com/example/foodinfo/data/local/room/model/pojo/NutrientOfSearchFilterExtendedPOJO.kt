@@ -2,9 +2,9 @@ package com.example.foodinfo.data.local.room.model.pojo
 
 import androidx.room.ColumnInfo
 import androidx.room.Relation
+import com.example.foodinfo.data.local.model.NutrientOfRecipeMetadataDB
 import com.example.foodinfo.data.local.model.NutrientOfSearchFilterDB
 import com.example.foodinfo.data.local.model.NutrientOfSearchFilterExtendedDB
-import com.example.foodinfo.data.local.model.NutrientOfRecipeMetadataDB
 import com.example.foodinfo.data.local.room.model.entity.NutrientOfRecipeMetadataEntity
 
 

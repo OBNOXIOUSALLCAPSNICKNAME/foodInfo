@@ -1,6 +1,5 @@
 package com.example.foodinfo.domain.repository
 
-import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.example.foodinfo.domain.State
 import com.example.foodinfo.domain.model.*
@@ -17,11 +16,7 @@ interface RecipeRepository {
 
     fun getByFilter(
         apiCredentials: EdamamCredentials,
-        recipeMetadata: RecipeMetadata,
-        filterPreset: SearchFilterPreset,
-        pagingConfig: PagingConfig,
-        inputText: String = "",
-        isOnline: Boolean
+        pagingHelper: PagingHelper
     ): Flow<PagingData<Recipe>>
 
     fun getByIdExtended(
