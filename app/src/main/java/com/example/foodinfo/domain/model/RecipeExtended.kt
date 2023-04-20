@@ -1,5 +1,7 @@
 package com.example.foodinfo.domain.model
 
+import com.example.foodinfo.utils.edamam.EdamamImageURL
+
 
 data class RecipeExtended(
     val ID: String,
@@ -7,7 +9,7 @@ data class RecipeExtended(
     val weight: Int,
     val cookingTime: Int,
     val servings: Int,
-    val preview: String,
+    val preview: EdamamImageURL,
     val isFavorite: Boolean,
     val ingredientsPreviews: List<String>,
     val categories: List<CategoryOfRecipe>,
