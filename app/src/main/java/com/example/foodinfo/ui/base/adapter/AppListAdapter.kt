@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.ListAdapter
 
 class AppListAdapter(
     private val delegates: List<AppAdapterDelegate>
-) : ListAdapter<AppViewHolderModel, AppViewHolder>(AppDiffCallback) {
+) : ListAdapter<AppViewHolderModel, AppViewHolder>(AppDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AppViewHolder {
         return delegates[viewType].inflate(parent)

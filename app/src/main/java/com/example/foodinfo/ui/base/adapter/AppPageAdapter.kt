@@ -1,11 +1,66 @@
 package com.example.foodinfo.ui.base.adapter
 
 import android.view.ViewGroup
+import androidx.paging.PagingData
 import androidx.paging.PagingDataAdapter
+import androidx.recyclerview.widget.ListAdapter
 
-class AppPageAdapter(
+
+/**
+ * Multiple model types unsupported for [AppPageAdapter] due to **T** invariance for [PagingData]
+ * (unlike [AppListAdapter] which is inherited from [ListAdapter]):
+ * ~~~
+ * interface BaseModel
+ *
+ * class ModelImpl : BaseModel
+ *
+ * // ListAdapter analog
+ * abstract class ListAdapter<T> {
+ *     fun addData(data: List<T>) {}
+ * }
+ * // PagingDataAdapter analog
+ * abstract class PagingDataAdapter<T : Any> {
+ *     fun addData(data: PagingData<T>) {}
+ * }
+ *
+ * class AppListAdapter : ListAdapter<BaseModel>()
+ * class AppPageAdapter : PagingDataAdapter<BaseModel>()
+ *
+ *
+ * val appListAdapter = AppListAdapter()
+ * val appPageAdapter = AppPageAdapter()
+ *
+ * appListAdapter.addData(emptyList<ModelImpl>()) // OK
+ *
+ * //Type mismatch. Required: PagingData<BaseModel> Found: PagingData<ModelImpl>
+ * appPageAdapter.addData(PagingData.empty<ModelImpl>())
+ * ~~~
+ *
+ * To achieve multiple model types use sealed class instead:
+ * ~~~
+ * sealed class Animal : AppViewHolderModel {
+ *     data class Cat(val data: Any) : Animal() {
+ *         override fun areItemsTheSame(other: AppViewHolderModel): Boolean { ... }
+ *
+ *         override fun areContentsTheSame(other: AppViewHolderModel): Boolean { ... }
+ *     }
+ *
+ *     data class Dog(val data: Any) : Animal() {
+ *         override fun areItemsTheSame(other: AppViewHolderModel): Boolean { ... }
+ *
+ *         override fun areContentsTheSame(other: AppViewHolderModel): Boolean { ... }
+ *     }
+ * }
+ *
+ * val recyclerAdapter: AppPageAdapter<Animal> by appPageAdapter(
+ *     catAdapterDelegate(),
+ *     dogAdapterDelegate()
+ * )
+ * ~~~
+ */
+class AppPageAdapter<T : AppViewHolderModel>(
     private val delegates: List<AppAdapterDelegate>
-) : PagingDataAdapter<AppViewHolderModel, AppViewHolder>(AppDiffCallback) {
+) : PagingDataAdapter<T, AppViewHolder>(AppDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AppViewHolder {
         try {
@@ -40,6 +95,6 @@ class AppPageAdapter(
 }
 
 
-fun appPageAdapter(vararg delegates: AppAdapterDelegate): Lazy<AppPageAdapter> {
+fun <T : AppViewHolderModel> appPageAdapter(vararg delegates: AppAdapterDelegate): Lazy<AppPageAdapter<T>> {
     return lazy(LazyThreadSafetyMode.NONE) { AppPageAdapter(delegates.toList()) }
 }
