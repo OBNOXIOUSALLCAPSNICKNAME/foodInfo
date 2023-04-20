@@ -5,8 +5,8 @@ import androidx.room.Relation
 import com.example.foodinfo.data.local.model.LabelOfRecipeDB
 import com.example.foodinfo.data.local.model.LabelOfSearchFilterDB
 import com.example.foodinfo.data.local.model.LabelOfSearchFilterExtendedDB
-import com.example.foodinfo.data.local.model.LabelRecipeAttrDB
-import com.example.foodinfo.data.local.room.model.entity.LabelRecipeAttrEntity
+import com.example.foodinfo.data.local.model.LabelOfRecipeMetadataDB
+import com.example.foodinfo.data.local.room.model.entity.LabelOfRecipeMetadataEntity
 
 
 data class LabelOfSearchFilterExtendedPOJO(
@@ -24,15 +24,15 @@ data class LabelOfSearchFilterExtendedPOJO(
 
     @Relation(
         parentColumn = LabelOfRecipeDB.Columns.INFO_ID,
-        entityColumn = LabelRecipeAttrDB.Columns.ID,
-        entity = LabelRecipeAttrEntity::class
+        entityColumn = LabelOfRecipeMetadataDB.Columns.ID,
+        entity = LabelOfRecipeMetadataEntity::class
     )
-    override val attrInfo: LabelRecipeAttrExtendedPOJO?
+    override val metadata: LabelRecipeMetadataExtendedPOJO?
 
 ) : LabelOfSearchFilterExtendedDB(
     ID = ID,
     filterName = filterName,
     infoID = infoID,
     isSelected = isSelected,
-    attrInfo = attrInfo
+    metadata = metadata
 )

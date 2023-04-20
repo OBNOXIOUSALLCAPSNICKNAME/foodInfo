@@ -4,14 +4,14 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
-import com.example.foodinfo.data.local.model.BasicRecipeAttrDB
+import com.example.foodinfo.data.local.model.BasicOfRecipeMetadataDB
 
 
 @Entity(
-    tableName = BasicRecipeAttrDB.TABLE_NAME,
-    indices = [Index(value = arrayOf(BasicRecipeAttrDB.Columns.ID), unique = true)]
+    tableName = BasicOfRecipeMetadataDB.TABLE_NAME,
+    indices = [Index(value = arrayOf(BasicOfRecipeMetadataDB.Columns.ID), unique = true)]
 )
-data class BasicRecipeAttrEntity(
+data class BasicOfRecipeMetadataEntity(
     @PrimaryKey
     @ColumnInfo(name = Columns.ID)
     override val ID: Int = 0,
@@ -37,7 +37,7 @@ data class BasicRecipeAttrEntity(
     @ColumnInfo(name = Columns.STEP_SIZE)
     override val stepSize: Float
 
-) : BasicRecipeAttrDB(
+) : BasicOfRecipeMetadataDB(
     ID = ID,
     tag = tag,
     name = name,
@@ -48,8 +48,8 @@ data class BasicRecipeAttrEntity(
     stepSize = stepSize
 ) {
     companion object {
-        operator fun invoke(item: BasicRecipeAttrDB): BasicRecipeAttrEntity {
-            return BasicRecipeAttrEntity(
+        operator fun invoke(item: BasicOfRecipeMetadataDB): BasicOfRecipeMetadataEntity {
+            return BasicOfRecipeMetadataEntity(
                 ID = item.ID,
                 tag = item.tag,
                 name = item.name,

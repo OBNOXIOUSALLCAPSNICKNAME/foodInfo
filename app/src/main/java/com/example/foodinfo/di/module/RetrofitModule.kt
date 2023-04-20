@@ -4,7 +4,7 @@ import com.example.foodinfo.BuildConfig
 import com.example.foodinfo.data.remote.retrofit.EdamamTypeAdapterFactory
 import com.example.foodinfo.data.remote.retrofit.GitHubTypeAdapterFactory
 import com.example.foodinfo.data.remote.retrofit.api.RecipeAPI
-import com.example.foodinfo.data.remote.retrofit.api.RecipeAttrAPI
+import com.example.foodinfo.data.remote.retrofit.api.RecipeMetadataAPI
 import com.example.foodinfo.data.remote.retrofit.response_adapter.ResponseAdapterFactory
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -54,10 +54,10 @@ class RetrofitModule {
     ): RecipeAPI = retrofit.create(RecipeAPI::class.java)
 
     @Provides
-    fun provideApiAttrs(
+    fun provideApiMetadata(
         @Named("GitHub")
         retrofit: Retrofit
-    ): RecipeAttrAPI = retrofit.create(RecipeAttrAPI::class.java)
+    ): RecipeMetadataAPI = retrofit.create(RecipeMetadataAPI::class.java)
 
 
     @Provides

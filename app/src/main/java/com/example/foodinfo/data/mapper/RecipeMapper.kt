@@ -3,8 +3,8 @@ package com.example.foodinfo.data.mapper
 import com.example.foodinfo.data.local.model.*
 import com.example.foodinfo.data.remote.model.*
 import com.example.foodinfo.domain.model.Recipe
-import com.example.foodinfo.domain.model.RecipeAttrs
 import com.example.foodinfo.domain.model.RecipeExtended
+import com.example.foodinfo.domain.model.RecipeMetadata
 
 
 fun RecipeDB.toModel(): Recipe {
@@ -38,21 +38,21 @@ fun RecipeExtendedDB.toModelExtended(): RecipeExtended {
 }
 
 
-fun RecipeAttrsNetwork.toDB(): RecipeAttrsDB {
-    return RecipeAttrsDB(
-        basics = this.basics.map(BasicRecipeAttrNetwork::toDB),
-        labels = this.labels.map(LabelRecipeAttrNetwork::toDB),
-        categories = this.categories.map(CategoryRecipeAttrNetwork::toDB),
-        nutrients = this.nutrients.map(NutrientRecipeAttrNetwork::toDB)
+fun RecipeMetadataNetwork.toDB(): RecipeMetadataDB {
+    return RecipeMetadataDB(
+        basics = this.basics.map(BasicOfRecipeMetadataNetwork::toDB),
+        labels = this.labels.map(LabelOfRecipeMetadataNetwork::toDB),
+        categories = this.categories.map(CategoryOfRecipeMetadataNetwork::toDB),
+        nutrients = this.nutrients.map(NutrientOfRecipeMetadataNetwork::toDB)
     )
 }
 
-fun RecipeAttrsDB.toModel(): RecipeAttrs {
-    return RecipeAttrs(
-        basics = this.basics.map(BasicRecipeAttrDB::toModel),
-        labels = this.labels.map(LabelRecipeAttrDB::toModel),
-        nutrients = this.nutrients.map(NutrientRecipeAttrDB::toModel),
-        categories = this.categories.map(CategoryRecipeAttrDB::toModel),
+fun RecipeMetadataDB.toModel(): RecipeMetadata {
+    return RecipeMetadata(
+        basics = this.basics.map(BasicOfRecipeMetadataDB::toModel),
+        labels = this.labels.map(LabelOfRecipeMetadataDB::toModel),
+        nutrients = this.nutrients.map(NutrientOfRecipeMetadataDB::toModel),
+        categories = this.categories.map(CategoryOfRecipeMetadataDB::toModel),
     )
 }
 
@@ -70,7 +70,7 @@ fun RecipeNetwork.toDB(): RecipeDB {
     )
 }
 
-fun RecipeNetwork.toDBSave(attrs: RecipeAttrs): RecipeToSaveDB {
+fun RecipeNetwork.toDBSave(metadata: RecipeMetadata): RecipeToSaveDB {
     val recipeID = this.URI!!.replace(RecipeNetwork.RECIPE_BASE_URI, "")
 
     return RecipeToSaveDB(
@@ -84,13 +84,13 @@ fun RecipeNetwork.toDBSave(attrs: RecipeAttrs): RecipeToSaveDB {
         cookingTime = this.time!!.toInt(),
         servings = this.servings!!.toInt(),
         ingredients = this.ingredients.map { it.toDB(recipeID) },
-        nutrients = this.nutrients!!.toDB(recipeID, attrs.nutrients),
+        nutrients = this.nutrients!!.toDB(recipeID, metadata.nutrients),
         labels = listOfNotNull(
             this.meal,
             this.diet,
             this.dish,
             this.health,
             this.cuisine
-        ).flatten().toDB(recipeID, attrs.labels)
+        ).flatten().toDB(recipeID, metadata.labels)
     )
 }

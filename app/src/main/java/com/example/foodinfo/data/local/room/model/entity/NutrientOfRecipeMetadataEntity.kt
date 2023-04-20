@@ -4,14 +4,14 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
-import com.example.foodinfo.data.local.model.NutrientRecipeAttrDB
+import com.example.foodinfo.data.local.model.NutrientOfRecipeMetadataDB
 
 
 @Entity(
-    tableName = NutrientRecipeAttrDB.TABLE_NAME,
-    indices = [Index(value = arrayOf(NutrientRecipeAttrDB.Columns.ID), unique = true)]
+    tableName = NutrientOfRecipeMetadataDB.TABLE_NAME,
+    indices = [Index(value = arrayOf(NutrientOfRecipeMetadataDB.Columns.ID), unique = true)]
 )
-data class NutrientRecipeAttrEntity(
+data class NutrientOfRecipeMetadataEntity(
     @PrimaryKey
     @ColumnInfo(name = Columns.ID)
     override val ID: Int,
@@ -46,7 +46,7 @@ data class NutrientRecipeAttrEntity(
     @ColumnInfo(name = Columns.RANGE_MAX)
     override val rangeMax: Float
 
-) : NutrientRecipeAttrDB(
+) : NutrientOfRecipeMetadataDB(
     ID = ID,
     tag = tag,
     name = name,
@@ -60,8 +60,8 @@ data class NutrientRecipeAttrEntity(
     rangeMax = rangeMax
 ) {
     companion object {
-        operator fun invoke(item: NutrientRecipeAttrDB): NutrientRecipeAttrEntity {
-            return NutrientRecipeAttrEntity(
+        operator fun invoke(item: NutrientOfRecipeMetadataDB): NutrientOfRecipeMetadataEntity {
+            return NutrientOfRecipeMetadataEntity(
                 ID = item.ID,
                 tag = item.tag,
                 name = item.name,

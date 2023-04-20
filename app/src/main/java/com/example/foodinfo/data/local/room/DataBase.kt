@@ -18,12 +18,12 @@ import com.example.foodinfo.data.local.room.model.entity.*
         IngredientOfRecipeEntity::class,
         NutrientOfRecipeEntity::class,
         LabelOfRecipeEntity::class,
-        LabelRecipeAttrEntity::class,
-        CategoryRecipeAttrEntity::class,
+        LabelOfRecipeMetadataEntity::class,
+        CategoryOfRecipeMetadataEntity::class,
         LabelOfSearchFilterEntity::class,
         NutrientOfSearchFilterEntity::class,
-        NutrientRecipeAttrEntity::class,
-        BasicRecipeAttrEntity::class,
+        NutrientOfRecipeMetadataEntity::class,
+        BasicOfRecipeMetadataEntity::class,
         BasicOfSearchFilterEntity::class,
         EdamamCredentialsEntity::class,
         GitHubCredentialsEntity::class,
@@ -33,7 +33,7 @@ abstract class DataBase : RoomDatabase() {
     abstract val recipeDAO: RecipeDAO
     abstract val searchFilterDAO: SearchFilterDAO
     abstract val searchHistoryDAO: SearchHistoryDAO
-    abstract val recipeAttrDAO: RecipeAttrDAO
+    abstract val recipeMetadataDAO: RecipeMetadataDAO
     abstract val apiCredentialsDAO: APICredentialsDAO
 
     companion object {

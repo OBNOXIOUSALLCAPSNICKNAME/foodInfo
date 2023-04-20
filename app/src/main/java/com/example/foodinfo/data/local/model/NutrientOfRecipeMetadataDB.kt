@@ -1,7 +1,7 @@
 package com.example.foodinfo.data.local.model
 
 
-open class NutrientRecipeAttrDB(
+open class NutrientOfRecipeMetadataDB(
     open val ID: Int,
     open val tag: String,
     open val name: String,
@@ -30,6 +30,6 @@ open class NutrientRecipeAttrDB(
     }
 
     companion object {
-        const val TABLE_NAME = "nutrient_recipe_attr"
+        const val TABLE_NAME = "nutrient_recipe_metadata"
     }
 }

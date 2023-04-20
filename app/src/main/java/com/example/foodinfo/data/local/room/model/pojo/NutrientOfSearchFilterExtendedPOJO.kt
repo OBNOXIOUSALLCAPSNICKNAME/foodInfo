@@ -4,8 +4,8 @@ import androidx.room.ColumnInfo
 import androidx.room.Relation
 import com.example.foodinfo.data.local.model.NutrientOfSearchFilterDB
 import com.example.foodinfo.data.local.model.NutrientOfSearchFilterExtendedDB
-import com.example.foodinfo.data.local.model.NutrientRecipeAttrDB
-import com.example.foodinfo.data.local.room.model.entity.NutrientRecipeAttrEntity
+import com.example.foodinfo.data.local.model.NutrientOfRecipeMetadataDB
+import com.example.foodinfo.data.local.room.model.entity.NutrientOfRecipeMetadataEntity
 
 
 data class NutrientOfSearchFilterExtendedPOJO(
@@ -26,9 +26,9 @@ data class NutrientOfSearchFilterExtendedPOJO(
 
     @Relation(
         parentColumn = NutrientOfSearchFilterDB.Columns.INFO_ID,
-        entityColumn = NutrientRecipeAttrDB.Columns.ID
+        entityColumn = NutrientOfRecipeMetadataDB.Columns.ID
     )
-    override val attrInfo: NutrientRecipeAttrEntity?
+    override val metadata: NutrientOfRecipeMetadataEntity?
 
 ) : NutrientOfSearchFilterExtendedDB(
     ID = ID,
@@ -36,5 +36,5 @@ data class NutrientOfSearchFilterExtendedPOJO(
     infoID = infoID,
     minValue = minValue,
     maxValue = maxValue,
-    attrInfo = attrInfo
+    metadata = metadata
 )

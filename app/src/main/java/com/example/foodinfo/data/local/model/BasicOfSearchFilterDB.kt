@@ -23,10 +23,10 @@ open class BasicOfSearchFilterDB(
 
     override fun equals(other: Any?): Boolean {
         return (other is BasicOfSearchFilterDB) &&
-                other.infoID == this.infoID &&
-                other.filterName == this.filterName &&
-                other.minValue == this.minValue &&
-                other.maxValue == this.maxValue
+        other.infoID == this.infoID &&
+        other.filterName == this.filterName &&
+        other.minValue == this.minValue &&
+        other.maxValue == this.maxValue
     }
 
     override fun hashCode(): Int {

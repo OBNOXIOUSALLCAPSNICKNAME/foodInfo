@@ -1,7 +1,7 @@
 package com.example.foodinfo.domain.model
 
 
-data class LabelRecipeAttr(
+data class LabelOfRecipeMetadata(
     val ID: Int,
     val categoryID: Int,
     val tag: String,

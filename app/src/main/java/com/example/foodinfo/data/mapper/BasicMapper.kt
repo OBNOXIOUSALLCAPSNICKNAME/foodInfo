@@ -1,10 +1,10 @@
 package com.example.foodinfo.data.mapper
 
+import com.example.foodinfo.data.local.model.BasicOfRecipeMetadataDB
 import com.example.foodinfo.data.local.model.BasicOfSearchFilterDB
 import com.example.foodinfo.data.local.model.BasicOfSearchFilterExtendedDB
-import com.example.foodinfo.data.local.model.BasicRecipeAttrDB
-import com.example.foodinfo.data.remote.model.BasicRecipeAttrNetwork
-import com.example.foodinfo.domain.model.BasicRecipeAttr
+import com.example.foodinfo.data.remote.model.BasicOfRecipeMetadataNetwork
+import com.example.foodinfo.domain.model.BasicOfRecipeMetadata
 import com.example.foodinfo.domain.model.BasicOfSearchFilter
 import com.example.foodinfo.domain.model.BasicOfSearchFilterPreset
 import kotlin.math.max
@@ -26,8 +26,8 @@ fun BasicOfSearchFilterExtendedDB.toDBLatest(): BasicOfSearchFilterDB {
         ID = this.ID,
         filterName = this.filterName,
         infoID = this.infoID,
-        minValue = this.minValue?.let { max(it, this.attrInfo!!.rangeMin) },
-        maxValue = this.maxValue?.let { min(it, this.attrInfo!!.rangeMax) }
+        minValue = this.minValue?.let { max(it, this.metadata!!.rangeMin) },
+        maxValue = this.maxValue?.let { min(it, this.metadata!!.rangeMax) }
     )
 }
 
@@ -35,14 +35,14 @@ fun List<BasicOfSearchFilterExtendedDB>.toModel(): List<BasicOfSearchFilter> {
     return this.map { basic ->
         BasicOfSearchFilter(
             ID = basic.ID,
-            infoID = basic.attrInfo!!.ID,
-            tag = basic.attrInfo!!.tag!!,
-            name = basic.attrInfo!!.name,
-            columnName = basic.attrInfo!!.columnName,
-            measure = basic.attrInfo!!.measure,
-            stepSize = basic.attrInfo!!.stepSize,
-            rangeMin = basic.attrInfo!!.rangeMin,
-            rangeMax = basic.attrInfo!!.rangeMax,
+            infoID = basic.metadata!!.ID,
+            tag = basic.metadata!!.tag!!,
+            name = basic.metadata!!.name,
+            columnName = basic.metadata!!.columnName,
+            measure = basic.metadata!!.measure,
+            stepSize = basic.metadata!!.stepSize,
+            rangeMin = basic.metadata!!.rangeMin,
+            rangeMax = basic.metadata!!.rangeMax,
             minValue = basic.minValue,
             maxValue = basic.maxValue
         )
@@ -53,15 +53,15 @@ fun List<BasicOfSearchFilterExtendedDB>.toModelPreset(): List<BasicOfSearchFilte
     return this.filterNot { it.minValue == null && it.maxValue == null }.map { basic ->
         BasicOfSearchFilterPreset(
             infoID = basic.infoID,
-            tag = basic.attrInfo!!.tag!!,
-            columnName = basic.attrInfo!!.columnName,
+            tag = basic.metadata!!.tag!!,
+            columnName = basic.metadata!!.columnName,
             minValue = basic.minValue,
             maxValue = basic.maxValue
         )
     }
 }
 
-fun BasicRecipeAttr.toFilter(filterName: String): BasicOfSearchFilterDB {
+fun BasicOfRecipeMetadata.toFilter(filterName: String): BasicOfSearchFilterDB {
     return BasicOfSearchFilterDB(
         filterName = filterName,
         infoID = this.ID,
@@ -70,8 +70,8 @@ fun BasicRecipeAttr.toFilter(filterName: String): BasicOfSearchFilterDB {
     )
 }
 
-fun BasicRecipeAttrDB.toModel(): BasicRecipeAttr {
-    return BasicRecipeAttr(
+fun BasicOfRecipeMetadataDB.toModel(): BasicOfRecipeMetadata {
+    return BasicOfRecipeMetadata(
         ID = this.ID,
         tag = this.tag,
         name = this.name,
@@ -83,8 +83,8 @@ fun BasicRecipeAttrDB.toModel(): BasicRecipeAttr {
     )
 }
 
-fun BasicRecipeAttrNetwork.toDB(): BasicRecipeAttrDB {
-    return BasicRecipeAttrDB(
+fun BasicOfRecipeMetadataNetwork.toDB(): BasicOfRecipeMetadataDB {
+    return BasicOfRecipeMetadataDB(
         ID = this.ID,
         tag = this.tag,
         name = this.name,

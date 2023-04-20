@@ -3,18 +3,18 @@ package com.example.foodinfo.data.remote.model
 import com.google.gson.annotations.SerializedName
 
 
-data class RecipeAttrsNetwork(
+data class RecipeMetadataNetwork(
     @SerializedName(Fields.BASICS)
-    val basics: List<BasicRecipeAttrNetwork>,
+    val basics: List<BasicOfRecipeMetadataNetwork>,
 
     @SerializedName(Fields.LABELS)
-    val labels: List<LabelRecipeAttrNetwork>,
+    val labels: List<LabelOfRecipeMetadataNetwork>,
 
     @SerializedName(Fields.CATEGORIES)
-    val categories: List<CategoryRecipeAttrNetwork>,
+    val categories: List<CategoryOfRecipeMetadataNetwork>,
 
     @SerializedName(Fields.NUTRIENTS)
-    val nutrients: List<NutrientRecipeAttrNetwork>
+    val nutrients: List<NutrientOfRecipeMetadataNetwork>
 ) {
 
     object Fields {

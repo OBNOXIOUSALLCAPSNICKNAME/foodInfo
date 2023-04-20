@@ -17,23 +17,23 @@ interface RecipeRepository {
 
     fun getByFilter(
         apiCredentials: EdamamCredentials,
-        pagingConfig: PagingConfig,
+        recipeMetadata: RecipeMetadata,
         filterPreset: SearchFilterPreset,
-        recipeAttrs: RecipeAttrs,
+        pagingConfig: PagingConfig,
         inputText: String = "",
         isOnline: Boolean
     ): Flow<PagingData<Recipe>>
 
     fun getByIdExtended(
         apiCredentials: EdamamCredentials,
+        metadata: RecipeMetadata,
         recipeID: String,
-        attrs: RecipeAttrs
     ): Flow<State<RecipeExtended>>
 
     fun getByIdNutrients(
         apiCredentials: EdamamCredentials,
-        recipeID: String,
-        attrs: List<NutrientRecipeAttr>
+        metadata: List<NutrientOfRecipeMetadata>,
+        recipeID: String
     ): Flow<State<List<NutrientOfRecipe>>>
 
     fun getByIdIngredients(

@@ -3,7 +3,7 @@ package com.example.foodinfo.data.remote.model
 import com.google.gson.annotations.SerializedName
 
 
-data class BasicRecipeAttrNetwork(
+data class BasicOfRecipeMetadataNetwork(
     @SerializedName(Fields.ID)
     val ID: Int,
 

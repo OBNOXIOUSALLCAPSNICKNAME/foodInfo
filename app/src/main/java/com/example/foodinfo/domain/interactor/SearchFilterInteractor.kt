@@ -12,23 +12,23 @@ import javax.inject.Inject
 
 class SearchFilterInteractor @Inject constructor(
     private val searchFilterRepository: SearchFilterRepository,
-    private val recipeAttrsInteractor: RecipeAttrsInteractor
+    private val recipeMetadataInteractor: RecipeMetadataInteractor
 ) {
 
     fun getCategory(categoryID: Int): Flow<State<CategoryOfSearchFilter>> {
         return getResolved(
-            extraData = recipeAttrsInteractor.getLabels(),
-            outputDataProvider = { attrs ->
-                searchFilterRepository.getCategory(categoryID, attrs)
+            extraData = recipeMetadataInteractor.getLabels(),
+            outputDataProvider = { metadata ->
+                searchFilterRepository.getCategory(categoryID, metadata)
             }
         )
     }
 
     fun getNutrients(): Flow<State<List<NutrientOfSearchFilter>>> {
         return getResolved(
-            extraData = recipeAttrsInteractor.getNutrients(),
-            outputDataProvider = { attrs ->
-                searchFilterRepository.getNutrients(attrs)
+            extraData = recipeMetadataInteractor.getNutrients(),
+            outputDataProvider = { metadata ->
+                searchFilterRepository.getNutrients(metadata)
             }
         )
     }
@@ -36,27 +36,27 @@ class SearchFilterInteractor @Inject constructor(
 
     fun getFilter(): Flow<State<SearchFilter>> {
         return getResolved(
-            extraData = recipeAttrsInteractor.getRecipeAttrs(),
-            outputDataProvider = { attrs ->
-                searchFilterRepository.getFilter(attrs)
+            extraData = recipeMetadataInteractor.getRecipeMetadata(),
+            outputDataProvider = { metadata ->
+                searchFilterRepository.getFilter(metadata)
             }
         )
     }
 
     fun getFilterPreset(): Flow<State<SearchFilterPreset>> {
         return getResolved(
-            extraData = recipeAttrsInteractor.getRecipeAttrs(),
-            outputDataProvider = { attrs ->
-                searchFilterRepository.getFilterPreset(attrs)
+            extraData = recipeMetadataInteractor.getRecipeMetadata(),
+            outputDataProvider = { metadata ->
+                searchFilterRepository.getFilterPreset(metadata)
             }
         )
     }
 
     fun getFilterPreset(labelID: Int): Flow<State<SearchFilterPreset>> {
         return getResolved(
-            extraData = recipeAttrsInteractor.getRecipeAttrs(),
-            outputDataProvider = { attrs ->
-                searchFilterRepository.getFilterPreset(attrs, labelID)
+            extraData = recipeMetadataInteractor.getRecipeMetadata(),
+            outputDataProvider = { metadata ->
+                searchFilterRepository.getFilterPreset(metadata, labelID)
             }
         )
     }

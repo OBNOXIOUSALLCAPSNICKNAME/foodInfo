@@ -44,14 +44,14 @@ class SearchFilterRepositoryImpl @Inject constructor(
 
     override fun getCategory(
         categoryID: Int,
-        attrs: List<LabelRecipeAttr>
+        metadata: List<LabelOfRecipeMetadata>
     ): Flow<State<CategoryOfSearchFilter>> {
         return getData(
             remoteDataProvider = { DataSource.Empty },
             localDataProvider = {
                 DataSource.LocalFlow(
                     searchFilterLocal.observeLabels(prefUtils.searchFilter).transform { labels ->
-                        val labelsToUpdate = verifyLabels(attrs, labels)
+                        val labelsToUpdate = verifyLabels(metadata, labels)
                         if (labelsToUpdate != null) {
                             searchFilterLocal.invalidateLabels(prefUtils.searchFilter, labelsToUpdate)
                         } else {
@@ -67,14 +67,14 @@ class SearchFilterRepositoryImpl @Inject constructor(
     }
 
     override fun getNutrients(
-        attrs: List<NutrientRecipeAttr>
+        metadata: List<NutrientOfRecipeMetadata>
     ): Flow<State<List<NutrientOfSearchFilter>>> {
         return getData(
             remoteDataProvider = { DataSource.Empty },
             localDataProvider = {
                 DataSource.LocalFlow(
                     searchFilterLocal.observeNutrients(prefUtils.searchFilter).transform { nutrients ->
-                        val nutrientsToUpdate = verifyNutrients(attrs, nutrients)
+                        val nutrientsToUpdate = verifyNutrients(metadata, nutrients)
                         if (nutrientsToUpdate != null) {
                             searchFilterLocal.invalidateNutrients(prefUtils.searchFilter, nutrientsToUpdate)
                         } else {
@@ -90,30 +90,30 @@ class SearchFilterRepositoryImpl @Inject constructor(
     }
 
 
-    override fun getFilter(attrs: RecipeAttrs): Flow<State<SearchFilter>> {
+    override fun getFilter(metadata: RecipeMetadata): Flow<State<SearchFilter>> {
         return getData(
             remoteDataProvider = { DataSource.Empty },
-            localDataProvider = { DataSource.LocalFlow(observeFilter(attrs)) },
+            localDataProvider = { DataSource.LocalFlow(observeFilter(metadata)) },
             saveRemoteDelegate = { },
             mapToLocalDelegate = { },
             mapToModelDelegate = SearchFilterExtendedDB::toModel
         )
     }
 
-    override fun getFilterPreset(attrs: RecipeAttrs): Flow<State<SearchFilterPreset>> {
+    override fun getFilterPreset(metadata: RecipeMetadata): Flow<State<SearchFilterPreset>> {
         return getData(
             remoteDataProvider = { DataSource.Empty },
-            localDataProvider = { DataSource.LocalFlow(observeFilter(attrs)) },
+            localDataProvider = { DataSource.LocalFlow(observeFilter(metadata)) },
             saveRemoteDelegate = { },
             mapToLocalDelegate = { },
             mapToModelDelegate = SearchFilterExtendedDB::toModelPreset
         )
     }
 
-    override fun getFilterPreset(attrs: RecipeAttrs, labelID: Int): Flow<State<SearchFilterPreset>> {
+    override fun getFilterPreset(metadata: RecipeMetadata, labelID: Int): Flow<State<SearchFilterPreset>> {
         return getData(
             remoteDataProvider = { DataSource.Empty },
-            localDataProvider = { DataSource.Local(SearchFilterPreset(attrs, labelID)) },
+            localDataProvider = { DataSource.Local(SearchFilterPreset(metadata, labelID)) },
             saveRemoteDelegate = { },
             mapToLocalDelegate = { },
             mapToModelDelegate = { it }
@@ -121,11 +121,11 @@ class SearchFilterRepositoryImpl @Inject constructor(
     }
 
 
-    private fun observeFilter(attrs: RecipeAttrs): Flow<SearchFilterExtendedDB> {
+    private fun observeFilter(metadata: RecipeMetadata): Flow<SearchFilterExtendedDB> {
         return searchFilterLocal.observeFilterExtended(prefUtils.searchFilter).transform { filter ->
-            val basicsToUpdate = verifyBasics(attrs.basics, filter.basics)
-            val labelsToUpdate = verifyLabels(attrs.labels, filter.labels)
-            val nutrientsToUpdate = verifyNutrients(attrs.nutrients, filter.nutrients)
+            val basicsToUpdate = verifyBasics(metadata.basics, filter.basics)
+            val labelsToUpdate = verifyLabels(metadata.labels, filter.labels)
+            val nutrientsToUpdate = verifyNutrients(metadata.nutrients, filter.nutrients)
             if (basicsToUpdate != null || labelsToUpdate != null || nutrientsToUpdate != null) {
                 searchFilterLocal.invalidateFilter(
                     prefUtils.searchFilter,
@@ -140,34 +140,34 @@ class SearchFilterRepositoryImpl @Inject constructor(
     }
 
     private fun verifyBasics(
-        attrs: List<BasicRecipeAttr>,
+        metadata: List<BasicOfRecipeMetadata>,
         basics: List<BasicOfSearchFilterExtendedDB>
     ): List<BasicOfSearchFilterDB>? {
         val basicsMap = basics.associateBy { it.infoID }
-        val basicsNew = attrs.filter { it.tag != null }.map { basicAttr ->
-            basicsMap[basicAttr.ID]?.toDBLatest() ?: basicAttr.toFilter(prefUtils.searchFilter)
+        val basicsNew = metadata.filter { it.tag != null }.map { basic ->
+            basicsMap[basic.ID]?.toDBLatest() ?: basic.toFilter(prefUtils.searchFilter)
         }
         return compare(basics.map(BasicOfSearchFilterExtendedDB::toDB), basicsNew)
     }
 
     private fun verifyLabels(
-        attrs: List<LabelRecipeAttr>,
+        metadata: List<LabelOfRecipeMetadata>,
         labels: List<LabelOfSearchFilterExtendedDB>
     ): List<LabelOfSearchFilterDB>? {
         val labelsMap = labels.associateBy { it.infoID }
-        val labelsNew = attrs.map { labelAttr ->
-            labelsMap[labelAttr.ID]?.toDB() ?: labelAttr.toFilter(prefUtils.searchFilter)
+        val labelsNew = metadata.map { label ->
+            labelsMap[label.ID]?.toDB() ?: label.toFilter(prefUtils.searchFilter)
         }
         return compare(labels.map(LabelOfSearchFilterExtendedDB::toDB), labelsNew)
     }
 
     private fun verifyNutrients(
-        attrs: List<NutrientRecipeAttr>,
+        metadata: List<NutrientOfRecipeMetadata>,
         nutrients: List<NutrientOfSearchFilterExtendedDB>
     ): List<NutrientOfSearchFilterDB>? {
         val nutrientsMap = nutrients.associateBy { it.infoID }
-        val nutrientsNew = attrs.map { nutrientAttr ->
-            nutrientsMap[nutrientAttr.ID]?.toDBLatest() ?: nutrientAttr.toFilter(prefUtils.searchFilter)
+        val nutrientsNew = metadata.map { nutrient ->
+            nutrientsMap[nutrient.ID]?.toDBLatest() ?: nutrient.toFilter(prefUtils.searchFilter)
         }
         return compare(nutrients.map(NutrientOfSearchFilterExtendedDB::toDB), nutrientsNew)
     }

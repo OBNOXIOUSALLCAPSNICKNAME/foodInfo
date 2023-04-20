@@ -22,17 +22,17 @@ interface SearchFilterRepository {
 
     fun getCategory(
         categoryID: Int,
-        attrs: List<LabelRecipeAttr>
+        metadata: List<LabelOfRecipeMetadata>
     ): Flow<State<CategoryOfSearchFilter>>
 
     fun getNutrients(
-        attrs: List<NutrientRecipeAttr>
+        metadata: List<NutrientOfRecipeMetadata>
     ): Flow<State<List<NutrientOfSearchFilter>>>
 
 
-    fun getFilter(attrs: RecipeAttrs): Flow<State<SearchFilter>>
+    fun getFilter(metadata: RecipeMetadata): Flow<State<SearchFilter>>
 
-    fun getFilterPreset(attrs: RecipeAttrs): Flow<State<SearchFilterPreset>>
+    fun getFilterPreset(metadata: RecipeMetadata): Flow<State<SearchFilterPreset>>
 
-    fun getFilterPreset(attrs: RecipeAttrs, labelID: Int): Flow<State<SearchFilterPreset>>
+    fun getFilterPreset(metadata: RecipeMetadata, labelID: Int): Flow<State<SearchFilterPreset>>
 }

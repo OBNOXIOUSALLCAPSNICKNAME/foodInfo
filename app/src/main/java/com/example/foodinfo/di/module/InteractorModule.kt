@@ -1,10 +1,10 @@
 package com.example.foodinfo.di.module
 
-import com.example.foodinfo.domain.interactor.RecipeAttrsInteractor
 import com.example.foodinfo.domain.interactor.RecipeInteractor
+import com.example.foodinfo.domain.interactor.RecipeMetadataInteractor
 import com.example.foodinfo.domain.interactor.SearchFilterInteractor
 import com.example.foodinfo.domain.repository.APICredentialsRepository
-import com.example.foodinfo.domain.repository.RecipeAttrRepository
+import com.example.foodinfo.domain.repository.RecipeMetadataRepository
 import com.example.foodinfo.domain.repository.RecipeRepository
 import com.example.foodinfo.domain.repository.SearchFilterRepository
 import com.example.foodinfo.utils.PrefUtils
@@ -20,13 +20,13 @@ class InteractorModule {
     @Singleton
     fun provideRecipeInteractor(
         apiCredentialsRepository: APICredentialsRepository,
-        recipeAttrsInteractor: RecipeAttrsInteractor,
+        recipeMetadataInteractor: RecipeMetadataInteractor,
         recipeRepository: RecipeRepository,
         prefUtils: PrefUtils
     ): RecipeInteractor {
         return RecipeInteractor(
             apiCredentialsRepository,
-            recipeAttrsInteractor,
+            recipeMetadataInteractor,
             recipeRepository,
             prefUtils
         )
@@ -34,14 +34,14 @@ class InteractorModule {
 
     @Provides
     @Singleton
-    fun provideRecipeAttrsInteractor(
+    fun provideRecipeMetadataInteractor(
         apiCredentialsRepository: APICredentialsRepository,
-        recipeAttrRepository: RecipeAttrRepository,
+        recipeMetadataRepository: RecipeMetadataRepository,
         prefUtils: PrefUtils
-    ): RecipeAttrsInteractor {
-        return RecipeAttrsInteractor(
+    ): RecipeMetadataInteractor {
+        return RecipeMetadataInteractor(
             apiCredentialsRepository,
-            recipeAttrRepository,
+            recipeMetadataRepository,
             prefUtils
         )
     }
@@ -50,11 +50,11 @@ class InteractorModule {
     @Singleton
     fun provideSearchFilterInteractor(
         searchFilterRepository: SearchFilterRepository,
-        recipeAttrsInteractor: RecipeAttrsInteractor
+        recipeMetadataInteractor: RecipeMetadataInteractor
     ): SearchFilterInteractor {
         return SearchFilterInteractor(
             searchFilterRepository,
-            recipeAttrsInteractor
+            recipeMetadataInteractor
         )
     }
 }

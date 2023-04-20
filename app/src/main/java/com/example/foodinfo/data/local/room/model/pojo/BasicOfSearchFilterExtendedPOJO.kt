@@ -2,10 +2,10 @@ package com.example.foodinfo.data.local.room.model.pojo
 
 import androidx.room.ColumnInfo
 import androidx.room.Relation
+import com.example.foodinfo.data.local.model.BasicOfRecipeMetadataDB
 import com.example.foodinfo.data.local.model.BasicOfSearchFilterDB
 import com.example.foodinfo.data.local.model.BasicOfSearchFilterExtendedDB
-import com.example.foodinfo.data.local.model.BasicRecipeAttrDB
-import com.example.foodinfo.data.local.room.model.entity.BasicRecipeAttrEntity
+import com.example.foodinfo.data.local.room.model.entity.BasicOfRecipeMetadataEntity
 
 
 data class BasicOfSearchFilterExtendedPOJO(
@@ -26,9 +26,9 @@ data class BasicOfSearchFilterExtendedPOJO(
 
     @Relation(
         parentColumn = BasicOfSearchFilterDB.Columns.INFO_ID,
-        entityColumn = BasicRecipeAttrDB.Columns.ID
+        entityColumn = BasicOfRecipeMetadataDB.Columns.ID
     )
-    override val attrInfo: BasicRecipeAttrEntity?
+    override val metadata: BasicOfRecipeMetadataEntity?
 
 ) : BasicOfSearchFilterExtendedDB(
     ID = ID,
@@ -36,5 +36,5 @@ data class BasicOfSearchFilterExtendedPOJO(
     filterName = filterName,
     minValue = minValue,
     maxValue = maxValue,
-    attrInfo = attrInfo
+    metadata = metadata
 )

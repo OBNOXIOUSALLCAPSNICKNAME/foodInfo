@@ -4,8 +4,8 @@ import androidx.room.ColumnInfo
 import androidx.room.Relation
 import com.example.foodinfo.data.local.model.NutrientOfRecipeDB
 import com.example.foodinfo.data.local.model.NutrientOfRecipeExtendedDB
-import com.example.foodinfo.data.local.model.NutrientRecipeAttrDB
-import com.example.foodinfo.data.local.room.model.entity.NutrientRecipeAttrEntity
+import com.example.foodinfo.data.local.model.NutrientOfRecipeMetadataDB
+import com.example.foodinfo.data.local.room.model.entity.NutrientOfRecipeMetadataEntity
 
 
 data class NutrientOfRecipeExtendedPOJO(
@@ -23,14 +23,14 @@ data class NutrientOfRecipeExtendedPOJO(
 
     @Relation(
         parentColumn = NutrientOfRecipeDB.Columns.INFO_ID,
-        entityColumn = NutrientRecipeAttrDB.Columns.ID
+        entityColumn = NutrientOfRecipeMetadataDB.Columns.ID
     )
-    override val attrInfo: NutrientRecipeAttrEntity?
+    override val metadata: NutrientOfRecipeMetadataEntity?
 
 ) : NutrientOfRecipeExtendedDB(
     ID = ID,
     recipeID = recipeID,
     infoID = infoID,
     value = value,
-    attrInfo = attrInfo
+    metadata = metadata
 )

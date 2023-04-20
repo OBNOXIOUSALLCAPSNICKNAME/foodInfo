@@ -1,7 +1,6 @@
 package com.example.foodinfo.data.local.room.data_source
 
 import androidx.paging.PagingSource
-import com.example.foodinfo.domain.model.SearchFilterPreset
 import com.example.foodinfo.data.local.data_source.RecipeLocalSource
 import com.example.foodinfo.data.local.model.*
 import com.example.foodinfo.data.local.room.RoomPageQuery
@@ -10,6 +9,7 @@ import com.example.foodinfo.data.local.room.model.entity.IngredientOfRecipeEntit
 import com.example.foodinfo.data.local.room.model.entity.LabelOfRecipeEntity
 import com.example.foodinfo.data.local.room.model.entity.NutrientOfRecipeEntity
 import com.example.foodinfo.data.local.room.model.entity.RecipeEntity
+import com.example.foodinfo.domain.model.SearchFilterPreset
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

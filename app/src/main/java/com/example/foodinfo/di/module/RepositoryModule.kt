@@ -1,7 +1,7 @@
 package com.example.foodinfo.di.module
 
 import com.example.foodinfo.data.local.data_source.*
-import com.example.foodinfo.data.remote.data_source.RecipeAttrRemoteSource
+import com.example.foodinfo.data.remote.data_source.RecipeMetadataRemoteSource
 import com.example.foodinfo.data.remote.data_source.RecipeRemoteSource
 import com.example.foodinfo.data.repository.*
 import com.example.foodinfo.domain.repository.APICredentialsRepository
@@ -25,11 +25,11 @@ class RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideRecipeAttrRepository(
-        recipeAttrLocal: RecipeAttrLocalSource,
-        recipeAttrRemote: RecipeAttrRemoteSource
-    ): RecipeAttrRepositoryImpl {
-        return RecipeAttrRepositoryImpl(recipeAttrLocal, recipeAttrRemote)
+    fun provideRecipeMetadataRepository(
+        recipeMetadataLocal: RecipeMetadataLocalSource,
+        recipeMetadataRemote: RecipeMetadataRemoteSource
+    ): RecipeMetadataRepositoryImpl {
+        return RecipeMetadataRepositoryImpl(recipeMetadataLocal, recipeMetadataRemote)
     }
 
     @Provides

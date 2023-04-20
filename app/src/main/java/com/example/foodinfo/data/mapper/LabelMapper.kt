@@ -1,16 +1,12 @@
 package com.example.foodinfo.data.mapper
 
 import com.example.foodinfo.data.local.model.*
-import com.example.foodinfo.data.remote.model.LabelRecipeAttrNetwork
-import com.example.foodinfo.domain.model.LabelHint
-import com.example.foodinfo.domain.model.LabelOfRecipe
-import com.example.foodinfo.domain.model.LabelRecipeAttr
-import com.example.foodinfo.domain.model.LabelOfSearchFilter
-import com.example.foodinfo.domain.model.LabelOfSearchFilterPreset
+import com.example.foodinfo.data.remote.model.LabelOfRecipeMetadataNetwork
+import com.example.foodinfo.domain.model.*
 import com.example.foodinfo.utils.glide.svg.SVGModel
 
 
-fun LabelRecipeAttrDB.toModelHint(): LabelHint {
+fun LabelOfRecipeMetadataDB.toModelHint(): LabelHint {
     return LabelHint(
         ID = this.ID,
         name = this.name,
@@ -23,7 +19,7 @@ fun LabelOfRecipeExtendedDB.toModel(): LabelOfRecipe {
     return LabelOfRecipe(
         ID = this.ID,
         infoID = this.infoID,
-        name = this.attrInfo!!.name
+        name = this.metadata!!.name
     )
 }
 
@@ -40,8 +36,8 @@ fun LabelOfSearchFilterExtendedDB.toModel(): LabelOfSearchFilter {
     return LabelOfSearchFilter(
         ID = this.ID,
         infoID = this.infoID,
-        tag = this.attrInfo!!.tag,
-        name = this.attrInfo!!.name,
+        tag = this.metadata!!.tag,
+        name = this.metadata!!.name,
         isSelected = this.isSelected
     )
 }
@@ -49,11 +45,11 @@ fun LabelOfSearchFilterExtendedDB.toModel(): LabelOfSearchFilter {
 fun LabelOfSearchFilterExtendedDB.toModelPreset(): LabelOfSearchFilterPreset {
     return LabelOfSearchFilterPreset(
         infoID = this.infoID,
-        tag = this.attrInfo!!.tag
+        tag = this.metadata!!.tag
     )
 }
 
-fun LabelRecipeAttr.toFilter(filterName: String): LabelOfSearchFilterDB {
+fun LabelOfRecipeMetadata.toFilter(filterName: String): LabelOfSearchFilterDB {
     return LabelOfSearchFilterDB(
         filterName = filterName,
         infoID = this.ID,
@@ -62,8 +58,8 @@ fun LabelRecipeAttr.toFilter(filterName: String): LabelOfSearchFilterDB {
 }
 
 
-fun LabelRecipeAttrNetwork.toDB(): LabelRecipeAttrDB {
-    return LabelRecipeAttrDB(
+fun LabelOfRecipeMetadataNetwork.toDB(): LabelOfRecipeMetadataDB {
+    return LabelOfRecipeMetadataDB(
         ID = this.ID,
         categoryID = this.categoryID,
         tag = this.tag,
@@ -75,19 +71,19 @@ fun LabelRecipeAttrNetwork.toDB(): LabelRecipeAttrDB {
 
 fun List<String>.toDB(
     recipeID: String,
-    attrs: List<LabelRecipeAttr>
+    metadata: List<LabelOfRecipeMetadata>
 ): List<LabelOfRecipeDB> {
-    val attrsMap = attrs.associate { it.name.lowercase() to it.ID }
+    val metadataMap = metadata.associate { it.name.lowercase() to it.ID }
     return this.map { label ->
         LabelOfRecipeDB(
             recipeID = recipeID,
-            infoID = attrsMap[label.lowercase()]!!
+            infoID = metadataMap[label.lowercase()]!!
         )
     }
 }
 
-fun LabelRecipeAttrDB.toModel(): LabelRecipeAttr {
-    return LabelRecipeAttr(
+fun LabelOfRecipeMetadataDB.toModel(): LabelOfRecipeMetadata {
+    return LabelOfRecipeMetadata(
         ID = this.ID,
         categoryID = this.categoryID,
         tag = this.tag,

@@ -2,58 +2,58 @@ package com.example.foodinfo.domain.interactor
 
 import com.example.foodinfo.domain.State
 import com.example.foodinfo.domain.State.Utils.suspendFlowProvider
-import com.example.foodinfo.domain.model.CategoryRecipeAttr
-import com.example.foodinfo.domain.model.LabelRecipeAttr
-import com.example.foodinfo.domain.model.NutrientRecipeAttr
-import com.example.foodinfo.domain.model.RecipeAttrs
+import com.example.foodinfo.domain.model.CategoryOfRecipeMetadata
+import com.example.foodinfo.domain.model.LabelOfRecipeMetadata
+import com.example.foodinfo.domain.model.NutrientOfRecipeMetadata
+import com.example.foodinfo.domain.model.RecipeMetadata
 import com.example.foodinfo.domain.repository.APICredentialsRepository
-import com.example.foodinfo.domain.repository.RecipeAttrRepository
+import com.example.foodinfo.domain.repository.RecipeMetadataRepository
 import com.example.foodinfo.utils.PrefUtils
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 
-class RecipeAttrsInteractor @Inject constructor(
+class RecipeMetadataInteractor @Inject constructor(
     private val apiCredentialsRepository: APICredentialsRepository,
-    private val recipeAttrRepository: RecipeAttrRepository,
+    private val recipeMetadataRepository: RecipeMetadataRepository,
     private val prefUtils: PrefUtils
 ) {
 
-    fun getRecipeAttrs(): Flow<State<RecipeAttrs>> {
+    fun getRecipeMetadata(): Flow<State<RecipeMetadata>> {
         return suspendFlowProvider {
-            recipeAttrRepository.getRecipeAttrs(
+            recipeMetadataRepository.getRecipeMetadata(
                 apiCredentialsRepository.getGitHub(prefUtils.githubCredentials)
             )
         }
     }
 
-    fun getLabels(): Flow<State<List<LabelRecipeAttr>>> {
+    fun getLabels(): Flow<State<List<LabelOfRecipeMetadata>>> {
         return suspendFlowProvider {
-            recipeAttrRepository.getLabels(
+            recipeMetadataRepository.getLabels(
                 apiCredentialsRepository.getGitHub(prefUtils.githubCredentials)
             )
         }
     }
 
-    fun getNutrients(): Flow<State<List<NutrientRecipeAttr>>> {
+    fun getNutrients(): Flow<State<List<NutrientOfRecipeMetadata>>> {
         return suspendFlowProvider {
-            recipeAttrRepository.getNutrients(
+            recipeMetadataRepository.getNutrients(
                 apiCredentialsRepository.getGitHub(prefUtils.githubCredentials)
             )
         }
     }
 
-    fun getCategories(): Flow<State<List<CategoryRecipeAttr>>> {
+    fun getCategories(): Flow<State<List<CategoryOfRecipeMetadata>>> {
         return suspendFlowProvider {
-            recipeAttrRepository.getCategories(
+            recipeMetadataRepository.getCategories(
                 apiCredentialsRepository.getGitHub(prefUtils.githubCredentials)
             )
         }
     }
 
-    fun getCategoryLabels(categoryID: Int): Flow<State<List<LabelRecipeAttr>>> {
+    fun getCategoryLabels(categoryID: Int): Flow<State<List<LabelOfRecipeMetadata>>> {
         return suspendFlowProvider {
-            recipeAttrRepository.getCategoryLabels(
+            recipeMetadataRepository.getCategoryLabels(
                 apiCredentialsRepository.getGitHub(prefUtils.githubCredentials),
                 categoryID
             )

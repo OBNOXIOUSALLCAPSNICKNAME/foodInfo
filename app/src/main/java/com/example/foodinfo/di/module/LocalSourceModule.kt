@@ -1,8 +1,8 @@
 package com.example.foodinfo.di.module
 
-import com.example.foodinfo.local.data_source.*
-import com.example.foodinfo.local.room.dao.*
-import com.example.foodinfo.local.room.data_source.*
+import com.example.foodinfo.data.local.data_source.*
+import com.example.foodinfo.data.local.room.dao.*
+import com.example.foodinfo.data.local.room.data_source.*
 import dagger.Module
 import dagger.Provides
 
@@ -25,8 +25,8 @@ class LocalSourceModule {
     }
 
     @Provides
-    fun provideRecipeAttrsLocal(recipeAttrDAO: RecipeAttrDAO): RecipeAttrLocalSource {
-        return RecipeAttrRoomSource(recipeAttrDAO)
+    fun provideRecipeMetadataLocal(recipeMetadataDAO: RecipeMetadataDAO): RecipeMetadataLocalSource {
+        return RecipeMetadataRoomSource(recipeMetadataDAO)
     }
 
     @Provides

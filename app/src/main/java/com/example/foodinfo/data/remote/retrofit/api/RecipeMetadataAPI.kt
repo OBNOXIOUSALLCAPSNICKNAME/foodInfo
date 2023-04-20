@@ -1,17 +1,17 @@
 package com.example.foodinfo.data.remote.retrofit.api
 
-import com.example.foodinfo.data.remote.model.RecipeAttrsNetwork
+import com.example.foodinfo.data.remote.model.RecipeMetadataNetwork
 import com.example.foodinfo.utils.ApiResponse
 import retrofit2.http.GET
 import retrofit2.http.Header
 
 
-interface RecipeAttrAPI {
+interface RecipeMetadataAPI {
     @GET("repos/yvo08013/SharedFiles/contents/db_fields_info.json")
-    suspend fun getRecipeAttrs(
+    suspend fun getRecipeMetadata(
         @Header(AUTH_TOKEN)
         token: String
-    ): ApiResponse<RecipeAttrsNetwork>
+    ): ApiResponse<RecipeMetadataNetwork>
 
 
     private companion object {

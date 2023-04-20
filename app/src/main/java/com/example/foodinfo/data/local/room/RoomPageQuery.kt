@@ -1,13 +1,14 @@
 package com.example.foodinfo.data.local.room
 
 import androidx.sqlite.db.SimpleSQLiteQuery
+import com.example.foodinfo.data.local.model.LabelOfRecipeDB
+import com.example.foodinfo.data.local.model.LabelOfRecipeMetadataDB
+import com.example.foodinfo.data.local.model.NutrientOfRecipeDB
+import com.example.foodinfo.data.local.model.RecipeDB
+import com.example.foodinfo.data.local.room.RoomPageQuery.build
 import com.example.foodinfo.domain.model.CategoryOfSearchFilterPreset
 import com.example.foodinfo.domain.model.NutrientOfSearchFilterPreset
 import com.example.foodinfo.domain.model.SearchFilterPreset
-import com.example.foodinfo.local.model.LabelOfRecipeDB
-import com.example.foodinfo.local.model.LabelRecipeAttrDB
-import com.example.foodinfo.local.model.NutrientOfRecipeDB
-import com.example.foodinfo.local.model.RecipeDB
 import com.example.foodinfo.utils.extensions.trimMultiline
 
 
@@ -45,7 +46,7 @@ import com.example.foodinfo.utils.extensions.trimMultiline
  *     HAVING  count(recipe_id) = 3)
  * AND id IN (SELECT recipe_id FROM (
  *     SELECT recipe_id, category_id FROM label_of_recipe
- *     INNER JOIN label_recipe_attr ON info_id = label_recipe_attr.id
+ *     INNER JOIN label_recipe_metadata ON info_id = label_recipe_attr.id
  *         WHERE info_id IN (1, 4, 8, 9, 46, 49, 52, 53)
  *         GROUP BY recipe_id, category_id)
  *     GROUP BY recipe_id HAVING count(recipe_id) = 3)
@@ -61,11 +62,11 @@ internal object RoomPageQuery {
             """
             ${RecipeDB.Columns.ID} IN 
             (SELECT ${LabelOfRecipeDB.Columns.RECIPE_ID} FROM 
-            (SELECT ${LabelOfRecipeDB.Columns.RECIPE_ID}, ${LabelRecipeAttrDB.Columns.CATEGORY_ID} 
-            FROM ${LabelOfRecipeDB.TABLE_NAME} INNER JOIN ${LabelRecipeAttrDB.TABLE_NAME} 
-            ON ${LabelOfRecipeDB.Columns.INFO_ID} = ${LabelRecipeAttrDB.TABLE_NAME}.${LabelRecipeAttrDB.Columns.ID} 
+            (SELECT ${LabelOfRecipeDB.Columns.RECIPE_ID}, ${LabelOfRecipeMetadataDB.Columns.CATEGORY_ID} 
+            FROM ${LabelOfRecipeDB.TABLE_NAME} INNER JOIN ${LabelOfRecipeMetadataDB.TABLE_NAME} 
+            ON ${LabelOfRecipeDB.Columns.INFO_ID} = ${LabelOfRecipeMetadataDB.TABLE_NAME}.${LabelOfRecipeMetadataDB.Columns.ID} 
             WHERE ${LabelOfRecipeDB.Columns.INFO_ID} IN (${labels.joinToString(", ")}) 
-            GROUP BY ${LabelOfRecipeDB.Columns.RECIPE_ID}, ${LabelRecipeAttrDB.Columns.CATEGORY_ID}) 
+            GROUP BY ${LabelOfRecipeDB.Columns.RECIPE_ID}, ${LabelOfRecipeMetadataDB.Columns.CATEGORY_ID}) 
             GROUP BY ${LabelOfRecipeDB.Columns.RECIPE_ID} 
             HAVING count(${LabelOfRecipeDB.Columns.RECIPE_ID}) = ${categories.size})
             """.trimMultiline()

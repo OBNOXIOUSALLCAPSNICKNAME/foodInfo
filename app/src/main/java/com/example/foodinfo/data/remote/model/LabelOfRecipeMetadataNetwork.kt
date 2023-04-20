@@ -3,7 +3,7 @@ package com.example.foodinfo.data.remote.model
 import com.google.gson.annotations.SerializedName
 
 
-data class CategoryRecipeAttrNetwork(
+data class LabelOfRecipeMetadataNetwork(
     @SerializedName(Fields.ID)
     val ID: Int,
 
@@ -13,8 +13,11 @@ data class CategoryRecipeAttrNetwork(
     @SerializedName(Fields.NAME)
     val name: String,
 
-    @SerializedName(Fields.ALLOW_MULTIPLE)
-    val allowMultiple: Boolean,
+    @SerializedName(Fields.CATEGORY_ID)
+    val categoryID: Int,
+
+    @SerializedName(Fields.DESCRIPTION)
+    val description: String,
 
     @SerializedName(Fields.PREVIEW_URL)
     val previewURL: String
@@ -24,7 +27,8 @@ data class CategoryRecipeAttrNetwork(
         const val ID = "ID"
         const val TAG = "tag"
         const val NAME = "name"
-        const val ALLOW_MULTIPLE = "allowMultiple"
+        const val CATEGORY_ID = "categoryID"
+        const val DESCRIPTION = "description"
         const val PREVIEW_URL = "previewURL"
     }
 }

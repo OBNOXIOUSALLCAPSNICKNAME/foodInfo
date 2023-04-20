@@ -1,7 +1,7 @@
 package com.example.foodinfo.data.remote.retrofit
 
 import android.util.Base64
-import com.example.foodinfo.data.remote.model.RecipeAttrsNetwork
+import com.example.foodinfo.data.remote.model.RecipeMetadataNetwork
 import com.example.foodinfo.utils.extensions.fromString
 import com.example.foodinfo.utils.extensions.getTypeToken
 import com.example.foodinfo.utils.extensions.read
@@ -20,22 +20,22 @@ private const val CONTENT = "content"
 class GitHubTypeAdapterFactory @Inject constructor(private val baseGson: Gson) : TypeAdapterFactory {
     override fun <T : Any?> create(gson: Gson, typeToken: TypeToken<T>): TypeAdapter<T>? {
         return when (typeToken) {
-            getTypeToken<RecipeAttrsNetwork>() -> {
-                RecipeAttrsTypeAdapter(baseGson) as TypeAdapter<T>
+            getTypeToken<RecipeMetadataNetwork>() -> {
+                RecipeMetadataTypeAdapter(baseGson) as TypeAdapter<T>
             }
-            else                               -> {
+            else                                  -> {
                 null
             }
         }
     }
 }
 
-private class RecipeAttrsTypeAdapter(private val gson: Gson) : TypeAdapter<RecipeAttrsNetwork>() {
-    override fun write(output: JsonWriter?, value: RecipeAttrsNetwork) {
+private class RecipeMetadataTypeAdapter(private val gson: Gson) : TypeAdapter<RecipeMetadataNetwork>() {
+    override fun write(output: JsonWriter?, value: RecipeMetadataNetwork) {
         throw UnsupportedOperationException()
     }
 
-    override fun read(input: JsonReader): RecipeAttrsNetwork {
+    override fun read(input: JsonReader): RecipeMetadataNetwork {
         return input.read { tokenName ->
             if (tokenName == CONTENT) {
                 gson.fromString(String(Base64.decode(input.nextString(), Base64.NO_PADDING)))

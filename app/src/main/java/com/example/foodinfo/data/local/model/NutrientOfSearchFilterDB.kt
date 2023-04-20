@@ -23,10 +23,10 @@ open class NutrientOfSearchFilterDB(
 
     override fun equals(other: Any?): Boolean {
         return (other is NutrientOfSearchFilterDB) &&
-                other.filterName == this.filterName &&
-                other.infoID == this.infoID &&
-                other.minValue == this.minValue &&
-                other.maxValue == this.maxValue
+        other.filterName == this.filterName &&
+        other.infoID == this.infoID &&
+        other.minValue == this.minValue &&
+        other.maxValue == this.maxValue
     }
 
     override fun hashCode(): Int {

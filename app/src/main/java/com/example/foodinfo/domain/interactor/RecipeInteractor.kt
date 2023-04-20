@@ -16,19 +16,19 @@ import javax.inject.Inject
 
 class RecipeInteractor @Inject constructor(
     private val apiCredentialsRepository: APICredentialsRepository,
-    private val recipeAttrsInteractor: RecipeAttrsInteractor,
+    private val recipeMetadataInteractor: RecipeMetadataInteractor,
     private val recipeRepository: RecipeRepository,
     private val prefUtils: PrefUtils
 ) {
 
     fun getByIdExtended(recipeID: String): Flow<State<RecipeExtended>> {
         return getResolved(
-            extraData = recipeAttrsInteractor.getRecipeAttrs(),
-            outputDataProvider = { attrs ->
+            extraData = recipeMetadataInteractor.getRecipeMetadata(),
+            outputDataProvider = { metadata ->
                 recipeRepository.getByIdExtended(
                     apiCredentialsRepository.getEdamam(prefUtils.edamamCredentials),
-                    recipeID,
-                    attrs
+                    metadata,
+                    recipeID
                 )
             }
         )
@@ -36,12 +36,12 @@ class RecipeInteractor @Inject constructor(
 
     fun getByIdNutrients(recipeID: String): Flow<State<List<NutrientOfRecipe>>> {
         return getResolved(
-            extraData = recipeAttrsInteractor.getNutrients(),
-            outputDataProvider = { attrs ->
+            extraData = recipeMetadataInteractor.getNutrients(),
+            outputDataProvider = { metadata ->
                 recipeRepository.getByIdNutrients(
                     apiCredentialsRepository.getEdamam(prefUtils.edamamCredentials),
-                    recipeID,
-                    attrs
+                    metadata,
+                    recipeID
                 )
             }
         )
@@ -57,18 +57,18 @@ class RecipeInteractor @Inject constructor(
     }
 
     fun getByFilter(
-        pagingConfig: PagingConfig,
+        recipeMetadata: RecipeMetadata,
         filterPreset: SearchFilterPreset,
-        recipeAttrs: RecipeAttrs,
+        pagingConfig: PagingConfig,
         inputText: String = "",
         isOnline: Boolean
     ): Flow<PagingData<Recipe>> = flow {
         emitAll(
             recipeRepository.getByFilter(
                 apiCredentialsRepository.getEdamam(prefUtils.edamamCredentials),
-                pagingConfig,
+                recipeMetadata,
                 filterPreset,
-                recipeAttrs,
+                pagingConfig,
                 inputText,
                 isOnline
             )

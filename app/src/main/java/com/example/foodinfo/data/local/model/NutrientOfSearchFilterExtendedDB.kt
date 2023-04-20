@@ -7,5 +7,5 @@ open class NutrientOfSearchFilterExtendedDB(
     open val infoID: Int,
     open val minValue: Float?,
     open val maxValue: Float?,
-    open val attrInfo: NutrientRecipeAttrDB?
+    open val metadata: NutrientOfRecipeMetadataDB?
 )

@@ -33,8 +33,8 @@ class RoomModule {
     }
 
     @Provides
-    fun provideRecipeAttrsDAO(database: DataBase): RecipeAttrDAO {
-        return database.recipeAttrDAO
+    fun provideRecipeMetadataDAO(database: DataBase): RecipeMetadataDAO {
+        return database.recipeMetadataDAO
     }
 
     @Provides

@@ -137,12 +137,12 @@ interface SearchFilterDAO {
         "${LabelOfSearchFilterDB.Columns.IS_SELECTED} = 0 WHERE " +
         "${LabelOfSearchFilterDB.Columns.ID} IN (SELECT " +
         "${LabelOfSearchFilterDB.TABLE_NAME}.${LabelOfSearchFilterDB.Columns.ID} FROM " +
-        "${LabelOfSearchFilterDB.TABLE_NAME} INNER JOIN ${LabelRecipeAttrDB.TABLE_NAME} ON " +
+        "${LabelOfSearchFilterDB.TABLE_NAME} INNER JOIN ${LabelOfRecipeMetadataDB.TABLE_NAME} ON " +
         "${LabelOfSearchFilterDB.Columns.INFO_ID} = " +
-        "${LabelRecipeAttrDB.TABLE_NAME}.${LabelRecipeAttrDB.Columns.ID} WHERE " +
+        "${LabelOfRecipeMetadataDB.TABLE_NAME}.${LabelOfRecipeMetadataDB.Columns.ID} WHERE " +
         "${LabelOfSearchFilterDB.Columns.FILTER_NAME} LIKE '%' || :filterName || '%' AND " +
         "${LabelOfSearchFilterDB.Columns.IS_SELECTED} == 1 AND " +
-        "${LabelRecipeAttrDB.Columns.CATEGORY_ID} == :categoryID)"
+        "${LabelOfRecipeMetadataDB.Columns.CATEGORY_ID} == :categoryID)"
     )
     suspend fun resetCategory(filterName: String, categoryID: Int)
 
