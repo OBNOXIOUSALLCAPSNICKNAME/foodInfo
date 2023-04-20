@@ -15,7 +15,6 @@ import com.example.foodinfo.domain.State
 import com.example.foodinfo.domain.model.*
 import com.example.foodinfo.domain.repository.RecipeRepository
 import com.example.foodinfo.utils.*
-import com.example.foodinfo.utils.edamam.FieldSet
 import com.example.foodinfo.utils.paging.*
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -64,7 +63,6 @@ class RecipeRepositoryImpl @Inject constructor(
                             apiCredentials = apiCredentials,
                             filterPreset = filterPreset,
                             inputText = inputText,
-                            fieldSet = FieldSet.FULL,
                         )
                     } else {
                         recipeRemote.getNextPage(pageURL)
@@ -95,7 +93,7 @@ class RecipeRepositoryImpl @Inject constructor(
     ): Flow<State<RecipeExtended>> {
         return getData(
             remoteDataProvider = {
-                DataSource.Remote(recipeRemote.getRecipe(apiCredentials, FieldSet.FULL, recipeID))
+                DataSource.Remote(recipeRemote.getRecipe(apiCredentials, recipeID))
             },
             localDataProvider = { DataSource.LocalFlow(recipeLocal.getByIdExtended(recipeID)) },
             saveRemoteDelegate = recipeLocal::addRecipe,
@@ -111,11 +109,11 @@ class RecipeRepositoryImpl @Inject constructor(
     ): Flow<State<List<NutrientOfRecipe>>> {
         return getData(
             remoteDataProvider = {
-                DataSource.Remote(recipeRemote.getRecipe(apiCredentials, FieldSet.NUTRIENTS, recipeID))
+                DataSource.Remote(recipeRemote.getRecipeNutrients(apiCredentials, recipeID))
             },
             localDataProvider = { DataSource.LocalFlow(recipeLocal.getNutrients(recipeID)) },
             saveRemoteDelegate = recipeLocal::addNutrients,
-            mapToLocalDelegate = { recipeHit -> recipeHit.recipe.nutrients!!.toDB(recipeID, attrs) },
+            mapToLocalDelegate = { nutrients -> nutrients.toDB(recipeID, attrs) },
             mapToModelDelegate = { nutrients -> nutrients.map(NutrientOfRecipeExtendedDB::toModel) }
         )
     }
@@ -126,13 +124,11 @@ class RecipeRepositoryImpl @Inject constructor(
     ): Flow<State<List<IngredientOfRecipe>>> {
         return getData(
             remoteDataProvider = {
-                DataSource.Remote(recipeRemote.getRecipe(apiCredentials, FieldSet.INGREDIENTS, recipeID))
+                DataSource.Remote(recipeRemote.getRecipeIngredients(apiCredentials, recipeID))
             },
             localDataProvider = { DataSource.LocalFlow(recipeLocal.getIngredients(recipeID)) },
             saveRemoteDelegate = recipeLocal::addIngredients,
-            mapToLocalDelegate = { recipeHit ->
-                recipeHit.recipe.ingredients!!.map { ingredient -> ingredient.toDB(recipeID) }
-            },
+            mapToLocalDelegate = { ingredients -> ingredients.map { ingredient -> ingredient.toDB(recipeID) } },
             mapToModelDelegate = { ingredients -> ingredients.map(IngredientOfRecipeDB::toModel) }
         )
     }

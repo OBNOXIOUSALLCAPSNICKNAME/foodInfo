@@ -1,5 +1,7 @@
 package com.example.foodinfo.data.remote.retrofit.api
 
+import com.example.foodinfo.data.remote.model.IngredientOfRecipeNetwork
+import com.example.foodinfo.data.remote.model.NutrientOfRecipeNetwork
 import com.example.foodinfo.data.remote.model.RecipeHitNetwork
 import com.example.foodinfo.data.remote.model.RecipePageNetwork
 import com.example.foodinfo.utils.ApiResponse
@@ -20,4 +22,16 @@ interface RecipeAPI {
         @Url
         url: String
     ): ApiResponse<RecipeHitNetwork>
+
+    @GET
+    suspend fun getRecipeNutrients(
+        @Url
+        url: String
+    ): ApiResponse<Map<String, NutrientOfRecipeNetwork>>
+
+    @GET
+    suspend fun getRecipeIngredients(
+        @Url
+        url: String
+    ): ApiResponse<List<IngredientOfRecipeNetwork>>
 }

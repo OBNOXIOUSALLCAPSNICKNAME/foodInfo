@@ -19,6 +19,9 @@ class UtilsModule {
         return PrefUtils(context)
     }
 
+
+    // baseGson needs for proper work of gson.fromString() and gson.fromReader()
+    // inside Edamam and GitHub TypeAdapters.
     @Provides
     @Singleton
     @Named("Base")

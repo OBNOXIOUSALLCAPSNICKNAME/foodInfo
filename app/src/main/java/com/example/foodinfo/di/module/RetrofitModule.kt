@@ -1,6 +1,7 @@
 package com.example.foodinfo.di.module
 
 import com.example.foodinfo.BuildConfig
+import com.example.foodinfo.data.remote.retrofit.EdamamTypeAdapterFactory
 import com.example.foodinfo.data.remote.retrofit.GitHubTypeAdapterFactory
 import com.example.foodinfo.data.remote.retrofit.api.RecipeAPI
 import com.example.foodinfo.data.remote.retrofit.api.RecipeAttrAPI
@@ -22,7 +23,7 @@ class RetrofitModule {
     @Provides
     @Named("Edamam")
     fun provideRetrofitEdamam(
-        @Named("Base")
+        @Named("Edamam")
         gson: Gson
     ): Retrofit {
         return Retrofit.Builder()
@@ -62,10 +63,20 @@ class RetrofitModule {
     @Provides
     @Singleton
     @Named("GitHub")
-    fun provideGson(
+    fun provideGsonGitHub(
         @Named("Base")
         baseGson: Gson
     ): Gson = GsonBuilder()
         .registerTypeAdapterFactory(GitHubTypeAdapterFactory(baseGson))
+        .create()
+
+    @Provides
+    @Singleton
+    @Named("Edamam")
+    fun provideGsonEdamam(
+        @Named("Base")
+        baseGson: Gson
+    ): Gson = GsonBuilder()
+        .registerTypeAdapterFactory(EdamamTypeAdapterFactory(baseGson))
         .create()
 }

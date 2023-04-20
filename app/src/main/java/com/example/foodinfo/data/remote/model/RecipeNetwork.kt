@@ -13,9 +13,6 @@ data class RecipeNetwork(
     @SerializedName(Fields.SOURCE)
     val source: String? = null,
 
-    @SerializedName(Fields.SHARE_AS)
-    val shareAs: String? = null,
-
     @SerializedName(Fields.LABEL)
     val label: String? = null,
 
@@ -53,17 +50,13 @@ data class RecipeNetwork(
     val nutrients: Map<String, NutrientOfRecipeNetwork>? = null,
 
     @SerializedName(Fields.INGREDIENTS)
-    val ingredients: List<IngredientOfRecipeNetwork>? = null,
-
-    @SerializedName(Fields.INGREDIENT_LINES)
-    val ingredientsLines: List<String>? = null
+    val ingredients: List<IngredientOfRecipeNetwork>? = null
 ) {
 
     object Fields {
         const val URI = "uri"
         const val URL = "url"
         const val SOURCE = "source"
-        const val SHARE_AS = "shareAs"
         const val LABEL = "label"
         const val IMAGE = "image"
         const val SERVINGS = "yield"
@@ -77,7 +70,6 @@ data class RecipeNetwork(
         const val CUISINE = "cuisineType"
         const val TOTAL_NUTRIENTS = "totalNutrients"
         const val INGREDIENTS = "ingredients"
-        const val INGREDIENT_LINES = "ingredientLines"
     }
 
     companion object {

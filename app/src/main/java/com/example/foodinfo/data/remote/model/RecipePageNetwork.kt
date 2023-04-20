@@ -10,9 +10,6 @@ class RecipePageNetwork(
     @SerializedName(Fields.TO)
     val to: Int,
 
-    @SerializedName(Fields.COUNT)
-    val count: Int,
-
     @SerializedName(Fields.HITS)
     val hits: List<RecipeHitNetwork>,
 
@@ -23,7 +20,6 @@ class RecipePageNetwork(
     object Fields {
         const val FROM = "from"
         const val TO = "to"
-        const val COUNT = "count"
         const val HITS = "hits"
         const val LINKS = "_links"
     }

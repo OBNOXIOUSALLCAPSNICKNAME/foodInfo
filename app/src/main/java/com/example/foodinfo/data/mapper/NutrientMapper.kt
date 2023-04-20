@@ -3,11 +3,7 @@ package com.example.foodinfo.data.mapper
 import com.example.foodinfo.data.local.model.*
 import com.example.foodinfo.data.remote.model.NutrientOfRecipeNetwork
 import com.example.foodinfo.data.remote.model.NutrientRecipeAttrNetwork
-import com.example.foodinfo.domain.model.NutrientHint
-import com.example.foodinfo.domain.model.NutrientOfRecipe
-import com.example.foodinfo.domain.model.NutrientRecipeAttr
-import com.example.foodinfo.domain.model.NutrientOfSearchFilter
-import com.example.foodinfo.domain.model.NutrientOfSearchFilterPreset
+import com.example.foodinfo.domain.model.*
 import com.example.foodinfo.utils.extensions.toPercent
 import com.example.foodinfo.utils.glide.svg.SVGModel
 import kotlin.math.max
@@ -104,7 +100,7 @@ fun Map<String, NutrientOfRecipeNetwork>.toDB(
         NutrientOfRecipeDB(
             recipeID = recipeID,
             infoID = attrsMap[tag.lowercase()]!!,
-            value = nutrient.quantity
+            value = nutrient.value
         )
     }
 }

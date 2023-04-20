@@ -1,8 +1,8 @@
 package com.example.foodinfo.utils.edamam
 
-import com.example.foodinfo.remote.model.RecipeNetwork
-import com.example.foodinfo.remote.retrofit.EdamamPageURL
-import com.example.foodinfo.remote.retrofit.EdamamRecipeURL
+import com.example.foodinfo.data.remote.model.RecipeNetwork
+import com.example.foodinfo.data.remote.retrofit.EdamamPageURL
+import com.example.foodinfo.data.remote.retrofit.EdamamRecipeURL
 import com.example.foodinfo.utils.extensions.trimMultiline
 
 
@@ -28,7 +28,6 @@ enum class FieldSet(val fields: String) {
         &field=${RecipeNetwork.Fields.URI}
         &field=${RecipeNetwork.Fields.URL}
         &field=${RecipeNetwork.Fields.SOURCE}
-        &field=${RecipeNetwork.Fields.SHARE_AS}
         &field=${RecipeNetwork.Fields.LABEL}
         &field=${RecipeNetwork.Fields.IMAGE}
         &field=${RecipeNetwork.Fields.SERVINGS}
@@ -55,7 +54,6 @@ enum class FieldSet(val fields: String) {
         &field=${RecipeNetwork.Fields.CALORIES}
         &field=${RecipeNetwork.Fields.WEIGHT}
         &field=${RecipeNetwork.Fields.TIME}
-        &field=${RecipeNetwork.Fields.INGREDIENT_LINES}
         """.trimMultiline()
     ),
     NUTRIENTS(
