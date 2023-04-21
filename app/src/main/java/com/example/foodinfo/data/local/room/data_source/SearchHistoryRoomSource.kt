@@ -10,8 +10,8 @@ import javax.inject.Inject
 class SearchHistoryRoomSource @Inject constructor(
     private val searchHistoryDAO: SearchHistoryDAO
 ) : SearchHistoryLocalSource {
-    override suspend fun getHistoryLatest(inputText: String): List<SearchInputDB> {
-        return searchHistoryDAO.getHistoryLatest(inputText)
+    override suspend fun getHistory(inputText: String): List<SearchInputDB> {
+        return searchHistoryDAO.getHistory(inputText)
     }
 
     override suspend fun getHistoryAll(): List<SearchInputDB> {
@@ -22,7 +22,7 @@ class SearchHistoryRoomSource @Inject constructor(
         searchHistoryDAO.addHistory(searchInput.map(SearchInputEntity::invoke))
     }
 
-    override suspend fun addInput(searchInput: SearchInputDB) {
-        searchHistoryDAO.addInput(SearchInputEntity(searchInput))
+    override suspend fun addInput(inputText: String) {
+        searchHistoryDAO.addInput(SearchInputEntity(inputText = inputText))
     }
 }

@@ -25,6 +25,7 @@ fun NutrientOfRecipeExtendedDB.toModel(): NutrientOfRecipe {
         infoID = this.infoID,
         name = this.metadata!!.name,
         measure = this.metadata!!.measure,
+        stepSize = this.metadata!!.stepSize,
         totalWeight = this.value,
         dailyWeight = this.metadata!!.dailyAllowance,
         dailyPercent = this.value.toPercent(this.metadata!!.dailyAllowance)

@@ -38,5 +38,5 @@ interface RecipeRepository {
 
     suspend fun invertFavoriteStatus(ID: String)
 
-    suspend fun delFromFavorite(ID: List<String>)
+    suspend fun delFromFavorite(IDs: List<String>)
 }

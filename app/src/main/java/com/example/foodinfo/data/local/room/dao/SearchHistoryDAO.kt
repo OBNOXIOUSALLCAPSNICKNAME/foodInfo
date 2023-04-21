@@ -16,7 +16,7 @@ interface SearchHistoryDAO {
         "ORDER BY ${SearchInputDB.Columns.DATE} DESC " +
         "LIMIT ${SearchInputDB.LIMIT}"
     )
-    suspend fun getHistoryLatest(inputText: String): List<SearchInputEntity>
+    suspend fun getHistory(inputText: String): List<SearchInputEntity>
 
     @Query(
         "SELECT * FROM ${SearchInputDB.TABLE_NAME} " +

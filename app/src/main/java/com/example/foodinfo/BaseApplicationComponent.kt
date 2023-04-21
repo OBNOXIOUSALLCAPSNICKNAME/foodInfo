@@ -1,9 +1,9 @@
 package com.example.foodinfo
 
 import android.app.Application
+import com.example.foodinfo.data.local.room.DataBase
 import com.example.foodinfo.di.BaseViewModelFactory
 import com.example.foodinfo.di.module.BaseApplicationModule
-import com.example.foodinfo.data.local.room.DataBase
 import com.example.foodinfo.utils.PrefUtils
 import com.google.gson.Gson
 import dagger.BindsInstance

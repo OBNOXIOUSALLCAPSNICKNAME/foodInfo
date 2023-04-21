@@ -132,7 +132,7 @@ class RecipeRepositoryImpl @Inject constructor(
         recipeLocal.invertFavoriteStatus(ID)
     }
 
-    override suspend fun delFromFavorite(ID: List<String>) {
-        recipeLocal.delFromFavorite(ID)
+    override suspend fun delFromFavorite(IDs: List<String>) {
+        recipeLocal.delFromFavorite(IDs)
     }
 }

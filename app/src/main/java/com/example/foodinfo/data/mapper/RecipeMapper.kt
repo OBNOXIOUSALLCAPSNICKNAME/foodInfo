@@ -5,15 +5,19 @@ import com.example.foodinfo.data.remote.model.*
 import com.example.foodinfo.domain.model.Recipe
 import com.example.foodinfo.domain.model.RecipeExtended
 import com.example.foodinfo.domain.model.RecipeMetadata
+import com.example.foodinfo.utils.edamam.EdamamImageURL
 
 
 fun RecipeDB.toModel(): Recipe {
     return Recipe(
         ID = this.ID,
+        source = this.source,
         name = this.name,
+        preview = EdamamImageURL(this.previewURL),
+        calories = this.calories,
+        ingredientsCount = this.ingredientsCount,
         weight = this.weight,
         cookingTime = this.cookingTime,
-        previewURL = this.previewURL,
         servings = this.servings,
         isFavorite = this.isFavorite
     )
@@ -26,14 +30,11 @@ fun RecipeExtendedDB.toModelExtended(): RecipeExtended {
         weight = this.weight,
         cookingTime = this.cookingTime,
         servings = this.servings,
-        preview = this.previewURL,
+        preview = EdamamImageURL(this.previewURL),
         isFavorite = this.isFavorite,
-        ingredientsPreviews = this.ingredients.map { it.previewURL },
-        categories = this.labels.toRecipeCategories(),
-        energy = this.nutrients.find { it.infoID == 1 }!!.toModel(),
-        protein = this.nutrients.find { it.infoID == 12 }!!.toModel(),
-        carb = this.nutrients.find { it.infoID == 7 }!!.toModel(),
-        fat = this.nutrients.find { it.infoID == 2 }!!.toModel()
+        labels = this.labels.map(LabelOfRecipeExtendedDB::toModel),
+        nutrients = this.nutrients.map(NutrientOfRecipeExtendedDB::toModel),
+        ingredients = this.ingredients.map(IngredientOfRecipeDB::toModel)
     )
 }
 

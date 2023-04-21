@@ -19,7 +19,8 @@ fun LabelOfRecipeExtendedDB.toModel(): LabelOfRecipe {
     return LabelOfRecipe(
         ID = this.ID,
         infoID = this.infoID,
-        name = this.metadata!!.name
+        name = this.metadata!!.name,
+        categoryName = this.metadata!!.categoryMetadata!!.name
     )
 }
 

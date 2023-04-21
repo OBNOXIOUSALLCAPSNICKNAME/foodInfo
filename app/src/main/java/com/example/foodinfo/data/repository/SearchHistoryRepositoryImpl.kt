@@ -13,8 +13,8 @@ class SearchHistoryRepositoryImpl @Inject constructor(
     private val searchHistoryLocal: SearchHistoryLocalSource
 ) : BaseRepository(), SearchHistoryRepository {
 
-    override suspend fun getHistoryLatest(inputText: String): List<SearchInput> {
-        return searchHistoryLocal.getHistoryLatest(inputText).map(SearchInputDB::toModel)
+    override suspend fun getHistory(inputText: String): List<SearchInput> {
+        return searchHistoryLocal.getHistory(inputText).map(SearchInputDB::toModel)
     }
 
     override suspend fun getHistoryAll(): List<SearchInput> {
@@ -25,7 +25,7 @@ class SearchHistoryRepositoryImpl @Inject constructor(
         searchHistoryLocal.addHistory(searchHistory.map(SearchInput::toDB))
     }
 
-    override suspend fun addInput(searchInput: SearchInput) {
-        searchHistoryLocal.addInput(searchInput.toDB())
+    override suspend fun addInput(inputText: String) {
+        searchHistoryLocal.addInput(inputText)
     }
 }

@@ -11,10 +11,7 @@ data class RecipeExtended(
     val servings: Int,
     val preview: EdamamImageURL,
     val isFavorite: Boolean,
-    val ingredientsPreviews: List<String>,
-    val categories: List<CategoryOfRecipe>,
-    val energy: NutrientOfRecipe,
-    val protein: NutrientOfRecipe,
-    val carb: NutrientOfRecipe,
-    val fat: NutrientOfRecipe
+    val labels: List<LabelOfRecipe>,
+    val nutrients: List<NutrientOfRecipe>,
+    val ingredients: List<IngredientOfRecipe>
 )
