@@ -1,7 +1,22 @@
 package com.example.foodinfo.di.module
 
 import androidx.lifecycle.ViewModel
-import com.example.foodinfo.view_model.*
+import com.example.foodinfo.features.category.viewm_model.LabelsOfCategoryViewModel
+import com.example.foodinfo.features.explore.view_model.ExploreByLabelViewModel
+import com.example.foodinfo.features.explore.view_model.ExploreByQueryViewModel
+import com.example.foodinfo.features.favorite.view_model.FavoriteRecipesViewModel
+import com.example.foodinfo.features.favorite.view_model.SortFavoriteRecipesViewModel
+import com.example.foodinfo.features.home.view_model.HomeViewModel
+import com.example.foodinfo.features.planner.PlannerViewModel
+import com.example.foodinfo.features.recipe.view_model.IngredientsOfRecipeViewModel
+import com.example.foodinfo.features.recipe.view_model.NutrientsOfRecipeViewModel
+import com.example.foodinfo.features.recipe.view_model.RecipeExtendedViewModel
+import com.example.foodinfo.features.search.view_model.SearchInputViewModel
+import com.example.foodinfo.features.search_filter.view_model.CategoryOfSearchFilterViewModel
+import com.example.foodinfo.features.search_filter.view_model.NutrientsOfSearchFilterViewModel
+import com.example.foodinfo.features.search_filter.view_model.SearchFilterViewModel
+import com.example.foodinfo.features.search_filter.view_model.SelectSearchFilterViewModel
+import com.example.foodinfo.features.settings.SettingsViewModel
 import dagger.Binds
 import dagger.MapKey
 import dagger.Module
@@ -34,13 +49,13 @@ abstract class ViewModelModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(RecipeIngredientsViewModel::class)
-    abstract fun bindsRecipeIngredientsViewModel(viewModel: RecipeIngredientsViewModel): ViewModel
+    @ViewModelKey(IngredientsOfRecipeViewModel::class)
+    abstract fun bindsIngredientsOfRecipeViewModel(viewModel: IngredientsOfRecipeViewModel): ViewModel
 
     @Binds
     @IntoMap
-    @ViewModelKey(RecipeNutrientsViewModel::class)
-    abstract fun bindsRecipeNutrientsViewModel(viewModel: RecipeNutrientsViewModel): ViewModel
+    @ViewModelKey(NutrientsOfRecipeViewModel::class)
+    abstract fun bindsNutrientsOfRecipeViewModel(viewModel: NutrientsOfRecipeViewModel): ViewModel
 
     @Binds
     @IntoMap
@@ -49,18 +64,18 @@ abstract class ViewModelModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(SearchFilterCategoryViewModel::class)
-    abstract fun bindsSearchFilterCategoryViewModel(viewModel: SearchFilterCategoryViewModel): ViewModel
+    @ViewModelKey(CategoryOfSearchFilterViewModel::class)
+    abstract fun bindsCategoryOfSearchFilterViewModel(viewModel: CategoryOfSearchFilterViewModel): ViewModel
 
     @Binds
     @IntoMap
-    @ViewModelKey(SearchFilterNutrientsViewModel::class)
-    abstract fun bindsSearchFilterNutrientsViewModel(viewModel: SearchFilterNutrientsViewModel): ViewModel
+    @ViewModelKey(NutrientsOfSearchFilterViewModel::class)
+    abstract fun bindsNutrientsOfSearchFilterViewModel(viewModel: NutrientsOfSearchFilterViewModel): ViewModel
 
     @Binds
     @IntoMap
-    @ViewModelKey(SearchFilterSelectViewModel::class)
-    abstract fun bindsSearchFilterSelectViewModel(viewModel: SearchFilterSelectViewModel): ViewModel
+    @ViewModelKey(SelectSearchFilterViewModel::class)
+    abstract fun bindsSelectSearchFilterViewModel(viewModel: SelectSearchFilterViewModel): ViewModel
 
     @Binds
     @IntoMap
@@ -69,18 +84,18 @@ abstract class ViewModelModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(SearchQueryViewModel::class)
-    abstract fun bindsSearchQueryViewModel(viewModel: SearchQueryViewModel): ViewModel
+    @ViewModelKey(ExploreByQueryViewModel::class)
+    abstract fun bindsExploreByQueryViewModel(viewModel: ExploreByQueryViewModel): ViewModel
 
     @Binds
     @IntoMap
-    @ViewModelKey(SearchLabelViewModel::class)
-    abstract fun bindsSearchLabelViewModel(viewModel: SearchLabelViewModel): ViewModel
+    @ViewModelKey(ExploreByLabelViewModel::class)
+    abstract fun bindsExploreByLabelViewModel(viewModel: ExploreByLabelViewModel): ViewModel
 
     @Binds
     @IntoMap
-    @ViewModelKey(SearchCategoryViewModel::class)
-    abstract fun bindsSearchCategoryViewModel(viewModel: SearchCategoryViewModel): ViewModel
+    @ViewModelKey(LabelsOfCategoryViewModel::class)
+    abstract fun bindsLabelsOfCategoryViewModel(viewModel: LabelsOfCategoryViewModel): ViewModel
 
     @Binds
     @IntoMap
@@ -94,11 +109,11 @@ abstract class ViewModelModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(FavoriteViewModel::class)
-    abstract fun bindsFavoriteViewModel(viewModel: FavoriteViewModel): ViewModel
+    @ViewModelKey(FavoriteRecipesViewModel::class)
+    abstract fun bindsFavoriteRecipesViewModel(viewModel: FavoriteRecipesViewModel): ViewModel
 
     @Binds
     @IntoMap
-    @ViewModelKey(FavoriteSortViewModel::class)
-    abstract fun bindsFavoriteSortViewModel(viewModel: FavoriteSortViewModel): ViewModel
+    @ViewModelKey(SortFavoriteRecipesViewModel::class)
+    abstract fun bindsSortFavoriteRecipesViewModel(viewModel: SortFavoriteRecipesViewModel): ViewModel
 }

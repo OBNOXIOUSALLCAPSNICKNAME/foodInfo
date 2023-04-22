@@ -13,6 +13,7 @@ fun List<LabelOfSearchFilterExtendedDB>.toModel(categoryID: Int): CategoryOfSear
         .filter { it.metadata!!.categoryID == categoryID }
         .also { labels ->
             return CategoryOfSearchFilter(
+                ID = labels.first().metadata!!.categoryMetadata!!.ID,
                 tag = labels.first().metadata!!.categoryMetadata!!.tag,
                 name = labels.first().metadata!!.categoryMetadata!!.name,
                 labels = labels.map(LabelOfSearchFilterExtendedDB::toModel)
@@ -25,6 +26,7 @@ fun List<LabelOfSearchFilterExtendedDB>.toModel(): List<CategoryOfSearchFilter> 
         .groupBy { it.metadata!!.categoryMetadata!!.name }.values
         .map { labels ->
             CategoryOfSearchFilter(
+                ID = labels.first().metadata!!.categoryMetadata!!.ID,
                 tag = labels.first().metadata!!.categoryMetadata!!.tag,
                 name = labels.first().metadata!!.categoryMetadata!!.name,
                 labels = labels.map(LabelOfSearchFilterExtendedDB::toModel)

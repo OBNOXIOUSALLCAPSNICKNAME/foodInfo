@@ -4,7 +4,7 @@ import com.example.foodinfo.data.local.data_source.*
 import com.example.foodinfo.data.remote.data_source.RecipeMetadataRemoteSource
 import com.example.foodinfo.data.remote.data_source.RecipeRemoteSource
 import com.example.foodinfo.data.repository.*
-import com.example.foodinfo.domain.repository.APICredentialsRepository
+import com.example.foodinfo.domain.repository.*
 import com.example.foodinfo.utils.PrefUtils
 import dagger.Module
 import dagger.Provides
@@ -19,7 +19,7 @@ class RepositoryModule {
     fun provideRecipeRepository(
         recipeLocal: RecipeLocalSource,
         recipeRemote: RecipeRemoteSource
-    ): RecipeRepositoryImpl {
+    ): RecipeRepository {
         return RecipeRepositoryImpl(recipeLocal, recipeRemote)
     }
 
@@ -28,7 +28,7 @@ class RepositoryModule {
     fun provideRecipeMetadataRepository(
         recipeMetadataLocal: RecipeMetadataLocalSource,
         recipeMetadataRemote: RecipeMetadataRemoteSource
-    ): RecipeMetadataRepositoryImpl {
+    ): RecipeMetadataRepository {
         return RecipeMetadataRepositoryImpl(recipeMetadataLocal, recipeMetadataRemote)
     }
 
@@ -45,7 +45,7 @@ class RepositoryModule {
     fun provideSearchFilterRepository(
         searchFilterLocal: SearchFilterLocalSource,
         prefUtils: PrefUtils
-    ): SearchFilterRepositoryImpl {
+    ): SearchFilterRepository {
         return SearchFilterRepositoryImpl(searchFilterLocal, prefUtils)
     }
 
@@ -53,7 +53,7 @@ class RepositoryModule {
     @Singleton
     fun provideSearchInputRepository(
         searchHistoryLocal: SearchHistoryLocalSource
-    ): SearchHistoryRepositoryImpl {
+    ): SearchHistoryRepository {
         return SearchHistoryRepositoryImpl(searchHistoryLocal)
     }
 }

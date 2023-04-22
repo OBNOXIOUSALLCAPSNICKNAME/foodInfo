@@ -13,7 +13,7 @@ interface AppAdapterDelegate {
 
 inline fun <reified Model : AppViewHolderModel, VB : ViewBinding> appAdapterDelegate(
     noinline inflate: (LayoutInflater, ViewGroup?, Boolean) -> VB,
-    noinline onInit: (VB, Model) -> Unit = { _, _ -> },
+    noinline onInit: (VB, () -> Model) -> Unit = { _, _ -> },
     noinline onBind: (VB, Model, List<Any>) -> Unit = { _, _, _ -> }
 ) = object : AppAdapterDelegate {
 
@@ -25,7 +25,7 @@ inline fun <reified Model : AppViewHolderModel, VB : ViewBinding> appAdapterDele
         inflate(LayoutInflater.from(parent.context), parent, false).also { binding ->
             return object : AppViewHolder(binding) {
                 init {
-                    onInit(binding, item as Model)
+                    onInit(binding) { item as Model }
                 }
 
                 override fun bind(item: AppViewHolderModel, payloads: List<Any>) {

@@ -13,7 +13,7 @@ interface RecipeLocalSource {
     fun getByFilter(
         filterPreset: SearchFilterPreset,
         inputText: String,
-        isOnline: Boolean
+        sessionStartTime: Long
     ): PagingSource<Int, out RecipeDB>
 
 

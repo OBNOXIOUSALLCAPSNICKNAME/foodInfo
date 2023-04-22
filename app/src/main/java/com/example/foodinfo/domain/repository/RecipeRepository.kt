@@ -10,7 +10,7 @@ interface RecipeRepository {
 
     fun getFavorite(): Flow<PagingData<Recipe>>
 
-    suspend fun getFavoriteIds(): Set<String>
+    suspend fun getFavoriteIDs(): Set<String>
 
     fun getFavoriteCount(): Flow<Int>
 

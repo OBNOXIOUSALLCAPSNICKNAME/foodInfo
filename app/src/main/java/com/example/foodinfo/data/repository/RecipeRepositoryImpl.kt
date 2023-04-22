@@ -36,7 +36,7 @@ class RecipeRepositoryImpl @Inject constructor(
         ).flow
     }
 
-    override suspend fun getFavoriteIds(): Set<String> {
+    override suspend fun getFavoriteIDs(): Set<String> {
         return recipeLocal.getFavoriteIds().toSet()
     }
 
@@ -73,7 +73,7 @@ class RecipeRepositoryImpl @Inject constructor(
                     originalSource = recipeLocal.getByFilter(
                         filterPreset = pagingHelper.filterPreset,
                         inputText = pagingHelper.inputText,
-                        isOnline = pagingHelper.isOnline
+                        sessionStartTime = pagingHelper.sessionStartTime
                     ),
                     mapperDelegate = RecipeDB::toModel
                 )

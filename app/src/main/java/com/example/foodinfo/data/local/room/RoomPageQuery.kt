@@ -46,7 +46,7 @@ import com.example.foodinfo.utils.extensions.trimMultiline
  *     HAVING  count(recipe_id) = 3)
  * AND id IN (SELECT recipe_id FROM (
  *     SELECT recipe_id, category_id FROM label_of_recipe
- *     INNER JOIN label_recipe_metadata ON info_id = label_recipe_attr.id
+ *     INNER JOIN label_recipe_metadata ON info_id = label_recipe_metadata.id
  *         WHERE info_id IN (1, 4, 8, 9, 46, 49, 52, 53)
  *         GROUP BY recipe_id, category_id)
  *     GROUP BY recipe_id HAVING count(recipe_id) = 3)
@@ -116,16 +116,12 @@ internal object RoomPageQuery {
         }
     }
 
-    private fun setLastUpdated(isOnline: Boolean): String {
-        return if (isOnline) {
-            "${RecipeDB.Columns.LAST_UPDATE} >= ${System.currentTimeMillis()}"
-        } else {
-            ""
-        }
+    private fun setLastUpdated(sessionStartTime: Long): String {
+        return "${RecipeDB.Columns.LAST_UPDATE} >= $sessionStartTime"
     }
 
-    private fun setOrder(isOnline: Boolean): String {
-        return if (isOnline) {
+    private fun setOrder(sessionStartTime: Long): String {
+        return if (sessionStartTime != 0L) {
             "ORDER BY ${RecipeDB.Columns.LAST_UPDATE} ASC"
         } else {
             "ORDER BY ${RecipeDB.Columns.LAST_UPDATE} DESC"
@@ -137,19 +133,19 @@ internal object RoomPageQuery {
      *
      * @param filterPreset Filter preset object that will be used to build query.
      * @param inputText If specified, result will contain only those recipes which name contain provided string.
-     * @param isOnline If true, the result will not contain recipes that were added/updated before the session
-     * started and sorted by [RecipeDB.lastUpdate] **ASC** to prevent list "jumps" while scrolling. Otherwise will
-     * return all recipes matching the query ordered by [RecipeDB.lastUpdate] **DESC** to show most actual cached
-     * recipes.
+     * @param sessionStartTime Result will not contain recipes that were added/updated before provided date
+     * and sorted by [RecipeDB.lastUpdate] **ASC** to prevent list "jumps" while scrolling.
+     * If sessionStartTime = 0 - result will contain all recipes matching the query ordered by
+     * [RecipeDB.lastUpdate] **DESC** to show most actual cached recipes.
      */
     fun build(
         filterPreset: SearchFilterPreset,
         inputText: String,
-        isOnline: Boolean
+        sessionStartTime: Long
     ): SimpleSQLiteQuery {
         val subQueryList = arrayListOf<String>()
         subQueryList.add(inputTextToLocalQuery(inputText))
-        subQueryList.add(setLastUpdated(isOnline))
+        subQueryList.add(setLastUpdated(sessionStartTime))
         subQueryList.addAll(filterPreset.basics.map { field ->
             rangeFieldToLocalQuery(field.columnName, field.minValue, field.maxValue)
         })
@@ -162,7 +158,7 @@ internal object RoomPageQuery {
                 "SELECT * FROM ${
                     RecipeDB.TABLE_NAME
                 } ${
-                    setOrder(isOnline)
+                    setOrder(sessionStartTime)
                 }"
             )
         } else {
@@ -172,7 +168,7 @@ internal object RoomPageQuery {
                 } WHERE ${
                     subQueryList.joinToString(" AND ")
                 } ${
-                    setOrder(isOnline)
+                    setOrder(sessionStartTime)
                 }"
             )
         }

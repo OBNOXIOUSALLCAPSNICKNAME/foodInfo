@@ -12,4 +12,10 @@ data class PagingHelper(
     val pagingConfig: PagingConfig,
     val inputText: String,
     val isOnline: Boolean
-)
+) {
+    val sessionStartTime: Long = if (isOnline) {
+        System.currentTimeMillis()
+    } else {
+        0
+    }
+}

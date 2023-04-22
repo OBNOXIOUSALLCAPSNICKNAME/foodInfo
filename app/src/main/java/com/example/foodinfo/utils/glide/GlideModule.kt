@@ -7,11 +7,7 @@ import com.bumptech.glide.Registry
 import com.bumptech.glide.annotation.GlideModule
 import com.bumptech.glide.module.AppGlideModule
 import com.caverock.androidsvg.SVG
-import com.example.foodinfo.utils.glide.svg.SVGModel
-import com.example.foodinfo.utils.glide.svg.SVGDrawableTranscoder
-import com.example.foodinfo.utils.glide.svg.SVGLocalDecoder
-import com.example.foodinfo.utils.glide.svg.SVGModelLoaderFactory
-import com.example.foodinfo.utils.glide.svg.SVGRemoteDecoder
+import com.example.foodinfo.utils.glide.svg.*
 import java.io.InputStream
 
 

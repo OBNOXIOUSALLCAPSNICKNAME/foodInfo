@@ -4,20 +4,14 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.google.gson.stream.JsonReader
 import com.google.gson.stream.JsonToken
+import kotlin.math.roundToInt
 
-
-val String.measureSpacer
-    get() = when (this) {
-        "g",
-        "mg",
-        "µg" -> ""
-        else -> " "
-    }
 
 fun String.trimMultiline() = this.trimIndent().replace(System.lineSeparator(), "")
 
 fun Float.toPercent(total: Float) = if (total == 0f) 100 else (this * 100 / total).toInt()
 
+fun Float.round() = (this * 10f).roundToInt() / 10f
 
 inline fun <reified T> getTypeToken(): TypeToken<T> = object : TypeToken<T>() {}
 

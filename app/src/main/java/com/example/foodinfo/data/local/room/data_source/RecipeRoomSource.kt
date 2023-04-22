@@ -24,9 +24,9 @@ class RecipeRoomSource @Inject constructor(
     override fun getByFilter(
         filterPreset: SearchFilterPreset,
         inputText: String,
-        isOnline: Boolean
+        sessionStartTime: Long
     ): PagingSource<Int, out RecipeDB> {
-        return recipeDAO.getByFilter(RoomPageQuery.build(filterPreset, inputText, isOnline))
+        return recipeDAO.getByFilter(RoomPageQuery.build(filterPreset, inputText, sessionStartTime))
     }
 
     override fun getByIdExtended(recipeID: String): Flow<RecipeExtendedDB> {
