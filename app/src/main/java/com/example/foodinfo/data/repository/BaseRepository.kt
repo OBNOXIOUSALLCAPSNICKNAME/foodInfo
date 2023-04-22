@@ -37,12 +37,12 @@ abstract class BaseRepository {
                         emit(mapData(source.response.result, ErrorCodes.STATE_REMOTE_MAPPING, mapDelegate))
                     } else {
                         with(source.response as NetworkResponse.Error) {
-                            emit(State.Failure(messageID, throwable, code))
+                            emit(State.Failure(code, messageID, throwable))
                         }
                     }
                 }
                 is DataSource.Empty  -> {
-                    emit(State.Failure(R.string.error_no_data, NoDataException(), ErrorCodes.STATE_NO_DATA))
+                    emit(State.Failure(ErrorCodes.STATE_NO_DATA, R.string.error_no_data, NoDataException()))
                 }
                 else                 -> {
                     throw IllegalArgumentException(
@@ -51,7 +51,7 @@ abstract class BaseRepository {
                 }
             }
         } catch (e: Exception) {
-            emit(State.Failure(R.string.error_unknown, e, ErrorCodes.STATE_REMOTE_UNKNOWN))
+            emit(State.Failure(ErrorCodes.STATE_REMOTE_UNKNOWN, R.string.error_unknown, e))
         }
     }
 
@@ -78,7 +78,7 @@ abstract class BaseRepository {
                 }
             }
         } catch (e: Exception) {
-            emit(State.Failure(R.string.error_unknown, e, ErrorCodes.STATE_LOCAL_UNKNOWN))
+            emit(State.Failure(ErrorCodes.STATE_LOCAL_UNKNOWN, R.string.error_unknown, e))
         }
     }
 
@@ -89,12 +89,12 @@ abstract class BaseRepository {
         crossinline mapDelegate: suspend (inT) -> outT
     ): State<outT> {
         return if (data == null || data is Unit || data is Collection<*> && data.isEmpty()) {
-            State.Failure(R.string.error_no_data, NoDataException(), ErrorCodes.STATE_NO_DATA)
+            State.Failure(ErrorCodes.STATE_NO_DATA, R.string.error_no_data, NoDataException())
         } else {
             try {
                 State.Success(mapDelegate(data))
             } catch (e: Exception) {
-                State.Failure(R.string.error_corrupted_data, e, code)
+                State.Failure(code, R.string.error_corrupted_data, e)
             }
         }
     }
@@ -247,13 +247,13 @@ abstract class BaseRepository {
                             if (remoteSaveError != null) {
                                 emit(
                                     State.Failure(
+                                        ErrorCodes.STATE_REMOTE_SAVE,
                                         R.string.error_unknown,
-                                        remoteSaveError!!,
-                                        ErrorCodes.STATE_REMOTE_SAVE
+                                        remoteSaveError!!
                                     )
                                 )
                             } else if (remoteDataSaved) {
-                                emit(State.Failure(messageID, error, errorCode))
+                                emit(State.Failure(errorCode, messageID, error))
                             }
                         }
                     )
@@ -268,7 +268,7 @@ abstract class BaseRepository {
                             emit(State.Success(localData))
                         },
                         onError = { _, _, _ ->
-                            emit(State.Failure(remote.messageID!!, remote.throwable!!, remote.errorCode!!))
+                            emit(State.Failure(remote.errorCode!!, remote.messageID!!, remote.throwable!!))
                         }
                     )
                 }

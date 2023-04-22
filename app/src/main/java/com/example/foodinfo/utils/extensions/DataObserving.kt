@@ -36,7 +36,7 @@ inline fun <T> Fragment.observeState(
     crossinline onStart: () -> Unit = {},
     crossinline onFinish: () -> Unit = {},
     crossinline onSuccess: suspend (T) -> Unit,
-    crossinline onFailure: (Int, Throwable, Int) -> Unit = ::logStateError,
+    crossinline onFailure: (Int, Int, Throwable) -> Unit = ::logStateError,
 ) {
     var initializationCompleted = true
     observe(Lifecycle.State.STARTED) {
@@ -47,7 +47,7 @@ inline fun <T> Fragment.observeState(
                     initializationCompleted = false
                 }
                 state is State.Failure                                           -> {
-                    onFailure(state.messageID!!, state.throwable!!, state.errorCode!!)
+                    onFailure(state.errorCode!!, state.messageID!!, state.throwable!!)
                 }
                 state.data != null && (state is State.Success || useLoadingData) -> {
                     onSuccess(state.data)
@@ -117,14 +117,14 @@ inline fun <T, R : Any> Fragment.observePages(
     pageFlow: Flow<PagingData<R>>,
     useLoadingData: Boolean,
     crossinline onSuccess: suspend (T) -> Unit,
-    crossinline onFailure: (Int, Throwable, Int) -> Unit = ::logStateError,
+    crossinline onFailure: (Int, Int, Throwable) -> Unit = ::logStateError,
     crossinline onPageCollected: suspend (PagingData<R>) -> Unit
 ) {
     observe(Lifecycle.State.STARTED) {
         dataFlow.filterState(useLoadingData).collect { state ->
             when {
                 state is State.Failure                                           -> {
-                    onFailure(state.messageID!!, state.throwable!!, state.errorCode!!)
+                    onFailure(state.errorCode!!, state.messageID!!, state.throwable!!)
                 }
                 state.data != null && (state is State.Success || useLoadingData) -> {
                     onSuccess(state.data)
@@ -163,7 +163,7 @@ inline fun Fragment.observe(
 /**
  * Logs error code, throwable and error message with [State.LOG_TAG] and shows SnackBar with error code
  */
-fun Fragment.logStateError(messageID: Int, throwable: Throwable, errorCode: Int) {
+fun Fragment.logStateError(errorCode: Int, messageID: Int, throwable: Throwable) {
     Log.d(State.LOG_TAG, "code: $errorCode message: ${getString(messageID)}", throwable)
     view?.let { view ->
         Snackbar.make(view, errorCode.toString(), Snackbar.LENGTH_SHORT).show()

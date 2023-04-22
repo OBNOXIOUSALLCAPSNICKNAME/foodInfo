@@ -8,9 +8,9 @@ import kotlinx.coroutines.flow.*
 
 sealed class State<T>(
     val data: T? = null,
-    val throwable: Throwable? = null,
     val errorCode: Int? = null,
-    val messageID: Int? = null
+    val messageID: Int? = null,
+    val throwable: Throwable? = null
 ) {
     /**
      * Means that loading has started. Must be emitted only once and immediately before any operations
@@ -38,8 +38,8 @@ sealed class State<T>(
      * will be no subsequent emissions of states unless data source updates is expected outside of the
      * flow that provided this state.
      */
-    class Failure<T>(messageID: Int, throwable: Throwable, errorCode: Int) : State<T>(
-        messageID = messageID, errorCode = errorCode, throwable = throwable
+    class Failure<T>(errorCode: Int, messageID: Int, throwable: Throwable) : State<T>(
+        errorCode = errorCode, messageID = messageID, throwable = throwable
     )
 
 
@@ -73,7 +73,7 @@ sealed class State<T>(
         ): Flow<State<outT>> = this.transform { state ->
             when (state) {
                 is Initial -> emit(Initial())
-                is Failure -> emit(Failure(state.messageID!!, state.throwable!!, state.errorCode!!))
+                is Failure -> emit(Failure(state.errorCode!!, state.messageID!!, state.throwable!!))
                 is Loading -> try {
                     emit(Loading(transform(state.data!!)))
                 } catch (e: Exception) {
@@ -82,7 +82,7 @@ sealed class State<T>(
                 is Success -> try {
                     emit(Success(transform(state.data!!)))
                 } catch (e: Exception) {
-                    emit(Failure(R.string.error_corrupted_data, e, ErrorCodes.STATE_TRANSFORM_FAIL))
+                    emit(Failure(ErrorCodes.STATE_TRANSFORM_FAIL, R.string.error_corrupted_data, e))
                 }
             }
         }

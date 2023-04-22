@@ -55,7 +55,7 @@ internal inline fun <extraT, outputT> getResolved(
                 outputDataProvider(extraState.data!!)
             }
             is State.Failure                   -> {
-                flowOf(State.Failure(extraState.messageID!!, extraState.throwable!!, extraState.errorCode!!))
+                flowOf(State.Failure(extraState.errorCode!!, extraState.messageID!!, extraState.throwable!!))
             }
         }
     }.collect { resultState ->
