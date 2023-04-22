@@ -16,7 +16,7 @@ fun categoryEditAdapterDelegate(
                 onQuestionMarkClickListener(itemProvider())
             }
             llContent.setOnClickListener {
-                onItemClickListener.invoke(itemProvider())
+                onItemClickListener(itemProvider())
             }
         }
     },

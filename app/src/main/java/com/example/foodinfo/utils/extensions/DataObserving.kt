@@ -155,7 +155,7 @@ inline fun Fragment.observe(
 ) {
     viewLifecycleOwner.lifecycleScope.launch {
         viewLifecycleOwner.lifecycle.repeatOnLifecycle(state) {
-            runnable.invoke()
+            runnable()
         }
     }
 }

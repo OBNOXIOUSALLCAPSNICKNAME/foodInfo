@@ -12,10 +12,10 @@ fun nutrientEditAdapterDelegate(
     inflate = RvItemNutrientOfSearchFilterEditBinding::inflate,
     onInit = { binding, itemProvider ->
         binding.root.addStopTrackingCallback { minValue, maxValue ->
-            onValueChangedCallback.invoke(itemProvider(), minValue, maxValue)
+            onValueChangedCallback(itemProvider(), minValue, maxValue)
         }
         binding.root.addHeaderClickCallback {
-            onHeaderClickCallback.invoke(itemProvider())
+            onHeaderClickCallback(itemProvider())
         }
     },
     onBind = { binding, item, _ ->

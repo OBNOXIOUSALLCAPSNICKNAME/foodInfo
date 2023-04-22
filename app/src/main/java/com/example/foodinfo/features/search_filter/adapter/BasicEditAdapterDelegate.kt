@@ -11,7 +11,7 @@ fun basicEditAdapterDelegate(
     inflate = RvItemBasicOfSearchFilterEditBinding::inflate,
     onInit = { binding, itemProvider ->
         binding.root.addStopTrackingCallback { minValue, maxValue ->
-            onValueChangedCallback.invoke(itemProvider(), minValue, maxValue)
+            onValueChangedCallback(itemProvider(), minValue, maxValue)
         }
     },
     onBind = { binding, item, _ ->
