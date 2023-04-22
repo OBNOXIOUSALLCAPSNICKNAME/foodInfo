@@ -1,16 +1,11 @@
 package com.example.foodinfo.di.module
 
-import android.content.Context
-import com.example.foodinfo.local.data_source.*
-import com.example.foodinfo.remote.data_source.RecipeAttrRemoteSource
-import com.example.foodinfo.remote.data_source.RecipeRemoteSource
-import com.example.foodinfo.domain.repository.RecipeAttrRepository
-import com.example.foodinfo.domain.repository.RecipeRepository
-import com.example.foodinfo.domain.repository.SearchFilterRepository
-import com.example.foodinfo.domain.repository.SearchHistoryRepository
-import com.example.foodinfo.domain.use_case.RecipeUseCase
-import com.example.foodinfo.domain.use_case.SearchFilterUseCase
-import com.example.foodinfo.utils.PrefUtils
+import com.example.foodinfo.core.utils.PrefUtils
+import com.example.foodinfo.data.local.data_source.*
+import com.example.foodinfo.data.remote.data_source.RecipeMetadataRemoteSource
+import com.example.foodinfo.data.remote.data_source.RecipeRemoteSource
+import com.example.foodinfo.data.repository.*
+import com.example.foodinfo.domain.repository.*
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -22,23 +17,27 @@ class RepositoryModule {
     @Provides
     @Singleton
     fun provideRecipeRepository(
-        apiCredentialsLocal: APICredentialsLocalSource,
         recipeLocal: RecipeLocalSource,
-        recipeRemote: RecipeRemoteSource,
-        prefUtils: PrefUtils
+        recipeRemote: RecipeRemoteSource
     ): RecipeRepository {
-        return RecipeRepository(apiCredentialsLocal, recipeLocal, recipeRemote, prefUtils)
+        return RecipeRepositoryImpl(recipeLocal, recipeRemote)
     }
 
     @Provides
     @Singleton
-    fun provideRecipeAttrRepository(
+    fun provideRecipeMetadataRepository(
+        recipeMetadataLocal: RecipeMetadataLocalSource,
+        recipeMetadataRemote: RecipeMetadataRemoteSource
+    ): RecipeMetadataRepository {
+        return RecipeMetadataRepositoryImpl(recipeMetadataLocal, recipeMetadataRemote)
+    }
+
+    @Provides
+    @Singleton
+    fun provideAPICredentialsRepository(
         apiCredentialsLocal: APICredentialsLocalSource,
-        recipeAttrLocal: RecipeAttrLocalSource,
-        recipeAttrRemote: RecipeAttrRemoteSource,
-        prefUtils: PrefUtils
-    ): RecipeAttrRepository {
-        return RecipeAttrRepository(apiCredentialsLocal, recipeAttrLocal, recipeAttrRemote, prefUtils)
+    ): APICredentialsRepository {
+        return APICredentialsRepositoryImpl(apiCredentialsLocal)
     }
 
     @Provides
@@ -47,7 +46,7 @@ class RepositoryModule {
         searchFilterLocal: SearchFilterLocalSource,
         prefUtils: PrefUtils
     ): SearchFilterRepository {
-        return SearchFilterRepository(searchFilterLocal, prefUtils)
+        return SearchFilterRepositoryImpl(searchFilterLocal, prefUtils)
     }
 
     @Provides
@@ -55,33 +54,6 @@ class RepositoryModule {
     fun provideSearchInputRepository(
         searchHistoryLocal: SearchHistoryLocalSource
     ): SearchHistoryRepository {
-        return SearchHistoryRepository(searchHistoryLocal)
-    }
-
-    @Provides
-    @Singleton
-    fun provideRecipeUseCase(
-        recipeAttrRepository: RecipeAttrRepository,
-        recipeRepository: RecipeRepository
-    ): RecipeUseCase {
-        return RecipeUseCase(recipeAttrRepository, recipeRepository)
-    }
-
-    @Provides
-    @Singleton
-    fun provideSearchFilterUseCase(
-        apiCredentialsLocal: APICredentialsLocalSource,
-        recipeAttrRepository: RecipeAttrRepository,
-        searchFilterRepository: SearchFilterRepository,
-        prefUtils: PrefUtils,
-        context: Context
-    ): SearchFilterUseCase {
-        return SearchFilterUseCase(
-            apiCredentialsLocal,
-            recipeAttrRepository,
-            searchFilterRepository,
-            prefUtils,
-            context
-        )
+        return SearchHistoryRepositoryImpl(searchHistoryLocal)
     }
 }

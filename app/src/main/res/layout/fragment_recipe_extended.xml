@@ -179,7 +179,7 @@
 
                 <include
                     android:id = "@+id/i_protein"
-                    layout = "@layout/item_recipe_base_nutrient"
+                    layout = "@layout/item_nutrient_of_recipe"
                     android:layout_width = "wrap_content"
                     android:layout_height = "wrap_content"
                     app:layout_constraintEnd_toStartOf = "@+id/i_carbs"
@@ -188,7 +188,7 @@
 
                 <include
                     android:id = "@+id/i_carbs"
-                    layout = "@layout/item_recipe_base_nutrient"
+                    layout = "@layout/item_nutrient_of_recipe"
                     android:layout_width = "wrap_content"
                     android:layout_height = "wrap_content"
                     app:layout_constraintEnd_toStartOf = "@+id/i_fat"
@@ -196,7 +196,7 @@
 
                 <include
                     android:id = "@+id/i_fat"
-                    layout = "@layout/item_recipe_base_nutrient"
+                    layout = "@layout/item_nutrient_of_recipe"
                     android:layout_width = "wrap_content"
                     android:layout_height = "wrap_content"
                     app:layout_constraintEnd_toStartOf = "@+id/i_energy"
@@ -204,7 +204,7 @@
 
                 <include
                     android:id = "@+id/i_energy"
-                    layout = "@layout/item_recipe_base_nutrient"
+                    layout = "@layout/item_nutrient_of_recipe"
                     android:layout_width = "wrap_content"
                     android:layout_height = "wrap_content"
                     app:layout_constraintEnd_toEndOf = "parent"

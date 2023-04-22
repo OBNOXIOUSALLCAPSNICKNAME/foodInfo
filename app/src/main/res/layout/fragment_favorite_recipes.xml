@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android = "http://schemas.android.com/apk/res/android"
+    xmlns:app = "http://schemas.android.com/apk/res-auto"
+    xmlns:tools = "http://schemas.android.com/tools"
+    android:layout_width = "match_parent"
+    android:layout_height = "match_parent"
+    android:layout_marginHorizontal = "@dimen/screen_horizontal_margin"
+    android:layout_marginTop = "@dimen/screen_top_margin"
+    android:orientation = "vertical">
+
+    <LinearLayout
+        android:id = "@+id/ll_edit_menu"
+        android:layout_width = "match_parent"
+        android:layout_height = "wrap_content"
+        android:visibility = "gone"
+        app:layout_constraintStart_toStartOf = "parent"
+        app:layout_constraintTop_toTopOf = "parent">
+
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:id = "@+id/cb_select_all"
+            android:layout_width = "wrap_content"
+            android:layout_height = "match_parent"
+            android:buttonTint = "@drawable/selector_color_cb" />
+
+        <TextView
+            android:id = "@+id/tv_selected_count"
+            style = "@style/TextViewBig"
+            android:layout_width = "wrap_content"
+            android:layout_height = "match_parent"
+            android:gravity = "center"
+            tools:text = "0 selected" />
+
+        <View
+            android:layout_width = "0dp"
+            android:layout_height = "0dp"
+            android:layout_weight = "1" />
+
+        <ImageView
+            android:id = "@+id/btn_delete"
+            style = "@style/ButtonEnd"
+            android:layout_gravity = "end"
+            android:contentDescription = "@string/default_content_description"
+            android:src = "@drawable/ic_delete" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id = "@+id/ll_base_menu"
+        android:layout_width = "match_parent"
+        android:layout_height = "wrap_content"
+        app:layout_constraintStart_toStartOf = "parent"
+        app:layout_constraintTop_toTopOf = "parent">
+
+        <TextView
+            android:id = "@+id/tv_header"
+            style = "@style/TextViewVeryBig"
+            android:layout_width = "wrap_content"
+            android:layout_height = "wrap_content"
+            android:layout_gravity = "center"
+            android:text = "@string/favorite_recipes_text" />
+
+        <View
+            android:layout_width = "0dp"
+            android:layout_height = "0dp"
+            android:layout_weight = "1" />
+
+        <ImageView
+            android:id = "@+id/btn_sort"
+            style = "@style/ButtonEnd"
+            android:contentDescription = "@string/default_content_description"
+            android:src = "@drawable/ic_sort" />
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id = "@+id/rv_recipes"
+        android:layout_width = "match_parent"
+        android:layout_height = "match_parent"
+        android:layout_marginTop = "@dimen/screen_top_margin"
+        android:clipToPadding = "false"
+        android:descendantFocusability = "blocksDescendants"
+        android:paddingBottom = "@dimen/dp_30"
+        app:layoutManager = "androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem = "@layout/rv_item_recipe_favorite" />
+
+</LinearLayout>

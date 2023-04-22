@@ -1,10 +1,11 @@
 package com.example.foodinfo.di.module
 
 import com.example.foodinfo.BuildConfig
-import com.example.foodinfo.remote.retrofit.GitHubTypeAdapterFactory
-import com.example.foodinfo.remote.retrofit.api.RecipeAPI
-import com.example.foodinfo.remote.retrofit.api.RecipeAttrAPI
-import com.example.foodinfo.remote.retrofit.response_adapter.ResponseAdapterFactory
+import com.example.foodinfo.data.remote.retrofit.EdamamTypeAdapterFactory
+import com.example.foodinfo.data.remote.retrofit.GitHubTypeAdapterFactory
+import com.example.foodinfo.data.remote.retrofit.api.RecipeAPI
+import com.example.foodinfo.data.remote.retrofit.api.RecipeMetadataAPI
+import com.example.foodinfo.data.remote.retrofit.response_adapter.ResponseAdapterFactory
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import dagger.Module
@@ -22,7 +23,7 @@ class RetrofitModule {
     @Provides
     @Named("Edamam")
     fun provideRetrofitEdamam(
-        @Named("Base")
+        @Named("Edamam")
         gson: Gson
     ): Retrofit {
         return Retrofit.Builder()
@@ -47,25 +48,35 @@ class RetrofitModule {
     }
 
     @Provides
-    fun provideApiRecipes(
+    fun provideRecipeAPI(
         @Named("Edamam")
         retrofit: Retrofit
     ): RecipeAPI = retrofit.create(RecipeAPI::class.java)
 
     @Provides
-    fun provideApiAttrs(
+    fun provideRecipeMetadataAPI(
         @Named("GitHub")
         retrofit: Retrofit
-    ): RecipeAttrAPI = retrofit.create(RecipeAttrAPI::class.java)
+    ): RecipeMetadataAPI = retrofit.create(RecipeMetadataAPI::class.java)
 
 
     @Provides
     @Singleton
     @Named("GitHub")
-    fun provideGson(
+    fun provideGsonGitHub(
         @Named("Base")
         baseGson: Gson
     ): Gson = GsonBuilder()
         .registerTypeAdapterFactory(GitHubTypeAdapterFactory(baseGson))
+        .create()
+
+    @Provides
+    @Singleton
+    @Named("Edamam")
+    fun provideGsonEdamam(
+        @Named("Base")
+        baseGson: Gson
+    ): Gson = GsonBuilder()
+        .registerTypeAdapterFactory(EdamamTypeAdapterFactory(baseGson))
         .create()
 }

@@ -9,6 +9,7 @@ import dagger.android.AndroidInjectionModule
         ContextModule::class,
         UtilsModule::class,
         RepositoryModule::class,
+        InteractorModule::class,
         ViewModelModule::class,
         ContextModule::class,
         LocalSourceModule::class,

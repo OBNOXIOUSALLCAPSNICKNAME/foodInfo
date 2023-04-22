@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android = "http://schemas.android.com/apk/res/android"
+    xmlns:app = "http://schemas.android.com/apk/res-auto"
+    xmlns:tools = "http://schemas.android.com/tools"
+    android:id = "@+id/ll_content"
+    android:layout_width = "match_parent"
+    android:layout_height = "wrap_content"
+    android:minHeight = "@dimen/dp_54"
+    android:orientation = "horizontal"
+    app:layout_constraintStart_toStartOf = "parent"
+    app:layout_constraintTop_toTopOf = "parent">
+
+    <ImageView
+        android:id = "@+id/iv_question_mark"
+        android:layout_width = "@dimen/dp_60"
+        android:layout_height = "match_parent"
+        android:contentDescription = "@string/default_content_description"
+        android:paddingVertical = "@dimen/dp_18"
+        android:paddingStart = "@dimen/dp_24"
+        android:scaleType = "fitStart"
+        android:src = "@drawable/ic_question_mark" />
+
+    <TextView
+        android:id = "@+id/tv_header"
+        style = "@style/TextViewBig"
+        android:layout_width = "0dp"
+        android:layout_height = "match_parent"
+        android:layout_weight = "1"
+        android:ellipsize = "end"
+        android:gravity = "center|start"
+        android:maxLines = "1"
+        tools:text = "condiments and cookies" />
+
+    <CheckBox
+        android:clickable="false"
+        android:id = "@+id/cb_checked"
+        android:layout_width = "wrap_content"
+        android:layout_height = "match_parent"
+        android:buttonTint = "@drawable/selector_color_cb"
+        android:paddingEnd = "@dimen/dp_18" />
+
+</LinearLayout>
