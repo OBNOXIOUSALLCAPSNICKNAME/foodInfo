@@ -26,7 +26,7 @@ import com.example.foodinfo.utils.extensions.trimMultiline
  * But with internet, recipes in remote page **N** may be different from recipes in local page **N**
  * For example, remote page **№5** will contain recipes **`[80..101]`**, but local DB page **№5** will
  * contain recipe **`[45, 68, .. 131]`** etc. (because they was previously cached from another queries).
- * This will cause the recipes to "jump" inside RecyclerView. To avoid that, set **isOffline = true**
+ * This will cause the recipes to "jump" inside RecyclerView. To avoid that, provide **sessionStartTime**
  * for [build] if local DB updates expected.
  *
  * ###Example:
@@ -134,7 +134,7 @@ internal object RoomPageQuery {
      * @param filterPreset Filter preset object that will be used to build query.
      * @param inputText If specified, result will contain only those recipes which name contain provided string.
      * @param sessionStartTime Result will not contain recipes that were added/updated before provided date
-     * and sorted by [RecipeDB.lastUpdate] **ASC** to prevent list "jumps" while scrolling.
+     * and ordered by [RecipeDB.lastUpdate] **ASC** to prevent list "jumps" while scrolling.
      * If sessionStartTime = 0 - result will contain all recipes matching the query ordered by
      * [RecipeDB.lastUpdate] **DESC** to show most actual cached recipes.
      */

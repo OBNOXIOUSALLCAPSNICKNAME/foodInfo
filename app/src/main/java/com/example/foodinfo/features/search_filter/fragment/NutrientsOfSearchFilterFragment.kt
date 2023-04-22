@@ -6,7 +6,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.foodinfo.R
-import com.example.foodinfo.databinding.FragmentSearchFilterNutrientsBinding
+import com.example.foodinfo.databinding.FragmentNutrientsOfSearchFilterBinding
 import com.example.foodinfo.features.search_filter.adapter.nutrientEditAdapterDelegate
 import com.example.foodinfo.features.search_filter.model.NutrientEditVHModel
 import com.example.foodinfo.features.search_filter.view_model.NutrientsOfSearchFilterViewModel
@@ -23,8 +23,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 
-class NutrientsOfSearchFilterFragment : BaseFragment<FragmentSearchFilterNutrientsBinding>(
-    FragmentSearchFilterNutrientsBinding::inflate
+class NutrientsOfSearchFilterFragment : BaseFragment<FragmentNutrientsOfSearchFilterBinding>(
+    FragmentNutrientsOfSearchFilterBinding::inflate
 ) {
 
     private val onBackClickListener: () -> Unit = {
@@ -48,7 +48,7 @@ class NutrientsOfSearchFilterFragment : BaseFragment<FragmentSearchFilterNutrien
 
     private val onHeaderClickCallback: (NutrientEditVHModel) -> Unit = { nutrient ->
         viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
-            val labelItem = viewModel.getNutrient(nutrient.infoID)
+            val labelItem = viewModel.getNutrientHint(nutrient.infoID)
             withContext(Dispatchers.Main) {
                 showDescriptionDialog(
                     labelItem.name,

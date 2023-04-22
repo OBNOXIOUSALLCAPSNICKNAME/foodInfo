@@ -59,7 +59,7 @@ class RecipeExtendedFragment : BaseFragment<FragmentRecipeExtendedBinding>(
     private val onNutrientsViewAllClickListener: () -> Unit = {
         findNavController().navigate(
             RecipeExtendedFragmentDirections.actionFRecipeExtendedToFRecipeNutrients(
-                args.recipeId
+                args.recipeID
             )
         )
     }
@@ -67,7 +67,7 @@ class RecipeExtendedFragment : BaseFragment<FragmentRecipeExtendedBinding>(
     private val onIngredientsViewAllClickListener: () -> Unit = {
         findNavController().navigate(
             RecipeExtendedFragmentDirections.actionFRecipeExtendedToFRecipeIngredients(
-                args.recipeId
+                args.recipeID
             )
         )
     }
@@ -83,7 +83,7 @@ class RecipeExtendedFragment : BaseFragment<FragmentRecipeExtendedBinding>(
 
 
     override fun initUI() {
-        viewModel.recipeId = args.recipeId
+        viewModel.recipeID = args.recipeID
         binding.btnBack.setOnClickListener { onBackClickListener() }
         binding.btnShare.setOnClickListener { onShareClickListener() }
         binding.btnFavorite.setOnClickListener { onFavoriteClickListener() }

@@ -2,7 +2,7 @@ package com.example.foodinfo.features.search_filter.adapter
 
 import android.view.LayoutInflater
 import androidx.core.view.isVisible
-import com.example.foodinfo.databinding.RvItemFilterInputCategoryBinding
+import com.example.foodinfo.databinding.RvItemCategoryOfSearchFilterPreviewBinding
 import com.example.foodinfo.databinding.TvChipBinding
 import com.example.foodinfo.features.search_filter.model.CategoryPreviewVHModel
 import com.example.foodinfo.ui.base.adapter.appAdapterDelegate
@@ -11,7 +11,7 @@ import com.example.foodinfo.ui.base.adapter.appAdapterDelegate
 fun categoryPreviewAdapterDelegate(
     onBtnEditClickListener: (CategoryPreviewVHModel) -> Unit
 ) = appAdapterDelegate(
-    inflate = RvItemFilterInputCategoryBinding::inflate,
+    inflate = RvItemCategoryOfSearchFilterPreviewBinding::inflate,
     onInit = { binding, itemProvider ->
         binding.ivEdit.setOnClickListener { onBtnEditClickListener(itemProvider()) }
     },

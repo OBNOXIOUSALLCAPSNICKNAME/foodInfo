@@ -1,6 +1,6 @@
 package com.example.foodinfo.features.search_filter.adapter
 
-import com.example.foodinfo.databinding.RvItemFilterInputCategoryEditBinding
+import com.example.foodinfo.databinding.RvItemCategoryOfSearchFilterEditBinding
 import com.example.foodinfo.features.search_filter.model.LabelEditVHModel
 import com.example.foodinfo.ui.base.adapter.appAdapterDelegate
 
@@ -9,7 +9,7 @@ fun categoryEditAdapterDelegate(
     onQuestionMarkClickListener: (LabelEditVHModel) -> Unit,
     onItemClickListener: (LabelEditVHModel) -> Unit
 ) = appAdapterDelegate(
-    inflate = RvItemFilterInputCategoryEditBinding::inflate,
+    inflate = RvItemCategoryOfSearchFilterEditBinding::inflate,
     onInit = { binding, itemProvider ->
         with(binding) {
             ivQuestionMark.setOnClickListener {

@@ -27,10 +27,10 @@ class RecipeExtendedViewModel @Inject constructor(
         viewModelScope, Dispatchers.IO, LaunchStrategy.IGNORE
     )
 
-    var recipeId: String = ""
+    var recipeID: String = ""
 
     val recipe: SharedFlow<State<RecipeModel>> by lazy {
-        recipeModelInteractor.getByIdExtended(recipeId).shareIn(
+        recipeModelInteractor.getByIdExtended(recipeID).shareIn(
             viewModelScope, SharingStarted.WhileSubscribed(stopTimeoutMillis = 5000), 1
         )
     }
@@ -41,7 +41,7 @@ class RecipeExtendedViewModel @Inject constructor(
 
     fun invertFavoriteStatus() {
         invertCoroutine.launch {
-            recipeRepository.invertFavoriteStatus(recipeId)
+            recipeRepository.invertFavoriteStatus(recipeID)
         }
     }
 }

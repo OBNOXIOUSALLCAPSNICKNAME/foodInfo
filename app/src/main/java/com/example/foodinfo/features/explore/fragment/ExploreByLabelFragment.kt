@@ -5,7 +5,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
 import com.example.foodinfo.R
-import com.example.foodinfo.databinding.FragmentSearchLabelBinding
+import com.example.foodinfo.databinding.FragmentExploreByLabelBinding
 import com.example.foodinfo.features.explore.adapter.recipeAdapterDelegate
 import com.example.foodinfo.features.explore.model.RecipeVHModel
 import com.example.foodinfo.features.explore.view_model.ExploreByLabelViewModel
@@ -21,8 +21,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 
-class ExploreByLabelFragment : BaseFragment<FragmentSearchLabelBinding>(
-    FragmentSearchLabelBinding::inflate
+class ExploreByLabelFragment : BaseFragment<FragmentExploreByLabelBinding>(
+    FragmentExploreByLabelBinding::inflate
 ) {
 
     private val onBackClickListener: () -> Unit = {

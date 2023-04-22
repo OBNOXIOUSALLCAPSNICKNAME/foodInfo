@@ -36,8 +36,8 @@ class CategoryOfSearchFilterViewModel @Inject constructor(
     }
 
 
-    suspend fun getLabel(ID: Int): LabelHint {
-        return categoryEditInteractor.getLabel(ID)
+    suspend fun getLabelHint(ID: Int): LabelHint {
+        return categoryEditInteractor.getLabelHint(ID)
     }
 
     fun reset() {

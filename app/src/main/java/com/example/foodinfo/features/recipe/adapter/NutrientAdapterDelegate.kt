@@ -1,6 +1,6 @@
 package com.example.foodinfo.features.recipe.adapter
 
-import com.example.foodinfo.databinding.RvItemRecipeNutrientBinding
+import com.example.foodinfo.databinding.RvItemNutrientOfRecipeBinding
 import com.example.foodinfo.features.recipe.model.NutrientVHModel
 import com.example.foodinfo.ui.base.adapter.appAdapterDelegate
 
@@ -8,7 +8,7 @@ import com.example.foodinfo.ui.base.adapter.appAdapterDelegate
 fun nutrientAdapterDelegate(
     onNutrientClickListener: (NutrientVHModel) -> Unit
 ) = appAdapterDelegate(
-    inflate = RvItemRecipeNutrientBinding::inflate,
+    inflate = RvItemNutrientOfRecipeBinding::inflate,
     onInit = { binding, itemProvider ->
         binding.clNutrient.setOnClickListener { onNutrientClickListener(itemProvider()) }
     },

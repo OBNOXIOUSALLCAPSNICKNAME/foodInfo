@@ -6,7 +6,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
 import com.example.foodinfo.R
-import com.example.foodinfo.databinding.FragmentRecipeNutrientsBinding
+import com.example.foodinfo.databinding.FragmentNutrientsOfRecipeBinding
 import com.example.foodinfo.features.recipe.adapter.nutrientAdapterDelegate
 import com.example.foodinfo.features.recipe.model.NutrientVHModel
 import com.example.foodinfo.features.recipe.view_model.NutrientsOfRecipeViewModel
@@ -23,8 +23,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 
-class NutrientsOfRecipeFragment : BaseFragment<FragmentRecipeNutrientsBinding>(
-    FragmentRecipeNutrientsBinding::inflate
+class NutrientsOfRecipeFragment : BaseFragment<FragmentNutrientsOfRecipeBinding>(
+    FragmentNutrientsOfRecipeBinding::inflate
 ) {
 
     private val onBackClickListener: () -> Unit = {
@@ -55,7 +55,7 @@ class NutrientsOfRecipeFragment : BaseFragment<FragmentRecipeNutrientsBinding>(
 
 
     override fun initUI() {
-        viewModel.recipeId = args.recipeId
+        viewModel.recipeID = args.recipeID
         binding.btnBack.setOnClickListener { onBackClickListener() }
 
         with(binding.rvNutrients) {

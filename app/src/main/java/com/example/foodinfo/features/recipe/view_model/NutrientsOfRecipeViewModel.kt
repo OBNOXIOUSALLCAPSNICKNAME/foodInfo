@@ -18,10 +18,10 @@ class NutrientsOfRecipeViewModel @Inject constructor(
     private val recipeMetadataRepository: RecipeMetadataRepository
 ) : ViewModel() {
 
-    var recipeId: String = ""
+    var recipeID: String = ""
 
     val nutrients: SharedFlow<State<List<NutrientVHModel>>> by lazy {
-        nutrientModelInteractor.getByIdNutrients(recipeId).shareIn(
+        nutrientModelInteractor.getByIdNutrients(recipeID).shareIn(
             viewModelScope, SharingStarted.WhileSubscribed(stopTimeoutMillis = 5000), 1
         )
     }

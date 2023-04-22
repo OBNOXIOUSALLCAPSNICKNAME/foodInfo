@@ -3,7 +3,7 @@ package com.example.foodinfo.features.favorite.adapter
 import androidx.appcompat.content.res.AppCompatResources
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.example.foodinfo.R
-import com.example.foodinfo.databinding.RvItemBookmarkBinding
+import com.example.foodinfo.databinding.RvItemRecipeFavoriteBinding
 import com.example.foodinfo.features.favorite.model.RecipeVHModel
 import com.example.foodinfo.ui.base.adapter.appAdapterDelegate
 import com.example.foodinfo.utils.glide.GlideApp
@@ -13,7 +13,7 @@ fun recipeAdapterDelegate(
     onItemHoldListener: (RecipeVHModel) -> Unit,
     onItemClickListener: (RecipeVHModel) -> Unit
 ) = appAdapterDelegate(
-    inflate = RvItemBookmarkBinding::inflate,
+    inflate = RvItemRecipeFavoriteBinding::inflate,
     onInit = { binding, itemProvider ->
         binding.root.apply {
             setOnClickListener {

@@ -25,7 +25,7 @@ class CategoryEditInteractor @Inject constructor(
         }
     }
 
-    suspend fun getLabel(ID: Int): LabelHint {
+    suspend fun getLabelHint(ID: Int): LabelHint {
         return recipeMetadataRepository.getLabelHint(ID)
     }
 

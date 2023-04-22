@@ -81,6 +81,6 @@
         android:descendantFocusability = "blocksDescendants"
         android:paddingBottom = "@dimen/dp_30"
         app:layoutManager = "androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem = "@layout/rv_item_bookmark" />
+        tools:listitem = "@layout/rv_item_recipe_favorite" />
 
 </LinearLayout>

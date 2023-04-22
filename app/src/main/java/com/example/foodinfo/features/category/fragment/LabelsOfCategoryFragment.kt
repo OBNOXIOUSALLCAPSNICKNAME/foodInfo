@@ -5,7 +5,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
 import com.example.foodinfo.R
-import com.example.foodinfo.databinding.FragmentCategoryBinding
+import com.example.foodinfo.databinding.FragmentLabelsOfCategoryBinding
 import com.example.foodinfo.features.category.adapter.labelAdapterDelegate
 import com.example.foodinfo.features.category.model.LabelVHModel
 import com.example.foodinfo.features.category.viewm_model.LabelsOfCategoryViewModel
@@ -18,8 +18,8 @@ import com.example.foodinfo.utils.extensions.baseAnimation
 import com.example.foodinfo.utils.extensions.observeState
 
 
-class LabelsOfCategoryFragment : BaseFragment<FragmentCategoryBinding>(
-    FragmentCategoryBinding::inflate
+class LabelsOfCategoryFragment : BaseFragment<FragmentLabelsOfCategoryBinding>(
+    FragmentLabelsOfCategoryBinding::inflate
 ) {
 
     private val onSearchClickListener: () -> Unit = {

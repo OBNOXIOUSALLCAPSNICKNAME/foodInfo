@@ -34,7 +34,7 @@ class NutrientsOfSearchFilterViewModel @Inject constructor(
     }
 
 
-    suspend fun getNutrient(ID: Int): NutrientHint {
+    suspend fun getNutrientHint(ID: Int): NutrientHint {
         return nutrientsEditInteractor.getNutrientHint(ID)
     }
 

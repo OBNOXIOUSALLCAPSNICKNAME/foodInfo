@@ -13,7 +13,7 @@ fun IngredientOfRecipeDB.toModel(): IngredientOfRecipe {
         quantity = this.quantity,
         weight = this.weight,
         food = this.food,
-        foodId = this.foodID,
+        foodID = this.foodID,
         foodCategory = this.foodCategory,
         previewURL = this.previewURL
     )

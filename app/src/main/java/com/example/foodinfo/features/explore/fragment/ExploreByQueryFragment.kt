@@ -5,7 +5,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
 import com.example.foodinfo.R
-import com.example.foodinfo.databinding.FragmentSearchQueryBinding
+import com.example.foodinfo.databinding.FragmentExploreByQueryBinding
 import com.example.foodinfo.features.explore.adapter.recipeAdapterDelegate
 import com.example.foodinfo.features.explore.model.RecipeVHModel
 import com.example.foodinfo.features.explore.view_model.ExploreByQueryViewModel
@@ -17,8 +17,8 @@ import com.example.foodinfo.utils.extensions.appViewModels
 import com.example.foodinfo.utils.extensions.observePages
 
 
-class ExploreByQueryFragment : BaseFragment<FragmentSearchQueryBinding>(
-    FragmentSearchQueryBinding::inflate
+class ExploreByQueryFragment : BaseFragment<FragmentExploreByQueryBinding>(
+    FragmentExploreByQueryBinding::inflate
 ) {
 
     private val onBackClickListener: () -> Unit = {

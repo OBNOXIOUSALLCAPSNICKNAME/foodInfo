@@ -9,7 +9,7 @@ data class IngredientOfRecipe(
     val weight: Float,
     val food: String,
     val foodCategory: String,
-    val foodId: String,
+    val foodID: String,
     val previewURL: String
 ) {
     override fun equals(other: Any?) =
@@ -20,7 +20,7 @@ data class IngredientOfRecipe(
         this.weight == other.weight &&
         this.food == other.food &&
         this.foodCategory == other.foodCategory &&
-        this.foodId == other.foodId &&
+        this.foodID == other.foodID &&
         this.previewURL == other.previewURL
 
     override fun hashCode(): Int {
@@ -30,7 +30,7 @@ data class IngredientOfRecipe(
         result = 31 * result + weight.hashCode()
         result = 31 * result + food.hashCode()
         result = 31 * result + foodCategory.hashCode()
-        result = 31 * result + foodId.hashCode()
+        result = 31 * result + foodID.hashCode()
         result = 31 * result + previewURL.hashCode()
         return result
     }

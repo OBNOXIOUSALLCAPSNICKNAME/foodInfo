@@ -7,7 +7,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.foodinfo.R
-import com.example.foodinfo.databinding.FragmentFavoriteBinding
+import com.example.foodinfo.databinding.FragmentFavoriteRecipesBinding
 import com.example.foodinfo.features.favorite.adapter.recipeAdapterDelegate
 import com.example.foodinfo.features.favorite.model.RecipeVHModel
 import com.example.foodinfo.features.favorite.view_model.FavoriteRecipesViewModel
@@ -20,8 +20,8 @@ import com.example.foodinfo.utils.extensions.observe
 import kotlinx.coroutines.flow.collectLatest
 
 
-class FavoriteRecipesFragment : BaseFragment<FragmentFavoriteBinding>(
-    FragmentFavoriteBinding::inflate
+class FavoriteRecipesFragment : BaseFragment<FragmentFavoriteRecipesBinding>(
+    FragmentFavoriteRecipesBinding::inflate
 ) {
 
     private val onItemHoldListener: (RecipeVHModel) -> Unit = { model ->

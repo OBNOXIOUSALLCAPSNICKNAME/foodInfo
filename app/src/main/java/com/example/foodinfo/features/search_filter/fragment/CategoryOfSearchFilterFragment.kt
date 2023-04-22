@@ -5,7 +5,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.foodinfo.databinding.FragmentSearchFilterCategoryBinding
+import com.example.foodinfo.databinding.FragmentCategoryOfSearchFilterBinding
 import com.example.foodinfo.features.search_filter.adapter.categoryEditAdapterDelegate
 import com.example.foodinfo.features.search_filter.model.LabelEditVHModel
 import com.example.foodinfo.features.search_filter.view_model.CategoryOfSearchFilterViewModel
@@ -21,8 +21,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 
-class CategoryOfSearchFilterFragment : BaseFragment<FragmentSearchFilterCategoryBinding>(
-    FragmentSearchFilterCategoryBinding::inflate
+class CategoryOfSearchFilterFragment : BaseFragment<FragmentCategoryOfSearchFilterBinding>(
+    FragmentCategoryOfSearchFilterBinding::inflate
 ) {
 
     private val onBackClickListener: () -> Unit = {
@@ -39,7 +39,7 @@ class CategoryOfSearchFilterFragment : BaseFragment<FragmentSearchFilterCategory
 
     private val onQuestionMarkClickListener: (LabelEditVHModel) -> Unit = { label ->
         viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
-            val labelItem = viewModel.getLabel(label.infoID)
+            val labelItem = viewModel.getLabelHint(label.infoID)
             withContext(Dispatchers.Main) {
                 showDescriptionDialog(
                     labelItem.name,

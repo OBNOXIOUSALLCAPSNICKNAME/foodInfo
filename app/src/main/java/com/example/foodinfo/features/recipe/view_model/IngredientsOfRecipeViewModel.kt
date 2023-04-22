@@ -14,10 +14,10 @@ import javax.inject.Inject
 class IngredientsOfRecipeViewModel @Inject constructor(ingredientModelInteractor: IngredientModelInteractor) :
     ViewModel() {
 
-    var recipeId: String = ""
+    var recipeID: String = ""
 
     val ingredients: SharedFlow<State<List<IngredientVHModel>>> by lazy {
-        ingredientModelInteractor.getByIdIngredients(recipeId).shareIn(
+        ingredientModelInteractor.getByIdIngredients(recipeID).shareIn(
             viewModelScope, SharingStarted.WhileSubscribed(stopTimeoutMillis = 5000), 1
         )
     }

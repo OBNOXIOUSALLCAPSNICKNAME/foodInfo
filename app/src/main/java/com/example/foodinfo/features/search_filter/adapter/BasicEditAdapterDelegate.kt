@@ -1,6 +1,6 @@
 package com.example.foodinfo.features.search_filter.adapter
 
-import com.example.foodinfo.databinding.RvItemFilterInputBaseFieldBinding
+import com.example.foodinfo.databinding.RvItemBasicOfSearchFilterEditBinding
 import com.example.foodinfo.features.search_filter.model.BasicEditVHModel
 import com.example.foodinfo.ui.base.adapter.appAdapterDelegate
 
@@ -8,7 +8,7 @@ import com.example.foodinfo.ui.base.adapter.appAdapterDelegate
 fun basicEditAdapterDelegate(
     onValueChangedCallback: (BasicEditVHModel, Float, Float) -> Unit
 ) = appAdapterDelegate(
-    inflate = RvItemFilterInputBaseFieldBinding::inflate,
+    inflate = RvItemBasicOfSearchFilterEditBinding::inflate,
     onInit = { binding, itemProvider ->
         binding.root.addStopTrackingCallback { minValue, maxValue ->
             onValueChangedCallback.invoke(itemProvider(), minValue, maxValue)
