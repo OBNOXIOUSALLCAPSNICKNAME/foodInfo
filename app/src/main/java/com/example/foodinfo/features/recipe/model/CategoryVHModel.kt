@@ -1,6 +1,6 @@
 package com.example.foodinfo.features.recipe.model
 
-import com.example.foodinfo.ui.base.adapter.AppViewHolderModel
+import com.example.foodinfo.core.ui.base.adapter.AppViewHolderModel
 
 
 data class CategoryVHModel(

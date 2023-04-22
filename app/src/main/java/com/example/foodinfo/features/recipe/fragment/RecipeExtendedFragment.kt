@@ -11,17 +11,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.example.foodinfo.R
+import com.example.foodinfo.core.ui.base.adapter.AppListAdapter
+import com.example.foodinfo.core.ui.base.adapter.appListAdapter
+import com.example.foodinfo.core.utils.extensions.*
+import com.example.foodinfo.core.utils.glide.GlideApp
 import com.example.foodinfo.databinding.FragmentRecipeExtendedBinding
 import com.example.foodinfo.features.recipe.adapter.categoryAdapterDelegate
 import com.example.foodinfo.features.recipe.model.RecipeModel
 import com.example.foodinfo.features.recipe.view_model.RecipeExtendedViewModel
-import com.example.foodinfo.ui.base.BaseFragment
-import com.example.foodinfo.ui.base.adapter.AppListAdapter
-import com.example.foodinfo.ui.base.adapter.appListAdapter
-import com.example.foodinfo.ui.NonScrollLinearLayoutManager
-import com.example.foodinfo.ui.ListItemDecoration
-import com.example.foodinfo.utils.extensions.*
-import com.example.foodinfo.utils.glide.GlideApp
 import com.google.android.material.imageview.ShapeableImageView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -29,7 +26,7 @@ import kotlinx.coroutines.withContext
 import kotlin.math.min
 
 
-class RecipeExtendedFragment : BaseFragment<FragmentRecipeExtendedBinding>(
+class RecipeExtendedFragment : com.example.foodinfo.core.ui.base.BaseFragment<FragmentRecipeExtendedBinding>(
     FragmentRecipeExtendedBinding::inflate
 ) {
 
@@ -91,11 +88,11 @@ class RecipeExtendedFragment : BaseFragment<FragmentRecipeExtendedBinding>(
         binding.tvIngredientsViewAll.setOnClickListener { onIngredientsViewAllClickListener() }
 
         with(binding.llCategories) {
-            layoutManager = NonScrollLinearLayoutManager(context).also {
+            layoutManager = com.example.foodinfo.core.ui.NonScrollLinearLayoutManager(context).also {
                 it.orientation = LinearLayoutManager.VERTICAL
             }
             addItemDecoration(
-                ListItemDecoration(
+                com.example.foodinfo.core.ui.ListItemDecoration(
                     resources.getDimensionPixelSize(R.dimen.recipe_extended_category_item_space),
                     RecyclerView.VERTICAL
                 )

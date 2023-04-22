@@ -1,8 +1,8 @@
 package com.example.foodinfo.features.home.mapper
 
+import com.example.foodinfo.core.utils.glide.svg.SVGModel
 import com.example.foodinfo.domain.model.CategoryOfRecipeMetadata
 import com.example.foodinfo.features.home.model.CategoryVHModel
-import com.example.foodinfo.utils.glide.svg.SVGModel
 
 
 fun CategoryOfRecipeMetadata.toVHModel(): CategoryVHModel {

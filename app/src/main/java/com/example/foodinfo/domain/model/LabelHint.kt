@@ -1,6 +1,6 @@
 package com.example.foodinfo.domain.model
 
-import com.example.foodinfo.utils.glide.svg.SVGModel
+import com.example.foodinfo.core.utils.glide.svg.SVGModel
 
 
 data class LabelHint(

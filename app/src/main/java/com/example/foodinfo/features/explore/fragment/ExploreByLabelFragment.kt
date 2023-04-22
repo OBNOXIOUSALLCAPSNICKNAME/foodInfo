@@ -5,23 +5,21 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
 import com.example.foodinfo.R
+import com.example.foodinfo.core.ui.base.adapter.AppPageAdapter
+import com.example.foodinfo.core.ui.base.adapter.appPageAdapter
+import com.example.foodinfo.core.utils.extensions.appViewModels
+import com.example.foodinfo.core.utils.extensions.observePages
+import com.example.foodinfo.core.utils.extensions.showDescriptionDialog
 import com.example.foodinfo.databinding.FragmentExploreByLabelBinding
 import com.example.foodinfo.features.explore.adapter.recipeAdapterDelegate
 import com.example.foodinfo.features.explore.model.RecipeVHModel
 import com.example.foodinfo.features.explore.view_model.ExploreByLabelViewModel
-import com.example.foodinfo.ui.base.BaseFragment
-import com.example.foodinfo.ui.base.adapter.AppPageAdapter
-import com.example.foodinfo.ui.base.adapter.appPageAdapter
-import com.example.foodinfo.ui.GridItemDecoration
-import com.example.foodinfo.utils.extensions.appViewModels
-import com.example.foodinfo.utils.extensions.observePages
-import com.example.foodinfo.utils.extensions.showDescriptionDialog
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 
-class ExploreByLabelFragment : BaseFragment<FragmentExploreByLabelBinding>(
+class ExploreByLabelFragment : com.example.foodinfo.core.ui.base.BaseFragment<FragmentExploreByLabelBinding>(
     FragmentExploreByLabelBinding::inflate
 ) {
 
@@ -79,7 +77,7 @@ class ExploreByLabelFragment : BaseFragment<FragmentExploreByLabelBinding>(
             adapter = recyclerAdapter
             setHasFixedSize(true)
             addItemDecoration(
-                GridItemDecoration(
+                com.example.foodinfo.core.ui.GridItemDecoration(
                     resources.getDimensionPixelSize(R.dimen.search_recipes_item_horizontal),
                     resources.getDimensionPixelSize(R.dimen.search_recipes_item_vertical),
                     2,

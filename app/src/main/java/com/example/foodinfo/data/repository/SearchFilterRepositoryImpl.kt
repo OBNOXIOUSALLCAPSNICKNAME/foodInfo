@@ -1,12 +1,12 @@
 package com.example.foodinfo.data.repository
 
+import com.example.foodinfo.core.utils.PrefUtils
 import com.example.foodinfo.data.local.data_source.SearchFilterLocalSource
 import com.example.foodinfo.data.local.model.*
 import com.example.foodinfo.data.mapper.*
 import com.example.foodinfo.domain.State
 import com.example.foodinfo.domain.model.*
 import com.example.foodinfo.domain.repository.SearchFilterRepository
-import com.example.foodinfo.utils.PrefUtils
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.transform
 import javax.inject.Inject

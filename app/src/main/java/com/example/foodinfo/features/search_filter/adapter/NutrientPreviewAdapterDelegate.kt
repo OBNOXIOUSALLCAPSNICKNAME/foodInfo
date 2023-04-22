@@ -1,8 +1,8 @@
 package com.example.foodinfo.features.search_filter.adapter
 
+import com.example.foodinfo.core.ui.base.adapter.appAdapterDelegate
 import com.example.foodinfo.databinding.RvItemNutrientOfSearchFilterPreviewBinding
 import com.example.foodinfo.features.search_filter.model.NutrientPreviewVHModel
-import com.example.foodinfo.ui.base.adapter.appAdapterDelegate
 
 
 fun nutrientPreviewAdapterDelegate(

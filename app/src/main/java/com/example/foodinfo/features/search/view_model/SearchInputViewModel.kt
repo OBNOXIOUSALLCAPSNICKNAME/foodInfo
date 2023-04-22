@@ -2,11 +2,11 @@ package com.example.foodinfo.features.search.view_model
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.foodinfo.core.utils.CoroutineLauncher
+import com.example.foodinfo.core.utils.LaunchStrategy
 import com.example.foodinfo.domain.repository.SearchHistoryRepository
 import com.example.foodinfo.features.search.interactor.SearchInputModelInteractor
 import com.example.foodinfo.features.search.model.SearchInputVHModel
-import com.example.foodinfo.utils.CoroutineLauncher
-import com.example.foodinfo.utils.LaunchStrategy
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow

@@ -1,10 +1,10 @@
 package com.example.foodinfo.data.remote.retrofit
 
 import android.util.Base64
+import com.example.foodinfo.core.utils.extensions.fromString
+import com.example.foodinfo.core.utils.extensions.getTypeToken
+import com.example.foodinfo.core.utils.extensions.read
 import com.example.foodinfo.data.remote.model.RecipeMetadataNetwork
-import com.example.foodinfo.utils.extensions.fromString
-import com.example.foodinfo.utils.extensions.getTypeToken
-import com.example.foodinfo.utils.extensions.read
 import com.google.gson.Gson
 import com.google.gson.TypeAdapter
 import com.google.gson.TypeAdapterFactory

@@ -1,11 +1,11 @@
 package com.example.foodinfo.di.module
 
+import com.example.foodinfo.core.utils.PrefUtils
 import com.example.foodinfo.data.local.data_source.*
 import com.example.foodinfo.data.remote.data_source.RecipeMetadataRemoteSource
 import com.example.foodinfo.data.remote.data_source.RecipeRemoteSource
 import com.example.foodinfo.data.repository.*
 import com.example.foodinfo.domain.repository.*
-import com.example.foodinfo.utils.PrefUtils
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton

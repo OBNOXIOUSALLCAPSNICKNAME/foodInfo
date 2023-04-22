@@ -2,12 +2,12 @@ package com.example.foodinfo.features.favorite.view_model
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.foodinfo.core.utils.CoroutineLauncher
+import com.example.foodinfo.core.utils.LaunchStrategy
+import com.example.foodinfo.core.utils.view_model.SelectManager
 import com.example.foodinfo.domain.repository.RecipeRepository
 import com.example.foodinfo.features.favorite.interactor.RecipeModelInteractor
 import com.example.foodinfo.features.favorite.model.RecipeVHModel
-import com.example.foodinfo.utils.CoroutineLauncher
-import com.example.foodinfo.utils.LaunchStrategy
-import com.example.foodinfo.utils.view_model.SelectManager
 import kotlinx.coroutines.Dispatchers
 import javax.inject.Inject
 

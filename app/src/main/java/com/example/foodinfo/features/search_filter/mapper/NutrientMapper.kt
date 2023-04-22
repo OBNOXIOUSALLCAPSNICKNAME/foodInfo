@@ -1,9 +1,9 @@
 package com.example.foodinfo.features.search_filter.mapper
 
+import com.example.foodinfo.core.utils.RecipeMetadataUtils
 import com.example.foodinfo.domain.model.NutrientOfSearchFilter
 import com.example.foodinfo.features.search_filter.model.NutrientEditVHModel
 import com.example.foodinfo.features.search_filter.model.NutrientPreviewVHModel
-import com.example.foodinfo.utils.RecipeMetadataUtils
 
 
 fun List<NutrientOfSearchFilter>.toVHModelPreview(): List<NutrientPreviewVHModel> {

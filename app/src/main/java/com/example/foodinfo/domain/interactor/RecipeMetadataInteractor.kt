@@ -1,5 +1,6 @@
 package com.example.foodinfo.domain.interactor
 
+import com.example.foodinfo.core.utils.PrefUtils
 import com.example.foodinfo.domain.State
 import com.example.foodinfo.domain.State.Utils.suspendFlowProvider
 import com.example.foodinfo.domain.model.CategoryOfRecipeMetadata
@@ -8,7 +9,6 @@ import com.example.foodinfo.domain.model.NutrientOfRecipeMetadata
 import com.example.foodinfo.domain.model.RecipeMetadata
 import com.example.foodinfo.domain.repository.APICredentialsRepository
 import com.example.foodinfo.domain.repository.RecipeMetadataRepository
-import com.example.foodinfo.utils.PrefUtils
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

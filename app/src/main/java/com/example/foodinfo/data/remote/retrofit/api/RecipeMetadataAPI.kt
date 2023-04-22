@@ -1,7 +1,7 @@
 package com.example.foodinfo.data.remote.retrofit.api
 
+import com.example.foodinfo.core.utils.ApiResponse
 import com.example.foodinfo.data.remote.model.RecipeMetadataNetwork
-import com.example.foodinfo.utils.ApiResponse
 import retrofit2.http.GET
 import retrofit2.http.Header
 

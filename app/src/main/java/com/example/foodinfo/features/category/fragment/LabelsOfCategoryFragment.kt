@@ -5,22 +5,21 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
 import com.example.foodinfo.R
+import com.example.foodinfo.core.ui.base.adapter.AppListAdapter
+import com.example.foodinfo.core.ui.base.adapter.appListAdapter
+import com.example.foodinfo.core.utils.extensions.appViewModels
+import com.example.foodinfo.core.utils.extensions.baseAnimation
+import com.example.foodinfo.core.utils.extensions.observeState
 import com.example.foodinfo.databinding.FragmentLabelsOfCategoryBinding
 import com.example.foodinfo.features.category.adapter.labelAdapterDelegate
 import com.example.foodinfo.features.category.model.LabelVHModel
 import com.example.foodinfo.features.category.viewm_model.LabelsOfCategoryViewModel
-import com.example.foodinfo.ui.base.BaseFragment
-import com.example.foodinfo.ui.base.adapter.AppListAdapter
-import com.example.foodinfo.ui.base.adapter.appListAdapter
-import com.example.foodinfo.ui.GridItemDecoration
-import com.example.foodinfo.utils.extensions.appViewModels
-import com.example.foodinfo.utils.extensions.baseAnimation
-import com.example.foodinfo.utils.extensions.observeState
 
 
-class LabelsOfCategoryFragment : BaseFragment<FragmentLabelsOfCategoryBinding>(
-    FragmentLabelsOfCategoryBinding::inflate
-) {
+class LabelsOfCategoryFragment :
+    com.example.foodinfo.core.ui.base.BaseFragment<FragmentLabelsOfCategoryBinding>(
+        FragmentLabelsOfCategoryBinding::inflate
+    ) {
 
     private val onSearchClickListener: () -> Unit = {
         findNavController().navigate(
@@ -59,7 +58,7 @@ class LabelsOfCategoryFragment : BaseFragment<FragmentLabelsOfCategoryBinding>(
             adapter = recyclerAdapter
             setHasFixedSize(true)
             addItemDecoration(
-                GridItemDecoration(
+                com.example.foodinfo.core.ui.GridItemDecoration(
                     resources.getDimensionPixelSize(R.dimen.search_labels_item_horizontal),
                     resources.getDimensionPixelSize(R.dimen.search_labels_item_vertical),
                     3,

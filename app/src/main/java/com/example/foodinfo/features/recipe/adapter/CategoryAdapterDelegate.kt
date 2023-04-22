@@ -1,10 +1,10 @@
 package com.example.foodinfo.features.recipe.adapter
 
 import android.view.LayoutInflater
+import com.example.foodinfo.core.ui.base.adapter.appAdapterDelegate
 import com.example.foodinfo.databinding.ItemCategoryOfRecipeBinding
 import com.example.foodinfo.databinding.TvChipBinding
 import com.example.foodinfo.features.recipe.model.CategoryVHModel
-import com.example.foodinfo.ui.base.adapter.appAdapterDelegate
 
 
 fun categoryAdapterDelegate(

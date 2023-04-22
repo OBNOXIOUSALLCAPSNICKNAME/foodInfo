@@ -3,6 +3,7 @@ package com.example.foodinfo
 import android.content.Intent
 import android.os.Bundle
 import androidx.lifecycle.lifecycleScope
+import com.example.foodinfo.core.utils.extensions.appComponent
 import com.example.foodinfo.data.local.model.EdamamCredentialsDB
 import com.example.foodinfo.data.local.model.GitHubCredentialsDB
 import com.example.foodinfo.data.local.room.model.entity.EdamamCredentialsEntity
@@ -10,15 +11,13 @@ import com.example.foodinfo.data.local.room.model.entity.GitHubCredentialsEntity
 import com.example.foodinfo.data.local.room.model.entity.SearchFilterEntity
 import com.example.foodinfo.data.local.room.model.entity.SearchInputEntity
 import com.example.foodinfo.databinding.ActivityInitializationBinding
-import com.example.foodinfo.ui.base.BaseActivity
-import com.example.foodinfo.utils.extensions.appComponent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 
-class InitializationActivity : BaseActivity<ActivityInitializationBinding>(
+class InitializationActivity : com.example.foodinfo.core.ui.base.BaseActivity<ActivityInitializationBinding>(
     ActivityInitializationBinding::inflate
 ) {
     override fun onCreate(savedInstanceState: Bundle?) {

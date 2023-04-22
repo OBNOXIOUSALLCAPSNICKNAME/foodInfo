@@ -6,26 +6,25 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
 import com.example.foodinfo.R
+import com.example.foodinfo.core.ui.base.adapter.AppListAdapter
+import com.example.foodinfo.core.ui.base.adapter.appListAdapter
+import com.example.foodinfo.core.utils.extensions.appViewModels
+import com.example.foodinfo.core.utils.extensions.baseAnimation
+import com.example.foodinfo.core.utils.extensions.observeState
+import com.example.foodinfo.core.utils.extensions.showDescriptionDialog
 import com.example.foodinfo.databinding.FragmentNutrientsOfRecipeBinding
 import com.example.foodinfo.features.recipe.adapter.nutrientAdapterDelegate
 import com.example.foodinfo.features.recipe.model.NutrientVHModel
 import com.example.foodinfo.features.recipe.view_model.NutrientsOfRecipeViewModel
-import com.example.foodinfo.ui.base.BaseFragment
-import com.example.foodinfo.ui.base.adapter.AppListAdapter
-import com.example.foodinfo.ui.base.adapter.appListAdapter
-import com.example.foodinfo.ui.ListItemDecoration
-import com.example.foodinfo.utils.extensions.appViewModels
-import com.example.foodinfo.utils.extensions.baseAnimation
-import com.example.foodinfo.utils.extensions.observeState
-import com.example.foodinfo.utils.extensions.showDescriptionDialog
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 
-class NutrientsOfRecipeFragment : BaseFragment<FragmentNutrientsOfRecipeBinding>(
-    FragmentNutrientsOfRecipeBinding::inflate
-) {
+class NutrientsOfRecipeFragment :
+    com.example.foodinfo.core.ui.base.BaseFragment<FragmentNutrientsOfRecipeBinding>(
+        FragmentNutrientsOfRecipeBinding::inflate
+    ) {
 
     private val onBackClickListener: () -> Unit = {
         findNavController().navigateUp()
@@ -62,7 +61,7 @@ class NutrientsOfRecipeFragment : BaseFragment<FragmentNutrientsOfRecipeBinding>
             adapter = recyclerAdapter
             setHasFixedSize(true)
             addItemDecoration(
-                ListItemDecoration(
+                com.example.foodinfo.core.ui.ListItemDecoration(
                     resources.getDimensionPixelSize(R.dimen.nutrients_item_space),
                     RecyclerView.VERTICAL
                 )

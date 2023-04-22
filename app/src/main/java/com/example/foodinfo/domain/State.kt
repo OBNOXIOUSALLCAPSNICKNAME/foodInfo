@@ -2,7 +2,7 @@ package com.example.foodinfo.domain
 
 import android.util.Log
 import com.example.foodinfo.R
-import com.example.foodinfo.utils.ErrorCodes
+import com.example.foodinfo.core.utils.ErrorCodes
 import kotlinx.coroutines.flow.*
 
 

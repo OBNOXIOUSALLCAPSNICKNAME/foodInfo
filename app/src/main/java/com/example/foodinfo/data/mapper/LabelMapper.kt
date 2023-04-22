@@ -1,9 +1,9 @@
 package com.example.foodinfo.data.mapper
 
+import com.example.foodinfo.core.utils.glide.svg.SVGModel
 import com.example.foodinfo.data.local.model.*
 import com.example.foodinfo.data.remote.model.LabelOfRecipeMetadataNetwork
 import com.example.foodinfo.domain.model.*
-import com.example.foodinfo.utils.glide.svg.SVGModel
 
 
 fun LabelOfRecipeMetadataDB.toModelHint(): LabelHint {

@@ -1,12 +1,12 @@
 package com.example.foodinfo.domain.interactor
 
 import androidx.paging.PagingData
+import com.example.foodinfo.core.utils.PrefUtils
 import com.example.foodinfo.domain.State
 import com.example.foodinfo.domain.State.Utils.suspendFlowProvider
 import com.example.foodinfo.domain.model.*
 import com.example.foodinfo.domain.repository.APICredentialsRepository
 import com.example.foodinfo.domain.repository.RecipeRepository
-import com.example.foodinfo.utils.PrefUtils
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow

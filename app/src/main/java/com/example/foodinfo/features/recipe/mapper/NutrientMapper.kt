@@ -1,9 +1,9 @@
 package com.example.foodinfo.features.recipe.mapper
 
+import com.example.foodinfo.core.utils.RecipeMetadataUtils
 import com.example.foodinfo.domain.model.NutrientOfRecipe
 import com.example.foodinfo.features.recipe.model.NutrientModel
 import com.example.foodinfo.features.recipe.model.NutrientVHModel
-import com.example.foodinfo.utils.RecipeMetadataUtils
 
 
 fun NutrientOfRecipe.toVHModel(): NutrientVHModel {

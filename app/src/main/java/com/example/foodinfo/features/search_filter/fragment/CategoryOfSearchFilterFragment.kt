@@ -5,25 +5,25 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.foodinfo.core.ui.base.adapter.AppListAdapter
+import com.example.foodinfo.core.ui.base.adapter.appListAdapter
+import com.example.foodinfo.core.utils.extensions.appViewModels
+import com.example.foodinfo.core.utils.extensions.baseAnimation
+import com.example.foodinfo.core.utils.extensions.observeState
+import com.example.foodinfo.core.utils.extensions.showDescriptionDialog
 import com.example.foodinfo.databinding.FragmentCategoryOfSearchFilterBinding
 import com.example.foodinfo.features.search_filter.adapter.categoryEditAdapterDelegate
 import com.example.foodinfo.features.search_filter.model.LabelEditVHModel
 import com.example.foodinfo.features.search_filter.view_model.CategoryOfSearchFilterViewModel
-import com.example.foodinfo.ui.base.BaseFragment
-import com.example.foodinfo.ui.base.adapter.AppListAdapter
-import com.example.foodinfo.ui.base.adapter.appListAdapter
-import com.example.foodinfo.utils.extensions.appViewModels
-import com.example.foodinfo.utils.extensions.baseAnimation
-import com.example.foodinfo.utils.extensions.observeState
-import com.example.foodinfo.utils.extensions.showDescriptionDialog
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 
-class CategoryOfSearchFilterFragment : BaseFragment<FragmentCategoryOfSearchFilterBinding>(
-    FragmentCategoryOfSearchFilterBinding::inflate
-) {
+class CategoryOfSearchFilterFragment :
+    com.example.foodinfo.core.ui.base.BaseFragment<FragmentCategoryOfSearchFilterBinding>(
+        FragmentCategoryOfSearchFilterBinding::inflate
+    ) {
 
     private val onBackClickListener: () -> Unit = {
         findNavController().navigateUp()

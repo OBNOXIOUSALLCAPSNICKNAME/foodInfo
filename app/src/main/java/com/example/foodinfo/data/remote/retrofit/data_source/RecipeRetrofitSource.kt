@@ -1,5 +1,7 @@
 package com.example.foodinfo.data.remote.retrofit.data_source
 
+import com.example.foodinfo.core.utils.ApiResponse
+import com.example.foodinfo.core.utils.edamam.FieldSet
 import com.example.foodinfo.data.remote.data_source.RecipeRemoteSource
 import com.example.foodinfo.data.remote.model.IngredientOfRecipeNetwork
 import com.example.foodinfo.data.remote.model.NutrientOfRecipeNetwork
@@ -10,8 +12,6 @@ import com.example.foodinfo.data.remote.retrofit.EdamamRecipeURL
 import com.example.foodinfo.data.remote.retrofit.api.RecipeAPI
 import com.example.foodinfo.domain.model.EdamamCredentials
 import com.example.foodinfo.domain.model.SearchFilterPreset
-import com.example.foodinfo.utils.ApiResponse
-import com.example.foodinfo.utils.edamam.FieldSet
 import javax.inject.Inject
 
 

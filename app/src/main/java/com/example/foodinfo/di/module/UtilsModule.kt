@@ -1,7 +1,7 @@
 package com.example.foodinfo.di.module
 
 import android.content.Context
-import com.example.foodinfo.utils.PrefUtils
+import com.example.foodinfo.core.utils.PrefUtils
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import dagger.Module

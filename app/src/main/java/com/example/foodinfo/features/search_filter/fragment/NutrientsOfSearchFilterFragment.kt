@@ -6,26 +6,25 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.foodinfo.R
+import com.example.foodinfo.core.ui.base.adapter.AppListAdapter
+import com.example.foodinfo.core.ui.base.adapter.appListAdapter
+import com.example.foodinfo.core.utils.extensions.appViewModels
+import com.example.foodinfo.core.utils.extensions.baseAnimation
+import com.example.foodinfo.core.utils.extensions.observeState
+import com.example.foodinfo.core.utils.extensions.showDescriptionDialog
 import com.example.foodinfo.databinding.FragmentNutrientsOfSearchFilterBinding
 import com.example.foodinfo.features.search_filter.adapter.nutrientEditAdapterDelegate
 import com.example.foodinfo.features.search_filter.model.NutrientEditVHModel
 import com.example.foodinfo.features.search_filter.view_model.NutrientsOfSearchFilterViewModel
-import com.example.foodinfo.ui.base.BaseFragment
-import com.example.foodinfo.ui.base.adapter.AppListAdapter
-import com.example.foodinfo.ui.base.adapter.appListAdapter
-import com.example.foodinfo.ui.ListItemDecoration
-import com.example.foodinfo.utils.extensions.appViewModels
-import com.example.foodinfo.utils.extensions.baseAnimation
-import com.example.foodinfo.utils.extensions.observeState
-import com.example.foodinfo.utils.extensions.showDescriptionDialog
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 
-class NutrientsOfSearchFilterFragment : BaseFragment<FragmentNutrientsOfSearchFilterBinding>(
-    FragmentNutrientsOfSearchFilterBinding::inflate
-) {
+class NutrientsOfSearchFilterFragment :
+    com.example.foodinfo.core.ui.base.BaseFragment<FragmentNutrientsOfSearchFilterBinding>(
+        FragmentNutrientsOfSearchFilterBinding::inflate
+    ) {
 
     private val onBackClickListener: () -> Unit = {
         findNavController().navigateUp()
@@ -78,7 +77,7 @@ class NutrientsOfSearchFilterFragment : BaseFragment<FragmentNutrientsOfSearchFi
             }
             itemAnimator = null
             addItemDecoration(
-                ListItemDecoration(
+                com.example.foodinfo.core.ui.ListItemDecoration(
                     resources.getDimensionPixelSize(R.dimen.filter_nutrients_edit_field_item_space),
                     RecyclerView.VERTICAL
                 )

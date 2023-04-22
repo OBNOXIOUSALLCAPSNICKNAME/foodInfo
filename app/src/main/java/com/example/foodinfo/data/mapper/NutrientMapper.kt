@@ -1,11 +1,11 @@
 package com.example.foodinfo.data.mapper
 
+import com.example.foodinfo.core.utils.extensions.toPercent
+import com.example.foodinfo.core.utils.glide.svg.SVGModel
 import com.example.foodinfo.data.local.model.*
 import com.example.foodinfo.data.remote.model.NutrientOfRecipeMetadataNetwork
 import com.example.foodinfo.data.remote.model.NutrientOfRecipeNetwork
 import com.example.foodinfo.domain.model.*
-import com.example.foodinfo.utils.extensions.toPercent
-import com.example.foodinfo.utils.glide.svg.SVGModel
 import kotlin.math.max
 import kotlin.math.min
 

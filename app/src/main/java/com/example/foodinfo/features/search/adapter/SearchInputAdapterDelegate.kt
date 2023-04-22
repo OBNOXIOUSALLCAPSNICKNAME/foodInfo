@@ -1,8 +1,8 @@
 package com.example.foodinfo.features.search.adapter
 
+import com.example.foodinfo.core.ui.base.adapter.appAdapterDelegate
 import com.example.foodinfo.databinding.RvItemSearchInputBinding
 import com.example.foodinfo.features.search.model.SearchInputVHModel
-import com.example.foodinfo.ui.base.adapter.appAdapterDelegate
 
 
 fun searchInputAdapterDelegate(

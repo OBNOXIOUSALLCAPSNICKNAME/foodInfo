@@ -1,8 +1,8 @@
 package com.example.foodinfo.features.explore.mapper
 
+import com.example.foodinfo.core.utils.RecipeMetadataUtils
 import com.example.foodinfo.domain.model.Recipe
 import com.example.foodinfo.features.explore.model.RecipeVHModel
-import com.example.foodinfo.utils.RecipeMetadataUtils
 
 
 fun Recipe.toVHModel(): RecipeVHModel {

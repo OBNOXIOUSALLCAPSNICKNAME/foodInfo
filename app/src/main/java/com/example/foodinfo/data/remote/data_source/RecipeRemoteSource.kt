@@ -1,12 +1,12 @@
 package com.example.foodinfo.data.remote.data_source
 
+import com.example.foodinfo.core.utils.ApiResponse
 import com.example.foodinfo.data.remote.model.IngredientOfRecipeNetwork
 import com.example.foodinfo.data.remote.model.NutrientOfRecipeNetwork
 import com.example.foodinfo.data.remote.model.RecipeHitNetwork
 import com.example.foodinfo.data.remote.model.RecipePageNetwork
 import com.example.foodinfo.domain.model.EdamamCredentials
 import com.example.foodinfo.domain.model.SearchFilterPreset
-import com.example.foodinfo.utils.ApiResponse
 
 
 interface RecipeRemoteSource {

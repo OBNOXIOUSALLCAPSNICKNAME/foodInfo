@@ -1,9 +1,9 @@
 package com.example.foodinfo.data.remote.retrofit
 
+import com.example.foodinfo.core.utils.edamam.EdamamInfo
+import com.example.foodinfo.core.utils.edamam.FieldSet
+import com.example.foodinfo.core.utils.extensions.trimMultiline
 import com.example.foodinfo.domain.model.EdamamCredentials
-import com.example.foodinfo.utils.edamam.EdamamInfo
-import com.example.foodinfo.utils.edamam.FieldSet
-import com.example.foodinfo.utils.extensions.trimMultiline
 
 
 /**

@@ -4,19 +4,17 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.foodinfo.R
+import com.example.foodinfo.core.ui.base.adapter.AppListAdapter
+import com.example.foodinfo.core.ui.base.adapter.appListAdapter
+import com.example.foodinfo.core.utils.extensions.appViewModels
+import com.example.foodinfo.core.utils.extensions.observeState
 import com.example.foodinfo.databinding.FragmentHomeBinding
 import com.example.foodinfo.features.home.adapter.categoryAdapterDelegate
 import com.example.foodinfo.features.home.model.CategoryVHModel
 import com.example.foodinfo.features.home.view_model.HomeViewModel
-import com.example.foodinfo.ui.base.BaseFragment
-import com.example.foodinfo.ui.base.adapter.AppListAdapter
-import com.example.foodinfo.ui.base.adapter.appListAdapter
-import com.example.foodinfo.ui.ListItemDecoration
-import com.example.foodinfo.utils.extensions.appViewModels
-import com.example.foodinfo.utils.extensions.observeState
 
 
-class HomeFragment : BaseFragment<FragmentHomeBinding>(
+class HomeFragment : com.example.foodinfo.core.ui.base.BaseFragment<FragmentHomeBinding>(
     FragmentHomeBinding::inflate
 ) {
 
@@ -49,7 +47,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
             }
             adapter = recyclerAdapter
             addItemDecoration(
-                ListItemDecoration(
+                com.example.foodinfo.core.ui.ListItemDecoration(
                     resources.getDimensionPixelSize(R.dimen.home_categories_space),
                     RecyclerView.HORIZONTAL
                 )

@@ -1,7 +1,7 @@
 package com.example.foodinfo.features.favorite.model
 
-import com.example.foodinfo.ui.base.adapter.AppViewHolderModel
-import com.example.foodinfo.utils.view_model.Selectable
+import com.example.foodinfo.core.ui.base.adapter.AppViewHolderModel
+import com.example.foodinfo.core.utils.view_model.Selectable
 
 
 data class RecipeVHModel(

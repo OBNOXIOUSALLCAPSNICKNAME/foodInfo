@@ -6,10 +6,9 @@ import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.example.foodinfo.databinding.ActivityMainBinding
-import com.example.foodinfo.ui.base.BaseActivity
 
 
-class MainActivity : BaseActivity<ActivityMainBinding>(
+class MainActivity : com.example.foodinfo.core.ui.base.BaseActivity<ActivityMainBinding>(
     ActivityMainBinding::inflate
 ) {
     override fun onCreate(savedInstanceState: Bundle?) {

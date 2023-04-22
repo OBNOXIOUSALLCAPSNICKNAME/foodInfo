@@ -1,8 +1,8 @@
 package com.example.foodinfo.data.remote.retrofit.response_adapter
 
 
+import com.example.foodinfo.core.utils.ErrorCodes
 import com.example.foodinfo.data.remote.NetworkResponse
-import com.example.foodinfo.utils.ErrorCodes
 import okhttp3.Request
 import okhttp3.ResponseBody
 import okio.Timeout

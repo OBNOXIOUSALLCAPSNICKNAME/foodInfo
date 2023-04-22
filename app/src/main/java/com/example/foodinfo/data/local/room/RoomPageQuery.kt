@@ -1,6 +1,7 @@
 package com.example.foodinfo.data.local.room
 
 import androidx.sqlite.db.SimpleSQLiteQuery
+import com.example.foodinfo.core.utils.extensions.trimMultiline
 import com.example.foodinfo.data.local.model.LabelOfRecipeDB
 import com.example.foodinfo.data.local.model.LabelOfRecipeMetadataDB
 import com.example.foodinfo.data.local.model.NutrientOfRecipeDB
@@ -9,7 +10,6 @@ import com.example.foodinfo.data.local.room.RoomPageQuery.build
 import com.example.foodinfo.domain.model.CategoryOfSearchFilterPreset
 import com.example.foodinfo.domain.model.NutrientOfSearchFilterPreset
 import com.example.foodinfo.domain.model.SearchFilterPreset
-import com.example.foodinfo.utils.extensions.trimMultiline
 
 
 /**

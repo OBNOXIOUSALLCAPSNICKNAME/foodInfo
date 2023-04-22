@@ -1,9 +1,9 @@
 package com.example.foodinfo.data.remote.retrofit
 
+import com.example.foodinfo.core.utils.extensions.fromReader
+import com.example.foodinfo.core.utils.extensions.getTypeToken
+import com.example.foodinfo.core.utils.extensions.read
 import com.example.foodinfo.data.remote.model.*
-import com.example.foodinfo.utils.extensions.fromReader
-import com.example.foodinfo.utils.extensions.getTypeToken
-import com.example.foodinfo.utils.extensions.read
 import com.google.gson.Gson
 import com.google.gson.TypeAdapter
 import com.google.gson.TypeAdapterFactory

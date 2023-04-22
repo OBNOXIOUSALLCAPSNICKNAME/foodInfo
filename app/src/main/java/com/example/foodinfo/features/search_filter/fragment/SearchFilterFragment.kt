@@ -5,6 +5,11 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.foodinfo.R
+import com.example.foodinfo.core.ui.base.adapter.AppListAdapter
+import com.example.foodinfo.core.ui.base.adapter.appListAdapter
+import com.example.foodinfo.core.utils.extensions.appViewModels
+import com.example.foodinfo.core.utils.extensions.baseAnimation
+import com.example.foodinfo.core.utils.extensions.observeState
 import com.example.foodinfo.databinding.FragmentSearchFilterBinding
 import com.example.foodinfo.features.search_filter.adapter.basicEditAdapterDelegate
 import com.example.foodinfo.features.search_filter.adapter.categoryPreviewAdapterDelegate
@@ -13,17 +18,9 @@ import com.example.foodinfo.features.search_filter.model.BasicEditVHModel
 import com.example.foodinfo.features.search_filter.model.CategoryPreviewVHModel
 import com.example.foodinfo.features.search_filter.model.SearchFilterModel
 import com.example.foodinfo.features.search_filter.view_model.SearchFilterViewModel
-import com.example.foodinfo.ui.base.BaseFragment
-import com.example.foodinfo.ui.base.adapter.AppListAdapter
-import com.example.foodinfo.ui.base.adapter.appListAdapter
-import com.example.foodinfo.ui.NonScrollLinearLayoutManager
-import com.example.foodinfo.ui.ListItemDecoration
-import com.example.foodinfo.utils.extensions.appViewModels
-import com.example.foodinfo.utils.extensions.baseAnimation
-import com.example.foodinfo.utils.extensions.observeState
 
 
-class SearchFilterFragment : BaseFragment<FragmentSearchFilterBinding>(
+class SearchFilterFragment : com.example.foodinfo.core.ui.base.BaseFragment<FragmentSearchFilterBinding>(
     FragmentSearchFilterBinding::inflate
 ) {
 
@@ -79,12 +76,12 @@ class SearchFilterFragment : BaseFragment<FragmentSearchFilterBinding>(
 
         with(binding.rvBaseFields) {
             adapter = basicsRecyclerAdapter
-            layoutManager = NonScrollLinearLayoutManager(context).also {
+            layoutManager = com.example.foodinfo.core.ui.NonScrollLinearLayoutManager(context).also {
                 it.orientation = LinearLayoutManager.VERTICAL
             }
             itemAnimator = null
             addItemDecoration(
-                ListItemDecoration(
+                com.example.foodinfo.core.ui.ListItemDecoration(
                     resources.getDimensionPixelSize(R.dimen.filter_base_range_field_item_space),
                     RecyclerView.VERTICAL
                 )
@@ -94,12 +91,12 @@ class SearchFilterFragment : BaseFragment<FragmentSearchFilterBinding>(
 
         with(binding.rvCategories) {
             adapter = categoriesRecyclerAdapter
-            layoutManager = NonScrollLinearLayoutManager(context).also {
+            layoutManager = com.example.foodinfo.core.ui.NonScrollLinearLayoutManager(context).also {
                 it.orientation = LinearLayoutManager.VERTICAL
             }
             itemAnimator = null
             addItemDecoration(
-                ListItemDecoration(
+                com.example.foodinfo.core.ui.ListItemDecoration(
                     resources.getDimensionPixelSize(R.dimen.filter_category_item_space),
                     RecyclerView.VERTICAL
                 )
@@ -108,12 +105,12 @@ class SearchFilterFragment : BaseFragment<FragmentSearchFilterBinding>(
 
         with(binding.rvNutrients) {
             adapter = nutrientsRecyclerAdapter
-            layoutManager = NonScrollLinearLayoutManager(context).also {
+            layoutManager = com.example.foodinfo.core.ui.NonScrollLinearLayoutManager(context).also {
                 it.orientation = LinearLayoutManager.VERTICAL
             }
             itemAnimator = null
             addItemDecoration(
-                ListItemDecoration(
+                com.example.foodinfo.core.ui.ListItemDecoration(
                     resources.getDimensionPixelSize(R.dimen.filter_category_item_space),
                     RecyclerView.VERTICAL
                 )

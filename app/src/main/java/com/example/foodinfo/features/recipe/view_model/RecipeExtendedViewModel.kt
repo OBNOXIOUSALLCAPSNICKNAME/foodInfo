@@ -2,14 +2,14 @@ package com.example.foodinfo.features.recipe.view_model
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.foodinfo.core.utils.CoroutineLauncher
+import com.example.foodinfo.core.utils.LaunchStrategy
 import com.example.foodinfo.domain.State
 import com.example.foodinfo.domain.model.LabelHint
 import com.example.foodinfo.domain.repository.RecipeMetadataRepository
 import com.example.foodinfo.domain.repository.RecipeRepository
 import com.example.foodinfo.features.recipe.interactor.RecipeModelInteractor
 import com.example.foodinfo.features.recipe.model.RecipeModel
-import com.example.foodinfo.utils.CoroutineLauncher
-import com.example.foodinfo.utils.LaunchStrategy
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted

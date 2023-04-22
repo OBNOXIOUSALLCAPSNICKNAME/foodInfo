@@ -1,10 +1,10 @@
 package com.example.foodinfo.data.remote.retrofit.api
 
+import com.example.foodinfo.core.utils.ApiResponse
 import com.example.foodinfo.data.remote.model.IngredientOfRecipeNetwork
 import com.example.foodinfo.data.remote.model.NutrientOfRecipeNetwork
 import com.example.foodinfo.data.remote.model.RecipeHitNetwork
 import com.example.foodinfo.data.remote.model.RecipePageNetwork
-import com.example.foodinfo.utils.ApiResponse
 import retrofit2.http.GET
 import retrofit2.http.Url
 

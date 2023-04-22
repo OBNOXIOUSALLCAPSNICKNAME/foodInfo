@@ -1,10 +1,10 @@
 package com.example.foodinfo.data.remote.retrofit.data_source
 
+import com.example.foodinfo.core.utils.ApiResponse
 import com.example.foodinfo.data.remote.data_source.RecipeMetadataRemoteSource
 import com.example.foodinfo.data.remote.model.RecipeMetadataNetwork
 import com.example.foodinfo.data.remote.retrofit.api.RecipeMetadataAPI
 import com.example.foodinfo.domain.model.GitHubCredentials
-import com.example.foodinfo.utils.ApiResponse
 import javax.inject.Inject
 
 

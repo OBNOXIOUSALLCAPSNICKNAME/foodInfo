@@ -1,11 +1,11 @@
 package com.example.foodinfo.data.mapper
 
+import com.example.foodinfo.core.utils.edamam.EdamamImageURL
 import com.example.foodinfo.data.local.model.*
 import com.example.foodinfo.data.remote.model.*
 import com.example.foodinfo.domain.model.Recipe
 import com.example.foodinfo.domain.model.RecipeExtended
 import com.example.foodinfo.domain.model.RecipeMetadata
-import com.example.foodinfo.utils.edamam.EdamamImageURL
 
 
 fun RecipeDB.toModel(): Recipe {

@@ -2,6 +2,7 @@ package com.example.foodinfo.domain.interactor
 
 import android.content.Context
 import androidx.paging.PagingConfig
+import com.example.foodinfo.core.utils.extensions.hasInternet
 import com.example.foodinfo.domain.State
 import com.example.foodinfo.domain.State.Utils.transformData
 import com.example.foodinfo.domain.model.CategoryOfSearchFilter
@@ -9,7 +10,6 @@ import com.example.foodinfo.domain.model.NutrientOfSearchFilter
 import com.example.foodinfo.domain.model.PagingHelper
 import com.example.foodinfo.domain.model.SearchFilter
 import com.example.foodinfo.domain.repository.SearchFilterRepository
-import com.example.foodinfo.utils.extensions.hasInternet
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

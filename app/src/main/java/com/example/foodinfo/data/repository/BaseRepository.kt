@@ -1,11 +1,11 @@
 package com.example.foodinfo.data.repository
 
 import com.example.foodinfo.R
+import com.example.foodinfo.core.utils.ApiResponse
+import com.example.foodinfo.core.utils.ErrorCodes
+import com.example.foodinfo.core.utils.NoDataException
 import com.example.foodinfo.data.remote.NetworkResponse
 import com.example.foodinfo.domain.State
-import com.example.foodinfo.utils.ApiResponse
-import com.example.foodinfo.utils.ErrorCodes
-import com.example.foodinfo.utils.NoDataException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow

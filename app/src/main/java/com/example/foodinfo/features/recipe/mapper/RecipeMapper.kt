@@ -1,8 +1,8 @@
 package com.example.foodinfo.features.recipe.mapper
 
+import com.example.foodinfo.core.utils.RecipeMetadataUtils
 import com.example.foodinfo.domain.model.RecipeExtended
 import com.example.foodinfo.features.recipe.model.RecipeModel
-import com.example.foodinfo.utils.RecipeMetadataUtils
 
 
 fun RecipeExtended.toModel(): RecipeModel {

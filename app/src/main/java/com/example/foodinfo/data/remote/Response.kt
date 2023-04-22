@@ -1,9 +1,9 @@
 package com.example.foodinfo.data.remote
 
 import com.example.foodinfo.R
-import com.example.foodinfo.utils.ErrorCodes
-import com.example.foodinfo.utils.NoInternetException
-import com.example.foodinfo.utils.UnknownException
+import com.example.foodinfo.core.utils.ErrorCodes
+import com.example.foodinfo.core.utils.NoInternetException
+import com.example.foodinfo.core.utils.UnknownException
 import java.io.IOException
 
 

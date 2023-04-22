@@ -1,8 +1,8 @@
 package com.example.foodinfo.features.recipe.adapter
 
+import com.example.foodinfo.core.ui.base.adapter.appAdapterDelegate
 import com.example.foodinfo.databinding.RvItemNutrientOfRecipeBinding
 import com.example.foodinfo.features.recipe.model.NutrientVHModel
-import com.example.foodinfo.ui.base.adapter.appAdapterDelegate
 
 
 fun nutrientAdapterDelegate(

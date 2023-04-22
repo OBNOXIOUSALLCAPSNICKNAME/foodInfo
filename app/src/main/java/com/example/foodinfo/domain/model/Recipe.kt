@@ -1,6 +1,6 @@
 package com.example.foodinfo.domain.model
 
-import com.example.foodinfo.utils.edamam.EdamamImageURL
+import com.example.foodinfo.core.utils.edamam.EdamamImageURL
 
 
 data class Recipe(

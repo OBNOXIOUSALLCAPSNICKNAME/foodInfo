@@ -1,6 +1,6 @@
 package com.example.foodinfo.features.search_filter.model
 
-import com.example.foodinfo.ui.base.adapter.AppViewHolderModel
+import com.example.foodinfo.core.ui.base.adapter.AppViewHolderModel
 
 
 data class NutrientEditVHModel(

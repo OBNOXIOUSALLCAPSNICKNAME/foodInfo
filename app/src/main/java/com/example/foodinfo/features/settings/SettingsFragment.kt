@@ -1,12 +1,11 @@
 package com.example.foodinfo.features.settings
 
 import com.example.foodinfo.R
+import com.example.foodinfo.core.utils.extensions.appViewModels
 import com.example.foodinfo.databinding.FragmentSettingsBinding
-import com.example.foodinfo.ui.base.BaseFragment
-import com.example.foodinfo.utils.extensions.appViewModels
 
 
-class SettingsFragment : BaseFragment<FragmentSettingsBinding>(
+class SettingsFragment : com.example.foodinfo.core.ui.base.BaseFragment<FragmentSettingsBinding>(
     FragmentSettingsBinding::inflate
 ) {
 
