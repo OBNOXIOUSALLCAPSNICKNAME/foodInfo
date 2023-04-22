@@ -33,6 +33,7 @@
         tools:text = "condiments and cookies" />
 
     <CheckBox
+        android:clickable="false"
         android:id = "@+id/cb_checked"
         android:layout_width = "wrap_content"
         android:layout_height = "match_parent"

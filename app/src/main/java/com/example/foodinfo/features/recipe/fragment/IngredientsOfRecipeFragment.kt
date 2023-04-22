@@ -1,0 +1,69 @@
+package com.example.foodinfo.features.recipe.fragment
+
+import androidx.core.view.isVisible
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.RecyclerView
+import com.example.foodinfo.R
+import com.example.foodinfo.databinding.FragmentRecipeIngredientsBinding
+import com.example.foodinfo.features.recipe.adapter.ingredientAdapterDelegate
+import com.example.foodinfo.features.recipe.view_model.IngredientsOfRecipeViewModel
+import com.example.foodinfo.ui.base.BaseFragment
+import com.example.foodinfo.ui.base.adapter.AppListAdapter
+import com.example.foodinfo.ui.base.adapter.appListAdapter
+import com.example.foodinfo.ui.decorator.ListItemDecoration
+import com.example.foodinfo.utils.extensions.appViewModels
+import com.example.foodinfo.utils.extensions.baseAnimation
+import com.example.foodinfo.utils.extensions.observeState
+
+
+class IngredientsOfRecipeFragment : BaseFragment<FragmentRecipeIngredientsBinding>(
+    FragmentRecipeIngredientsBinding::inflate
+) {
+
+    private val onBackClickListener: () -> Unit = {
+        findNavController().navigateUp()
+    }
+
+
+    private val args: IngredientsOfRecipeFragmentArgs by navArgs()
+
+    private val recyclerAdapter: AppListAdapter by appListAdapter(
+        ingredientAdapterDelegate()
+    )
+
+    private val viewModel: IngredientsOfRecipeViewModel by appViewModels()
+
+
+    override fun initUI() {
+        viewModel.recipeId = args.recipeId
+        binding.btnBack.setOnClickListener { onBackClickListener() }
+
+        with(binding.rvIngredients) {
+            adapter = recyclerAdapter
+            setHasFixedSize(true)
+            addItemDecoration(
+                ListItemDecoration(
+                    resources.getDimensionPixelSize(R.dimen.ingredients_item_space),
+                    RecyclerView.VERTICAL
+                )
+            )
+        }
+    }
+
+    override fun subscribeUI() {
+        observeState(
+            dataFlow = viewModel.ingredients,
+            useLoadingData = true,
+            onStart = {
+                binding.rvIngredients.isVisible = false
+                binding.pbContent.isVisible = true
+            },
+            onFinish = {
+                binding.pbContent.isVisible = false
+                binding.rvIngredients.baseAnimation()
+            },
+            onSuccess = recyclerAdapter::submitList
+        )
+    }
+}

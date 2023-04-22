@@ -6,8 +6,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.PagingData
-import com.example.foodinfo.domain.state.State
-import com.example.foodinfo.domain.state.State.Utils.filterState
+import com.example.foodinfo.domain.State
+import com.example.foodinfo.domain.State.Utils.filterState
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
