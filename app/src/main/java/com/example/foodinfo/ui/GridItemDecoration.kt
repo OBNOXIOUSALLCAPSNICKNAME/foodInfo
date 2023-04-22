@@ -1,4 +1,4 @@
-package com.example.foodinfo.ui.decorator
+package com.example.foodinfo.ui
 
 import android.graphics.Rect
 import android.view.View

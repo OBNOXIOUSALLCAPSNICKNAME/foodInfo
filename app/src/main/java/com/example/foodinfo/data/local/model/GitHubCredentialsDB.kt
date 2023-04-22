@@ -11,7 +11,7 @@ open class GitHubCredentialsDB(
     }
 
     companion object {
-        const val DEFAULT_NAME = "default credentials"
+        const val DEFAULT_NAME = "default"
         const val TABLE_NAME = "github_credentials"
     }
 }

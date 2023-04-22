@@ -1,4 +1,4 @@
-package com.example.foodinfo.ui.custom_view
+package com.example.foodinfo.ui.custom
 
 import android.content.Context
 import android.util.AttributeSet

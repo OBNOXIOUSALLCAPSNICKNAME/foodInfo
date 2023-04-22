@@ -16,8 +16,8 @@ import com.example.foodinfo.features.search_filter.view_model.SearchFilterViewMo
 import com.example.foodinfo.ui.base.BaseFragment
 import com.example.foodinfo.ui.base.adapter.AppListAdapter
 import com.example.foodinfo.ui.base.adapter.appListAdapter
-import com.example.foodinfo.ui.custom_view.NonScrollLinearLayoutManager
-import com.example.foodinfo.ui.decorator.ListItemDecoration
+import com.example.foodinfo.ui.NonScrollLinearLayoutManager
+import com.example.foodinfo.ui.ListItemDecoration
 import com.example.foodinfo.utils.extensions.appViewModels
 import com.example.foodinfo.utils.extensions.baseAnimation
 import com.example.foodinfo.utils.extensions.observeState

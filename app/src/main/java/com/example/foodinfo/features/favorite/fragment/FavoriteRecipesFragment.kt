@@ -14,7 +14,7 @@ import com.example.foodinfo.features.favorite.view_model.FavoriteRecipesViewMode
 import com.example.foodinfo.ui.base.BaseFragment
 import com.example.foodinfo.ui.base.adapter.AppPageAdapter
 import com.example.foodinfo.ui.base.adapter.appPageAdapter
-import com.example.foodinfo.ui.decorator.ListItemDecoration
+import com.example.foodinfo.ui.ListItemDecoration
 import com.example.foodinfo.utils.extensions.appViewModels
 import com.example.foodinfo.utils.extensions.observe
 import kotlinx.coroutines.flow.collectLatest

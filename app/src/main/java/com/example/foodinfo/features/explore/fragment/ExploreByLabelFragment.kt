@@ -12,7 +12,7 @@ import com.example.foodinfo.features.explore.view_model.ExploreByLabelViewModel
 import com.example.foodinfo.ui.base.BaseFragment
 import com.example.foodinfo.ui.base.adapter.AppPageAdapter
 import com.example.foodinfo.ui.base.adapter.appPageAdapter
-import com.example.foodinfo.ui.decorator.GridItemDecoration
+import com.example.foodinfo.ui.GridItemDecoration
 import com.example.foodinfo.utils.extensions.appViewModels
 import com.example.foodinfo.utils.extensions.observePages
 import com.example.foodinfo.utils.extensions.showDescriptionDialog

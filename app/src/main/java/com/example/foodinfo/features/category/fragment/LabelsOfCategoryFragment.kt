@@ -12,7 +12,7 @@ import com.example.foodinfo.features.category.viewm_model.LabelsOfCategoryViewMo
 import com.example.foodinfo.ui.base.BaseFragment
 import com.example.foodinfo.ui.base.adapter.AppListAdapter
 import com.example.foodinfo.ui.base.adapter.appListAdapter
-import com.example.foodinfo.ui.decorator.GridItemDecoration
+import com.example.foodinfo.ui.GridItemDecoration
 import com.example.foodinfo.utils.extensions.appViewModels
 import com.example.foodinfo.utils.extensions.baseAnimation
 import com.example.foodinfo.utils.extensions.observeState

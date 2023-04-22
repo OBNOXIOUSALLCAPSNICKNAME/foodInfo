@@ -1,4 +1,4 @@
-package com.example.foodinfo.ui.custom_view
+package com.example.foodinfo.ui
 
 import android.content.Context
 import androidx.recyclerview.widget.LinearLayoutManager

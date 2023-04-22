@@ -13,7 +13,7 @@ import com.example.foodinfo.features.search_filter.view_model.NutrientsOfSearchF
 import com.example.foodinfo.ui.base.BaseFragment
 import com.example.foodinfo.ui.base.adapter.AppListAdapter
 import com.example.foodinfo.ui.base.adapter.appListAdapter
-import com.example.foodinfo.ui.decorator.ListItemDecoration
+import com.example.foodinfo.ui.ListItemDecoration
 import com.example.foodinfo.utils.extensions.appViewModels
 import com.example.foodinfo.utils.extensions.baseAnimation
 import com.example.foodinfo.utils.extensions.observeState

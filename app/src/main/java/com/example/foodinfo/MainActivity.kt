@@ -1,11 +1,10 @@
-package com.example.foodinfo.ui.activity
+package com.example.foodinfo
 
 import android.os.Bundle
 import androidx.core.view.isVisible
 import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
-import com.example.foodinfo.R
 import com.example.foodinfo.databinding.ActivityMainBinding
 import com.example.foodinfo.ui.base.BaseActivity
 

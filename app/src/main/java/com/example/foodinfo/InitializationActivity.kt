@@ -1,4 +1,4 @@
-package com.example.foodinfo.ui.activity
+package com.example.foodinfo
 
 import android.content.Intent
 import android.os.Bundle

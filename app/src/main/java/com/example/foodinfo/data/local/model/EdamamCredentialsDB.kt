@@ -3,12 +3,12 @@ package com.example.foodinfo.data.local.model
 
 open class EdamamCredentialsDB(
     open val name: String = DEFAULT_NAME,
-    open val appIDFood: String = "bdd6ffae postfix",
+    open val appIDFood: String = "bdd6ffae",
     open val appIDRecipes: String = "f8452af5",
-    open val appIDNutrition: String = "10e0e928 postfix",
-    open val appKeyFood: String = "d3a7dfa760ceea4112c6afe28adc2a99 postfix",
+    open val appIDNutrition: String = "10e0e928",
+    open val appKeyFood: String = "d3a7dfa760ceea4112c6afe28adc2a99",
     open val appKeyRecipes: String = "0f6552d886aed96d8608d6be1f2fe6ae",
-    open val appKeyNutrition: String = "906a807656e6c8ff4e4fdbfee1c80744 postfix",
+    open val appKeyNutrition: String = "906a807656e6c8ff4e4fdbfee1c80744",
 ) {
 
     object Columns {
@@ -22,7 +22,7 @@ open class EdamamCredentialsDB(
     }
 
     companion object {
-        const val DEFAULT_NAME = "default credentials"
+        const val DEFAULT_NAME = "default"
         const val TABLE_NAME = "edamam_credentials"
     }
 }
