@@ -48,13 +48,13 @@ class RetrofitModule {
     }
 
     @Provides
-    fun provideApiRecipes(
+    fun provideRecipeAPI(
         @Named("Edamam")
         retrofit: Retrofit
     ): RecipeAPI = retrofit.create(RecipeAPI::class.java)
 
     @Provides
-    fun provideApiMetadata(
+    fun provideRecipeMetadataAPI(
         @Named("GitHub")
         retrofit: Retrofit
     ): RecipeMetadataAPI = retrofit.create(RecipeMetadataAPI::class.java)

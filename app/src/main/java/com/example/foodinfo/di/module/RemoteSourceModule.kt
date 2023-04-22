@@ -13,12 +13,12 @@ import dagger.Provides
 @Module
 class RemoteSourceModule {
     @Provides
-    fun provideRecipeRemote(recipeAPI: RecipeAPI): RecipeRemoteSource {
+    fun provideRecipeRemoteSource(recipeAPI: RecipeAPI): RecipeRemoteSource {
         return RecipeRetrofitSource(recipeAPI)
     }
 
     @Provides
-    fun provideRecipeMetadataRemote(recipeMetadataAPI: RecipeMetadataAPI): RecipeMetadataRemoteSource {
+    fun provideRecipeMetadataRemoteSource(recipeMetadataAPI: RecipeMetadataAPI): RecipeMetadataRemoteSource {
         return RecipeMetadataRetrofitSource(recipeMetadataAPI)
     }
 }
