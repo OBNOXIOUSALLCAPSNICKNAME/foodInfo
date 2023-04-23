@@ -1,6 +1,7 @@
 package com.example.foodinfo.features.explore.model
 
 import com.example.foodinfo.core.ui.base.adapter.AppViewHolderModel
+import com.example.foodinfo.core.utils.edamam.EdamamImageURL
 
 
 data class RecipeVHModel(
@@ -9,7 +10,7 @@ data class RecipeVHModel(
     val calories: String,
     val servings: String,
     val cookingTime: String,
-    val preview: String,
+    val preview: EdamamImageURL,
     val isFavorite: Boolean
 ) : AppViewHolderModel {
 

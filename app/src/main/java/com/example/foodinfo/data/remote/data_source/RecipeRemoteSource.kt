@@ -18,17 +18,17 @@ interface RecipeRemoteSource {
 
     suspend fun getNextPage(href: String): ApiResponse<RecipePageNetwork>
 
-    suspend fun getRecipe(
+    suspend fun getByIdExtended(
         apiCredentials: EdamamCredentials,
         recipeID: String,
     ): ApiResponse<RecipeHitNetwork>
 
-    suspend fun getRecipeNutrients(
+    suspend fun getByIdNutrients(
         apiCredentials: EdamamCredentials,
         recipeID: String,
     ): ApiResponse<Map<String, NutrientOfRecipeNetwork>>
 
-    suspend fun getRecipeIngredients(
+    suspend fun getByIdIngredients(
         apiCredentials: EdamamCredentials,
         recipeID: String,
     ): ApiResponse<List<IngredientOfRecipeNetwork>>

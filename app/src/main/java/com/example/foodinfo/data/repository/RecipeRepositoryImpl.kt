@@ -88,7 +88,7 @@ class RecipeRepositoryImpl @Inject constructor(
     ): Flow<State<RecipeExtended>> {
         return getData(
             remoteDataProvider = {
-                DataSource.Remote(recipeRemote.getRecipe(apiCredentials, recipeID))
+                DataSource.Remote(recipeRemote.getByIdExtended(apiCredentials, recipeID))
             },
             localDataProvider = { DataSource.LocalFlow(recipeLocal.getByIdExtended(recipeID)) },
             saveRemoteDelegate = recipeLocal::addRecipe,
@@ -104,7 +104,7 @@ class RecipeRepositoryImpl @Inject constructor(
     ): Flow<State<List<NutrientOfRecipe>>> {
         return getData(
             remoteDataProvider = {
-                DataSource.Remote(recipeRemote.getRecipeNutrients(apiCredentials, recipeID))
+                DataSource.Remote(recipeRemote.getByIdNutrients(apiCredentials, recipeID))
             },
             localDataProvider = { DataSource.LocalFlow(recipeLocal.getNutrients(recipeID)) },
             saveRemoteDelegate = recipeLocal::addNutrients,
@@ -119,7 +119,7 @@ class RecipeRepositoryImpl @Inject constructor(
     ): Flow<State<List<IngredientOfRecipe>>> {
         return getData(
             remoteDataProvider = {
-                DataSource.Remote(recipeRemote.getRecipeIngredients(apiCredentials, recipeID))
+                DataSource.Remote(recipeRemote.getByIdIngredients(apiCredentials, recipeID))
             },
             localDataProvider = { DataSource.LocalFlow(recipeLocal.getIngredients(recipeID)) },
             saveRemoteDelegate = recipeLocal::addIngredients,

@@ -32,29 +32,29 @@ class RecipeRetrofitSource @Inject constructor(
         return recipeAPI.getPage(href)
     }
 
-    override suspend fun getRecipe(
+    override suspend fun getByIdExtended(
         apiCredentials: EdamamCredentials,
         recipeID: String,
     ): ApiResponse<RecipeHitNetwork> {
         return recipeAPI.getRecipe(
-            EdamamRecipeURL.build(apiCredentials, FieldSet.BASIC, recipeID)
+            EdamamRecipeURL.build(apiCredentials, FieldSet.FULL, recipeID)
         )
     }
 
-    override suspend fun getRecipeNutrients(
+    override suspend fun getByIdNutrients(
         apiCredentials: EdamamCredentials,
         recipeID: String,
     ): ApiResponse<Map<String, NutrientOfRecipeNetwork>> {
-        return recipeAPI.getRecipeNutrients(
+        return recipeAPI.getNutrientsOfRecipe(
             EdamamRecipeURL.build(apiCredentials, FieldSet.NUTRIENTS, recipeID)
         )
     }
 
-    override suspend fun getRecipeIngredients(
+    override suspend fun getByIdIngredients(
         apiCredentials: EdamamCredentials,
         recipeID: String,
     ): ApiResponse<List<IngredientOfRecipeNetwork>> {
-        return recipeAPI.getRecipeIngredients(
+        return recipeAPI.getIngredientsOfRecipe(
             EdamamRecipeURL.build(apiCredentials, FieldSet.INGREDIENTS, recipeID)
         )
     }

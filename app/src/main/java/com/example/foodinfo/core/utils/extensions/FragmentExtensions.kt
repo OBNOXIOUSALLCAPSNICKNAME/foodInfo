@@ -42,6 +42,7 @@ fun Fragment.hideKeyboard() {
     }
 }
 
+//TODO fix opening multiple windows on rapid clicks
 fun Fragment.showDescriptionDialog(
     header: String,
     description: String,
@@ -52,7 +53,6 @@ fun Fragment.showDescriptionDialog(
     ).apply {
         GlideApp.with(requireContext())
             .load(preview)
-            .error(R.drawable.ic_no_image)
             .into(ivPreview)
         tvHeader.text = header
         tvDescription.text = description

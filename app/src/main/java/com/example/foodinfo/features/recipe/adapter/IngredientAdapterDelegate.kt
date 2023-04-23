@@ -15,8 +15,6 @@ fun ingredientAdapterDelegate() = appAdapterDelegate<IngredientVHModel, RvItemIn
         binding.tvIngredientWeight.text = item.weight
         GlideApp.with(binding.ivIngredientPreview.context)
             .load(item.previewURL)
-            .error(R.drawable.ic_no_image)
-            .placeholder(null)
             .transition(DrawableTransitionOptions.withCrossFade())
             .into(binding.ivIngredientPreview)
     }

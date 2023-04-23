@@ -34,9 +34,7 @@ fun recipeAdapterDelegate(
                 tvCaloriesValue.text = item.calories
                 GlideApp
                     .with(ivPreview.context)
-                    .load(item.preview)
-                    .error(R.drawable.ic_no_image)
-                    .placeholder(null)
+                    .load(item.preview.toString())
                     .transition(DrawableTransitionOptions.withCrossFade())
                     .into(ivPreview)
             }

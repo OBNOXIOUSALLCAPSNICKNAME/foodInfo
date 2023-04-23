@@ -19,7 +19,8 @@ interface RecipeDAO {
 
     @Query(
         "SELECT * FROM ${RecipeDB.TABLE_NAME} WHERE " +
-        "${RecipeDB.Columns.IS_FAVORITE} == 1"
+        "${RecipeDB.Columns.IS_FAVORITE} == 1 " +
+        "ORDER BY ${RecipeDB.Columns.NAME} DESC"
     )
     fun getFavorite(): PagingSource<Int, RecipeEntity>
 

@@ -11,6 +11,6 @@ fun Recipe.toVHModel(): RecipeVHModel {
         calories = this.calories.toString(),
         source = this.source,
         servings = this.servings.toString(),
-        preview = preview.toString()
+        preview = preview
     )
 }

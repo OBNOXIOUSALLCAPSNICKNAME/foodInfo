@@ -1,7 +1,6 @@
 package com.example.foodinfo.features.explore.adapter
 
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
-import com.example.foodinfo.R
 import com.example.foodinfo.core.ui.base.adapter.appAdapterDelegate
 import com.example.foodinfo.core.utils.extensions.setFavorite
 import com.example.foodinfo.core.utils.glide.GlideApp
@@ -32,9 +31,7 @@ fun recipeAdapterDelegate(
                 tvServingsValue.text = item.servings
                 tvCaloriesValue.text = item.calories
                 GlideApp.with(ivPreview.context)
-                    .load(item.preview)
-                    .error(R.drawable.ic_no_image)
-                    .placeholder(null)
+                    .load(item.preview.toString())
                     .transition(DrawableTransitionOptions.withCrossFade())
                     .into(ivPreview)
             }

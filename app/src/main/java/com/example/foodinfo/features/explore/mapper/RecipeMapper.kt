@@ -12,7 +12,7 @@ fun Recipe.toVHModel(): RecipeVHModel {
         calories = this.calories.toString(),
         servings = this.servings.toString(),
         cookingTime = RecipeMetadataUtils.mapCookingTime(this.cookingTime),
-        preview = this.preview.toString(),
+        preview = this.preview,
         isFavorite = this.isFavorite
     )
 }

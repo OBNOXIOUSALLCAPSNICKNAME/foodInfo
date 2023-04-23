@@ -1,6 +1,7 @@
 package com.example.foodinfo.features.favorite.model
 
 import com.example.foodinfo.core.ui.base.adapter.AppViewHolderModel
+import com.example.foodinfo.core.utils.edamam.EdamamImageURL
 import com.example.foodinfo.core.utils.view_model.Selectable
 
 
@@ -11,7 +12,7 @@ data class RecipeVHModel(
     val calories: String,
     val source: String,
     val servings: String,
-    val preview: String
+    val preview: EdamamImageURL
 ) : Selectable<String>, AppViewHolderModel {
 
     override fun areItemsTheSame(other: AppViewHolderModel): Boolean =

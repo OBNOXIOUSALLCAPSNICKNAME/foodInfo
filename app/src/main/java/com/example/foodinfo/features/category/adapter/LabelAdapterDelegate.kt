@@ -23,8 +23,6 @@ fun labelAdapterDelegate(
         binding.tvTitle.text = item.name
         GlideApp.with(binding.ivPreview.context)
             .load(item.preview)
-            .error(R.drawable.ic_no_image)
-            .placeholder(null)
             .transition(DrawableTransitionOptions.withCrossFade())
             .into(binding.ivPreview)
     }

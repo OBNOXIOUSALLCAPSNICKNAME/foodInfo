@@ -23,8 +23,6 @@ fun categoryAdapterDelegate(
         binding.tvTitle.text = item.name
         GlideApp.with(binding.ivPreview.context)
             .load(item.preview)
-            .diskCacheStrategy(DiskCacheStrategy.NONE)
-            .error(R.drawable.ic_no_image)
             .into(binding.ivPreview)
     }
 )

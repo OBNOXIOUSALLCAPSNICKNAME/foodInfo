@@ -163,7 +163,6 @@ class RecipeExtendedFragment : BaseFragment<FragmentRecipeExtendedBinding>(
             for (index in 0 until min(clIngredients.size, recipe.ingredientPreviews.size)) {
                 GlideApp.with(requireContext())
                     .load(recipe.ingredientPreviews[index])
-                    .error(R.drawable.ic_no_image)
                     .into(clIngredients[index] as ShapeableImageView)
             }
 

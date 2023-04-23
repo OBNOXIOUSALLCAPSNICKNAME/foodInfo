@@ -24,13 +24,13 @@ interface RecipeAPI {
     ): ApiResponse<RecipeHitNetwork>
 
     @GET
-    suspend fun getRecipeNutrients(
+    suspend fun getNutrientsOfRecipe(
         @Url
         url: String
     ): ApiResponse<Map<String, NutrientOfRecipeNetwork>>
 
     @GET
-    suspend fun getRecipeIngredients(
+    suspend fun getIngredientsOfRecipe(
         @Url
         url: String
     ): ApiResponse<List<IngredientOfRecipeNetwork>>
