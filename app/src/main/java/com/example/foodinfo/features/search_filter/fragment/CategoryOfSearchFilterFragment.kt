@@ -5,6 +5,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.foodinfo.core.ui.base.BaseFragment
 import com.example.foodinfo.core.ui.base.adapter.AppListAdapter
 import com.example.foodinfo.core.ui.base.adapter.appListAdapter
 import com.example.foodinfo.core.utils.extensions.appViewModels
@@ -20,10 +21,9 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 
-class CategoryOfSearchFilterFragment :
-    com.example.foodinfo.core.ui.base.BaseFragment<FragmentCategoryOfSearchFilterBinding>(
-        FragmentCategoryOfSearchFilterBinding::inflate
-    ) {
+class CategoryOfSearchFilterFragment : BaseFragment<FragmentCategoryOfSearchFilterBinding>(
+    FragmentCategoryOfSearchFilterBinding::inflate
+) {
 
     private val onBackClickListener: () -> Unit = {
         findNavController().navigateUp()

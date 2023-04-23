@@ -2,13 +2,13 @@ package com.example.foodinfo
 
 import android.os.Bundle
 import androidx.core.view.isVisible
-import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
+import com.example.foodinfo.core.ui.base.BaseActivity
 import com.example.foodinfo.databinding.ActivityMainBinding
 
 
-class MainActivity : com.example.foodinfo.core.ui.base.BaseActivity<ActivityMainBinding>(
+class MainActivity : BaseActivity<ActivityMainBinding>(
     ActivityMainBinding::inflate
 ) {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -16,7 +16,7 @@ class MainActivity : com.example.foodinfo.core.ui.base.BaseActivity<ActivityMain
 
         with(supportFragmentManager.findFragmentById(R.id.nav_host) as NavHostFragment) {
             NavigationUI.setupWithNavController(binding.navView, navController)
-            navController.addOnDestinationChangedListener { _, destination: NavDestination, _ ->
+            navController.addOnDestinationChangedListener { _, destination, _ ->
                 when (destination.id) {
                     R.id.f_home,
                     R.id.f_favorite,
@@ -28,3 +28,9 @@ class MainActivity : com.example.foodinfo.core.ui.base.BaseActivity<ActivityMain
         }
     }
 }
+
+/*
+    кнопки поиск/очистить внизу фильтра
+    вместо reset стрелку (или меню) кнопку, заменить шрифт названия фильра, сместить название в центр
+    сделать что-то с диалогом (каой-нибудь manager) чтобы не открывался много раз
+ */

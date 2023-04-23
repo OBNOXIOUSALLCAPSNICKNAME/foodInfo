@@ -5,6 +5,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.example.foodinfo.core.ui.base.BaseFragment
 import com.example.foodinfo.core.ui.base.adapter.AppListAdapter
 import com.example.foodinfo.core.ui.base.adapter.appListAdapter
 import com.example.foodinfo.core.utils.extensions.appViewModels
@@ -18,7 +19,7 @@ import com.example.foodinfo.features.search.view_model.SearchInputViewModel
 import kotlinx.coroutines.flow.collectLatest
 
 
-class SearchInputFragment : com.example.foodinfo.core.ui.base.BaseFragment<FragmentSearchInputBinding>(
+class SearchInputFragment : BaseFragment<FragmentSearchInputBinding>(
     FragmentSearchInputBinding::inflate
 ) {
 

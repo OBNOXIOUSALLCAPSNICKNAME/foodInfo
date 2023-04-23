@@ -1,11 +1,12 @@
 package com.example.foodinfo.features.planner
 
 import com.example.foodinfo.R
+import com.example.foodinfo.core.ui.base.BaseFragment
 import com.example.foodinfo.core.utils.extensions.appViewModels
 import com.example.foodinfo.databinding.FragmentPlannerBinding
 
 
-class PlannerFragment : com.example.foodinfo.core.ui.base.BaseFragment<FragmentPlannerBinding>(
+class PlannerFragment : BaseFragment<FragmentPlannerBinding>(
     FragmentPlannerBinding::inflate
 ) {
 

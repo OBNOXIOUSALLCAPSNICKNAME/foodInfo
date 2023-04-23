@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.example.foodinfo.R
+import com.example.foodinfo.core.ui.base.BaseFragment
 import com.example.foodinfo.core.ui.base.adapter.AppListAdapter
 import com.example.foodinfo.core.ui.base.adapter.appListAdapter
 import com.example.foodinfo.core.utils.extensions.*
@@ -26,7 +27,7 @@ import kotlinx.coroutines.withContext
 import kotlin.math.min
 
 
-class RecipeExtendedFragment : com.example.foodinfo.core.ui.base.BaseFragment<FragmentRecipeExtendedBinding>(
+class RecipeExtendedFragment : BaseFragment<FragmentRecipeExtendedBinding>(
     FragmentRecipeExtendedBinding::inflate
 ) {
 

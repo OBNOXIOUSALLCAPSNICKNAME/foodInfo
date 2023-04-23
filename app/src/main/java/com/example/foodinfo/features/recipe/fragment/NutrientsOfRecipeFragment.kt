@@ -6,6 +6,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
 import com.example.foodinfo.R
+import com.example.foodinfo.core.ui.base.BaseFragment
 import com.example.foodinfo.core.ui.base.adapter.AppListAdapter
 import com.example.foodinfo.core.ui.base.adapter.appListAdapter
 import com.example.foodinfo.core.utils.extensions.appViewModels
@@ -21,10 +22,9 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 
-class NutrientsOfRecipeFragment :
-    com.example.foodinfo.core.ui.base.BaseFragment<FragmentNutrientsOfRecipeBinding>(
-        FragmentNutrientsOfRecipeBinding::inflate
-    ) {
+class NutrientsOfRecipeFragment : BaseFragment<FragmentNutrientsOfRecipeBinding>(
+    FragmentNutrientsOfRecipeBinding::inflate
+) {
 
     private val onBackClickListener: () -> Unit = {
         findNavController().navigateUp()

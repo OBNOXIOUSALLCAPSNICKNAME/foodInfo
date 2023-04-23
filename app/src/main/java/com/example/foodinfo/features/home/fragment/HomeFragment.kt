@@ -4,6 +4,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.foodinfo.R
+import com.example.foodinfo.core.ui.base.BaseFragment
 import com.example.foodinfo.core.ui.base.adapter.AppListAdapter
 import com.example.foodinfo.core.ui.base.adapter.appListAdapter
 import com.example.foodinfo.core.utils.extensions.appViewModels
@@ -14,7 +15,7 @@ import com.example.foodinfo.features.home.model.CategoryVHModel
 import com.example.foodinfo.features.home.view_model.HomeViewModel
 
 
-class HomeFragment : com.example.foodinfo.core.ui.base.BaseFragment<FragmentHomeBinding>(
+class HomeFragment : BaseFragment<FragmentHomeBinding>(
     FragmentHomeBinding::inflate
 ) {
 

@@ -5,6 +5,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
 import com.example.foodinfo.R
+import com.example.foodinfo.core.ui.base.BaseFragment
 import com.example.foodinfo.core.ui.base.adapter.AppPageAdapter
 import com.example.foodinfo.core.ui.base.adapter.appPageAdapter
 import com.example.foodinfo.core.utils.extensions.appViewModels
@@ -15,7 +16,7 @@ import com.example.foodinfo.features.explore.model.RecipeVHModel
 import com.example.foodinfo.features.explore.view_model.ExploreByQueryViewModel
 
 
-class ExploreByQueryFragment : com.example.foodinfo.core.ui.base.BaseFragment<FragmentExploreByQueryBinding>(
+class ExploreByQueryFragment : BaseFragment<FragmentExploreByQueryBinding>(
     FragmentExploreByQueryBinding::inflate
 ) {
 

@@ -3,6 +3,7 @@ package com.example.foodinfo
 import android.content.Intent
 import android.os.Bundle
 import androidx.lifecycle.lifecycleScope
+import com.example.foodinfo.core.ui.base.BaseActivity
 import com.example.foodinfo.core.utils.extensions.appComponent
 import com.example.foodinfo.data.local.model.EdamamCredentialsDB
 import com.example.foodinfo.data.local.model.GitHubCredentialsDB
@@ -17,7 +18,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 
-class InitializationActivity : com.example.foodinfo.core.ui.base.BaseActivity<ActivityInitializationBinding>(
+class InitializationActivity : BaseActivity<ActivityInitializationBinding>(
     ActivityInitializationBinding::inflate
 ) {
     override fun onCreate(savedInstanceState: Bundle?) {

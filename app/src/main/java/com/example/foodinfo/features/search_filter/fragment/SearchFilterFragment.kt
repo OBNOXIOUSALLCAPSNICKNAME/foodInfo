@@ -5,6 +5,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.foodinfo.R
+import com.example.foodinfo.core.ui.base.BaseFragment
 import com.example.foodinfo.core.ui.base.adapter.AppListAdapter
 import com.example.foodinfo.core.ui.base.adapter.appListAdapter
 import com.example.foodinfo.core.utils.extensions.appViewModels
@@ -20,7 +21,7 @@ import com.example.foodinfo.features.search_filter.model.SearchFilterModel
 import com.example.foodinfo.features.search_filter.view_model.SearchFilterViewModel
 
 
-class SearchFilterFragment : com.example.foodinfo.core.ui.base.BaseFragment<FragmentSearchFilterBinding>(
+class SearchFilterFragment : BaseFragment<FragmentSearchFilterBinding>(
     FragmentSearchFilterBinding::inflate
 ) {
 

@@ -5,6 +5,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
 import com.example.foodinfo.R
+import com.example.foodinfo.core.ui.base.BaseFragment
 import com.example.foodinfo.core.ui.base.adapter.AppPageAdapter
 import com.example.foodinfo.core.ui.base.adapter.appPageAdapter
 import com.example.foodinfo.core.utils.extensions.appViewModels
@@ -19,7 +20,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 
-class ExploreByLabelFragment : com.example.foodinfo.core.ui.base.BaseFragment<FragmentExploreByLabelBinding>(
+class ExploreByLabelFragment : BaseFragment<FragmentExploreByLabelBinding>(
     FragmentExploreByLabelBinding::inflate
 ) {
 
