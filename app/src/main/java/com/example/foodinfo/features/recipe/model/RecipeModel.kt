@@ -1,5 +1,7 @@
 package com.example.foodinfo.features.recipe.model
 
+import com.example.foodinfo.core.utils.edamam.EdamamImageURL
+
 
 data class RecipeModel(
     val ID: String,
@@ -7,7 +9,7 @@ data class RecipeModel(
     val weight: String,
     val cookingTime: String,
     val servings: String,
-    val preview: String,
+    val preview: EdamamImageURL,
     val isFavorite: Boolean,
     val categories: List<CategoryVHModel>,
     val energy: NutrientModel,

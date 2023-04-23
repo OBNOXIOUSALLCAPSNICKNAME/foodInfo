@@ -21,13 +21,12 @@ open class BasicOfSearchFilterDB(
         const val TABLE_NAME = "basic_of_search_filter"
     }
 
-    override fun equals(other: Any?): Boolean {
-        return (other is BasicOfSearchFilterDB) &&
+    override fun equals(other: Any?): Boolean =
+        other is BasicOfSearchFilterDB &&
         other.infoID == this.infoID &&
         other.filterName == this.filterName &&
         other.minValue == this.minValue &&
         other.maxValue == this.maxValue
-    }
 
     override fun hashCode(): Int {
         var result = infoID

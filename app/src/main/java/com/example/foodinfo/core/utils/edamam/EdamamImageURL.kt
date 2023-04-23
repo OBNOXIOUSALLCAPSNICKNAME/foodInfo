@@ -9,7 +9,7 @@ data class EdamamImageURL(
     val token: String,
     val isExpired: Boolean
 ) {
-    override fun equals(other: Any?) =
+    override fun equals(other: Any?): Boolean =
         other is EdamamImageURL &&
         this.baseURL == other.baseURL &&
         this.isExpired == other.isExpired

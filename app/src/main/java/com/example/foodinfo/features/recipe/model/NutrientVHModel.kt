@@ -24,7 +24,7 @@ data class NutrientVHModel(
         this.dailyPercentValue == other.dailyPercentValue
 
 
-    override fun equals(other: Any?) =
+    override fun equals(other: Any?): Boolean =
         other is NutrientVHModel &&
         this.infoID == other.infoID &&
         this.name == other.name &&

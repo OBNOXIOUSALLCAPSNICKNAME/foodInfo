@@ -11,7 +11,7 @@ data class NutrientOfRecipe(
     val dailyWeight: Float,
     val dailyPercent: Int,
 ) {
-    override fun equals(other: Any?) =
+    override fun equals(other: Any?): Boolean =
         other is NutrientOfRecipe &&
         this.infoID == other.infoID &&
         this.name == other.name &&

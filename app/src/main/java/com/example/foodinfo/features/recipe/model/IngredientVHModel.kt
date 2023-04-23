@@ -21,7 +21,7 @@ data class IngredientVHModel(
         this.previewURL == other.previewURL
 
 
-    override fun equals(other: Any?) =
+    override fun equals(other: Any?): Boolean =
         other is IngredientVHModel &&
         this.text == other.text &&
         this.weight == other.weight &&

@@ -21,13 +21,12 @@ open class NutrientOfSearchFilterDB(
         const val TABLE_NAME = "nutrient_of_search_filter"
     }
 
-    override fun equals(other: Any?): Boolean {
-        return (other is NutrientOfSearchFilterDB) &&
+    override fun equals(other: Any?): Boolean =
+        other is NutrientOfSearchFilterDB &&
         other.filterName == this.filterName &&
         other.infoID == this.infoID &&
         other.minValue == this.minValue &&
         other.maxValue == this.maxValue
-    }
 
     override fun hashCode(): Int {
         var result = filterName.hashCode()

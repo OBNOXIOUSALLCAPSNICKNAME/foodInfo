@@ -12,7 +12,7 @@ fun RecipeExtended.toModel(): RecipeModel {
         weight = "${this.weight} ${RecipeMetadataUtils.RECIPE_WEIGHT_MEASURE}",
         servings = "${this.servings} ${RecipeMetadataUtils.RECIPE_SERVINGS_MEASURE}",
         cookingTime = RecipeMetadataUtils.mapCookingTime(this.cookingTime),
-        preview = this.preview.toString(),
+        preview = this.preview,
         isFavorite = this.isFavorite,
         categories = this.labels.toVHModel(),
         energy = this.nutrients.find { it.infoID == RecipeMetadataUtils.ID_ENERGY }!!.toModel(),

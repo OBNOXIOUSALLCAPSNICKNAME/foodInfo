@@ -119,13 +119,13 @@ class RecipeExtendedFragment : BaseFragment<FragmentRecipeExtendedBinding>(
     }
 
 
+    var prevRecipe: RecipeModel? = null
+
     private fun initRecipe(recipe: RecipeModel) {
         with(binding) {
             tvRecipeName.text = recipe.name
             Glide.with(ivRecipePreview.context)
-                .load(recipe.preview)
-                .error(R.drawable.ic_no_image)
-                .placeholder(null)
+                .load(recipe.preview.toString())
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .into(ivRecipePreview)
 
@@ -167,6 +167,8 @@ class RecipeExtendedFragment : BaseFragment<FragmentRecipeExtendedBinding>(
             }
 
             recyclerAdapter.submitList(recipe.categories)
+
+            prevRecipe = recipe
         }
     }
 }

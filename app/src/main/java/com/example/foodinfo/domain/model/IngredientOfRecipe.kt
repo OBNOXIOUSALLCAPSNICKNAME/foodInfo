@@ -12,7 +12,7 @@ data class IngredientOfRecipe(
     val foodID: String,
     val previewURL: String
 ) {
-    override fun equals(other: Any?) =
+    override fun equals(other: Any?): Boolean =
         other is IngredientOfRecipe &&
         this.text == other.text &&
         this.measure == other.measure &&

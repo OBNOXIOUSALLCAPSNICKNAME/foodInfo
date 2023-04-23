@@ -7,7 +7,7 @@ data class LabelOfRecipe(
     val name: String,
     val categoryName: String
 ) {
-    override fun equals(other: Any?) =
+    override fun equals(other: Any?): Boolean =
         other is LabelOfRecipe &&
         this.infoID == other.infoID &&
         this.name == other.name &&
