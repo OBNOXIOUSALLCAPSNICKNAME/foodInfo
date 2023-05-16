@@ -8,7 +8,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.example.foodinfo.R
 import com.example.foodinfo.core.ui.base.BaseFragment
@@ -119,13 +118,11 @@ class RecipeExtendedFragment : BaseFragment<FragmentRecipeExtendedBinding>(
     }
 
 
-    var prevRecipe: RecipeModel? = null
-
     private fun initRecipe(recipe: RecipeModel) {
         with(binding) {
             tvRecipeName.text = recipe.name
-            Glide.with(ivRecipePreview.context)
-                .load(recipe.preview.toString())
+            GlideApp.with(ivRecipePreview.context)
+                .load(recipe.preview)
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .into(ivRecipePreview)
 
@@ -167,8 +164,6 @@ class RecipeExtendedFragment : BaseFragment<FragmentRecipeExtendedBinding>(
             }
 
             recyclerAdapter.submitList(recipe.categories)
-
-            prevRecipe = recipe
         }
     }
 }

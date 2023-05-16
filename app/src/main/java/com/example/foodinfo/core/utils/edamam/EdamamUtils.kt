@@ -17,6 +17,7 @@ object EdamamInfo {
     const val APP_KEY_FIELD = "app_key"
     const val APP_ID_FIELD = "app_id"
     const val IMAGE_TOKEN_EXPIRATION_TIME = 3600000L // 1 hour
+    const val IMAGE_TOKEN_FIELD = "X-Amz-Date="
 }
 
 /**

@@ -34,7 +34,7 @@ fun recipeAdapterDelegate(
                 tvCaloriesValue.text = item.calories
                 GlideApp
                     .with(ivPreview.context)
-                    .load(item.preview.toString())
+                    .load(item.preview)
                     .transition(DrawableTransitionOptions.withCrossFade())
                     .into(ivPreview)
             }

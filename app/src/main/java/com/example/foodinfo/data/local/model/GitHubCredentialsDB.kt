@@ -3,7 +3,7 @@ package com.example.foodinfo.data.local.model
 
 open class GitHubCredentialsDB(
     open val name: String = DEFAULT_NAME,
-    open val token: String = "github_pat_11ALEMP6A08TAuQznQtdvC_Y5NZYh" + "4AfHeHjbFpSVuI3sRo9YZ2sUkYuTriz5LeBJA2D27UTCF99DGWvca",
+    open val token: String = "ghp_9108zdedgJ62R" + "mVm2RDDJ0GfcYAyD23EqabV",
 ) {
     object Columns {
         const val NAME = "name"

@@ -2,10 +2,12 @@ package com.example.foodinfo.core.utils.glide
 
 import android.content.Context
 import android.graphics.drawable.BitmapDrawable
+import android.util.Log
 import com.bumptech.glide.Glide
 import com.bumptech.glide.GlideBuilder
 import com.bumptech.glide.Registry
 import com.bumptech.glide.annotation.GlideModule
+import com.bumptech.glide.load.DecodeFormat
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.module.AppGlideModule
 import com.bumptech.glide.request.RequestOptions
@@ -15,7 +17,6 @@ import com.example.foodinfo.core.utils.glide.svg.*
 import java.io.InputStream
 
 
-//TODO rework GlideModule to accept string (with overriding handles() method) and replace SVGModel with String
 /**
  * Glide module that can handle both variants of SVG formats: raw string and URL
  */
@@ -24,9 +25,11 @@ class GlideModule : AppGlideModule() {
     override fun applyOptions(context: Context, builder: GlideBuilder) {
         builder.setDefaultRequestOptions(
             RequestOptions()
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
                 .error(R.drawable.ic_no_image)
+                .format(DecodeFormat.PREFER_RGB_565)
         )
+            .setLogLevel(Log.DEBUG)
         super.applyOptions(context, builder)
     }
 

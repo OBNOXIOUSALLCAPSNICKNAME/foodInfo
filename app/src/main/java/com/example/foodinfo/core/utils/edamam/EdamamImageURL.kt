@@ -1,5 +1,10 @@
 package com.example.foodinfo.core.utils.edamam
 
+import com.bumptech.glide.load.model.GlideUrl
+import com.google.gson.internal.bind.util.ISO8601Utils
+import java.net.URL
+import java.text.ParsePosition
+
 
 /**
  * Wrapper that helps to properly compare Edamam API image URL ignoring dynamically changing access token.
@@ -8,7 +13,8 @@ data class EdamamImageURL(
     val baseURL: String,
     val token: String,
     val isExpired: Boolean
-) {
+) : GlideUrl(baseURL) {
+
     override fun equals(other: Any?): Boolean =
         other is EdamamImageURL &&
         this.baseURL == other.baseURL &&
@@ -20,25 +26,33 @@ data class EdamamImageURL(
         return result
     }
 
-    override fun toString() = "$baseURL?$token"
+    override fun toString() = baseURL
+
+
+    override fun toStringUrl() = "$baseURL?$token"
+
+    override fun toURL() = URL(this.toStringUrl())
+
+    override fun getCacheKey() = toString()
 
 
     companion object {
         operator fun invoke(value: String): EdamamImageURL {
-            value.split("?").also { url ->
+            value.split("?", limit = 2).also { (baseURL, token) ->
                 return EdamamImageURL(
-                    baseURL = url[0],
-                    token = url[1],
-                    //TODO extract date from token and check if its already expired
-                    /*
-                        overridden equals() does not compare URL token to prevent redundant UI updates
-                        each time recipe is fetched from network (as token changes each time).
-                        It may lead to situations when token has expired but equals() returns true.
-                        To avoid that, isExpired parameter is needed
-                     */
-                    isExpired = false
+                    baseURL = baseURL,
+                    token = token,
+                    isExpired = isExpired(token)
                 )
             }
+        }
+
+        private fun isExpired(token: String): Boolean {
+            val tokenDate = ISO8601Utils.parse(
+                token.substringAfter(EdamamInfo.IMAGE_TOKEN_FIELD),
+                ParsePosition(0)
+            )
+            return (System.currentTimeMillis() - tokenDate.time) >= EdamamInfo.IMAGE_TOKEN_EXPIRATION_TIME
         }
     }
 }
