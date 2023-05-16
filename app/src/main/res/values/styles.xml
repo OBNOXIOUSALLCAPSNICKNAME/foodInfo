@@ -119,7 +119,8 @@
     </style>
 
     <style name = "ActivityAnimation" parent = "@android:style/Animation.Activity">
-        <item name = "android:activityOpenEnterAnimation">@anim/activity_transition</item>
+        <item name = "android:activityOpenEnterAnimation">@anim/activity_transition_in_right</item>
+        <item name = "android:activityOpenExitAnimation">@anim/activity_transition_out_left</item>
     </style>
 
 </resources>
