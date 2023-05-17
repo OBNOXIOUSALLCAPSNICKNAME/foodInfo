@@ -7,6 +7,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.foodinfo.R
+import com.example.foodinfo.core.ui.ListItemDecoration
 import com.example.foodinfo.core.ui.base.BaseFragment
 import com.example.foodinfo.core.ui.base.adapter.AppPageAdapter
 import com.example.foodinfo.core.ui.base.adapter.appPageAdapter
@@ -92,7 +93,7 @@ class FavoriteRecipesFragment : BaseFragment<FragmentFavoriteRecipesBinding>(
             adapter = recyclerAdapter
             setHasFixedSize(true)
             addItemDecoration(
-                com.example.foodinfo.core.ui.ListItemDecoration(
+                ListItemDecoration(
                     resources.getDimensionPixelSize(R.dimen.favorite_item_space),
                     RecyclerView.VERTICAL
                 )

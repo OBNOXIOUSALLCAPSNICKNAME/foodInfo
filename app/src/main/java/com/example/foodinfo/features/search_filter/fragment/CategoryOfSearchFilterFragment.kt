@@ -1,7 +1,6 @@
 package com.example.foodinfo.features.search_filter.fragment
 
 import androidx.core.view.isVisible
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,9 +15,6 @@ import com.example.foodinfo.databinding.FragmentCategoryOfSearchFilterBinding
 import com.example.foodinfo.features.search_filter.adapter.categoryEditAdapterDelegate
 import com.example.foodinfo.features.search_filter.model.LabelEditVHModel
 import com.example.foodinfo.features.search_filter.view_model.CategoryOfSearchFilterViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 
 class CategoryOfSearchFilterFragment : BaseFragment<FragmentCategoryOfSearchFilterBinding>(
@@ -38,12 +34,7 @@ class CategoryOfSearchFilterFragment : BaseFragment<FragmentCategoryOfSearchFilt
     }
 
     private val onQuestionMarkClickListener: (LabelEditVHModel) -> Unit = { label ->
-        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
-            val labelItem = viewModel.getLabelHint(label.infoID)
-            withContext(Dispatchers.Main) {
-                hintManager.show(labelItem.description, labelItem.preview, labelItem.name)
-            }
-        }
+        hintManager.showLabel(this) { viewModel.getLabelHint(label.infoID) }
     }
 
 

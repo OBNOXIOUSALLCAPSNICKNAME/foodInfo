@@ -1,11 +1,11 @@
 package com.example.foodinfo.features.search_filter.fragment
 
 import androidx.core.view.isVisible
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.foodinfo.R
+import com.example.foodinfo.core.ui.ListItemDecoration
 import com.example.foodinfo.core.ui.base.BaseFragment
 import com.example.foodinfo.core.ui.base.adapter.AppListAdapter
 import com.example.foodinfo.core.ui.base.adapter.appListAdapter
@@ -17,9 +17,6 @@ import com.example.foodinfo.databinding.FragmentNutrientsOfSearchFilterBinding
 import com.example.foodinfo.features.search_filter.adapter.nutrientEditAdapterDelegate
 import com.example.foodinfo.features.search_filter.model.NutrientEditVHModel
 import com.example.foodinfo.features.search_filter.view_model.NutrientsOfSearchFilterViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 
 class NutrientsOfSearchFilterFragment : BaseFragment<FragmentNutrientsOfSearchFilterBinding>(
@@ -46,12 +43,7 @@ class NutrientsOfSearchFilterFragment : BaseFragment<FragmentNutrientsOfSearchFi
         }
 
     private val onHeaderClickCallback: (NutrientEditVHModel) -> Unit = { nutrient ->
-        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
-            val nutrientItem = viewModel.getNutrientHint(nutrient.infoID)
-            withContext(Dispatchers.Main) {
-                hintManager.show(nutrientItem.description, nutrientItem.preview, nutrientItem.name)
-            }
-        }
+        hintManager.showNutrient(this) { viewModel.getNutrientHint(nutrient.infoID) }
     }
 
 
@@ -75,7 +67,7 @@ class NutrientsOfSearchFilterFragment : BaseFragment<FragmentNutrientsOfSearchFi
             }
             itemAnimator = null
             addItemDecoration(
-                com.example.foodinfo.core.ui.ListItemDecoration(
+                ListItemDecoration(
                     resources.getDimensionPixelSize(R.dimen.filter_nutrients_edit_field_item_space),
                     RecyclerView.VERTICAL
                 )

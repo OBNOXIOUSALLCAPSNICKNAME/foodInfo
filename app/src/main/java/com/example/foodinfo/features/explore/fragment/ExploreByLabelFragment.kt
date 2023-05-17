@@ -17,7 +17,6 @@ import com.example.foodinfo.features.explore.model.RecipeVHModel
 import com.example.foodinfo.features.explore.view_model.ExploreByLabelViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 
 class ExploreByLabelFragment : BaseFragment<FragmentExploreByLabelBinding>(
@@ -35,12 +34,7 @@ class ExploreByLabelFragment : BaseFragment<FragmentExploreByLabelBinding>(
     }
 
     private val onHeaderClickListener: () -> Unit = {
-        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
-            val labelItem = viewModel.getLabelHint(args.labelID)
-            withContext(Dispatchers.Main) {
-                hintManager.show(labelItem.description, labelItem.preview, labelItem.name)
-            }
-        }
+        hintManager.showLabel(this) { viewModel.getLabelHint(args.labelID) }
     }
 
     private val onItemClickListener: (RecipeVHModel) -> Unit = { recipe ->

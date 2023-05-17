@@ -3,13 +3,14 @@ package com.example.foodinfo.features.recipe.fragment
 import androidx.core.view.get
 import androidx.core.view.isVisible
 import androidx.core.view.size
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.example.foodinfo.R
+import com.example.foodinfo.core.ui.ListItemDecoration
+import com.example.foodinfo.core.ui.NonScrollLinearLayoutManager
 import com.example.foodinfo.core.ui.base.BaseFragment
 import com.example.foodinfo.core.ui.base.adapter.AppListAdapter
 import com.example.foodinfo.core.ui.base.adapter.appListAdapter
@@ -20,9 +21,6 @@ import com.example.foodinfo.features.recipe.adapter.categoryAdapterDelegate
 import com.example.foodinfo.features.recipe.model.RecipeModel
 import com.example.foodinfo.features.recipe.view_model.RecipeExtendedViewModel
 import com.google.android.material.imageview.ShapeableImageView
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import kotlin.math.min
 
 
@@ -41,12 +39,7 @@ class RecipeExtendedFragment : BaseFragment<FragmentRecipeExtendedBinding>(
     private val onShareClickListener: () -> Unit = { }
 
     private val onLabelClickListener: (Int) -> Unit = { infoID ->
-        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
-            val labelItem = viewModel.getLabelHint(infoID)
-            withContext(Dispatchers.Main) {
-                hintManager.show(labelItem.description, labelItem.preview, labelItem.name)
-            }
-        }
+        hintManager.showLabel(this) { viewModel.getLabelHint(infoID) }
     }
 
     private val onNutrientsViewAllClickListener: () -> Unit = {
@@ -86,11 +79,11 @@ class RecipeExtendedFragment : BaseFragment<FragmentRecipeExtendedBinding>(
         binding.tvIngredientsViewAll.setOnClickListener { onIngredientsViewAllClickListener() }
 
         with(binding.llCategories) {
-            layoutManager = com.example.foodinfo.core.ui.NonScrollLinearLayoutManager(context).also {
+            layoutManager = NonScrollLinearLayoutManager(context).also {
                 it.orientation = LinearLayoutManager.VERTICAL
             }
             addItemDecoration(
-                com.example.foodinfo.core.ui.ListItemDecoration(
+                ListItemDecoration(
                     resources.getDimensionPixelSize(R.dimen.recipe_extended_category_item_space),
                     RecyclerView.VERTICAL
                 )
