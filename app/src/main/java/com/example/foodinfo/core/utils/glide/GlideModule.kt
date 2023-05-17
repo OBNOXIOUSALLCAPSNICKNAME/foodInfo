@@ -25,7 +25,8 @@ class GlideModule : AppGlideModule() {
     override fun applyOptions(context: Context, builder: GlideBuilder) {
         builder.setDefaultRequestOptions(
             RequestOptions()
-                .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+                .diskCacheStrategy(DiskCacheStrategy.DATA)
+                .skipMemoryCache(true)
                 .error(R.drawable.ic_no_image)
                 .format(DecodeFormat.PREFER_RGB_565)
         )
