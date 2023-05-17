@@ -8,10 +8,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.foodinfo.core.ui.base.BaseFragment
 import com.example.foodinfo.core.ui.base.adapter.AppListAdapter
 import com.example.foodinfo.core.ui.base.adapter.appListAdapter
+import com.example.foodinfo.core.utils.extensions.appHintManager
 import com.example.foodinfo.core.utils.extensions.appViewModels
 import com.example.foodinfo.core.utils.extensions.baseAnimation
 import com.example.foodinfo.core.utils.extensions.observeState
-import com.example.foodinfo.core.utils.extensions.showDescriptionDialog
 import com.example.foodinfo.databinding.FragmentCategoryOfSearchFilterBinding
 import com.example.foodinfo.features.search_filter.adapter.categoryEditAdapterDelegate
 import com.example.foodinfo.features.search_filter.model.LabelEditVHModel
@@ -41,11 +41,7 @@ class CategoryOfSearchFilterFragment : BaseFragment<FragmentCategoryOfSearchFilt
         viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
             val labelItem = viewModel.getLabelHint(label.infoID)
             withContext(Dispatchers.Main) {
-                showDescriptionDialog(
-                    labelItem.name,
-                    labelItem.description,
-                    labelItem.preview
-                )
+                hintManager.show(labelItem.description, labelItem.preview, labelItem.name)
             }
         }
     }
@@ -58,6 +54,8 @@ class CategoryOfSearchFilterFragment : BaseFragment<FragmentCategoryOfSearchFilt
     private val recyclerAdapter: AppListAdapter by appListAdapter(
         categoryEditAdapterDelegate(onQuestionMarkClickListener, onItemClickListener)
     )
+
+    private val hintManager by appHintManager()
 
 
     override fun initUI() {

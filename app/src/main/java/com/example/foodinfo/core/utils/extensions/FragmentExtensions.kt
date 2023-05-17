@@ -1,17 +1,12 @@
 package com.example.foodinfo.core.utils.extensions
 
-import android.view.LayoutInflater
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
-import com.example.foodinfo.R
-import com.example.foodinfo.core.utils.glide.GlideApp
-import com.example.foodinfo.core.utils.glide.svg.SVGModel
-import com.example.foodinfo.databinding.DialogDescriptionBinding
-import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.example.foodinfo.core.utils.HintManager
 
 
 /*
@@ -42,27 +37,11 @@ fun Fragment.hideKeyboard() {
     }
 }
 
-//TODO fix opening multiple windows on rapid clicks
-fun Fragment.showDescriptionDialog(
-    header: String,
-    description: String,
-    preview: SVGModel
-) {
-    val dialogBinding = DialogDescriptionBinding.inflate(
-        LayoutInflater.from(requireContext())
-    ).apply {
-        GlideApp.with(requireContext())
-            .load(preview)
-            .into(ivPreview)
-        tvHeader.text = header
-        tvDescription.text = description
-    }
-
-    BottomSheetDialog(requireContext(), R.style.BottomSheetDialog).apply {
-        setContentView(dialogBinding.root)
-    }.show()
-}
 
 inline fun <reified VM : ViewModel> Fragment.appViewModels() = viewModels<VM> {
     requireActivity().appComponent.viewModelsFactory()
+}
+
+fun Fragment.appHintManager(): Lazy<HintManager> {
+    return lazy { HintManager(requireContext()) }
 }

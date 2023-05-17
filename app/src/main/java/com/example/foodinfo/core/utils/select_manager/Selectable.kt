@@ -1,4 +1,4 @@
-package com.example.foodinfo.core.utils.view_model
+package com.example.foodinfo.core.utils.select_manager
 
 
 interface Selectable<Key> {

@@ -9,10 +9,10 @@ import com.example.foodinfo.R
 import com.example.foodinfo.core.ui.base.BaseFragment
 import com.example.foodinfo.core.ui.base.adapter.AppListAdapter
 import com.example.foodinfo.core.ui.base.adapter.appListAdapter
+import com.example.foodinfo.core.utils.extensions.appHintManager
 import com.example.foodinfo.core.utils.extensions.appViewModels
 import com.example.foodinfo.core.utils.extensions.baseAnimation
 import com.example.foodinfo.core.utils.extensions.observeState
-import com.example.foodinfo.core.utils.extensions.showDescriptionDialog
 import com.example.foodinfo.databinding.FragmentNutrientsOfSearchFilterBinding
 import com.example.foodinfo.features.search_filter.adapter.nutrientEditAdapterDelegate
 import com.example.foodinfo.features.search_filter.model.NutrientEditVHModel
@@ -47,13 +47,9 @@ class NutrientsOfSearchFilterFragment : BaseFragment<FragmentNutrientsOfSearchFi
 
     private val onHeaderClickCallback: (NutrientEditVHModel) -> Unit = { nutrient ->
         viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
-            val labelItem = viewModel.getNutrientHint(nutrient.infoID)
+            val nutrientItem = viewModel.getNutrientHint(nutrient.infoID)
             withContext(Dispatchers.Main) {
-                showDescriptionDialog(
-                    labelItem.name,
-                    labelItem.description,
-                    labelItem.preview
-                )
+                hintManager.show(nutrientItem.description, nutrientItem.preview, nutrientItem.name)
             }
         }
     }
@@ -64,6 +60,8 @@ class NutrientsOfSearchFilterFragment : BaseFragment<FragmentNutrientsOfSearchFi
     private val recyclerAdapter: AppListAdapter by appListAdapter(
         nutrientEditAdapterDelegate(onHeaderClickCallback, onValueChangedCallback)
     )
+
+    private val hintManager by appHintManager()
 
 
     override fun initUI() {

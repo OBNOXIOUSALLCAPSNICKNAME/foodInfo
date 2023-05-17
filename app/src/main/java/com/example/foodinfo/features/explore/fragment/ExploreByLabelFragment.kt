@@ -8,9 +8,9 @@ import com.example.foodinfo.R
 import com.example.foodinfo.core.ui.base.BaseFragment
 import com.example.foodinfo.core.ui.base.adapter.AppPageAdapter
 import com.example.foodinfo.core.ui.base.adapter.appPageAdapter
+import com.example.foodinfo.core.utils.extensions.appHintManager
 import com.example.foodinfo.core.utils.extensions.appViewModels
 import com.example.foodinfo.core.utils.extensions.observePages
-import com.example.foodinfo.core.utils.extensions.showDescriptionDialog
 import com.example.foodinfo.databinding.FragmentExploreByLabelBinding
 import com.example.foodinfo.features.explore.adapter.recipeAdapterDelegate
 import com.example.foodinfo.features.explore.model.RecipeVHModel
@@ -38,11 +38,7 @@ class ExploreByLabelFragment : BaseFragment<FragmentExploreByLabelBinding>(
         viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
             val labelItem = viewModel.getLabelHint(args.labelID)
             withContext(Dispatchers.Main) {
-                showDescriptionDialog(
-                    labelItem.name,
-                    labelItem.description,
-                    labelItem.preview
-                )
+                hintManager.show(labelItem.description, labelItem.preview, labelItem.name)
             }
         }
     }
@@ -65,6 +61,8 @@ class ExploreByLabelFragment : BaseFragment<FragmentExploreByLabelBinding>(
     private val recyclerAdapter: AppPageAdapter<RecipeVHModel> by appPageAdapter(
         recipeAdapterDelegate(onItemClickListener, onFavoriteClickListener)
     )
+
+    private val hintManager by appHintManager()
 
 
     override fun initUI() {

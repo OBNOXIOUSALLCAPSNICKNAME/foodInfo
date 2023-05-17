@@ -2,7 +2,7 @@ package com.example.foodinfo.features.favorite.model
 
 import com.example.foodinfo.core.ui.base.adapter.AppViewHolderModel
 import com.example.foodinfo.core.utils.edamam.EdamamImageURL
-import com.example.foodinfo.core.utils.view_model.Selectable
+import com.example.foodinfo.core.utils.select_manager.Selectable
 
 
 data class RecipeVHModel(

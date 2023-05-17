@@ -44,11 +44,7 @@ class RecipeExtendedFragment : BaseFragment<FragmentRecipeExtendedBinding>(
         viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
             val labelItem = viewModel.getLabelHint(infoID)
             withContext(Dispatchers.Main) {
-                showDescriptionDialog(
-                    labelItem.name,
-                    labelItem.description,
-                    labelItem.preview
-                )
+                hintManager.show(labelItem.description, labelItem.preview, labelItem.name)
             }
         }
     }
@@ -77,6 +73,8 @@ class RecipeExtendedFragment : BaseFragment<FragmentRecipeExtendedBinding>(
     private val recyclerAdapter: AppListAdapter by appListAdapter(
         categoryAdapterDelegate(onLabelClickListener)
     )
+
+    private val hintManager by appHintManager()
 
 
     override fun initUI() {

@@ -1,4 +1,4 @@
-package com.example.foodinfo.core.utils.view_model
+package com.example.foodinfo.core.utils.select_manager
 
 import androidx.paging.PagingData
 import androidx.paging.PagingDataAdapter
