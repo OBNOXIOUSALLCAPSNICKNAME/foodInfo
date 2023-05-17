@@ -22,7 +22,7 @@ fun categoryAdapterDelegate(
         binding.tvTitle.text = item.name
         GlideApp.with(binding.ivPreview.context)
             .load(item.preview)
-            .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+            .diskCacheStrategy(DiskCacheStrategy.NONE)
             .into(binding.ivPreview)
     }
 )

@@ -122,9 +122,9 @@ internal object RoomPageQuery {
 
     private fun setOrder(sessionStartTime: Long): String {
         return if (sessionStartTime != 0L) {
-            "ORDER BY ${RecipeDB.Columns.LAST_UPDATE} ASC"
+            "ORDER BY ${RecipeDB.Columns.LAST_UPDATE} ASC, ${RecipeDB.Columns.ID} ASC"
         } else {
-            "ORDER BY ${RecipeDB.Columns.LAST_UPDATE} DESC"
+            "ORDER BY ${RecipeDB.Columns.LAST_UPDATE} DESC, ${RecipeDB.Columns.ID} ASC"
         }
     }
 

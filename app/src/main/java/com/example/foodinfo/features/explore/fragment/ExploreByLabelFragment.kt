@@ -94,7 +94,7 @@ class ExploreByLabelFragment : BaseFragment<FragmentExploreByLabelBinding>(
             useLoadingData = true,
             dataFlow = viewModel.pagingHelper,
             pageFlow = viewModel.recipes,
-            onSuccess = viewModel::setPreset,
+            onSuccess = viewModel::setHelper,
             onPageCollected = recyclerAdapter::submitData
         )
         viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {

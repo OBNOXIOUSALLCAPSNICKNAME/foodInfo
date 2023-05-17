@@ -76,7 +76,7 @@ class SearchInputFragment : BaseFragment<FragmentSearchInputBinding>(
     private val viewModel: SearchInputViewModel by appViewModels()
 
     private val recyclerAdapter: AppListAdapter by appListAdapter(
-        searchInputAdapterDelegate(onItemClickListener, onArrowClickListener)
+        searchInputAdapterDelegate(onArrowClickListener, onItemClickListener)
     )
 
 

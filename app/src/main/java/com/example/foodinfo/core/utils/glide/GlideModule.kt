@@ -2,7 +2,6 @@ package com.example.foodinfo.core.utils.glide
 
 import android.content.Context
 import android.graphics.drawable.BitmapDrawable
-import android.util.Log
 import com.bumptech.glide.Glide
 import com.bumptech.glide.GlideBuilder
 import com.bumptech.glide.Registry
@@ -30,7 +29,6 @@ class GlideModule : AppGlideModule() {
                 .error(R.drawable.ic_no_image)
                 .format(DecodeFormat.PREFER_RGB_565)
         )
-            .setLogLevel(Log.DEBUG)
         super.applyOptions(context, builder)
     }
 

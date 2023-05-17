@@ -47,7 +47,7 @@ class ExploreByLabelViewModel @Inject constructor(
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), PagingData.empty())
 
 
-    fun setPreset(helper: PagingHelper) {
+    fun setHelper(helper: PagingHelper) {
         _pagingHelper.tryEmit(helper)
     }
 
