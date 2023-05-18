@@ -1,6 +1,7 @@
 package com.example.foodinfo.features.search_filter.fragment
 
 import androidx.core.view.isVisible
+import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -12,6 +13,7 @@ import com.example.foodinfo.core.ui.base.adapter.AppListAdapter
 import com.example.foodinfo.core.ui.base.adapter.appListAdapter
 import com.example.foodinfo.core.utils.extensions.appViewModels
 import com.example.foodinfo.core.utils.extensions.baseAnimation
+import com.example.foodinfo.core.utils.extensions.observe
 import com.example.foodinfo.core.utils.extensions.observeState
 import com.example.foodinfo.databinding.FragmentSearchFilterBinding
 import com.example.foodinfo.features.search_filter.adapter.basicEditAdapterDelegate
@@ -29,6 +31,12 @@ class SearchFilterFragment : BaseFragment<FragmentSearchFilterBinding>(
 
     private val onBackClickListener: () -> Unit = {
         findNavController().navigateUp()
+    }
+
+    private val onSearchClickListener: () -> Unit = {
+        findNavController().navigate(
+            SearchFilterFragmentDirections.actionFSearchFilterToFSearchQuery("")
+        )
     }
 
     private val onValueChangedCallback: (BasicEditVHModel, Float, Float) -> Unit =
@@ -73,9 +81,8 @@ class SearchFilterFragment : BaseFragment<FragmentSearchFilterBinding>(
     override fun initUI() {
         binding.btnBack.setOnClickListener { onBackClickListener() }
         binding.btnReset.setOnClickListener { viewModel.reset() }
-        binding.ivNutrientsEdit.setOnClickListener {
-            onNutrientsEditClickListener()
-        }
+        binding.btnSearch.setOnClickListener { onSearchClickListener() }
+        binding.ivNutrientsEdit.setOnClickListener { onNutrientsEditClickListener() }
 
         with(binding.rvBaseFields) {
             adapter = basicsRecyclerAdapter
@@ -135,6 +142,12 @@ class SearchFilterFragment : BaseFragment<FragmentSearchFilterBinding>(
             },
             onSuccess = ::initFilter
         )
+        observe(Lifecycle.State.STARTED) {
+            viewModel.isFilterDefault.collect { isDefault ->
+                binding.btnReset.isEnabled = !isDefault
+                binding.btnSearch.isEnabled = !isDefault
+            }
+        }
     }
 
     private fun initFilter(filter: SearchFilterModel) {

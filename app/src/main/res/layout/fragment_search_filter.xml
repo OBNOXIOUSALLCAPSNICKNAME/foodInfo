@@ -4,7 +4,8 @@
     xmlns:tools = "http://schemas.android.com/tools"
     android:layout_width = "match_parent"
     android:layout_height = "match_parent"
-    android:layout_marginTop = "@dimen/screen_top_margin">
+    android:layout_marginTop = "@dimen/screen_top_margin"
+    android:layout_marginBottom = "@dimen/dp_20">
 
     <ImageView
         android:id = "@+id/btn_back"
@@ -14,46 +15,41 @@
         app:layout_constraintStart_toStartOf = "parent"
         app:layout_constraintTop_toTopOf = "parent" />
 
+    <ImageView
+        android:id = "@+id/btn_menu"
+        style = "@style/ButtonStart"
+        android:contentDescription = "@string/default_content_description"
+        android:src = "@drawable/ic_menu"
+        app:layout_constraintEnd_toEndOf = "parent"
+        app:layout_constraintTop_toTopOf = "parent" />
+
     <TextView
         android:id = "@+id/tv_filter_name"
         android:layout_width = "match_parent"
         android:layout_height = "wrap_content"
         android:layout_marginHorizontal = "@dimen/dp_16"
         android:ellipsize = "end"
-        android:fontFamily = "@font/app_font_bold_rounded"
+        android:fontFamily = "@font/app_font_regular"
         android:maxLines = "1"
         android:textAlignment = "center"
-        android:theme = "@style/TextViewMedium"
-        app:drawableEndCompat = "@drawable/ic_chevron_24"
-        app:drawableTint = "?appMainFontColor"
+        android:theme = "@style/TextViewBig"
         app:layout_constrainedWidth = "true"
         app:layout_constraintBottom_toBottomOf = "@id/btn_back"
-        app:layout_constraintEnd_toStartOf = "@id/btn_reset"
+        app:layout_constraintEnd_toStartOf = "@id/btn_menu"
         app:layout_constraintStart_toEndOf = "@id/btn_back"
         app:layout_constraintTop_toTopOf = "@id/btn_back"
         tools:text = "default filter" />
-
-    <TextView
-        android:id = "@+id/btn_reset"
-        style = "@style/ButtonEnd"
-        android:fontFamily = "@font/app_font_regular"
-        android:includeFontPadding = "false"
-        android:text = "@string/reset_text"
-        android:textAlignment = "textEnd"
-        android:textColor = "?appPrimaryColor"
-        android:textSize = "@dimen/text_18"
-        app:layout_constraintEnd_toEndOf = "parent"
-        app:layout_constraintTop_toTopOf = "parent" />
 
     <androidx.core.widget.NestedScrollView
         android:id = "@+id/sv_content"
         android:layout_width = "0dp"
         android:layout_height = "0dp"
         android:layout_marginHorizontal = "@dimen/screen_horizontal_margin"
+        android:layout_marginBottom = "@dimen/dp_20"
         android:fadingEdgeLength = "@dimen/dp_30"
         android:requiresFadingEdge = "vertical"
         android:scrollbars = "none"
-        app:layout_constraintBottom_toBottomOf = "parent"
+        app:layout_constraintBottom_toTopOf = "@id/btn_reset"
         app:layout_constraintEnd_toEndOf = "parent"
         app:layout_constraintStart_toStartOf = "parent"
         app:layout_constraintTop_toBottomOf = "@+id/btn_back">
@@ -142,13 +138,50 @@
 
     </androidx.core.widget.NestedScrollView>
 
+    <com.google.android.material.button.MaterialButton
+        android:id = "@+id/btn_search"
+        android:layout_width = "0dp"
+        android:layout_height = "@dimen/dp_50"
+        android:layout_marginEnd = "@dimen/dp_20"
+        android:backgroundTint = "@drawable/selector_color_btn"
+        android:enabled = "false"
+        android:stateListAnimator = "@null"
+        android:text = "@string/search_text"
+        android:textAppearance = "@style/TextViewMedium"
+        android:textColor = "?appMainBackgroundColor"
+        app:cornerRadius = "@dimen/dp_12"
+        app:elevation = "0dp"
+        app:layout_constraintBottom_toBottomOf = "parent"
+        app:layout_constraintEnd_toStartOf = "@+id/btn_reset"
+        app:layout_constraintStart_toStartOf = "@id/sv_content"
+        tools:enabled = "true" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id = "@+id/btn_reset"
+        android:layout_width = "0dp"
+        android:layout_height = "@dimen/dp_50"
+        android:backgroundTint = "?appMainBackgroundColor"
+        android:enabled = "false"
+        android:stateListAnimator = "@null"
+        android:text = "@string/reset_text"
+        android:textAppearance = "@style/TextViewMedium"
+        android:textColor = "@drawable/selector_color_btn"
+        app:cornerRadius = "@dimen/dp_12"
+        app:elevation = "0dp"
+        app:layout_constraintBottom_toBottomOf = "parent"
+        app:layout_constraintEnd_toEndOf = "@id/sv_content"
+        app:layout_constraintStart_toEndOf = "@+id/btn_search"
+        app:strokeColor = "@drawable/selector_color_btn"
+        app:strokeWidth = "2dp"
+        tools:enabled = "true" />
+
     <ProgressBar
         android:id = "@+id/pb_content"
         android:layout_width = "@dimen/progress_size"
         android:layout_height = "@dimen/progress_size"
         android:layout_gravity = "center"
         android:visibility = "gone"
-        app:layout_constraintBottom_toBottomOf = "parent"
+        app:layout_constraintBottom_toTopOf = "@id/btn_reset"
         app:layout_constraintEnd_toEndOf = "parent"
         app:layout_constraintStart_toStartOf = "parent"
         app:layout_constraintTop_toBottomOf = "@+id/btn_back" />

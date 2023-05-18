@@ -9,9 +9,7 @@ import com.example.foodinfo.domain.repository.SearchFilterRepository
 import com.example.foodinfo.features.search_filter.interactor.SearchFilterModelInteractor
 import com.example.foodinfo.features.search_filter.model.SearchFilterModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.shareIn
+import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
 
@@ -28,11 +26,24 @@ class SearchFilterViewModel @Inject constructor(
     )
 
 
+    private val _isFilterDefault = MutableSharedFlow<Boolean>()
+
+    val isFilterDefault: SharedFlow<Boolean> = _isFilterDefault.asSharedFlow()
+
+
     val filter: SharedFlow<State<SearchFilterModel>> by lazy {
-        searchFilterModelInteractor.getFilterEdit().shareIn(
-            viewModelScope, SharingStarted.WhileSubscribed(stopTimeoutMillis = 5000), 1
-        )
+        searchFilterModelInteractor.getFilterEdit().transform { state ->
+            state.data?.let { filter ->
+                _isFilterDefault.emit(checkIsDefault(filter))
+            }
+            emit(state)
+        }.shareIn(viewModelScope, SharingStarted.WhileSubscribed(), 1)
     }
+
+    private fun checkIsDefault(filter: SearchFilterModel) =
+        filter.nutrients.isEmpty() &&
+        filter.basics.all { it.minValue == null && it.maxValue == null } &&
+        filter.categories.all { it.labels.isEmpty() }
 
 
     fun reset() {

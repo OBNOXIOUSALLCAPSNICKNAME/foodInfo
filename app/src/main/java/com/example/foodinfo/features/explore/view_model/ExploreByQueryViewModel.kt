@@ -28,12 +28,12 @@ class ExploreByQueryViewModel @Inject constructor(
         viewModelScope, Dispatchers.IO, LaunchStrategy.IGNORE
     )
 
-    var inputText: String? = null
+    var inputText: String = ""
 
     private val _pagingHelper = MutableSharedFlow<PagingHelper>(extraBufferCapacity = 1)
 
     val pagingHelper: SharedFlow<State<PagingHelper>> by lazy {
-        searchFilterInteractor.getPagingHelper(AppPagingConfig.RECIPE_EXPLORE_PAGER, inputText!!)
+        searchFilterInteractor.getPagingHelper(AppPagingConfig.RECIPE_EXPLORE_PAGER, inputText)
             .shareIn(viewModelScope, SharingStarted.Lazily, 0)
     }
 
