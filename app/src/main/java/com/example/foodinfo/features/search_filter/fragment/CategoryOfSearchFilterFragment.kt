@@ -1,16 +1,14 @@
 package com.example.foodinfo.features.search_filter.fragment
 
 import androidx.core.view.isVisible
+import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.foodinfo.core.ui.base.BaseFragment
 import com.example.foodinfo.core.ui.base.adapter.AppListAdapter
 import com.example.foodinfo.core.ui.base.adapter.appListAdapter
-import com.example.foodinfo.core.utils.extensions.appHintManager
-import com.example.foodinfo.core.utils.extensions.appViewModels
-import com.example.foodinfo.core.utils.extensions.baseAnimation
-import com.example.foodinfo.core.utils.extensions.observeState
+import com.example.foodinfo.core.utils.extensions.*
 import com.example.foodinfo.databinding.FragmentCategoryOfSearchFilterBinding
 import com.example.foodinfo.features.search_filter.adapter.categoryEditAdapterDelegate
 import com.example.foodinfo.features.search_filter.model.LabelEditVHModel
@@ -25,8 +23,8 @@ class CategoryOfSearchFilterFragment : BaseFragment<FragmentCategoryOfSearchFilt
         findNavController().navigateUp()
     }
 
-    private val onResetClickListener: () -> Unit = {
-        viewModel.reset()
+    private val onToggleAllClickListener: () -> Unit = {
+        viewModel.toggleAll()
     }
 
     private val onItemClickListener: (LabelEditVHModel) -> Unit = { label ->
@@ -54,7 +52,7 @@ class CategoryOfSearchFilterFragment : BaseFragment<FragmentCategoryOfSearchFilt
         binding.tvHeader.text = args.categoryName
 
         binding.btnBack.setOnClickListener { onBackClickListener() }
-        binding.btnReset.setOnClickListener { onResetClickListener() }
+        binding.btnToggleAll.setOnClickListener { onToggleAllClickListener() }
 
         with(binding.rvLabels) {
             adapter = recyclerAdapter
@@ -81,5 +79,10 @@ class CategoryOfSearchFilterFragment : BaseFragment<FragmentCategoryOfSearchFilt
             },
             onSuccess = recyclerAdapter::submitList
         )
+        observe(Lifecycle.State.STARTED) {
+            viewModel.isAllSelected.collect { isAllSelected ->
+                binding.btnToggleAll.isChecked = isAllSelected
+            }
+        }
     }
 }

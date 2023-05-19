@@ -15,7 +15,7 @@
         app:layout_constraintTop_toTopOf = "parent" />
 
     <CheckBox
-        android:id = "@+id/btn_reset"
+        android:id = "@+id/btn_toggle_all"
         android:layout_width = "wrap_content"
         android:layout_height = "@dimen/dp_66"
         android:buttonTint = "@drawable/selector_color_cb"

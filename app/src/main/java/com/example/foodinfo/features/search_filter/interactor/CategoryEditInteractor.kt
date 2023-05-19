@@ -29,8 +29,12 @@ class CategoryEditInteractor @Inject constructor(
         return recipeMetadataRepository.getLabelHint(ID)
     }
 
-    suspend fun resetCategory(categoryID: Int) {
+    suspend fun unselectAll(categoryID: Int) {
         searchFilterRepository.resetCategory(categoryID)
+    }
+
+    suspend fun selectAll(categoryID: Int) {
+        searchFilterRepository.selectCategory(categoryID)
     }
 
     suspend fun updateLabel(ID: Int, isSelected: Boolean) {

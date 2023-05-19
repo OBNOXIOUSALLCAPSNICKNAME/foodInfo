@@ -13,6 +13,8 @@ interface SearchFilterRepository {
 
     suspend fun resetCategory(categoryID: Int)
 
+    suspend fun selectCategory(categoryID: Int)
+
     suspend fun updateBasic(id: Int, minValue: Float?, maxValue: Float?)
 
     suspend fun updateNutrient(id: Int, minValue: Float?, maxValue: Float?)

@@ -51,6 +51,8 @@ interface SearchFilterLocalSource {
 
     suspend fun resetCategory(filterName: String, categoryID: Int)
 
+    suspend fun selectCategory(filterName: String, categoryID: Int)
+
     suspend fun resetNutrients(filterName: String)
 
     suspend fun resetFilter(filterName: String)

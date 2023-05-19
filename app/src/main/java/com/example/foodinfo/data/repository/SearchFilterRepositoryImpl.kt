@@ -29,6 +29,10 @@ class SearchFilterRepositoryImpl @Inject constructor(
         searchFilterLocal.resetCategory(prefUtils.searchFilter, categoryID)
     }
 
+    override suspend fun selectCategory(categoryID: Int) {
+        searchFilterLocal.selectCategory(prefUtils.searchFilter, categoryID)
+    }
+
     override suspend fun updateBasic(id: Int, minValue: Float?, maxValue: Float?) {
         searchFilterLocal.updateBasic(id, minValue, maxValue)
     }

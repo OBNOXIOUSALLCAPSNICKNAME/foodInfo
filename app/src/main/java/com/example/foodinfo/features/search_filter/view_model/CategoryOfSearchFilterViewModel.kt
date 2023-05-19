@@ -9,9 +9,7 @@ import com.example.foodinfo.domain.model.LabelHint
 import com.example.foodinfo.features.search_filter.interactor.CategoryEditInteractor
 import com.example.foodinfo.features.search_filter.model.LabelEditVHModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.shareIn
+import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
 
@@ -27,12 +25,26 @@ class CategoryOfSearchFilterViewModel @Inject constructor(
         viewModelScope, Dispatchers.IO, LaunchStrategy.IGNORE
     )
 
+
+    private var shouldSelect = false
+
+    private val _isAllSelected = MutableSharedFlow<Boolean>()
+
+    val isAllSelected: SharedFlow<Boolean> = _isAllSelected.asSharedFlow()
+
+
     var categoryID: Int = -1
 
     val categoryLabels: SharedFlow<State<List<LabelEditVHModel>>> by lazy {
-        categoryEditInteractor.getCategoryEdit(categoryID).shareIn(
-            viewModelScope, SharingStarted.WhileSubscribed(stopTimeoutMillis = 5000), 1
-        )
+        categoryEditInteractor.getCategoryEdit(categoryID).transform { state ->
+            state.data?.let { labels ->
+                labels.all { it.isSelected }.also { allSelected ->
+                    _isAllSelected.emit(allSelected)
+                    shouldSelect = !allSelected
+                }
+            }
+            emit(state)
+        }.shareIn(viewModelScope, SharingStarted.WhileSubscribed(), 1)
     }
 
 
@@ -40,9 +52,14 @@ class CategoryOfSearchFilterViewModel @Inject constructor(
         return categoryEditInteractor.getLabelHint(ID)
     }
 
-    fun reset() {
+    fun toggleAll() {
         resetCoroutine.launch {
-            categoryEditInteractor.resetCategory(categoryID)
+            if (shouldSelect) {
+                categoryEditInteractor.selectAll(categoryID)
+
+            } else {
+                categoryEditInteractor.unselectAll(categoryID)
+            }
         }
     }
 

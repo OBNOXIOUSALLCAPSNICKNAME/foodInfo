@@ -147,6 +147,19 @@ interface SearchFilterDAO {
     suspend fun resetCategory(filterName: String, categoryID: Int)
 
     @Query(
+        "UPDATE ${LabelOfSearchFilterDB.TABLE_NAME} SET " +
+        "${LabelOfSearchFilterDB.Columns.IS_SELECTED} = 1 WHERE " +
+        "${LabelOfSearchFilterDB.Columns.ID} IN (SELECT " +
+        "${LabelOfSearchFilterDB.TABLE_NAME}.${LabelOfSearchFilterDB.Columns.ID} FROM " +
+        "${LabelOfSearchFilterDB.TABLE_NAME} INNER JOIN ${LabelOfRecipeMetadataDB.TABLE_NAME} ON " +
+        "${LabelOfSearchFilterDB.Columns.INFO_ID} = " +
+        "${LabelOfRecipeMetadataDB.TABLE_NAME}.${LabelOfRecipeMetadataDB.Columns.ID} WHERE " +
+        "${LabelOfSearchFilterDB.Columns.FILTER_NAME} LIKE '%' || :filterName || '%' AND " +
+        "${LabelOfRecipeMetadataDB.Columns.CATEGORY_ID} == :categoryID)"
+    )
+    suspend fun selectCategory(filterName: String, categoryID: Int)
+
+    @Query(
         "UPDATE ${NutrientOfSearchFilterDB.TABLE_NAME} SET " +
         "${NutrientOfSearchFilterDB.Columns.MIN_VALUE} = NULL, " +
         "${NutrientOfSearchFilterDB.Columns.MAX_VALUE} = NULL WHERE " +

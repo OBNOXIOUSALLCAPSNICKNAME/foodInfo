@@ -93,6 +93,10 @@ class SearchFilterRoomSource @Inject constructor(
         searchFilterDAO.resetCategory(filterName, categoryID)
     }
 
+    override suspend fun selectCategory(filterName: String, categoryID: Int) {
+        searchFilterDAO.selectCategory(filterName, categoryID)
+    }
+
     override suspend fun resetNutrients(filterName: String) {
         searchFilterDAO.resetNutrients(filterName)
     }
