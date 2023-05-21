@@ -10,6 +10,7 @@ open class NutrientOfRecipeMetadataDB(
     open val hasRDI: Boolean,
     open val previewURL: String,
     open val dailyAllowance: Float,
+    open val precision: Int,
     open val stepSize: Float,
     open val rangeMin: Float,
     open val rangeMax: Float
@@ -24,6 +25,7 @@ open class NutrientOfRecipeMetadataDB(
         const val PREVIEW_URL = "preview_url"
         const val HAS_RDI = "has_rdi"
         const val DAILY_ALLOWANCE = "daily_allowance"
+        const val PRECISION = "precision"
         const val STEP_SIZE = "step_size"
         const val RANGE_MIN = "range_min"
         const val RANGE_MAX = "range_max"

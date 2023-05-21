@@ -37,6 +37,9 @@ data class NutrientOfRecipeMetadataEntity(
     @ColumnInfo(name = Columns.DAILY_ALLOWANCE)
     override val dailyAllowance: Float,
 
+    @ColumnInfo(name = Columns.PRECISION)
+    override val precision: Int,
+
     @ColumnInfo(name = Columns.STEP_SIZE)
     override val stepSize: Float,
 
@@ -55,6 +58,7 @@ data class NutrientOfRecipeMetadataEntity(
     hasRDI = hasRDI,
     previewURL = previewURL,
     dailyAllowance = dailyAllowance,
+    precision = precision,
     stepSize = stepSize,
     rangeMin = rangeMin,
     rangeMax = rangeMax
@@ -70,6 +74,7 @@ data class NutrientOfRecipeMetadataEntity(
                 hasRDI = item.hasRDI,
                 previewURL = item.previewURL,
                 dailyAllowance = item.dailyAllowance,
+                precision = item.precision,
                 stepSize = item.stepSize,
                 rangeMin = item.rangeMin,
                 rangeMax = item.rangeMax

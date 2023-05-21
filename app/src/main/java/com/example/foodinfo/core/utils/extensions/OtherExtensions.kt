@@ -11,7 +11,14 @@ fun String.trimMultiline() = this.trimIndent().replace(System.lineSeparator(), "
 
 fun Float.toPercent(total: Float) = if (total == 0f) 100 else (this * 100 / total).toInt()
 
-fun Float.round() = (this * 10f).roundToInt() / 10f
+fun Float.toString(precision: Int): String {
+    var multiplier = 1f
+    repeat(precision) { multiplier *= 10f }
+    return when (multiplier) {
+        1f   -> this.toInt().toString()
+        else -> "${(this * multiplier).roundToInt() / multiplier}"
+    }
+}
 
 inline fun <reified T> getTypeToken(): TypeToken<T> = object : TypeToken<T>() {}
 

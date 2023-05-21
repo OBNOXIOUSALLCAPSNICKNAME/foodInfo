@@ -1,6 +1,6 @@
 package com.example.foodinfo.core.utils
 
-import kotlin.math.roundToInt
+import com.example.foodinfo.core.utils.extensions.toString
 
 
 object RecipeMetadataUtils {
@@ -13,9 +13,11 @@ object RecipeMetadataUtils {
     private const val MINUTES_IN_HOUR = 60
     private const val MINUTES_IN_DAY = 60 * 24
 
+    private const val INGREDIENT_WEIGHT_PRECISION = 1
+
     private const val MEASURE_MILLIGRAMS = "mg"
     private const val MEASURE_MICROGRAMS = "µg"
-    const val MEASURE_GRAMS = "g"
+    private const val MEASURE_GRAMS = "g"
 
     const val RECIPE_SERVINGS_MEASURE = "ppl"
     const val RECIPE_WEIGHT_MEASURE = "g"
@@ -35,45 +37,35 @@ object RecipeMetadataUtils {
         }
     }
 
-    fun roundToStep(step: Float, value: Float): String {
-        return when (val precision = getPrecision(step)) {
-            1f   -> value.toInt().toString()
-            else -> "${(value * precision).roundToInt() / precision}"
-        }
+    fun mapIngredientWeight(value: Float): String {
+        return "${value.toString(INGREDIENT_WEIGHT_PRECISION)}${withSpacer(MEASURE_GRAMS)}"
     }
 
-    fun mapToGoal(value: Float, goal: Float, step: Float, measure: String): String {
-        return "${roundToStep(step, value)} / ${roundToStep(step, goal)}${withSpacer(measure)}"
+
+    fun mapToGoal(value: Float, goal: Float, precision: Int, measure: String): String {
+        return "${value.toString(precision)} / ${goal.toString(precision)}${withSpacer(measure)}"
     }
 
-    fun mapToRange(minValue: Float?, maxValue: Float?, step: Float, measure: String): String = when {
+    fun mapToRange(minValue: Float?, maxValue: Float?, precision: Int, measure: String): String = when {
         minValue == null && maxValue == null -> {
             throw IllegalStateException("At least one value for [minValue, maxValue] must be not null")
         }
         minValue == null                     -> {
-            "≤${roundToStep(step, maxValue!!)}${withSpacer(measure)}"
+            "≤${maxValue!!.toString(precision)}${withSpacer(measure)}"
         }
         maxValue == null                     -> {
-            "≥${roundToStep(step, minValue)}${withSpacer(measure)}"
+            "≥${minValue.toString(precision)}${withSpacer(measure)}"
         }
         else                                 -> {
-            "${roundToStep(step, minValue)} ─ ${roundToStep(step, maxValue)}${withSpacer(measure)}"
+            "${minValue.toString(precision)} ─ ${maxValue.toString(precision)}${withSpacer(measure)}"
         }
     }
 
-    fun withSpacer(measure: String): String = when (measure) {
+
+    private fun withSpacer(measure: String): String = when (measure) {
         MEASURE_GRAMS,
         MEASURE_MILLIGRAMS,
         MEASURE_MICROGRAMS -> measure
         else               -> " $measure"
-    }
-
-
-    private fun getPrecision(value: Float): Float {
-        var precision = 1f
-        while (((value * precision) - (value * precision).toInt()) != 0f) {
-            precision *= 10f
-        }
-        return precision
     }
 }

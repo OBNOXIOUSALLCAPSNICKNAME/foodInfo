@@ -2,6 +2,7 @@ package com.example.foodinfo.data.remote.retrofit
 
 import com.example.foodinfo.core.utils.edamam.EdamamInfo
 import com.example.foodinfo.core.utils.edamam.FieldSet
+import com.example.foodinfo.core.utils.extensions.toString
 import com.example.foodinfo.core.utils.extensions.trimMultiline
 import com.example.foodinfo.domain.model.EdamamCredentials
 import com.example.foodinfo.domain.model.SearchFilterPreset
@@ -36,7 +37,30 @@ import com.example.foodinfo.domain.model.SearchFilterPreset
  * ~~~
  */
 internal object EdamamPageURL {
-    private fun rangeFieldToRemoteQuery(tag: String, minValue: Float?, maxValue: Float?): String {
+    private fun rangeFieldToRemoteQuery(
+        tag: String,
+        minValue: Float?,
+        maxValue: Float?,
+        precision: Int
+    ): String {
+        return when {
+            minValue == null -> {
+                "$tag=${maxValue!!.toString(precision)}"
+            }
+            maxValue == null -> {
+                "$tag=${minValue.toString(precision)}"
+            }
+            else             -> {
+                "$tag=${minValue.toString(precision)}-${maxValue.toString(precision)}"
+            }
+        }
+    }
+
+    private fun nutrientToRemoteQuery(
+        tag: String,
+        minValue: Float?,
+        maxValue: Float?
+    ): String {
         return when {
             minValue == null -> {
                 "%5B$tag%5D=$maxValue"
@@ -80,12 +104,25 @@ internal object EdamamPageURL {
         ${inputTextToRemoteQuery(inputText)}
         ${
             filterPreset.basics.filterNot { it.tag == null }.joinToString(separator = "") { field ->
-                "&${rangeFieldToRemoteQuery(field.tag!!, field.minValue, field.maxValue)}"
+                "&${
+                    rangeFieldToRemoteQuery(
+                        field.tag!!,
+                        field.minValue,
+                        field.maxValue,
+                        field.precision
+                    )
+                }"
             }
         }
         ${
             filterPreset.nutrients.joinToString(separator = "") { field ->
-                "&nutrients${rangeFieldToRemoteQuery(field.tag, field.minValue, field.maxValue)}"
+                "&nutrients${
+                    nutrientToRemoteQuery(
+                        field.tag,
+                        field.minValue,
+                        field.maxValue
+                    )
+                }"
             }
         }
         ${

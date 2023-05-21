@@ -28,6 +28,9 @@ data class NutrientOfRecipeMetadataNetwork(
     @SerializedName(Fields.DAILY_ALLOWANCE)
     val dailyAllowance: Float,
 
+    @SerializedName(Fields.PRECISION)
+    val precision: Int,
+
     @SerializedName(Fields.RANGE_MIN)
     val rangeMin: Float,
 
@@ -47,6 +50,7 @@ data class NutrientOfRecipeMetadataNetwork(
         const val MEASURE = "measure"
         const val HAS_RDI = "hasRDI"
         const val DAILY_ALLOWANCE = "dailyAllowance"
+        const val PRECISION = "precision"
         const val RANGE_MIN = "rangeMin"
         const val RANGE_MAX = "rangeMax"
         const val STEP_SIZE = "stepSize"

@@ -7,6 +7,7 @@ data class BasicOfRecipeMetadata(
     val name: String,
     val columnName: String,
     val measure: String,
+    val precision: Int,
     val rangeMin: Float,
     val rangeMax: Float,
     val stepSize: Float

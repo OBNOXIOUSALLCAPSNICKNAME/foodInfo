@@ -25,7 +25,7 @@ fun NutrientOfRecipeExtendedDB.toModel(): NutrientOfRecipe {
         infoID = this.infoID,
         name = this.metadata!!.name,
         measure = this.metadata!!.measure,
-        stepSize = this.metadata!!.stepSize,
+        precision = this.metadata!!.precision,
         totalWeight = this.value,
         dailyWeight = this.metadata!!.dailyAllowance,
         dailyPercent = this.value.toPercent(this.metadata!!.dailyAllowance)
@@ -63,6 +63,7 @@ fun List<NutrientOfSearchFilterExtendedDB>.toModel(): List<NutrientOfSearchFilte
             dailyAllowance = nutrient.metadata!!.dailyAllowance,
             stepSize = nutrient.metadata!!.stepSize,
             measure = nutrient.metadata!!.measure,
+            precision = nutrient.metadata!!.precision,
             rangeMin = nutrient.metadata!!.rangeMin,
             rangeMax = nutrient.metadata!!.rangeMax,
             minValue = nutrient.minValue,
@@ -116,6 +117,7 @@ fun NutrientOfRecipeMetadataNetwork.toDB(): NutrientOfRecipeMetadataDB {
         hasRDI = this.hasRDI,
         previewURL = this.previewURL,
         dailyAllowance = this.dailyAllowance,
+        precision = this.precision,
         stepSize = this.stepSize,
         rangeMin = this.rangeMin,
         rangeMax = this.rangeMax
@@ -132,6 +134,7 @@ fun NutrientOfRecipeMetadataDB.toModel(): NutrientOfRecipeMetadata {
         hasRDI = this.hasRDI,
         previewURL = this.previewURL,
         dailyAllowance = this.dailyAllowance,
+        precision = this.precision,
         stepSize = this.stepSize,
         rangeMin = this.rangeMin,
         rangeMax = this.rangeMax

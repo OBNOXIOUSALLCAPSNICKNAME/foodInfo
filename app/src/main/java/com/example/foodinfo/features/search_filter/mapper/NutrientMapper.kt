@@ -14,7 +14,7 @@ fun List<NutrientOfSearchFilter>.toVHModelPreview(): List<NutrientPreviewVHModel
             range = RecipeMetadataUtils.mapToRange(
                 minValue = nutrient.minValue,
                 maxValue = nutrient.maxValue,
-                step = nutrient.stepSize,
+                precision = nutrient.precision,
                 measure = nutrient.measure
             )
         )

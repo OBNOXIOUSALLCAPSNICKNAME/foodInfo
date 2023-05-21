@@ -19,6 +19,9 @@ data class BasicOfRecipeMetadataNetwork(
     @SerializedName(Fields.MEASURE)
     val measure: String,
 
+    @SerializedName(Fields.PRECISION)
+    val precision: Int,
+
     @SerializedName(Fields.STEP_SIZE)
     val stepSize: Float,
 
@@ -35,6 +38,7 @@ data class BasicOfRecipeMetadataNetwork(
         const val NAME = "name"
         const val COLUMN_NAME = "columnName"
         const val MEASURE = "measure"
+        const val PRECISION = "precision"
         const val STEP_SIZE = "stepSize"
         const val RANGE_MIN = "rangeMin"
         const val RANGE_MAX = "rangeMax"

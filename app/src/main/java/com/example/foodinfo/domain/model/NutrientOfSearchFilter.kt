@@ -11,6 +11,7 @@ data class NutrientOfSearchFilter(
     val measure: String,
     val hasRDI: Boolean,
     val dailyAllowance: Float,
+    val precision: Int,
     val stepSize: Float,
     val rangeMin: Float,
     val rangeMax: Float

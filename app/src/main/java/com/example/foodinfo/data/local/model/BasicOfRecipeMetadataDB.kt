@@ -7,6 +7,7 @@ open class BasicOfRecipeMetadataDB(
     open val name: String,
     open val columnName: String,
     open val measure: String,
+    open val precision: Int,
     open val rangeMin: Float,
     open val rangeMax: Float,
     open val stepSize: Float
@@ -18,6 +19,7 @@ open class BasicOfRecipeMetadataDB(
         const val NAME = "name"
         const val COLUMN_NAME = "column_name"
         const val MEASURE = "measure"
+        const val PRECISION = "precision"
         const val RANGE_MIN = "range_min"
         const val RANGE_MAX = "range_max"
         const val STEP_SIZE = "step_size"

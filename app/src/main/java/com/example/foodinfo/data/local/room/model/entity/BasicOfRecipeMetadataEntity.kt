@@ -28,6 +28,9 @@ data class BasicOfRecipeMetadataEntity(
     @ColumnInfo(name = Columns.MEASURE)
     override val measure: String,
 
+    @ColumnInfo(name = Columns.PRECISION)
+    override val precision: Int,
+
     @ColumnInfo(name = Columns.RANGE_MIN)
     override val rangeMin: Float,
 
@@ -43,6 +46,7 @@ data class BasicOfRecipeMetadataEntity(
     name = name,
     columnName = columnName,
     measure = measure,
+    precision = precision,
     rangeMin = rangeMin,
     rangeMax = rangeMax,
     stepSize = stepSize
@@ -55,6 +59,7 @@ data class BasicOfRecipeMetadataEntity(
                 name = item.name,
                 columnName = item.columnName,
                 measure = item.measure,
+                precision = item.precision,
                 rangeMin = item.rangeMin,
                 rangeMax = item.rangeMax,
                 stepSize = item.stepSize

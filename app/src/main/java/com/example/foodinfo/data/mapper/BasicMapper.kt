@@ -55,6 +55,7 @@ fun List<BasicOfSearchFilterExtendedDB>.toModelPreset(): List<BasicOfSearchFilte
             infoID = basic.infoID,
             tag = basic.metadata!!.tag!!,
             columnName = basic.metadata!!.columnName,
+            precision = basic.metadata!!.precision,
             minValue = basic.minValue,
             maxValue = basic.maxValue
         )
@@ -77,6 +78,7 @@ fun BasicOfRecipeMetadataDB.toModel(): BasicOfRecipeMetadata {
         name = this.name,
         columnName = this.columnName,
         measure = this.measure,
+        precision = this.precision,
         rangeMin = this.rangeMin,
         rangeMax = this.rangeMax,
         stepSize = this.stepSize
@@ -90,6 +92,7 @@ fun BasicOfRecipeMetadataNetwork.toDB(): BasicOfRecipeMetadataDB {
         name = this.name,
         columnName = this.columnName,
         measure = this.measure,
+        precision = this.precision,
         rangeMin = this.rangeMin,
         rangeMax = this.rangeMax,
         stepSize = this.stepSize

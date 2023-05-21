@@ -10,6 +10,7 @@ data class NutrientOfRecipeMetadata(
     val hasRDI: Boolean,
     val previewURL: String,
     val dailyAllowance: Float,
+    val precision: Int,
     val stepSize: Float,
     val rangeMin: Float,
     val rangeMax: Float
